@@ -77,6 +77,7 @@
 .fw-wireframe { display: flex; gap: 14px; margin-bottom: 10px; flex-shrink: 0; }
 .fw-wf-item { flex: 1; }
 .fw-wf-label { font-family: 'DM Mono', monospace; font-size: 9px; color: var(--tx3); text-align: center; margin-bottom: 4px; text-transform: uppercase; letter-spacing: .1em; }
+.fw-wf-desc { font-family: 'DM Mono', monospace; font-size: 8px; color: var(--tx3); text-align: center; margin-top: 5px; letter-spacing: .07em; border-top: .5px solid var(--bdr2); padding-top: 4px; opacity: .75; }
 
 .fw-insight { background: var(--acc-dim); border: .5px solid var(--acc-b); border-radius: 8px; padding: 12px 16px; margin-top: 6px; flex-shrink: 0; }
 .fw-insight-title { font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 700; color: var(--acc2); margin-bottom: 5px; }
@@ -311,18 +312,18 @@
         <svg viewBox="0 0 100 72" xmlns="http://www.w3.org/2000/svg" style="width:100%;border:.5px solid var(--bdr2);border-radius:6px;background:#0C0C11">
           <!-- output area -->
           <rect x="2" y="2" width="96" height="48" rx="2" fill="#0C0C11" stroke="#242430" stroke-width=".5"/>
-          <text x="6" y="13" font-family="DM Mono,monospace" font-size="5.5" fill="#34D399">✔ output (scroll)</text>
-          <text x="6" y="22" font-family="DM Mono,monospace" font-size="5.5" fill="#4E4E5E">◉ Reading auth.ts</text>
-          <text x="6" y="31" font-family="DM Mono,monospace" font-size="5.5" fill="#4E4E5E">◉ Editing auth.ts</text>
-          <rect x="3" y="39" width="60" height="4" rx="1" fill="#1a1a22"/>
-          <text x="66" y="43" font-family="DM Mono,monospace" font-size="5" fill="#4E4E5E">80%</text>
+          <text x="6" y="13" font-family="DM Mono,monospace" font-size="4.2" fill="#34D399">✔ output (scroll)</text>
+          <text x="6" y="21" font-family="DM Mono,monospace" font-size="4.2" fill="#4E4E5E">◉ Reading auth.ts</text>
+          <text x="6" y="29" font-family="DM Mono,monospace" font-size="4.2" fill="#4E4E5E">◉ Editing auth.ts</text>
+          <rect x="3" y="36" width="60" height="3.5" rx="1" fill="#1a1a22"/>
+          <text x="66" y="40" font-family="DM Mono,monospace" font-size="3.8" fill="#4E4E5E">80%</text>
           <!-- divider -->
           <line x1="2" y1="50" x2="98" y2="50" stroke="#834DF0" stroke-width=".8" opacity=".5"/>
           <!-- input area -->
           <rect x="2" y="51" width="96" height="19" rx="2" fill="#1a1a22" stroke="#834DF0" stroke-width=".8"/>
-          <text x="6" y="61" font-family="DM Mono,monospace" font-size="5.5" fill="#834DF0">❯ input</text>
-          <text x="6" y="68" font-family="DM Mono,monospace" font-size="5" fill="#4E4E5E">fixed bottom · 20%</text>
+          <text x="6" y="62" font-family="DM Mono,monospace" font-size="4.2" fill="#834DF0">❯ input</text>
         </svg>
+        <div class="fw-wf-desc">fixed bottom editor · 20% height</div>
       </div>
       <div class="fw-wf-item">
         <div class="fw-wf-label">Warp</div>
@@ -330,73 +331,72 @@
           <!-- blocks area -->
           <rect x="2" y="2" width="96" height="40" rx="2" fill="#0C0C11" stroke="#242430" stroke-width=".5"/>
           <rect x="4" y="4" width="92" height="11" rx="1" fill="#15151C" stroke="#2a2a35" stroke-width=".5"/>
-          <text x="7" y="11" font-family="DM Mono,monospace" font-size="5.5" fill="#34D399">❯ npm test</text>
+          <text x="7" y="11" font-family="DM Mono,monospace" font-size="4.2" fill="#34D399">❯ npm test</text>
           <rect x="88" y="5" width="7" height="9" rx="1" fill="transparent" stroke="#F87171" stroke-width=".5"/>
-          <text x="89.5" y="11" font-family="DM Mono,monospace" font-size="5" fill="#F87171">✗</text>
+          <text x="89.5" y="11" font-family="DM Mono,monospace" font-size="3.8" fill="#F87171">✗</text>
           <rect x="4" y="17" width="92" height="10" rx="1" fill="#15151C" stroke="#2a2a35" stroke-width=".5"/>
-          <text x="7" y="24" font-family="DM Mono,monospace" font-size="5.5" fill="#34D399">❯ git status</text>
+          <text x="7" y="24" font-family="DM Mono,monospace" font-size="4.2" fill="#34D399">❯ git status</text>
           <rect x="88" y="18" width="7" height="8" rx="1" fill="transparent" stroke="#34D399" stroke-width=".5"/>
-          <text x="89" y="24" font-family="DM Mono,monospace" font-size="5" fill="#34D399">✔</text>
-          <text x="6" y="38" font-family="DM Mono,monospace" font-size="5" fill="#4E4E5E">Block 体系 · each cmd = unit</text>
+          <text x="89" y="24" font-family="DM Mono,monospace" font-size="3.8" fill="#34D399">✔</text>
           <!-- input + chips -->
           <rect x="2" y="43" width="96" height="14" rx="2" fill="#0d0f13" stroke="rgba(131,77,240,.4)" stroke-width=".8"/>
           <rect x="3" y="44" width="94" height="5" rx="1" fill="rgba(131,77,240,.1)"/>
-          <text x="5" y="48.5" font-family="DM Mono,monospace" font-size="4.5" fill="#A78BFA">✦ Agent  · 🌿 main  · sonnet▾</text>
-          <text x="5" y="55" font-family="DM Mono,monospace" font-size="5.5" fill="#834DF0">❯ input</text>
+          <text x="5" y="48.5" font-family="DM Mono,monospace" font-size="3.5" fill="#A78BFA">✦ Agent  · 🌿 main  · sonnet▾</text>
+          <text x="5" y="55" font-family="DM Mono,monospace" font-size="4.2" fill="#834DF0">❯ input</text>
           <!-- status bar -->
           <rect x="2" y="58" width="96" height="12" rx="1" fill="#141419" stroke="#242430" stroke-width=".5"/>
-          <text x="5" y="65" font-family="DM Mono,monospace" font-size="5" fill="#60A5FA">sonnet</text>
-          <text x="26" y="65" font-family="DM Mono,monospace" font-size="5" fill="#34D399">Normal</text>
-          <text x="52" y="65" font-family="DM Mono,monospace" font-size="5" fill="#4E4E5E">main</text>
-          <text x="74" y="65" font-family="DM Mono,monospace" font-size="5" fill="#FBBF24">$0.04</text>
-          <text x="6" y="71" font-family="DM Mono,monospace" font-size="4.5" fill="#4E4E5E">persistent status bar</text>
+          <text x="5" y="65" font-family="DM Mono,monospace" font-size="3.8" fill="#60A5FA">sonnet</text>
+          <text x="26" y="65" font-family="DM Mono,monospace" font-size="3.8" fill="#34D399">Normal</text>
+          <text x="52" y="65" font-family="DM Mono,monospace" font-size="3.8" fill="#4E4E5E">main</text>
+          <text x="74" y="65" font-family="DM Mono,monospace" font-size="3.8" fill="#FBBF24">$0.04</text>
         </svg>
+        <div class="fw-wf-desc">block units · persistent status bar</div>
       </div>
       <div class="fw-wf-item">
         <div class="fw-wf-label">Gemini CLI</div>
-        <svg viewBox="0 0 100 72" xmlns="http://www.w3.org/2000/svg" style="width:100%;border:.5px solid var(--bdr2);border-radius:6px;background:#0C0C11">
-          <rect x="2" y="2" width="96" height="60" rx="2" fill="#0C0C11" stroke="#242430" stroke-width=".5"/>
-          <text x="6" y="13" font-family="DM Mono,monospace" font-size="5.5" fill="#4E4E5E">✓ Plan accepted.</text>
-          <text x="6" y="22" font-family="DM Mono,monospace" font-size="5.5" fill="#2DD4BF">→ read_file(auth.ts)</text>
-          <text x="6" y="31" font-family="DM Mono,monospace" font-size="5.5" fill="#2DD4BF">→ edit_file(auth.ts)</text>
-          <text x="6" y="40" font-family="DM Mono,monospace" font-size="5.5" fill="#34D399">✓ Done.</text>
-          <line x1="4" y1="45" x2="96" y2="45" stroke="#1a1a22" stroke-width=".5"/>
-          <text x="6" y="53" font-family="DM Mono,monospace" font-size="5.5" fill="#2DD4BF">~/myapp</text>
-          <text x="40" y="53" font-family="DM Mono,monospace" font-size="5.5" fill="#4E4E5E">[pro]</text>
-          <text x="55" y="53" font-family="DM Mono,monospace" font-size="5.5" fill="#834DF0">›</text>
-          <text x="60" y="53" font-family="DM Mono,monospace" font-size="5.5" fill="#CECEE0">input</text>
-          <rect x="58" y="47" width="1.5" height="7" fill="#834DF0" opacity=".7"/>
-          <text x="6" y="63" font-family="DM Mono,monospace" font-size="4.5" fill="#4E4E5E">linear flow · PTY · prompt status</text>
+        <svg viewBox="0 0 100 62" xmlns="http://www.w3.org/2000/svg" style="width:100%;border:.5px solid var(--bdr2);border-radius:6px;background:#0C0C11">
+          <rect x="2" y="2" width="96" height="56" rx="2" fill="#0C0C11" stroke="#242430" stroke-width=".5"/>
+          <text x="6" y="12" font-family="DM Mono,monospace" font-size="4.2" fill="#4E4E5E">✓ Plan accepted.</text>
+          <text x="6" y="20" font-family="DM Mono,monospace" font-size="4.2" fill="#2DD4BF">→ read_file(auth.ts)</text>
+          <text x="6" y="28" font-family="DM Mono,monospace" font-size="4.2" fill="#2DD4BF">→ edit_file(auth.ts)</text>
+          <text x="6" y="36" font-family="DM Mono,monospace" font-size="4.2" fill="#34D399">✓ Done.</text>
+          <line x1="4" y1="41" x2="96" y2="41" stroke="#1a1a22" stroke-width=".5"/>
+          <text x="6" y="50" font-family="DM Mono,monospace" font-size="4.2" fill="#2DD4BF">~/myapp</text>
+          <text x="38" y="50" font-family="DM Mono,monospace" font-size="4.2" fill="#4E4E5E">[pro]</text>
+          <text x="53" y="50" font-family="DM Mono,monospace" font-size="4.2" fill="#834DF0">›</text>
+          <text x="57" y="50" font-family="DM Mono,monospace" font-size="4.2" fill="#CECEE0">input</text>
+          <rect x="55" y="44" width="1.5" height="7" fill="#834DF0" opacity=".7"/>
         </svg>
+        <div class="fw-wf-desc">linear flow · PTY · prompt status</div>
       </div>
       <div class="fw-wf-item">
         <div class="fw-wf-label">Aider</div>
-        <svg viewBox="0 0 100 72" xmlns="http://www.w3.org/2000/svg" style="width:100%;border:.5px solid var(--bdr2);border-radius:6px;background:#0C0C11">
-          <rect x="2" y="2" width="96" height="60" rx="2" fill="#0C0C11" stroke="#242430" stroke-width=".5"/>
-          <text x="6" y="12" font-family="DM Mono,monospace" font-size="5.5" fill="#A78BFA">◆ ARCHITECT (sonnet)</text>
-          <text x="6" y="21" font-family="DM Mono,monospace" font-size="5.5" fill="#4E4E5E">  建议重构为 Result</text>
-          <text x="6" y="30" font-family="DM Mono,monospace" font-size="5.5" fill="#A78BFA">◆ EDITOR (haiku)</text>
-          <text x="6" y="39" font-family="DM Mono,monospace" font-size="5.5" fill="#34D399">  SEARCH/REPLACE ✔</text>
-          <line x1="4" y1="44" x2="96" y2="44" stroke="#a78bfa" stroke-width=".5"/>
-          <text x="6" y="53" font-family="DM Mono,monospace" font-size="5.5" fill="#A78BFA">aider$</text>
-          <text x="32" y="53" font-family="DM Mono,monospace" font-size="5.5" fill="#CECEE0">input</text>
-          <rect x="55" y="47" width="1.5" height="7" fill="#834DF0" opacity=".7"/>
-          <text x="6" y="63" font-family="DM Mono,monospace" font-size="4.5" fill="#4E4E5E">pure linear · no layout zones</text>
+        <svg viewBox="0 0 100 62" xmlns="http://www.w3.org/2000/svg" style="width:100%;border:.5px solid var(--bdr2);border-radius:6px;background:#0C0C11">
+          <rect x="2" y="2" width="96" height="56" rx="2" fill="#0C0C11" stroke="#242430" stroke-width=".5"/>
+          <text x="6" y="12" font-family="DM Mono,monospace" font-size="4.2" fill="#A78BFA">◆ ARCHITECT (sonnet)</text>
+          <text x="6" y="20" font-family="DM Mono,monospace" font-size="4.2" fill="#4E4E5E">  建议重构为 Result</text>
+          <text x="6" y="28" font-family="DM Mono,monospace" font-size="4.2" fill="#A78BFA">◆ EDITOR (haiku)</text>
+          <text x="6" y="36" font-family="DM Mono,monospace" font-size="4.2" fill="#34D399">  SEARCH/REPLACE ✔</text>
+          <line x1="4" y1="41" x2="96" y2="41" stroke="#a78bfa" stroke-width=".5"/>
+          <text x="6" y="50" font-family="DM Mono,monospace" font-size="4.2" fill="#A78BFA">aider$</text>
+          <text x="30" y="50" font-family="DM Mono,monospace" font-size="4.2" fill="#CECEE0">input</text>
+          <rect x="53" y="44" width="1.5" height="7" fill="#834DF0" opacity=".7"/>
         </svg>
+        <div class="fw-wf-desc">pure linear · no layout zones</div>
       </div>
       <div class="fw-wf-item">
         <div class="fw-wf-label">Codex CLI</div>
-        <svg viewBox="0 0 100 72" xmlns="http://www.w3.org/2000/svg" style="width:100%;border:.5px solid var(--bdr2);border-radius:6px;background:#0C0C11">
-          <rect x="2" y="2" width="96" height="34" rx="2" fill="#0C0C11" stroke="#242430" stroke-width=".5"/>
-          <text x="6" y="13" font-family="DM Mono,monospace" font-size="5.5" fill="#FBBF24">⠿ Working (o3)...</text>
-          <text x="6" y="22" font-family="DM Mono,monospace" font-size="5.5" fill="#4E4E5E">auto-routing model</text>
-          <text x="6" y="31" font-family="DM Mono,monospace" font-size="5.5" fill="#34D399">✔ Done. 3 files.</text>
+        <svg viewBox="0 0 100 68" xmlns="http://www.w3.org/2000/svg" style="width:100%;border:.5px solid var(--bdr2);border-radius:6px;background:#0C0C11">
+          <rect x="2" y="2" width="96" height="30" rx="2" fill="#0C0C11" stroke="#242430" stroke-width=".5"/>
+          <text x="6" y="12" font-family="DM Mono,monospace" font-size="4.2" fill="#FBBF24">⠿ Working (o3)...</text>
+          <text x="6" y="20" font-family="DM Mono,monospace" font-size="4.2" fill="#4E4E5E">auto-routing model</text>
+          <text x="6" y="28" font-family="DM Mono,monospace" font-size="4.2" fill="#34D399">✔ Done. 3 files.</text>
           <!-- cloud section -->
-          <rect x="2" y="38" width="96" height="26" rx="2" fill="#1a1a22" stroke="#2a2a35" stroke-width=".5"/>
-          <text x="6" y="48" font-family="DM Mono,monospace" font-size="5.5" fill="#60A5FA">Cloud / GitHub Actions</text>
-          <text x="6" y="57" font-family="DM Mono,monospace" font-size="5.5" fill="#4E4E5E">headless async mode</text>
-          <text x="6" y="66" font-family="DM Mono,monospace" font-size="4.5" fill="#4E4E5E">local thin + cloud orchestration</text>
+          <rect x="2" y="35" width="96" height="30" rx="2" fill="#1a1a22" stroke="#2a2a35" stroke-width=".5"/>
+          <text x="6" y="46" font-family="DM Mono,monospace" font-size="4.2" fill="#60A5FA">Cloud / GitHub Actions</text>
+          <text x="6" y="56" font-family="DM Mono,monospace" font-size="4.2" fill="#4E4E5E">headless async mode</text>
         </svg>
+        <div class="fw-wf-desc">local thin + cloud orchestration</div>
       </div>
     </div>
     <!-- Detail cards -->
