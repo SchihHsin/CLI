@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AI CLI 设计报告 — 审查确认阶段</title>
+<link rel="stylesheet" href="shared.css">
+<style>.cmp-section{background:var(--sur)}.rec-section{background:var(--bg)}</style>
+</head>
+<body>
+<div id="global-nav"></div>
+<div id="nav-tp-bar" class="nav-tp-bar"></div>
+<div class="snap-container" style="padding-top:88px">
+
+<!-- ────── Diff 高亮展示 ────── -->
+<div class="section cmp-section" id="tp-diff">
+  <div class="slabel"><span class="sub">Touchpoint 13 · 审查确认 · Industry Comparison</span><span class="main">Diff 高亮展示</span></div>
+  <div class="section-inner"><div class="cmp-wrap">
+    <table class="cmp-tbl">
+      <colgroup><col style="width:10%"><col style="width:18.0%"><col style="width:18.0%"><col style="width:18.0%"><col style="width:18.0%"><col style="width:18.0%"></colgroup>
+      <thead><tr>
+        <th>维度</th>
+        <th class="prod-head"><div class="ph-inner"><span class="ph-name">Aider</span><span class="ph-sub">SEARCH/REPLACE 逐块展示</span><div class="ph-badges"><span class="bdg bdg-ai">OSS</span></div></div></th>
+        <th class="prod-head"><div class="ph-inner"><span class="ph-name">Claude Code</span><span class="ph-sub">+/- inline diff 高亮内联</span><div class="ph-badges"><span class="bdg bdg-cc">Anthropic</span></div></div></th>
+        <th class="prod-head"><div class="ph-inner"><span class="ph-name">Warp Code</span><span class="ph-sub">独立 Review Panel + Ask AI</span><div class="ph-badges"><span class="bdg bdg-wp">Warp Code</span></div></div></th>
+        <th class="prod-head"><div class="ph-inner"><span class="ph-name">Gemini CLI</span><span class="ph-sub">Plan 前置 · 执行后变更摘要</span><div class="ph-badges"><span class="bdg bdg-gc">Google</span></div></div></th>
+      <th class="prod-head"><div class="ph-inner"><span class="ph-name">Codex CLI</span><span class="ph-sub">unified diff · auto 可跳过</span><div class="ph-badges"><span class="bdg bdg-cx">OpenAI</span></div></div></th></tr></thead>
+      <tbody>
+        <tr>
+          <td class="dim-cell">界面形态</td>
+          <td class="ui-cell"><div class="mt"><div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">aider SEARCH/REPLACE</span></div><div class="mb"><div style="border:.5px solid #333;border-radius:4px;padding:5px 8px;font-size:10px;font-family:'DM Mono',monospace"><div class="tp" style="font-size:9px">src/auth.ts</div><div class="td">&lt;&lt;&lt; SEARCH</div><div class="tr">  return decoded as JWTPayload;</div><div class="td">=== REPLACE</div><div class="tg">  return safeVerify(token, secret);</div><div class="td">&gt;&gt;&gt; END</div></div><div style="margin-top:4px;display:flex;gap:5px"><span style="font-size:11px;padding:2px 8px;border:.5px solid #1a4a1a;border-radius:3px;color:#34d399">y Apply</span><span style="font-size:11px;padding:2px 8px;border:.5px solid #3a1a1a;border-radius:3px;color:#f87171">n Skip</span></div></div></div></td>
+          <td class="ui-cell"><div class="mt"><div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">claude code inline diff</span></div><div class="mb"><div style="font-size:10px;font-family:'DM Mono',monospace;background:#0a0a0f;border-radius:4px;padding:5px 8px;border:.5px solid #1a1a22"><div class="td" style="font-size:9px;margin-bottom:2px">src/auth.ts</div><div style="background:rgba(248,113,113,.07);color:#f87171">- return decoded as JWTPayload;</div><div style="background:rgba(52,211,153,.07);color:#34d399">+ return safeVerify(token, secret);</div></div><div class="tg" style="margin-top:4px;font-size:10px">✔ 2 files · +18 -6 · $0.023</div></div></div></td>
+          <td class="ui-cell"><div class="mt"><div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">warp review panel</span></div><div class="mb"><div style="border:.5px solid #2a2a35;border-radius:5px;overflow:hidden"><div style="background:#1a1a22;padding:4px 8px;display:flex;justify-content:space-between;border-bottom:.5px solid #2a2a35;font-size:9px"><span class="tb">Code Review · 2 files</span><span><span class="tg">+18</span> <span class="tr">-6</span></span></div><div style="display:flex;font-size:9px"><div style="width:38%;border-right:.5px solid #2a2a35;padding:4px 7px"><div class="tg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg> auth.ts ✓</div><div class="td"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg> types.ts</div></div><div style="flex:1;padding:4px 7px;font-family:'DM Mono',monospace"><div style="color:#f87171;background:rgba(248,113,113,.06);font-size:9px">- return decoded;</div><div style="color:#34d399;background:rgba(52,211,153,.06);font-size:9px">+ return safeVerify(t);</div></div></div><div style="padding:4px 8px;display:flex;gap:3px;border-top:.5px solid #1a1a22"><span style="font-size:8px;padding:1px 6px;border:.5px solid #1a4a1a;border-radius:2px;color:#34d399">Accept all</span><span style="font-size:8px;padding:1px 6px;border:.5px solid #3a1a1a;border-radius:2px;color:#f87171">Reject</span><span style="font-size:8px;padding:1px 6px;border:.5px solid #1a2a4a;border-radius:2px;color:#60a5fa">By file</span><span style="font-size:8px;padding:1px 6px;border:.5px solid #2a1a4a;border-radius:2px;color:#a78bfa">✦ Ask AI</span></div></div></div></div></td>
+          <td class="ui-cell"><div class="mt"><div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">gemini post-exec</span></div><div class="mb"><div class="tc">✓ Changes applied successfully</div><div style="margin-top:5px;font-size:10px"><div><span class="tg">◉</span> <span class="td">src/auth.ts  +8 -3</span></div><div><span class="tg">◉</span> <span class="td">src/types.ts  +4 -0</span></div></div><div class="td" style="font-size:9px;margin-top:3px">需要 git diff 查看完整变更内容</div></div></div></td>
+        <td class="ui-cell"><div class="mt"><div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">codex diff</span></div><div class="mb"><div style="font-size:10px;font-family:monospace;background:#0a0a0f;border-radius:4px;padding:5px 8px;border:.5px solid #1a1a22"><div class="td" style="font-size:9px">auth.ts</div><div style="color:#f87171">- return decoded;</div><div style="color:#34d399">+ return safeVerify(t);</div></div><div class="tg" style="font-size:10px;margin-top:4px">✔ applied (suggest mode)</div></div></div></td></tr>
+        <tr><td class="dim-cell">展示形式</td><td>SEARCH/REPLACE 文本块，逐个展示每处变更</td><td>标准 +/- unified diff 格式，语法高亮，内联展示</td><td>独立 Review Panel，文件树 + diff 视图双栏</td><td>执行后只列变更文件名和行数统计，无 inline diff</td><td>suggest 模式逐块展示 unified diff；auto 模式自动应用无展示</td></tr>
+        <tr><td class="dim-cell">操作粒度</td><td>块级：可逐个 SEARCH/REPLACE 块 apply/skip</td><td>文件级：整体 accept，或拒绝某个文件</td><td>文件级：分文件 accept/reject，Review 内 Ask AI</td><td>无操作：只能在 Plan 阶段拒绝，执行后不可逆</td><td>suggest 逐块；auto 完全自动跳过</td></tr>
+        <tr>
+          <td class="dim-cell">优势</td>
+          <td><span class="pt pro">变更内容完全可见，粒度最细</span><span class="pt pro">可精确控制每处变更</span></td>
+          <td><span class="pt pro">+/- diff 高亮直观，一眼识别变化</span><span class="pt pro">✔/✗ 状态标记，语法高亮</span></td>
+          <td><span class="pt pro">分文件 accept/reject，审查粒度最优</span><span class="pt pro">Review 上下文中直接追问 AI</span></td>
+          <td><span class="pt pro">Plan 前置已降低审查压力</span><span class="pt pro">变更摘要清晰</span></td>
+        <td><span class="pt pro">suggest 模式有完整 diff 展示</span><span class="pt pro">auto 适合无人值守</span></td></tr>
+        <tr>
+          <td class="dim-cell">劣势</td>
+          <td><span class="pt con">SEARCH/REPLACE 格式对非技术用户不直观</span><span class="pt con">块数多时逐个确认极繁琐</span></td>
+          <td><span class="pt con">多文件变更时 diff 堆叠，滚动体验差</span><span class="pt con">inline diff 难以部分 reject</span></td>
+          <td><span class="pt con">面板切换打断终端线性阅读流</span><span class="pt con">依赖 Warp 生态才能实现</span></td>
+          <td><span class="pt con">无 inline diff，需跳出查 git diff</span><span class="pt con">执行后才能审查，不能预防</span></td>
+        <td><span class="pt con">auto 模式跳过审查风险高</span><span class="pt con">无分文件审查</span></td></tr>
+        <tr class="sum-row"><td class="dim-cell">总结</td><td class="vd-cell">粒度最细但繁琐</td><td class="vd-cell">主流标准，多文件有局限</td><td class="vd-cell">代码审查的进化方向</td><td class="vd-cell">Plan 前置是弥补而非优化</td><td>两种极端，缺乏中间态</td></tr>
+      </tbody>
+    </table>
+    <div class="t-verdict"><strong>推荐：</strong>默认输出摘要行（"✔ 修改了 3 个文件 · +18 -6"），点击展开完整 inline diff（含行号 + 语法高亮）。变更文件 ≥ 3 个或行数 ≥ 50 时自动建议切换 Review Panel，用户可选择是否切换。</div>
+  </div></div>
+</div>
+
+<!-- ────── Accept / Reject 按钮 ────── -->
+<div class="section cmp-section" id="tp-accept">
+  <div class="slabel"><span class="sub">Touchpoint 14 · 审查确认 · Industry Comparison</span><span class="main">Accept / Reject 按钮</span></div>
+  <div class="section-inner"><div class="cmp-wrap">
+    <table class="cmp-tbl">
+      <colgroup><col style="width:10%"><col style="width:18.0%"><col style="width:18.0%"><col style="width:18.0%"><col style="width:18.0%"><col style="width:18.0%"></colgroup>
+      <thead><tr>
+        <th>维度</th>
+        <th class="prod-head"><div class="ph-inner"><span class="ph-name">Aider</span><span class="ph-sub">逐块 y Apply / n Skip</span><div class="ph-badges"><span class="bdg bdg-ai">OSS</span></div></div></th>
+        <th class="prod-head"><div class="ph-inner"><span class="ph-name">Claude Code</span><span class="ph-sub">授权弹窗 y/n/always/session</span><div class="ph-badges"><span class="bdg bdg-cc">Anthropic</span></div></div></th>
+        <th class="prod-head"><div class="ph-inner"><span class="ph-name">Warp Code</span><span class="ph-sub">Accept all / By file / Ask AI</span><div class="ph-badges"><span class="bdg bdg-wp">Warp Code</span></div></div></th>
+        <th class="prod-head"><div class="ph-inner"><span class="ph-name">Gemini CLI</span><span class="ph-sub">Plan 级 Accept / Edit / Reject</span><div class="ph-badges"><span class="bdg bdg-gc">Google</span></div></div></th>
+      <th class="prod-head"><div class="ph-inner"><span class="ph-name">Codex CLI</span><span class="ph-sub">y / n / a 三选一</span><div class="ph-badges"><span class="bdg bdg-cx">OpenAI</span></div></div></th></tr></thead>
+      <tbody>
+        <tr>
+          <td class="dim-cell">界面形态</td>
+          <td class="ui-cell"><div class="mt"><div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">aider block-level</span></div><div class="mb"><div style="font-size:10px;font-family:'DM Mono',monospace"><div class="tr">- return decoded;</div><div class="tg">+ return safeVerify(t);</div></div><div style="margin-top:5px;display:flex;gap:5px"><span style="font-size:11px;padding:3px 10px;border:.5px solid #1a4a1a;border-radius:4px;color:#34d399;background:rgba(52,211,153,.06)">y Apply</span><span style="font-size:11px;padding:3px 10px;border:.5px solid #3a1a1a;border-radius:4px;color:#f87171;background:rgba(248,113,113,.06)">n Skip</span></div></div></div></td>
+          <td class="ui-cell"><div class="mt"><div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">claude code confirm</span></div><div class="mb"><div class="ty" style="font-size:10px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17" stroke-width="2.5"/></svg> Claude wants to edit auth.ts</div><div style="margin-top:5px;display:flex;gap:3px;flex-wrap:wrap"><span style="font-size:10px;padding:2px 7px;border:.5px solid #1a4a1a;border-radius:3px;color:#34d399">y Yes</span><span style="font-size:10px;padding:2px 7px;border:.5px solid #3a1a1a;border-radius:3px;color:#f87171">n No</span><span style="font-size:10px;padding:2px 7px;border:.5px solid #1a2a4a;border-radius:3px;color:#60a5fa">a Always</span><span style="font-size:10px;padding:2px 7px;border:.5px solid #333;border-radius:3px;color:#888">d Session</span></div></div></div></td>
+          <td class="ui-cell"><div class="mt"><div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">warp file-level</span></div><div class="mb"><div style="border:.5px solid #2a2a35;border-radius:4px;overflow:hidden"><div style="background:#1a1a22;padding:3px 8px;font-size:9px;border-bottom:.5px solid #2a2a35;display:flex;justify-content:space-between"><span class="tb">2 files changed</span><span class="td">+18 -6</span></div><div style="padding:5px 8px;display:flex;gap:4px;flex-wrap:wrap"><span style="font-size:10px;padding:3px 9px;border:.5px solid #1a4a1a;border-radius:4px;color:#34d399;background:rgba(52,211,153,.06)">Accept all</span><span style="font-size:10px;padding:3px 9px;border:.5px solid #3a1a1a;border-radius:4px;color:#f87171">Reject</span><span style="font-size:10px;padding:3px 9px;border:.5px solid #1a2a4a;border-radius:4px;color:#60a5fa">By file</span><span style="font-size:10px;padding:3px 9px;border:.5px solid #2a1a4a;border-radius:4px;color:#a78bfa">✦ Ask AI</span></div></div></div></div></td>
+          <td class="ui-cell"><div class="mt"><div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">gemini plan-level</span></div><div class="mb"><div style="border:.5px solid #1a3a4a;border-radius:4px;padding:5px 8px;font-size:10px;margin-bottom:5px"><div style="font-size:9px;color:#4dd0e1;margin-bottom:3px">PLAN (2 changes)</div><div class="tw">1. Edit auth.ts</div><div class="tw">2. Edit types.ts</div></div><div style="display:flex;gap:4px"><span style="font-size:10px;padding:3px 9px;border:.5px solid #1a4a1a;border-radius:4px;color:#34d399;background:rgba(52,211,153,.06)">Accept</span><span style="font-size:10px;padding:3px 9px;border:.5px solid #1a2a4a;border-radius:4px;color:#60a5fa">Edit plan</span><span style="font-size:10px;padding:3px 9px;border:.5px solid #3a1a1a;border-radius:4px;color:#f87171">Reject</span></div></div></div></td>
+        <td class="ui-cell"><div class="mt"><div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">codex y/n/a</span></div><div class="mb"><div class="ty" style="font-size:10px">Apply change to auth.ts?</div><div style="margin-top:4px;display:flex;gap:4px"><span style="font-size:10px;padding:2px 7px;border:.5px solid #1a4a1a;border-radius:3px;color:#34d399">y Yes</span><span style="font-size:10px;padding:2px 7px;border:.5px solid #3a1a1a;border-radius:3px;color:#f87171">n No</span><span style="font-size:10px;padding:2px 7px;border:.5px solid #1a2a4a;border-radius:3px;color:#60a5fa">a All</span></div></div></div></td></tr>
+        <tr><td class="dim-cell">操作粒度</td><td>块级：逐个 SEARCH/REPLACE 块操作</td><td>操作级：每个 tool call 独立确认</td><td>文件级：Accept all 或 By file 分别操作</td><td>方案级：整个 Plan 一次 Accept / Edit / Reject</td><td>块级 y/n/a，a 接受所有剩余变更</td></tr>
+        <tr><td class="dim-cell">追问 AI</td><td>无，只能 apply 或 skip</td><td>无，只能在之后新输入追问</td><td>有：Review Panel 内可直接 Ask AI</td><td>有：Edit plan 可修改方案后重新执行</td><td>无</td></tr>
+        <tr>
+          <td class="dim-cell">优势</td>
+          <td><span class="pt pro">粒度最细，可精确控制每处变更</span></td>
+          <td><span class="pt pro">与执行流程无缝衔接，Always 减少重复</span></td>
+          <td><span class="pt pro">分文件审查效率最高</span><span class="pt pro">Ask AI 追问无需跳出 Review 上下文</span></td>
+          <td><span class="pt pro">Edit plan 可修改后执行，最灵活</span><span class="pt pro">一次操作覆盖多步</span></td>
+        <td><span class="pt pro">a（Accept all）快捷高效</span></td></tr>
+        <tr>
+          <td class="dim-cell">劣势</td>
+          <td><span class="pt con">多块时逐个确认极繁琐，无批量</span></td>
+          <td><span class="pt con">操作粒度太细，高频重复确认</span><span class="pt con">Always 误点后需 /permissions 撤</span></td>
+          <td><span class="pt con">面板切换增加一次视图跳转</span><span class="pt con">依赖 Warp 生态</span></td>
+          <td><span class="pt con">Accept 后不可逆，无法单步反悔</span></td>
+        <td><span class="pt con">无分文件审查</span><span class="pt con">无法追问 AI</span></td></tr>
+        <tr class="sum-row"><td class="dim-cell">总结</td><td class="vd-cell">粒度最细但繁琐</td><td class="vd-cell">与执行流衔接最好</td><td class="vd-cell">审查体验最完善</td><td class="vd-cell">方案级最高效但不可逆</td><td>简洁但细粒度不足</td></tr>
+      </tbody>
+    </table>
+    <div class="t-verdict"><strong>推荐：</strong>默认"Accept all"一键接受；提供"By file"分文件审查（超 3 文件时推荐）；Accept 按钮旁始终有"✦ 追问 AI"入口。Warp 数据显示：96% 的 diff 直接接受，4% 需要细粒度控制——为这 4% 设计专属路径。</div>
+  </div></div>
+</div>
+
+<!-- ────── Review Panel ────── -->
+<div class="section cmp-section" id="tp-review">
+  <div class="slabel"><span class="sub">Touchpoint 15 · 审查确认 · Industry Comparison</span><span class="main">Review Panel</span></div>
+  <div class="section-inner"><div class="cmp-wrap">
+    <table class="cmp-tbl">
+      <colgroup><col style="width:10%"><col style="width:30%"><col style="width:30%"><col style="width:30%"></colgroup>
+      <thead><tr>
+        <th>维度</th>
+        <th class="prod-head"><div class="ph-inner"><span class="ph-name">Aider / Claude Code</span><span class="ph-sub">inline diff 内嵌在对话流中</span><span class="ph-sub">diff 内联在对话流中</span><div class="ph-badges"><span class="bdg bdg-ai">Aider</span><span class="bdg bdg-cc">Claude Code</span></div></div></th>
+        <th class="prod-head"><div class="ph-inner"><span class="ph-name">Warp Code</span><span class="ph-sub">独立面板 · 文件树 · Ask AI</span><span class="ph-sub">独立面板 · 文件树 · Ask AI</span><div class="ph-badges"><span class="bdg bdg-wp">Warp Code</span></div></div></th>
+        <th class="prod-head"><div class="ph-inner"><span class="ph-name">目标方案</span><span class="ph-sub">按需触发 + 末尾追问入口</span><div class="ph-badges"><span class="bdg" style="background:#EFF6FF;color:#1E40AF;border:.5px solid #93C5FD">New IDE</span></div></div></th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td class="dim-cell">界面形态</td>
+          <td class="ui-cell"><div class="mt"><div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">inline in conversation</span></div><div class="mb"><div class="tg" style="font-size:10px">✔ <span class="td">Task complete</span></div><div style="font-size:10px;font-family:'DM Mono',monospace;background:#0a0a0f;border-radius:4px;padding:5px 8px;border:.5px solid #1a1a22;margin-top:4px"><div class="td" style="font-size:9px">auth.ts · types.ts · utils.ts...</div><div style="color:#f87171;font-size:9px">- return decoded;</div><div style="color:#34d399;font-size:9px">+ return safeVerify(t);</div><div class="td" style="font-size:9px">... 更多 diff ...</div></div></div></div></td>
+          <td class="ui-cell"><div class="mt"><div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">warp code review</span></div><div class="mb"><div style="border:.5px solid #2a2a35;border-radius:5px;overflow:hidden"><div style="background:#1a1a22;padding:4px 8px;font-size:9px;border-bottom:.5px solid #2a2a35;display:flex;justify-content:space-between"><span class="tb">Code Review · 3 files</span><span><span class="tg">+34</span> <span class="tr">-12</span></span></div><div style="display:flex;min-height:40px"><div style="width:35%;border-right:.5px solid #2a2a35;padding:4px 7px;font-size:9px"><div class="tg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg> auth.ts ✓</div><div class="td"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg> types.ts</div><div class="td"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg> utils.ts</div></div><div style="flex:1;padding:4px 7px;font-family:'DM Mono',monospace;font-size:9px"><div style="color:#f87171;background:rgba(248,113,113,.06)">- return decoded;</div><div style="color:#34d399;background:rgba(52,211,153,.06)">+ return safeVerify(t);</div></div></div><div style="padding:4px 8px;display:flex;gap:3px;border-top:.5px solid #1a1a22"><span style="font-size:8px;padding:1px 5px;border:.5px solid #1a4a1a;border-radius:2px;color:#34d399">Accept all</span><span style="font-size:8px;padding:1px 5px;border:.5px solid #3a1a1a;border-radius:2px;color:#f87171">Reject</span><span style="font-size:8px;padding:1px 5px;border:.5px solid #2a1a4a;border-radius:2px;color:#a78bfa">✦ Ask AI</span></div></div></div></div></td>
+          <td class="ui-cell"><div class="mt"><div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">our design · on-demand</span></div><div class="mb"><div style="display:flex;align-items:center;gap:6px;margin-bottom:5px;font-size:10px"><span class="tg" style="font-size:12px">✔</span><span class="tw">任务完成</span><span class="td">3 files · +34 -12 · $0.031</span><span style="color:#a78bfa;margin-left:auto;cursor:pointer">展开 ▾</span></div><div style="padding:5px 9px;background:rgba(131,77,240,.06);border:.5px solid rgba(131,77,240,.18);border-radius:5px;font-size:9px;display:flex;justify-content:space-between;align-items:center;margin-bottom:4px"><span style="color:#a78bfa">建议在 Review Panel 中查看 (3 文件 &gt; 阈值)</span><span style="color:#834DF0;cursor:pointer;font-weight:500">打开 →</span></div><div style="padding:5px 9px;background:#0d0d12;border:.5px solid rgba(131,77,240,.18);border-radius:5px;display:flex;align-items:center;gap:5px"><span style="color:#834DF0;font-size:12px">✦</span><span style="font-size:10px;color:var(--td)">对这个结果有什么问题？</span><div class="cur" style="display:inline-block"></div></div></div></div></td>
+        </tr>
+        <tr><td class="dim-cell">触发方式</td><td>无独立面板，diff 始终内联在对话流</td><td>大型变更自动打开，或用户手动触发</td><td>变更 ≥ 3 文件时自动建议，用户选择是否切换</td></tr>
+        <tr><td class="dim-cell">追问位置</td><td>需要滚动到对话末尾，重新输入</td><td>Review Panel 内有 Ask AI 按钮，无需跳出</td><td>输出末尾恒有追问入口，不需切换视图</td></tr>
+        <tr>
+          <td class="dim-cell">优势</td>
+          <td><span class="pt pro">无额外学习成本</span><span class="pt pro">不打断对话线性阅读</span></td>
+          <td><span class="pt pro">文件树 + diff 视图 + 分文件操作三合一</span><span class="pt pro">Review 上下文中直接 Ask AI</span></td>
+          <td><span class="pt pro">按需触发，不强制切换视图</span><span class="pt pro">输出末尾追问入口降低摩擦</span><span class="pt pro">工程实现成本低</span></td>
+        </tr>
+        <tr>
+          <td class="dim-cell">劣势</td>
+          <td><span class="pt con">多文件时 diff 堆叠，审查体验很差</span><span class="pt con">追问需要滚动到末尾</span></td>
+          <td><span class="pt con">面板切换打断终端线性阅读</span><span class="pt con">依赖 Warp 生态</span></td>
+          <td><span class="pt con">Review Panel 仍需切换视图（但是可选）</span></td>
+        </tr>
+        <tr class="sum-row"><td class="dim-cell">总结</td><td class="vd-cell">简单但多文件体验差</td><td class="vd-cell">最完整的审查体验</td><td class="vd-cell">我们的推荐：按需渐进</td></tr>
+      </tbody>
+    </table>
+    <div class="t-verdict"><strong>推荐：</strong>默认 inline 查看 + 末尾追问入口（恒显示）；变更 ≥ 3 文件时自动建议 Review Panel（可忽略）；Review Panel 内支持分文件 accept/reject + inline Ask AI。审查后无缝回到终端流。</div>
+  </div></div>
+</div>
+
+<!-- ────── Token / 费用行 ────── -->
+<div class="section cmp-section" id="tp-token">
+  <div class="slabel"><span class="sub">Touchpoint 15 · 全程持续 · Industry Comparison</span><span class="main">Token / 费用行</span></div>
+  <div class="section-inner"><div class="cmp-wrap">
+    <table class="cmp-tbl">
+      <colgroup><col style="width:10%"><col style="width:18.0%"><col style="width:18.0%"><col style="width:18.0%"><col style="width:18.0%"><col style="width:18.0%"></colgroup>
+      <thead><tr>
+        <th>维度</th>
+        <th class="prod-head"><div class="ph-inner"><span class="ph-name">Aider</span><span class="ph-sub">每次响应后附 token+cost 行</span><div class="ph-badges"><span class="bdg bdg-ai">OSS</span></div></div></th>
+        <th class="prod-head"><div class="ph-inner"><span class="ph-name">Claude Code</span><span class="ph-sub">每条末尾 in/out/cache/cost</span><div class="ph-badges"><span class="bdg bdg-cc">Anthropic</span></div></div></th>
+        <th class="prod-head"><div class="ph-inner"><span class="ph-name">Warp</span><span class="ph-sub">Chip 费用角标 · 累计 · 可点击展开</span><div class="ph-badges"><span class="bdg bdg-wp">Warp</span></div></div></th>
+        <th class="prod-head"><div class="ph-inner"><span class="ph-name">Gemini CLI</span><span class="ph-sub">无内置费用展示</span><div class="ph-badges"><span class="bdg bdg-gc">Google</span></div></div></th>
+      <th class="prod-head"><div class="ph-inner"><span class="ph-name">Codex CLI</span><span class="ph-sub">无费用展示 · Dashboard 查</span><div class="ph-badges"><span class="bdg bdg-cx">OpenAI</span></div></div></th></tr></thead>
+      <tbody>
+        <tr>
+          <td class="dim-cell">界面形态</td>
+          <td class="ui-cell"><div class="mt"><div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">aider per-response</span></div><div class="mb"><div class="tg">✔ <span class="td">Edit applied to auth.ts</span></div><div style="border-top:.5px solid #1a1a22;margin-top:4px;padding-top:4px;font-size:9px;color:var(--td)"><div>Tokens: 3,842 sent · 892 recv</div><div>Cache: 28,416 · Cost: $0.0061</div></div></div></div></td>
+          <td class="ui-cell"><div class="mt"><div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">claude code summary</span></div><div class="mb"><div class="tg">✔ <span class="td">2 files changed</span></div><div style="border-top:.5px solid #1a1a22;margin-top:4px;padding-top:4px;font-size:9px;color:#3a3a4a"><div>tokens: 4.2k in · 1.8k out · cache: 28k</div><div>cost: $0.023 · elapsed: 15s</div></div></div></div></td>
+          <td class="ui-cell"><div class="mt"><div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">warp cost chip</span></div><div class="mb"><div style="background:#0d0f13;border:.5px solid rgba(131,77,240,.3);border-radius:6px;overflow:hidden"><div style="padding:4px 8px;background:rgba(131,77,240,.08);border-bottom:.5px solid rgba(131,77,240,.15);display:flex;gap:4px;align-items:center;font-size:9px"><span class="tag tp3">● Normal</span><span class="tag tg2">main</span><span style="margin-left:auto;background:rgba(251,191,36,.12);color:#fbbf24;padding:1px 6px;border-radius:3px;font-size:8px;cursor:pointer;border:.5px solid rgba(251,191,36,.25)">$0.087 ▾</span></div><div style="padding:5px 8px;font-size:10px"><span style="color:#834DF0">❯</span> <span class="tw">继续</span></div></div><div style="margin-top:5px;background:#0d0d0d;border:.5px solid rgba(251,191,36,.2);border-radius:4px;padding:6px 9px;font-size:9px;font-family:'DM Mono',monospace"><div style="color:#fbbf24;margin-bottom:3px">会话费用明细</div><div style="display:flex;justify-content:space-between;color:var(--td)"><span>重构 auth</span><span class="tw">$0.023</span></div><div style="display:flex;justify-content:space-between;color:var(--td)"><span>写单元测试</span><span class="tw">$0.041</span></div><div style="border-top:.5px solid #1a1a22;margin-top:3px;padding-top:3px;display:flex;justify-content:space-between"><span class="td">合计</span><span style="color:#fbbf24;font-weight:500">$0.087</span></div></div></div></div></td>
+          <td class="ui-cell"><div class="mt"><div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">gemini — no cost</span></div><div class="mb"><div class="tc">✓ <span class="td">Done.</span></div><div class="td" style="font-size:9px;margin-top:5px">免费 tier: 60 req/min, 1000/day</div><div class="td" style="font-size:9px">付费用量: 需查 Google Cloud Console</div><div class="td" style="font-size:9px;margin-top:3px">工具内无费用信息展示</div></div></div></td>
+        <td class="ui-cell"><div class="mt"><div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">codex no cost</span></div><div class="mb"><div class="tg">✔ <span class="td">Done.</span></div><div class="td" style="font-size:9px;margin-top:5px">无内置费用展示</div><div class="td" style="font-size:9px">查 platform.openai.com</div></div></div></td></tr>
+        <tr><td class="dim-cell">展示时机</td><td>每次响应后附加，随对话流展示</td><td>每条 AI 响应末尾附加摘要行</td><td>Chip 中持续展示累计费用，点击展开明细</td><td>无内置展示，需要跳出到 Cloud Console 查看</td><td>无</td></tr>
+        <tr><td class="dim-cell">累计可见性</td><td>低：只展示单次，累计需自己加</td><td>低：只展示单次，无累计</td><td>高：Chip 中始终显示累计费用，实时更新</td><td>无</td><td>无</td></tr>
+        <tr>
+          <td class="dim-cell">优势</td>
+          <td><span class="pt pro">费用跟随每次操作，账单透明</span><span class="pt pro">缓存命中率可见，有优化依据</span></td>
+          <td><span class="pt pro">in/out/cache 分项清晰</span><span class="pt pro">费用随每次响应展示</span></td>
+          <td><span class="pt pro">累计费用始终可见，不被遗忘</span><span class="pt pro">按任务归因明细，清楚哪步最贵</span></td>
+          <td><span class="pt pro">免费 tier 用户无需关心费用</span></td>
+        <td><span class="pt pro">界面最干净</span></td></tr>
+        <tr>
+          <td class="dim-cell">劣势</td>
+          <td><span class="pt con">每条响应都有费用行，输出被切碎</span><span class="pt con">累计费用需自己心算</span></td>
+          <td><span class="pt con">费用行灰色小字，容易被忽视</span><span class="pt con">累计费用不可见</span></td>
+          <td><span class="pt con">依赖 Warp 框架和 Chips 系统</span></td>
+          <td><span class="pt con">付费用户完全不知道花了多少</span><span class="pt con">需要跳出到 Console，体验割裂</span></td>
+        <td><span class="pt con">用户完全不知道花了多少</span></td></tr>
+        <tr class="sum-row"><td class="dim-cell">总结</td><td class="vd-cell">透明但碎片化</td><td class="vd-cell">标准但累计不可见</td><td class="vd-cell">累计可见性最好，推荐方向</td><td class="vd-cell">付费场景最差</td><td>费用完全不透明，最差</td></tr>
+      </tbody>
+    </table>
+    <div class="t-verdict"><strong>推荐：</strong>累计费用以黄色角标显示在输入框 Chip 区，实时更新，不出现在每条输出中（不切碎内容）。点击展开按任务归因的明细列表。退出时展示会话摘要卡：任务数 / 文件数 / 总费用 / 用时。</div>
+  </div></div>
+</div>
+
+
+<!-- ══════ REC SECTIONS ══════ -->
+
+<div class="section rec-section" id="tp-diff-rec">
+  <div class="slabel"><span class="sub">Touchpoint 13 · Our Direction</span><span class="main">Diff 高亮展示 — 我们的方向</span></div>
+  <div class="section-inner"><div class="rec-inner">
+    <div class="rec-l">
+      <div class="rec-hl"><div class="rht">默认摘要行 + 按需展开 + ≥3 文件建议 Review Panel</div><div class="rhb">任务完成后先显示一行摘要（"✔ 修改了 3 个文件 · +18 -6 · $0.023"），点击展开完整 inline diff（含行号 + 语法高亮）。变更文件 ≥ 3 个或行数 ≥ 50 时自动建议切换 Review Panel，用户可选择。</div></div>
+      <div class="rec-p"><div class="rn">01</div><div><div class="rt">默认一行摘要，降低输出密度</div><div class="rd">高频使用者不需要每次都审查所有 diff，一行摘要（文件数 + 行数 + 费用）提供足够的信息。需要审查时点击展开，展开后有行号、语法高亮、文件折叠三件套，和专业 diff 工具一样。</div></div></div>
+      <div class="rec-p"><div class="rn">02</div><div><div class="rt">≥3 文件自动建议 Review Panel</div><div class="rd">检测到变更文件 ≥ 3 个或 diff 行数 ≥ 50 时，在摘要行旁出现"建议在 Review Panel 中查看"的提示（可忽略）。用户一键切换，也可以继续 inline 查看，不强制改变工作流。</div></div></div>
+      <div class="rec-p"><div class="rn">03</div><div><div class="rt">输出末尾恒有追问入口</div><div class="rd">每次任务完成，输出末尾始终显示"✦ 对这个结果有什么问题？"的追问占位符，形成自然的迭代节奏。降低进入下一轮对话的摩擦，让用户不需要思考"怎么继续"，直接写就好了。</div></div></div>
+    </div>
+    <div class="rec-r"><div class="mt" style="font-size:12px;line-height:1.8">
+      <div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">diff · summary + expand</span></div>
+      <div class="mb">
+        <div style="display:flex;align-items:center;gap:7px;margin-bottom:5px;font-size:11px"><span class="tg" style="font-size:13px">✔</span><span class="tw">任务完成</span><span class="td">3 files · +18 -6 · $0.023</span><span style="color:#a78bfa;margin-left:auto;cursor:pointer">展开 ▾</span></div>
+        <div style="font-family:'DM Mono',monospace;font-size:10px;background:#0a0a0f;border-radius:5px;padding:6px 8px;border:.5px solid #1a1a22;margin-bottom:5px">
+          <div class="td" style="font-size:9px;margin-bottom:2px">src/auth.ts  +8 -3</div>
+          <div style="background:rgba(248,113,113,.07);color:#f87171">- return decoded as JWTPayload;</div>
+          <div style="background:rgba(52,211,153,.07);color:#34d399">+ return safeVerify(token, secret);</div>
+        </div>
+        <div style="padding:5px 9px;background:rgba(131,77,240,.06);border:.5px solid rgba(131,77,240,.18);border-radius:5px;font-size:10px;display:flex;justify-content:space-between;align-items:center;margin-bottom:5px">
+          <span style="color:#a78bfa">建议在 Review Panel 中查看 (3 文件)</span>
+          <span style="color:#834DF0;cursor:pointer;font-weight:500">打开 →</span>
+        </div>
+        <div style="padding:6px 9px;background:#0d0d12;border:.5px solid rgba(131,77,240,.18);border-radius:5px;display:flex;align-items:center;gap:6px">
+          <span style="color:#834DF0;font-size:13px">✦</span>
+          <span style="font-size:10px;color:var(--td)">对这个结果有什么问题？</span>
+          <div class="cur" style="display:inline-block"></div>
+        </div>
+      </div>
+    </div></div>
+  </div></div>
+</div>
+
+<div class="section rec-section" id="tp-accept-rec">
+  <div class="slabel"><span class="sub">Touchpoint 14 · Our Direction</span><span class="main">Accept / Reject 按钮 — 我们的方向</span></div>
+  <div class="section-inner"><div class="rec-inner">
+    <div class="rec-l">
+      <div class="rec-hl"><div class="rht">Accept all 一键 + By file 分文件 + Ask AI 追问</div><div class="rhb">默认"Accept all"一键接受（96% 的场景）；提供"By file"分文件审查（超 3 文件时推荐）；Accept 按钮旁始终有"✦ 追问 AI"入口，让审查和对话在同一位置完成，无需跳出上下文。</div></div>
+      <div class="rec-p"><div class="rn">01</div><div><div class="rt">Accept all 是主路径，一键完成</div><div class="rd">Warp 数据显示 96% 的 diff 会直接接受。把 Accept all 设计为最显眼的主按钮，By file 和 Reject 作为次要选项。让最常见的操作一步完成，不因为要支持少数场景而复杂化主路径。</div></div></div>
+      <div class="rec-p"><div class="rn">02</div><div><div class="rt">By file 是 ≥3 文件时的推荐路径</div><div class="rd">变更 ≥ 3 文件时，在 Accept all 旁边高亮显示"By file"选项（带文件数量提示）。点击进入分文件审查视图，每个文件独立有 Accept/Reject 按钮，可以精确控制哪些文件的修改被接受。</div></div></div>
+      <div class="rec-p"><div class="rn">03</div><div><div class="rt">Accept 旁始终有 Ask AI 追问入口</div><div class="rd">无论在哪种审查视图里，Ask AI 按钮始终在 Accept/Reject 旁边。让"我想问 AI 这段代码为什么这么改"的需求可以在审查上下文内完成，不需要退出审查、重新开启对话、手动复制代码。</div></div></div>
+    </div>
+    <div class="rec-r"><div class="mt" style="font-size:12px;line-height:1.8">
+      <div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">accept/reject · our design</span></div>
+      <div class="mb">
+        <div style="border:.5px solid #2a2a35;border-radius:7px;overflow:hidden;margin-bottom:6px">
+          <div style="background:#1a1a22;padding:4px 9px;display:flex;justify-content:space-between;border-bottom:.5px solid #2a2a35;font-size:10px">
+            <span class="tb">2 files changed</span><span><span class="tg">+18</span> <span class="tr">-6</span></span>
+          </div>
+          <div style="padding:6px 9px;display:flex;gap:5px;flex-wrap:wrap">
+            <span style="font-size:11px;padding:4px 12px;border:.5px solid rgba(52,211,153,.35);border-radius:5px;color:#34d399;background:rgba(52,211,153,.06);cursor:pointer;font-weight:500">✓ Accept all</span>
+            <span style="font-size:11px;padding:4px 12px;border:.5px solid rgba(248,113,113,.2);border-radius:5px;color:#f87171;cursor:pointer">✗ Reject</span>
+            <span style="font-size:11px;padding:4px 12px;border:.5px solid rgba(96,165,250,.2);border-radius:5px;color:#60a5fa;cursor:pointer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg> By file</span>
+            <span style="font-size:11px;padding:4px 12px;border:.5px solid rgba(131,77,240,.2);border-radius:5px;color:#a78bfa;cursor:pointer">✦ Ask AI</span>
+          </div>
+        </div>
+        <div class="td" style="font-size:9px;margin-bottom:5px">By file 视图（≥3 文件时推荐）:</div>
+        <div style="border:.5px solid #2a2a35;border-radius:6px;overflow:hidden">
+          <div style="padding:3px 9px;background:#1a1a22;font-size:9px;border-bottom:.5px solid #2a2a35;display:flex;justify-content:space-between"><span class="tb">分文件审查</span><span class="td">3 files</span></div>
+          <div style="padding:4px 9px;display:flex;justify-content:space-between;align-items:center;border-bottom:.5px solid #1a1a22;font-size:10px"><span class="tg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg> auth.ts  +8 -3</span><div style="display:flex;gap:4px"><span style="color:#34d399;cursor:pointer;font-size:9px">✓</span><span style="color:#f87171;cursor:pointer;font-size:9px">✗</span></div></div>
+          <div style="padding:4px 9px;display:flex;justify-content:space-between;align-items:center;font-size:10px"><span class="td"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg> types.ts  +6 -1</span><div style="display:flex;gap:4px"><span style="color:#34d399;cursor:pointer;font-size:9px">✓</span><span style="color:#f87171;cursor:pointer;font-size:9px">✗</span></div></div>
+        </div>
+      </div>
+    </div></div>
+  </div></div>
+</div>
+
+<div class="section rec-section" id="tp-review-rec">
+  <div class="slabel"><span class="sub">Touchpoint 15 · Our Direction</span><span class="main">Review Panel — 我们的方向</span></div>
+  <div class="section-inner"><div class="rec-inner">
+    <div class="rec-l">
+      <div class="rec-hl"><div class="rht">按需触发 + 文件树双栏 + 追问入口内嵌</div><div class="rhb">Review Panel 不是强制视图，而是按需触发的审查工具。变更 ≥ 3 文件时自动建议切换，用户可选择。Panel 内左侧文件树，右侧 diff 视图，支持分文件 accept/reject，并有 Ask AI 追问入口直接内嵌在 Panel 内。</div></div>
+      <div class="rec-p"><div class="rn">01</div><div><div class="rt">按需触发，不强制切换视图</div><div class="rd">Review Panel 是工具，不是义务。≥3 文件时自动提示（可忽略），用户始终可以选择在 inline 模式审查。切换后审查完毕，自动回到终端流，不改变整体工作流的线性感。</div></div></div>
+      <div class="rec-p"><div class="rn">02</div><div><div class="rt">文件树 + diff 双栏，分文件操作</div><div class="rd">左侧文件树显示所有变更文件（含 +/- 行数统计），右侧 diff 视图显示当前文件的完整变更。点击文件树切换查看，每个文件独立有 Accept/Reject 按钮。先审查哪个文件由用户决定。</div></div></div>
+      <div class="rec-p"><div class="rn">03</div><div><div class="rt">Ask AI 追问内嵌在 Review Panel 内</div><div class="rd">Review Panel 内直接有 Ask AI 输入框，让"这段代码为什么这么改？有什么风险？能否更简洁？"这类审查问题可以在 Panel 内完成。AI 的回答也直接显示在 Panel 内，不需要跳出到主对话。</div></div></div>
+    </div>
+    <div class="rec-r"><div class="mt" style="font-size:12px;line-height:1.8">
+      <div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">review panel · our design</span></div>
+      <div class="mb">
+        <div style="border:.5px solid #2a2a35;border-radius:7px;overflow:hidden">
+          <div style="background:#1a1a22;padding:4px 9px;display:flex;justify-content:space-between;border-bottom:.5px solid #2a2a35;font-size:10px">
+            <span class="tb">Code Review · 3 files</span>
+            <div style="display:flex;gap:4px"><span style="font-size:9px;padding:1px 7px;border:.5px solid rgba(52,211,153,.3);border-radius:3px;color:#34d399;cursor:pointer">Accept all</span><span style="font-size:9px;padding:1px 7px;border:.5px solid rgba(248,113,113,.2);border-radius:3px;color:#f87171;cursor:pointer">Reject</span></div>
+          </div>
+          <div style="display:flex;min-height:60px">
+            <div style="width:35%;border-right:.5px solid #2a2a35;padding:5px 8px;font-size:10px">
+              <div class="tg" style="margin-bottom:3px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg> auth.ts <span class="td" style="font-size:8px">+8 -3 ✓</span></div>
+              <div class="td" style="margin-bottom:3px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg> types.ts <span style="font-size:8px">+6 -1</span></div>
+              <div class="td"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg> utils.ts <span style="font-size:8px">+4 -0</span></div>
+            </div>
+            <div style="flex:1;padding:5px 8px">
+              <div style="font-family:'DM Mono',monospace;font-size:9px">
+                <div class="td" style="margin-bottom:2px">src/auth.ts</div>
+                <div style="background:rgba(248,113,113,.07);color:#f87171">- return decoded;</div>
+                <div style="background:rgba(52,211,153,.07);color:#34d399">+ return safeVerify(t);</div>
+              </div>
+            </div>
+          </div>
+          <div style="border-top:.5px solid #1a1a22;padding:5px 9px;background:#141419">
+            <div style="font-size:9px;color:#a78bfa;margin-bottom:3px">✦ 在 Review 上下文中追问 AI</div>
+            <div style="font-size:10px;display:flex;gap:4px;align-items:center"><span class="td">这段代码为什么用 safeVerify 而不是直接返回？</span><div class="cur" style="display:inline-block"></div></div>
+          </div>
+        </div>
+      </div>
+    </div></div>
+  </div></div>
+</div>
+
+<div class="section rec-section" id="tp-token-rec">
+  <div class="slabel"><span class="sub">Touchpoint 16 · Our Direction</span><span class="main">Token / 费用行 — 我们的方向</span></div>
+  <div class="section-inner"><div class="rec-inner">
+    <div class="rec-l">
+      <div class="rec-hl"><div class="rht">费用角标常驻 + 按任务明细 + 会话摘要卡</div><div class="rhb">累计费用以角标形式常驻在输入框 Chip 区，实时更新。点击展开按任务归因的明细列表（每条任务花了多少）。退出会话时展示完整摘要卡：任务数/文件数/总费用/用时，强化完成感和费用意识。</div></div>
+      <div class="rec-p"><div class="rn">01</div><div><div class="rt">费用角标常驻，但不打扰</div><div class="rd">累计费用以黄色小角标常驻在输入框右侧，随每次操作实时更新。不出现在每条输出中（不切碎内容），但始终在视野里（不被遗忘）。这个平衡是关键：透明但不打扰。</div></div></div>
+      <div class="rec-p"><div class="rn">02</div><div><div class="rt">点击展开按任务归因的明细</div><div class="rd">点击费用角标展开明细列表，每条任务显示：任务描述、token 消耗、费用。让用户知道"哪步最贵"，下次可以有意识地用更短的指令或更便宜的模型处理简单任务，主动控制成本。</div></div></div>
+      <div class="rec-p"><div class="rn">03</div><div><div class="rt">退出时展示会话摘要卡</div><div class="rd">用户退出会话时，展示一张摘要卡：完成任务数、修改文件数、总 token 用量、总费用、总用时。让每次会话都有清晰的收尾感，强化"这次做了什么、花了多少"的意识。不需要用户主动查阅。</div></div></div>
+    </div>
+    <div class="rec-r"><div class="mt" style="font-size:12px;line-height:1.8">
+      <div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">token cost · chip + summary</span></div>
+      <div class="mb">
+        <div style="background:#141419;border:.5px solid rgba(131,77,240,.35);border-radius:7px;overflow:hidden;margin-bottom:7px">
+          <div style="padding:4px 9px;background:rgba(131,77,240,.1);border-bottom:.5px solid rgba(131,77,240,.2);display:flex;gap:4px;align-items:center;font-size:9px">
+            <span class="tag" style="background:rgba(52,211,153,.1);color:#34d399;border:.5px solid rgba(52,211,153,.2)">● Normal</span>
+            <span class="tag tp3">sonnet ▾</span>
+            <span style="margin-left:auto;background:rgba(251,191,36,.12);color:#fbbf24;padding:1px 7px;border-radius:3px;font-size:9px;border:.5px solid rgba(251,191,36,.25);cursor:pointer">$0.087 ▾</span>
+          </div>
+          <div style="padding:6px 9px;font-size:11px"><span style="color:#834DF0">❯</span> <span class="tw">继续</span><div class="cur" style="display:inline-block"></div></div>
+        </div>
+        <div style="background:#0d0d0d;border:.5px solid rgba(251,191,36,.2);border-radius:6px;padding:7px 9px;font-size:10px;margin-bottom:7px">
+          <div style="color:#fbbf24;margin-bottom:5px;font-size:10px">会话费用明细</div>
+          <div style="display:flex;justify-content:space-between;color:var(--td);margin-bottom:3px;font-size:10px"><span>重构 auth 模块</span><span class="tw">$0.023 · 4.2k tok</span></div>
+          <div style="display:flex;justify-content:space-between;color:var(--td);margin-bottom:3px;font-size:10px"><span>写单元测试</span><span class="tw">$0.041 · 7.8k tok</span></div>
+          <div style="border-top:.5px solid #1a1a22;margin-top:5px;padding-top:4px;display:flex;justify-content:space-between;font-size:10px"><span class="td">合计 · 2 tasks</span><span style="color:#fbbf24;font-weight:500">$0.087</span></div>
+        </div>
+        <div style="background:rgba(52,211,153,.06);border:.5px solid rgba(52,211,153,.15);border-radius:6px;padding:8px 9px">
+          <div style="color:#34d399;font-size:10px;margin-bottom:5px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M3 3l7.07 16.97 2.51-7.39 7.39-2.51L3 3z"/><path d="M13 13l6 6"/></svg> 会话摘要</div>
+          <div class="td" style="font-size:10px">完成任务 3 个 · 修改文件 5 个</div>
+          <div class="td" style="font-size:10px">总费用 $0.087 · 用时 24m 15s</div>
+        </div>
+      </div>
+    </div></div>
+  </div></div>
+</div>
+
+
+<!-- ══════ PHASE 05: 迭代修正阶段触点 ══════ -->
+
+<!-- /fork /clear 命令 -->
+<div class="section cmp-section" id="tp-fork">
+  <div class="slabel"><span class="sub">Touchpoint · 迭代修正 · Industry Comparison</span><span class="main">/fork &amp; /clear — 对话分支与重置</span></div>
+  <div class="section-inner"><div class="cmp-wrap">
+    <table class="cmp-tbl">
+      <colgroup><col style="width:10%"><col style="width:18.0%"><col style="width:18.0%"><col style="width:18.0%"><col style="width:18.0%"><col style="width:18.0%"></colgroup>
+      <thead><tr>
+        <th>维度</th>
+        <th class="prod-head"><div class="ph-inner"><span class="ph-name">Aider /clear</span><span class="ph-sub">手动清除聊天历史</span><div class="ph-badges"><span class="bdg bdg-ai">OSS</span></div></div></th>
+        <th class="prod-head"><div class="ph-inner"><span class="ph-name">Claude Code /fork</span><span class="ph-sub">分支对话保留历史</span><div class="ph-badges"><span class="bdg bdg-cc">Anthropic</span></div></div></th>
+        <th class="prod-head"><div class="ph-inner"><span class="ph-name">Warp /new</span><span class="ph-sub">全新 Agent 会话</span><div class="ph-badges"><span class="bdg bdg-wp">Warp</span></div></div></th>
+        <th class="prod-head"><div class="ph-inner"><span class="ph-name">Gemini CLI</span><span class="ph-sub">Ctrl+C 退出重开</span><div class="ph-badges"><span class="bdg bdg-gc">Google</span></div></div></th>
+      <th class="prod-head"><div class="ph-inner"><span class="ph-name">Codex CLI</span><span class="ph-sub">无分支 · /reset 重置</span><div class="ph-badges"><span class="bdg bdg-cx">OpenAI</span></div></div></th></tr></thead>
+      <tbody>
+        <tr>
+          <td class="dim-cell">界面形态</td>
+          <td class="ui-cell"><div class="mt"><div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">aider /clear</span></div><div class="mb"><div><span class="tp">aider$</span> <span class="tw">/clear</span></div><div class="tg" style="font-size:10px">Cleared chat history.</div><div class="td" style="font-size:9px;margin-top:2px">所有历史清空，文件列表保留</div></div></div></td>
+          <td class="ui-cell"><div class="mt"><div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">claude code /fork</span></div><div class="mb"><div><span style="color:#834DF0">❯</span> <span class="tw">/fork</span></div><div style="margin-top:3px;background:#0d0d12;border:.5px solid rgba(131,77,240,.25);border-radius:4px;padding:5px 8px;font-size:10px"><div class="tp" style="font-size:9px">Fork 创建于当前对话快照</div><div class="tw">继续在新分支上探索...</div></div><div class="td" style="font-size:9px;margin-top:2px">原分支完整保留，新分支独立</div></div></div></td>
+          <td class="ui-cell"><div class="mt"><div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">warp /new session</span></div><div class="mb"><div style="background:#0d0f13;border:.5px solid rgba(131,77,240,.3);border-radius:5px;overflow:hidden"><div style="padding:3px 8px;background:rgba(131,77,240,.08);border-bottom:.5px solid rgba(131,77,240,.15);font-size:9px;color:#a78bfa">+ New Agent Session</div><div style="padding:5px 8px;font-size:10px"><span style="color:#834DF0">❯</span> <span class="tw">全新会话开始</span></div></div><div class="td" style="font-size:9px;margin-top:2px">旧会话在历史面板可查</div></div></div></td>
+          <td class="ui-cell"><div class="mt"><div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">gemini restart</span></div><div class="mb"><div class="tr" style="font-size:9px">Ctrl+C 退出</div><div style="height:3px"></div><div class="td" style="font-size:9px">$ gemini 重新启动</div><div class="td" style="font-size:9px;margin-top:2px">完全重来，无任何分支机制</div></div></div></td>
+        <td class="ui-cell"><div class="mt"><div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">codex reset</span></div><div class="mb"><div style="font-size:9px">codex&gt; <span class="tw">/reset</span></div><div class="tg" style="font-size:10px">Session reset.</div><div class="td" style="font-size:9px;margin-top:2px">无分支，重置即丢失</div></div></div></td></tr>
+        <tr><td class="dim-cell">历史保留</td><td>不保留：/clear 后历史完全消失</td><td>完全保留：原分支不变，/fork 创建快照</td><td>新会话开始：旧会话在历史面板可回看</td><td>不保留：退出即消失，重开全新</td><td>—</td></tr>
+        <tr><td class="dim-cell">使用场景</td><td>上下文太乱时清除重来，操作不可逆</td><td>想探索不同方向时分叉，两条路都可走</td><td>当前任务完成，开始新任务时</td><td>完全重来，最重量的操作</td><td>—</td></tr>
+        <tr>
+          <td class="dim-cell">优势</td>
+          <td><span class="pt pro">简单直接，一步清除</span><span class="pt pro">文件列表保留，不需要重新 /add</span></td>
+          <td><span class="pt pro">原分支完整保留，可随时回头</span><span class="pt pro">适合探索多种解决方案</span></td>
+          <td><span class="pt pro">历史面板可回看旧会话</span><span class="pt pro">多任务并行的自然工作流</span></td>
+          <td><span class="pt pro">完全干净的起点</span></td>
+        <td><span class="pt pro">云端 session 可通过 API 查询历史</span></td></tr>
+        <tr>
+          <td class="dim-cell">劣势</td>
+          <td><span class="pt con">清除不可逆，误操作无法恢复</span><span class="pt con">无分支机制，只能"全清"</span></td>
+          <td><span class="pt con">多条分支可能让用户迷失</span><span class="pt con">分支历史管理无可视化界面</span></td>
+          <td><span class="pt con">无 fork 分支，只能开新会话</span></td>
+          <td><span class="pt con">完全没有渐进式的重置选项</span></td>
+        <td><span class="pt con">无 /fork 分支机制</span></td></tr>
+        <tr class="sum-row"><td class="dim-cell">总结</td><td class="vd-cell">简单但不可逆</td><td class="vd-cell">最灵活，保留所有选项</td><td class="vd-cell">适合多任务场景</td><td class="vd-cell">过于重量级</td><td>无分支，云端历史靠 API</td></tr>
+      </tbody>
+    </table>
+    <div class="t-verdict"><strong>推荐：</strong>/fork 是最佳设计——在当前对话快照基础上创建新分支，原分支完整保留。补充 /compact 快速压缩上下文（不开新分支），以及上下文用量仪表盘让用户能预判何时需要清理。</div>
+  </div></div>
+</div>
+
+<div class="section rec-section" id="tp-fork-rec">
+  <div class="slabel"><span class="sub">Touchpoint · Our Direction</span><span class="main">/fork &amp; /clear — 我们的方向</span></div>
+  <div class="section-inner"><div class="rec-inner">
+    <div class="rec-l">
+      <div class="rec-hl"><div class="rht">/fork 分支探索 + 上下文用量可见 + 渐进式清理</div><div class="rhb">/fork 在当前对话快照基础上创建独立分支，原分支不变。上下文用量以 Chip 形式实时展示，接近限制时自动提示。提供三个渐进级别的清理选项：压缩 / 分支 / 全清。</div></div>
+      <div class="rec-p"><div class="rn">01</div><div><div class="rt">/fork 保留原分支，支持并行探索</div><div class="rd">当用户想尝试不同的解决方向时，/fork 创建当前对话的快照作为新分支，原分支完整保留。两个分支独立推进，可以随时切换回去。对比不同方案的效果，然后选择更好的一条路。</div></div></div>
+      <div class="rec-p"><div class="rn">02</div><div><div class="rt">上下文用量仪表盘，预判清理时机</div><div class="rd">上下文使用百分比以 Chip 形式持续展示（"上下文 68%"），颜色随用量变化（绿→黄→红）。用户在触发限制前就能感知到"快满了"，主动选择清理时机，而不是等到报错才知道。</div></div></div>
+      <div class="rec-p"><div class="rn">03</div><div><div class="rt">三级渐进清理：压缩 / 分支 / 全清</div><div class="rd">接近上下文限制时提供三个选项：/compact（AI 压缩历史，保留关键信息）、/fork（创建新分支继续）、/clear（全清，最激进）。让用户根据当前情况选择最合适的清理力度，不是只有"全清"一个选项。</div></div></div>
+    </div>
+    <div class="rec-r"><div class="mt" style="font-size:12px;line-height:1.8">
+      <div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">/fork · context management</span></div>
+      <div class="mb">
+        <div class="td" style="font-size:9px;margin-bottom:4px">/fork 创建分支:</div>
+        <div style="background:#0d0d12;border:.5px solid rgba(131,77,240,.25);border-radius:6px;padding:7px 9px;font-size:10px;margin-bottom:7px">
+          <div style="color:#a78bfa;font-size:10px;margin-bottom:4px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><line x1="6" y1="3" x2="6" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><circle cx="6" cy="6" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg> Fork 创建于当前快照</div>
+          <div class="td" style="font-size:9px">原分支: main-thread (完整保留)</div>
+          <div class="td" style="font-size:9px">新分支: fork-1 (当前继续)</div>
+          <div style="display:flex;gap:7px;margin-top:5px;font-size:9px"><span style="color:#834DF0;cursor:pointer">继续在 fork-1 →</span><span style="color:var(--td);cursor:pointer">切回 main-thread</span></div>
+        </div>
+        <div class="td" style="font-size:9px;margin-bottom:4px">接近上下文限制时的三级选项:</div>
+        <div style="background:rgba(248,113,113,.06);border:.5px solid rgba(248,113,113,.2);border-radius:6px;padding:7px 9px;font-size:10px">
+          <div style="color:#f87171;font-size:10px;margin-bottom:5px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17" stroke-width="2.5"/></svg> 上下文 92% — 即将触达限制</div>
+          <div style="display:flex;flex-direction:column;gap:4px;font-size:9px">
+            <span style="color:#a78bfa;cursor:pointer">/compact — AI 压缩历史（推荐）</span>
+            <span style="color:#60a5fa;cursor:pointer">/fork — 分支继续，保留完整历史</span>
+            <span style="color:var(--td);cursor:pointer">/clear — 全清，全新开始</span>
+          </div>
+        </div>
+      </div>
+    </div></div>
+  </div></div>
+</div>
+
+<!-- Esc 中断 -->
+<div class="section cmp-section" id="tp-esc">
+  <div class="slabel"><span class="sub">Touchpoint · 等待执行 + 迭代修正 · Industry Comparison</span><span class="main">Esc 中断机制</span></div>
+  <div class="section-inner"><div class="cmp-wrap">
+    <table class="cmp-tbl">
+      <colgroup><col style="width:10%"><col style="width:18.0%"><col style="width:18.0%"><col style="width:18.0%"><col style="width:18.0%"><col style="width:18.0%"></colgroup>
+      <thead><tr>
+        <th>维度</th>
+        <th class="prod-head"><div class="ph-inner"><span class="ph-name">Aider Ctrl+C</span><span class="ph-sub">系统级中断信号</span><div class="ph-badges"><span class="bdg bdg-ai">OSS</span></div></div></th>
+        <th class="prod-head"><div class="ph-inner"><span class="ph-name">Claude Code Esc</span><span class="ph-sub">Esc 中断 + 新指令</span><div class="ph-badges"><span class="bdg bdg-cc">Anthropic</span></div></div></th>
+        <th class="prod-head"><div class="ph-inner"><span class="ph-name">Warp</span><span class="ph-sub"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17" stroke-width="2.5"/></svg> 黄色暂停 + 等待</span><div class="ph-badges"><span class="bdg bdg-wp">Warp</span></div></div></th>
+        <th class="prod-head"><div class="ph-inner"><span class="ph-name">Gemini CLI</span><span class="ph-sub">Ctrl+C 退出 Plan</span><div class="ph-badges"><span class="bdg bdg-gc">Google</span></div></div></th>
+      <th class="prod-head"><div class="ph-inner"><span class="ph-name">Codex CLI</span><span class="ph-sub">Ctrl+C · 云端任务不确定</span><div class="ph-badges"><span class="bdg bdg-cx">OpenAI</span></div></div></th></tr></thead>
+      <tbody>
+        <tr>
+          <td class="dim-cell">界面形态</td>
+          <td class="ui-cell"><div class="mt"><div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">aider ctrl+c</span></div><div class="mb"><div class="ty">⠿ <span class="td">Processing...</span></div><div style="height:3px"></div><div class="tr">^C Interrupted.</div><div class="td" style="font-size:9px;margin-top:2px">当前操作立即终止</div></div></div></td>
+          <td class="ui-cell"><div class="mt"><div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">claude code esc</span></div><div class="mb"><div><span class="b">◉</span> <span class="td">Editing</span> <span class="tag tg2">auth.ts</span></div><div style="background:#1a1a22;border:.5px solid rgba(248,113,113,.25);border-radius:4px;padding:4px 8px;margin-top:4px;font-size:10px"><span class="tr">Esc</span> <span class="td">中断并给新指令：</span><div class="cur" style="display:inline-block"></div></div><div class="td" style="font-size:9px;margin-top:2px">输入框立刻可用，给新指令</div></div></div></td>
+          <td class="ui-cell"><div class="mt"><div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">warp pause</span></div><div class="mb"><div style="border:.5px solid rgba(251,191,36,.3);border-radius:5px;overflow:hidden"><div style="background:rgba(251,191,36,.1);padding:4px 8px;font-size:9px;color:#fbbf24;border-bottom:.5px solid rgba(251,191,36,.2)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17" stroke-width="2.5"/></svg> Agent 需要你的输入才能继续</div><div style="padding:5px 8px;font-size:10px"><div class="td" style="margin-bottom:3px">是否授权执行 npm test？</div><div style="display:flex;gap:4px"><span style="font-size:9px;padding:2px 6px;border:.5px solid rgba(52,211,153,.3);border-radius:3px;color:#34d399">继续</span><span style="font-size:9px;padding:2px 6px;border:.5px solid rgba(248,113,113,.2);border-radius:3px;color:#f87171">中止</span></div></div></div></div></div></td>
+          <td class="ui-cell"><div class="mt"><div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">gemini ctrl+c</span></div><div class="mb"><div class="tc">◈ PLAN MODE</div><div style="margin-top:3px"><span class="tc">→</span> <span class="td">edit_file(auth.ts) ⠿</span></div><div class="tr" style="font-size:9px;margin-top:3px">^C 中止执行</div><div class="td" style="font-size:9px">Plan 被取消，重新开始</div></div></div></td>
+        <td class="ui-cell"><div class="mt"><div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">codex interrupt</span></div><div class="mb"><div class="td">⠿ Working (o3)...</div><div style="height:4px"></div><div style="color:#555;font-size:10px">^C</div><div class="ty" style="font-size:10px">Interrupted.</div><div class="td" style="font-size:9px;margin-top:2px">云端任务可能继续执行</div></div></div></td></tr>
+        <tr><td class="dim-cell">中断后状态</td><td>立即终止，当前步骤可能只完成了一半，需手动检查</td><td>Esc 后输入框立刻可用，可给新指令继续或修正</td><td>不是中断而是主动暂停，Agent 等待用户决策</td><td>Plan 被取消，需要重新输入指令</td><td>本地进程结束，云端任务状态不确定</td></tr>
+        <tr>
+          <td class="dim-cell">优势</td>
+          <td><span class="pt pro">终端原生，任何时候都有效</span><span class="pt pro">快速停止失控的操作</span></td>
+          <td><span class="pt pro">中断后立刻可给新指令，流程不割裂</span><span class="pt pro">Esc 后给新指令，AI 理解上下文继续</span></td>
+          <td><span class="pt pro">不是粗暴中断，而是优雅暂停</span><span class="pt pro">Agent 保持一致的状态等待</span></td>
+          <td><span class="pt pro">Plan 级中断，不影响已完成的步骤</span></td>
+        <td><span class="pt pro">本地模式终端原生</span></td></tr>
+        <tr>
+          <td class="dim-cell">劣势</td>
+          <td><span class="pt con">Ctrl+C 是系统信号，可能导致状态混乱</span><span class="pt con">中断后需手动检查哪些操作已完成</span></td>
+          <td><span class="pt con">用户需要知道 Esc 快捷键的存在</span></td>
+          <td><span class="pt con">依赖 Warp 框架</span></td>
+          <td><span class="pt con">只在 Plan Mode 有效，执行中无法中断</span></td>
+        <td><span class="pt con">云端中断语义不清晰</span></td></tr>
+        <tr class="sum-row"><td class="dim-cell">总结</td><td class="vd-cell">有效但可能留下混乱状态</td><td class="vd-cell">最流畅的中断体验</td><td class="vd-cell">主动暂停比被动中断更安全</td><td class="vd-cell">仅 Plan 阶段有效</td><td>本地 Ctrl+C，云端中断不确定</td></tr>
+      </tbody>
+    </table>
+    <div class="t-verdict"><strong>推荐：</strong>Esc 中断后输入框立刻可用（Claude Code 做法）+ Esc 按钮始终浮动可见（不需要记快捷键）+ 中断后显示"已执行步骤"摘要，让用户清楚知道哪些操作已完成、哪些没有。</div>
+  </div></div>
+</div>
+
+<div class="section rec-section" id="tp-esc-rec">
+  <div class="slabel"><span class="sub">Touchpoint · Our Direction</span><span class="main">Esc 中断机制 — 我们的方向</span></div>
+  <div class="section-inner"><div class="rec-inner">
+    <div class="rec-l">
+      <div class="rec-hl"><div class="rht">Esc 按钮浮动可见 + 中断后立刻可给新指令 + 已完成步骤摘要</div><div class="rhb">Esc 中断按钮始终以红色小按钮浮动在输入框旁边（不需要记快捷键）。中断后输入框立刻可用，AI 能理解上下文继续。同时显示"已完成步骤"摘要，让用户知道当前状态。</div></div>
+      <div class="rec-p"><div class="rn">01</div><div><div class="rt">Esc 按钮始终浮动，不需记快捷键</div><div class="rd">执行过程中，"Esc 中断"按钮以红色小按钮形式始终浮动在输入框右侧，无论滚动到哪里都可见。用户看到按钮就知道可以随时叫停，不需要知道快捷键，消除"我能停止它吗？"的焦虑。</div></div></div>
+      <div class="rec-p"><div class="rn">02</div><div><div class="rt">中断后输入框立刻可用，AI 理解上下文</div><div class="rd">Esc 后执行立刻停止，输入框获焦点，用户可以给新指令（"不对，应该用 Result 类型"）。AI 理解当前上下文，知道已完成了哪些步骤，可以从断点继续，而不是从头来过。</div></div></div>
+      <div class="rec-p"><div class="rn">03</div><div><div class="rt">中断后显示已完成步骤摘要</div><div class="rd">Esc 中断后，在输入框上方显示"已完成步骤"摘要（如"已完成：读取 3 个文件，已编辑 auth.ts；未完成：npm test"），让用户清楚当前状态，决定是继续、修正还是回滚。</div></div></div>
+    </div>
+    <div class="rec-r"><div class="mt" style="font-size:12px;line-height:1.8">
+      <div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">esc interrupt · our design</span></div>
+      <div class="mb">
+        <div class="td" style="font-size:9px;margin-bottom:4px">执行中：Esc 按钮始终浮动:</div>
+        <div style="display:flex;align-items:center;justify-content:space-between;font-size:10px;margin-bottom:5px">
+          <span class="td">执行中 · 2/7 steps</span>
+          <span style="font-size:9px;padding:2px 9px;border:.5px solid rgba(248,113,113,.3);border-radius:4px;color:#f87171;cursor:pointer;background:rgba(248,113,113,.06)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg> Esc 中断</span>
+        </div>
+        <div class="td" style="font-size:9px;margin-bottom:4px">中断后：摘要 + 立刻可输入:</div>
+        <div style="background:rgba(248,113,113,.06);border:.5px solid rgba(248,113,113,.2);border-radius:6px;padding:7px 9px;font-size:10px;margin-bottom:6px">
+          <div style="color:#f87171;font-size:10px;margin-bottom:4px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg> 已中断 — 执行状态摘要</div>
+          <div class="tg" style="font-size:9px">✔ 已完成：读取 3 个文件，编辑 auth.ts</div>
+          <div class="tr" style="font-size:9px">✗ 未完成：npm test，编辑 types.ts</div>
+        </div>
+        <div style="background:#141419;border:.5px solid rgba(131,77,240,.35);border-radius:7px;overflow:hidden">
+          <div style="padding:4px 9px;background:rgba(131,77,240,.1);border-bottom:.5px solid rgba(131,77,240,.2);font-size:9px;color:#a78bfa">给新指令继续（AI 知道当前状态）</div>
+          <div style="padding:6px 9px;font-size:11px"><span style="color:#834DF0">❯</span> <span class="tw">不对，auth.ts 改用 Result 类型</span><div class="cur" style="display:inline-block"></div></div>
+        </div>
+      </div>
+    </div></div>
+  </div></div>
+</div>
+
+<!-- 会话摘要卡 -->
+<div class="section cmp-section" id="tp-summary">
+  <div class="slabel"><span class="sub">Touchpoint · 收尾阶段 · Industry Comparison</span><span class="main">会话摘要卡</span></div>
+  <div class="section-inner"><div class="cmp-wrap">
+    <table class="cmp-tbl">
+      <colgroup><col style="width:10%"><col style="width:22.5%"><col style="width:22.5%"><col style="width:22.5%"><col style="width:22.5%"></colgroup>
+      <thead><tr>
+        <th>维度</th>
+        <th class="prod-head"><div class="ph-inner"><span class="ph-name">Aider / Gemini CLI</span><span class="ph-sub">无会话摘要 · 无费用展示</span><span class="ph-sub">直接退出，无收尾信息</span><div class="ph-badges"><span class="bdg bdg-ai">Aider</span><span class="bdg bdg-gc">Gemini CLI</span></div></div></th>
+        <th class="prod-head"><div class="ph-inner"><span class="ph-name">Claude Code</span><span class="ph-sub">每条末尾 token 摘要行</span><div class="ph-badges"><span class="bdg bdg-cc">Anthropic</span></div></div></th>
+        <th class="prod-head"><div class="ph-inner"><span class="ph-name">目标方案</span><span class="ph-sub">退出时完整摘要 + 费用明细</span><div class="ph-badges"><span class="bdg" style="background:#EFF6FF;color:#1E40AF;border:.5px solid #93C5FD">New IDE</span></div></div></th>
+      <th class="prod-head"><div class="ph-inner"><span class="ph-name">Codex CLI</span><span class="ph-sub">无摘要 · 云端日志查</span><div class="ph-badges"><span class="bdg bdg-cx">OpenAI</span></div></div></th></tr></thead>
+      <tbody>
+        <tr>
+          <td class="dim-cell">界面形态</td>
+          <td class="ui-cell"><div class="mt"><div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">no summary</span></div><div class="mb"><div class="tp">aider$</div><div class="tw">exit</div><div class="td" style="font-size:9px;margin-top:3px">退出 · 无任何收尾信息</div><div class="td" style="font-size:9px">费用 / 任务数 / 用时均不可知</div></div></div></td>
+          <td class="ui-cell"><div class="mt"><div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">claude code per-reply</span></div><div class="mb"><div class="tg">✔ <span class="td">done</span></div><div style="border-top:.5px solid #1a1a22;margin-top:3px;padding-top:3px;font-size:9px;color:#444"><div>tokens: 4.2k in · 1.8k out · cache: 28k</div><div>cost: $0.023 · 15s</div></div><div class="td" style="font-size:9px;margin-top:3px">无会话总结，只有单次摘要</div></div></div></td>
+          <td class="ui-cell"><div class="mt"><div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">session summary card</span></div><div class="mb"><div style="background:rgba(52,211,153,.06);border:.5px solid rgba(52,211,153,.15);border-radius:6px;padding:7px 9px"><div style="color:#34d399;font-size:10px;margin-bottom:5px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M3 3l7.07 16.97 2.51-7.39 7.39-2.51L3 3z"/><path d="M13 13l6 6"/></svg> 会话完成</div><div class="td" style="font-size:9px">任务: 3 个 · 文件: 5 个修改</div><div class="td" style="font-size:9px">Token: 18.4k · 费用: $0.087</div><div class="td" style="font-size:9px">用时: 24m 15s</div></div></div></div></td>
+        <td class="ui-cell"><div class="mt"><div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">codex no summary</span></div><div class="mb"><div class="tg">✔ <span class="td">Done. 3 files modified.</span></div><div class="td" style="font-size:9px;margin-top:5px">无会话摘要，无费用</div></div></div></td></tr>
+        <tr><td class="dim-cell">信息完整性</td><td>无任何收尾信息，用户不知道这次会话做了什么、花了多少</td><td>每条有单次摘要，无整体会话总结</td><td>退出时展示完整会话摘要：任务数 / 文件数 / 总费用 / 用时</td><td>—</td></tr>
+        <tr>
+          <td class="dim-cell">优势</td>
+          <td><span class="pt pro">无额外信息，退出最快速</span></td>
+          <td><span class="pt pro">每条费用透明，随时可查</span></td>
+          <td><span class="pt pro">强化完成感，清楚知道这次做了什么</span><span class="pt pro">费用意识：知道这次用了多少钱</span></td>
+        <td><span class="pt pro">输出简洁</span></td></tr>
+        <tr>
+          <td class="dim-cell">劣势</td>
+          <td><span class="pt con">无收尾感，会话虎头蛇尾</span><span class="pt con">费用完全不可知</span></td>
+          <td><span class="pt con">分散的单次摘要需自己汇总</span><span class="pt con">无完整的会话级总结</span></td>
+          <td></td>
+        <td><span class="pt con">无任何收尾感</span></td></tr>
+        <tr class="sum-row"><td class="dim-cell">总结</td><td class="vd-cell">缺乏收尾感，不推荐</td><td class="vd-cell">透明但缺乏整体感</td><td class="vd-cell">我们的推荐方案</td><td>无收尾，最差</td></tr>
+      </tbody>
+    </table>
+    <div class="t-verdict"><strong>推荐：</strong>退出时展示会话摘要卡（完成任务数 / 修改文件数 / 总 token / 总费用 / 用时），强化每次会话的完成感。摘要卡可展开查看按任务归因的费用明细，帮助用户了解哪类任务最值得用 AI。</div>
+  </div></div>
+</div>
+
+<div class="section rec-section" id="tp-summary-rec">
+  <div class="slabel"><span class="sub">Touchpoint · Our Direction</span><span class="main">会话摘要卡 — 我们的方向</span></div>
+  <div class="section-inner"><div class="rec-inner">
+    <div class="rec-l">
+      <div class="rec-hl"><div class="rht">退出时自动展示 + 按任务归因 + 可分享</div><div class="rhb">用户退出会话时自动展示摘要卡：完成任务数、修改文件数、总 token 用量、总费用、总时长。摘要卡可展开查看按任务归因的明细，可选择复制摘要或分享（适合团队汇报）。</div></div>
+      <div class="rec-p"><div class="rn">01</div><div><div class="rt">退出时自动弹出，不需要主动查</div><div class="rd">用户输入 exit 或关闭终端时，摘要卡自动弹出显示 3-5 秒（或用户主动关闭）。不需要用户记得去查，做完了自然就知道这次花了多少、做了什么。强化每次会话的完成仪式感。</div></div></div>
+      <div class="rec-p"><div class="rn">02</div><div><div class="rt">展开查看按任务归因的明细</div><div class="rd">摘要卡默认显示汇总数据，点击展开后显示每条任务的费用归因（任务描述 + token + 费用）。让用户了解"哪类任务最贵"，下次可以有意识地用更便宜的模型处理简单任务，主动控制成本。</div></div></div>
+      <div class="rec-p"><div class="rn">03</div><div><div class="rt">可复制摘要，适合团队汇报</div><div class="rd">摘要卡右上角有"复制摘要"按钮，生成适合粘贴到 Slack/PR 描述的文本（"用 AI 完成了 3 个任务，修改了 5 个文件，用时 24 分钟"）。降低汇报 AI 工作成果的摩擦。</div></div></div>
+    </div>
+    <div class="rec-r"><div class="mt" style="font-size:12px;line-height:1.8">
+      <div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">session summary card</span></div>
+      <div class="mb">
+        <div style="background:rgba(52,211,153,.06);border:.5px solid rgba(52,211,153,.18);border-radius:8px;overflow:hidden">
+          <div style="background:rgba(52,211,153,.08);padding:6px 10px;border-bottom:.5px solid rgba(52,211,153,.15);display:flex;justify-content:space-between;align-items:center">
+            <span style="color:#34d399;font-size:11px;font-family:Syne,sans-serif;font-weight:600"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M3 3l7.07 16.97 2.51-7.39 7.39-2.51L3 3z"/><path d="M13 13l6 6"/></svg> 会话完成</span>
+            <span style="color:var(--td);font-size:9px;cursor:pointer">复制摘要</span>
+          </div>
+          <div style="padding:8px 10px">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:8px">
+              <div style="background:rgba(52,211,153,.05);border-radius:5px;padding:6px 8px;text-align:center"><div class="td" style="font-size:9px">完成任务</div><div style="color:#34d399;font-size:18px;font-family:Syne,sans-serif;font-weight:700">3</div></div>
+              <div style="background:rgba(52,211,153,.05);border-radius:5px;padding:6px 8px;text-align:center"><div class="td" style="font-size:9px">修改文件</div><div style="color:#34d399;font-size:18px;font-family:Syne,sans-serif;font-weight:700">5</div></div>
+              <div style="background:rgba(251,191,36,.05);border-radius:5px;padding:6px 8px;text-align:center"><div class="td" style="font-size:9px">总费用</div><div style="color:#fbbf24;font-size:18px;font-family:Syne,sans-serif;font-weight:700">$0.09</div></div>
+              <div style="background:rgba(96,165,250,.05);border-radius:5px;padding:6px 8px;text-align:center"><div class="td" style="font-size:9px">总用时</div><div style="color:#60a5fa;font-size:18px;font-family:Syne,sans-serif;font-weight:700">24m</div></div>
+            </div>
+            <div style="border-top:.5px solid rgba(52,211,153,.1);padding-top:6px">
+              <div style="color:var(--td);font-size:9px;margin-bottom:3px;cursor:pointer">▸ 展开费用明细</div>
+              <div style="font-size:9px;display:flex;justify-content:space-between;color:var(--td)"><span>重构 auth 模块</span><span style="color:#fbbf24">$0.023</span></div>
+              <div style="font-size:9px;display:flex;justify-content:space-between;color:var(--td)"><span>写单元测试</span><span style="color:#fbbf24">$0.041</span></div>
+              <div style="font-size:9px;display:flex;justify-content:space-between;color:var(--td)"><span>更新文档</span><span style="color:#fbbf24">$0.023</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div></div>
+  </div></div>
+</div>
+  const hash = window.location.hash || '#tp-diff';
+  buildNav('tp-review.html', 'review', hash.replace('#',''));
+  initSnapScroll('review');
+  initKeyNav();
+  window.addEventListener('load', () => {
+    if (window.location.hash) {
+      const el = document.querySelector(window.location.hash);
+      if (el) {
+        const c = document.querySelector('.snap-container');
+        requestAnimationFrame(() => { c.scrollTo({ top: el.offsetTop - 88, behavior: 'instant' }); });
+      }
+    }
+  });
+</script>
+</body>
+</html>

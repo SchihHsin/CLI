@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AI CLI 设计报告 — 表达意图阶段</title>
+<link rel="stylesheet" href="shared.css">
+<style>
+.cmp-section { background: var(--sur); }
+.rec-section { background: var(--bg); }
+/* 3-column table variant */
+.cmp-tbl.t3 col:first-child { width: 10%; }
+.cmp-tbl.t3 col:not(:first-child) { width: 30%; }
+</style>
+</head>
+<body>
+<div id="global-nav"></div>
+<div id="nav-tp-bar" class="nav-tp-bar"></div>
+
+<div class="snap-container" style="padding-top:88px">
+
+<!-- ──────────── TP: 输入框位置/形态 ──────────── -->
+<div class="section cmp-section" id="tp-input-pos">
+  <div class="slabel">
+    <span class="sub">Touchpoint 02A · 表达意图 · Industry Comparison</span>
+    <span class="main">输入框 — 位置 &amp; 形态</span>
+  </div>
+  <div class="section-inner">
+    <div class="cmp-wrap">
+      <table class="cmp-tbl t3">
+        <colgroup><col style="width:10%"><col style="width:22.5%"><col style="width:22.5%"><col style="width:22.5%"><col style="width:22.5%"></colgroup>
+        <thead><tr>
+          <th>维度</th>
+          <th class="prod-head"><div class="ph-inner"><span class="ph-name">Aider / Gemini CLI</span><span class="ph-sub">内联跟随 · 随输出流向上推</span><div class="ph-badges"><span class="bdg bdg-ai">Aider</span><span class="bdg bdg-gc">Gemini CLI</span></div></div></th>
+          <th class="prod-head"><div class="ph-inner"><span class="ph-name">Claude Code / Warp</span><span class="ph-sub">固定底部 · 锚定窗口底部</span><div class="ph-badges"><span class="bdg bdg-cc">Claude Code</span><span class="bdg bdg-wp">Warp</span></div></div></th>
+          <th class="prod-head"><div class="ph-inner"><span class="ph-name">Warp Agent</span><span class="ph-sub">对话视图分离 · 输入区独立</span><div class="ph-badges"><span class="bdg bdg-wp">Warp Agent</span></div></div></th>
+        <th class="prod-head"><div class="ph-inner"><span class="ph-name">Codex CLI</span><span class="ph-sub">内联跟随 · 云端异步无 UI</span><div class="ph-badges"><span class="bdg bdg-cx">OpenAI</span></div></div></th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="dim-cell">界面形态</td>
+            <td class="ui-cell"><div class="mt"><div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">inline — follows output</span></div><div class="mb"><div class="td" style="font-size:9px">... output ...</div><div class="td" style="font-size:9px">... more output ↑</div><div style="height:4px"></div><div><span class="tp">aider$</span> <span class="tw">重构 auth.ts</span><div class="cur" style="display:inline-block"></div></div><div class="td" style="font-size:9px;margin-top:2px">↑ 随输出内容向上推</div></div></div></td>
+            <td class="ui-cell"><div class="mt"><div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">fixed bottom — anchored</span></div><div class="mb"><div class="td" style="font-size:9px">output area scrolls ↑</div><div style="height:6px"></div><div style="border-top:.5px solid #2a2a35;padding-top:5px"><div style="background:#1a1a22;border:.5px solid #834DF0;border-radius:5px;padding:5px 9px;font-size:10px"><span style="color:#834DF0">❯</span> <span class="tw">重构 </span><span class="tb">@src/auth.ts</span><div class="cur" style="display:inline-block"></div></div><div class="td" style="font-size:8px;margin-top:2px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> 始终锚定在底部</div></div></div></div></td>
+            <td class="ui-cell"><div class="mt"><div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">split view — dialogue</span></div><div class="mb"><div style="display:flex;gap:5px;height:56px"><div style="flex:1;border:.5px solid #2a2a35;border-radius:3px;overflow:hidden"><div style="background:#1a1a22;padding:2px 6px;font-size:8px;color:#555">对话历史</div><div style="padding:4px 6px;font-size:9px;color:#888">用户: 重构...<br>AI: 已完成...</div></div><div style="width:50%;border:.5px solid rgba(131,77,240,.3);border-radius:3px;overflow:hidden"><div style="background:rgba(131,77,240,.1);padding:2px 6px;font-size:8px;color:#a78bfa">当前任务</div><div style="padding:4px 6px;font-size:9px"><span style="color:#834DF0">❯</span> <span class="tw">继续</span></div></div></div></div></div></td>
+          <td class="ui-cell"><div class="mt"><div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">codex — inline</span></div><div class="mb"><div class="td" style="font-size:9px">⠿ Working (o3)...</div><div class="tg" style="font-size:10px">✔ Done. 3 files.</div><div style="font-size:9px;margin-top:3px">codex&gt; <span class="tw">next</span><div class="cur" style="display:inline-block"></div></div></div></div></td></tr>
+          <tr>
+            <td class="dim-cell">位置稳定性</td>
+            <td>随输出流末尾跟随，长对话后被推到屏幕上方，需滚动才能找到</td>
+            <td>锚定窗口底部，输出区独立滚动，输入框位置绝对稳定</td>
+            <td>输入区与历史区物理分离，长 Agent 任务进入独立面板</td>
+          <td>随输出流跟随，本地无固定位置；云端异步模式完全无 UI</td></tr>
+          <tr>
+            <td class="dim-cell">优势</td>
+            <td><span class="pt pro">终端原生行为，零学习成本</span><span class="pt pro">无框架依赖，任何终端可跑</span></td>
+            <td><span class="pt pro">位置永远稳定，随时可输入</span><span class="pt pro">输出区可自由滚动查看历史</span><span class="pt pro">用户不会"找不到输入框"</span></td>
+            <td><span class="pt pro">长 Agent 任务不干扰历史对话</span><span class="pt pro">适合 Agentic 长时任务场景</span></td>
+          <td><span class="pt pro">终端原生，无依赖</span><span class="pt pro">云端异步完全无需 UI，fire-and-forget</span></td></tr>
+          <tr>
+            <td class="dim-cell">劣势</td>
+            <td><span class="pt con">长对话后输入框被推走</span><span class="pt con">无法同时看历史输出和输入框</span></td>
+            <td><span class="pt con">需要 TUI 框架，SSH/tmux 兼容性差</span><span class="pt con">占用固定屏幕高度</span></td>
+            <td><span class="pt con">视图切换增加认知负担</span><span class="pt con">仅适合长任务，短任务切换太重</span></td>
+          <td><span class="pt con">本地交互体验薄弱</span><span class="pt con">长任务输入框被推走</span></td></tr>
+          <tr class="sum-row">
+            <td class="dim-cell">总结</td>
+            <td class="vd-cell">简单场景可用，长任务体验差</td>
+            <td class="vd-cell">当前综合最优，推荐基础方案</td>
+            <td class="vd-cell">Agentic 长任务的进化方向</td>
+          <td>—</td></tr>
+        </tbody>
+      </table>
+      <div class="t-verdict"><strong>结论：</strong>方案 B（固定底部）是当前最佳实践，平衡了实现成本与用户体验。方案 C（分离视图）是 Agentic 任务的长期演进方向。可组合：默认 B，长任务自动提示切换 C。</div>
+    </div>
+  </div>
+</div>
+
+<!-- ──────────── TP: 输入框编辑能力 ──────────── -->
+<div class="section cmp-section" id="tp-input-edit">
+  <div class="slabel">
+    <span class="sub">Touchpoint 02B · 表达意图 · Industry Comparison</span>
+    <span class="main">输入框 — 编辑能力</span>
+  </div>
+  <div class="section-inner">
+    <div class="cmp-wrap">
+      <table class="cmp-tbl">
+        <colgroup><col style="width:10%"><col style="width:18.0%"><col style="width:18.0%"><col style="width:18.0%"><col style="width:18.0%"><col style="width:18.0%"></colgroup>
+        <thead><tr>
+          <th>维度</th>
+          <th class="prod-head"><div class="ph-inner"><span class="ph-name">Aider</span><span class="ph-sub">基础 stdin</span><div class="ph-badges"><span class="bdg bdg-ai">OSS</span></div></div></th>
+          <th class="prod-head"><div class="ph-inner"><span class="ph-name">Claude Code</span><span class="ph-sub">IDE 级多行编辑</span><div class="ph-badges"><span class="bdg bdg-cc">Anthropic</span></div></div></th>
+          <th class="prod-head"><div class="ph-inner"><span class="ph-name">Warp</span><span class="ph-sub">块编辑器 + 历史持久</span><div class="ph-badges"><span class="bdg bdg-wp">Warp</span></div></div></th>
+          <th class="prod-head"><div class="ph-inner"><span class="ph-name">Gemini CLI</span><span class="ph-sub">readline + Ctrl+R 搜索</span><div class="ph-badges"><span class="bdg bdg-gc">Google</span></div></div></th>
+        <th class="prod-head"><div class="ph-inner"><span class="ph-name">Codex CLI</span><span class="ph-sub">内联跟随 · 云端无 UI</span><div class="ph-badges"><span class="bdg bdg-cx">OpenAI</span></div></div></th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="dim-cell">界面形态</td>
+            <td class="ui-cell"><div class="mt"><div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">stdin</span></div><div class="mb"><div><span class="tp">aider$</span> <span class="tw">重构错误处<span style="background:#834DF0;width:8px;display:inline-block">&nbsp;</span></span></div><div class="td" style="font-size:9px;margin-top:2px">仅左右光标 · backspace 改错</div></div></div></td>
+            <td class="ui-cell"><div class="mt"><div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">claude code — multiline</span></div><div class="mb"><div style="background:#1a1a22;border:.5px solid #834DF0;border-radius:5px;padding:5px 9px"><div style="font-size:9px;color:#555;margin-bottom:2px">Line 1:</div><div style="font-size:10px" class="tw">重构 @src/auth.ts，增加：</div><div style="font-size:10px" class="tw">1. 完整 try/catch 处理</div><div class="cur" style="display:inline-block"></div></div><div class="td" style="font-size:9px;margin-top:2px">Shift+Enter 换行 · 光标自由移动</div></div></div></td>
+            <td class="ui-cell"><div class="mt"><div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">warp editor</span></div><div class="mb"><div style="background:#0d0f13;border:.5px solid rgba(131,77,240,.3);border-radius:5px;padding:5px 9px"><div style="font-size:10px"><span style="color:#834DF0">❯</span> <span class="tw">重构 auth.ts 的错误处理</span><div class="cur" style="display:inline-block"></div></div><div style="font-size:9px;color:#555;margin-top:2px">Cmd+Enter 提交 · 历史跨会话</div></div></div></div></td>
+            <td class="ui-cell"><div class="mt"><div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">gemini ctrl+r</span></div><div class="mb"><div><span class="tc">~/myapp ›</span> <span class="tw">重构 auth</span><div class="cur" style="display:inline-block"></div></div><div style="background:#1a1a22;border:.5px solid #2a2a2a;border-radius:4px;padding:4px 8px;margin-top:4px"><div style="color:#4dd0e1;font-size:9px">Ctrl+R 历史搜索</div><div class="tw" style="font-size:10px">重构 auth.ts 错误处理 — 2h</div></div></div></div></td>
+          <td class="ui-cell"><div class="mt"><div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">codex inline</span></div><div class="mb"><div class="td" style="font-size:9px">⠿ Working (o3)...</div><div class="tg" style="font-size:10px">✔ Done.</div><div style="font-size:9px;margin-top:3px">codex&gt; <span class="tw">next</span><div class="cur" style="display:inline-block"></div></div></div></div></td></tr>
+          <tr><td class="dim-cell">多行支持</td><td>不支持，Enter 直接提交</td><td>支持，Shift+Enter 换行，Enter 提交</td><td>支持，Cmd+Enter 提交</td><td>部分支持，不如 IDE 级流畅</td><td>—</td></tr>
+          <tr><td class="dim-cell">历史记录</td><td>↑↓ 浏览，会话内，无搜索</td><td>↑↓ 浏览，会话内，无搜索</td><td>↑↓ 浏览，跨会话持久化</td><td>Ctrl+R 模糊搜索，跨会话持久</td><td>—</td></tr>
+          <tr>
+            <td class="dim-cell">优势</td>
+            <td><span class="pt pro">零学习，肌肉记忆无缝迁移</span><span class="pt pro">无框架依赖</span></td>
+            <td><span class="pt pro">多行编辑 + 光标自由移动</span><span class="pt pro">@ 引用内联显示</span><span class="pt pro">语法高亮（路径/命令）</span></td>
+            <td><span class="pt pro">多行 + 历史跨会话持久</span><span class="pt pro">Chips 与编辑集成</span></td>
+            <td><span class="pt pro">Ctrl+R 搜索历史最高效</span><span class="pt pro">跨会话持久化</span></td>
+          <td><span class="pt pro">终端原生，无依赖</span><span class="pt pro">云端异步 fire-and-forget</span></td></tr>
+          <tr>
+            <td class="dim-cell">劣势</td>
+            <td><span class="pt con">改错靠 backspace，效率低</span><span class="pt con">无法输入复杂多行指令</span></td>
+            <td><span class="pt con">需要 TUI 框架</span><span class="pt con">历史不跨会话</span></td>
+            <td><span class="pt con">依赖 Warp 生态</span></td>
+            <td><span class="pt con">无 @ 引用机制</span><span class="pt con">编辑体验不如 IDE 级</span></td>
+          <td><span class="pt con">本地交互体验薄弱</span><span class="pt con">长任务输入框被推走</span></td></tr>
+          <tr class="sum-row"><td class="dim-cell">总结</td><td class="vd-cell">适合短指令，复杂任务痛苦</td><td class="vd-cell">IDE 级体验最佳</td><td class="vd-cell">历史持久化是亮点</td><td class="vd-cell">Ctrl+R 是最实用的历史改进</td><td>本地弱，云端异步是差异化</td></tr>
+        </tbody>
+      </table>
+      <div class="t-verdict"><strong>推荐：</strong>Claude Code 的多行编辑 + 光标自由 + @ 引用是标配，补充 Gemini 的 Ctrl+R 历史搜索（跨会话持久化 200 条）。语法高亮（路径/参数识别）让输入框区别于普通文本框。</div>
+    </div>
+  </div>
+</div>
+
+<!-- ──────────── TP: 模式指示符 ──────────── -->
+<div class="section cmp-section" id="tp-mode">
+  <div class="slabel">
+    <span class="sub">Touchpoint 03 · 表达意图 · Industry Comparison</span>
+    <span class="main">模式指示符</span>
+  </div>
+  <div class="section-inner">
+    <div class="cmp-wrap">
+      <table class="cmp-tbl">
+        <colgroup><col style="width:10%"><col style="width:18.0%"><col style="width:18.0%"><col style="width:18.0%"><col style="width:18.0%"><col style="width:18.0%"></colgroup>
+        <thead><tr>
+          <th>维度</th>
+          <th class="prod-head"><div class="ph-inner"><span class="ph-name">Aider</span><span class="ph-sub">Prompt 前缀变化</span><div class="ph-badges"><span class="bdg bdg-ai">OSS</span></div></div></th>
+          <th class="prod-head"><div class="ph-inner"><span class="ph-name">Claude Code</span><span class="ph-sub">顶部小字 + Shift+Tab</span><div class="ph-badges"><span class="bdg bdg-cc">Anthropic</span></div></div></th>
+          <th class="prod-head"><div class="ph-inner"><span class="ph-name">Warp</span><span class="ph-sub">Badge 标签 + 边框颜色</span><div class="ph-badges"><span class="bdg bdg-wp">Warp</span></div></div></th>
+          <th class="prod-head"><div class="ph-inner"><span class="ph-name">Gemini CLI</span><span class="ph-sub">自动检测 + 实时标签</span><div class="ph-badges"><span class="bdg bdg-gc">Google</span></div></div></th>
+        <th class="prod-head"><div class="ph-inner"><span class="ph-name">Codex CLI</span><span class="ph-sub">无模式概念 · 始终 Agent</span><div class="ph-badges"><span class="bdg bdg-cx">OpenAI</span></div></div></th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="dim-cell">界面形态</td>
+            <td class="ui-cell"><div class="mt"><div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">aider prompt prefix</span></div><div class="mb"><div><span class="tp">aider$</span> <span class="tw">任务</span></div><div style="height:3px"></div><div><span class="td">/ask mode&gt;</span> <span class="tw">只问不改</span></div><div><span class="ty">/code mode&gt;</span> <span class="tw">写代码</span></div></div></div></td>
+            <td class="ui-cell"><div class="mt"><div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">claude code</span></div><div class="mb"><div style="background:#1a1a22;border:.5px solid #834DF0;border-radius:5px;overflow:hidden"><div style="padding:3px 9px;background:rgba(131,77,240,.1);border-bottom:.5px solid rgba(131,77,240,.2);font-size:9px;color:#a78bfa">● auto (normal) · Shift+Tab 切换 5 种模式</div><div style="padding:5px 9px;font-size:10px"><span style="color:#834DF0">❯</span> <span class="tw">任务</span></div></div></div></div></td>
+            <td class="ui-cell"><div class="mt"><div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">warp badge+border</span></div><div class="mb"><div style="background:#0d0f13;border:1.5px solid #834DF0;border-radius:5px;overflow:hidden"><div style="padding:3px 8px;background:rgba(131,77,240,.1);font-size:9px;display:flex;align-items:center;gap:4px;border-bottom:.5px solid rgba(131,77,240,.2)"><span class="tag tp3">✦ Agent Mode</span><span class="td">Cmd+I</span></div><div style="padding:5px 8px;font-size:10px"><span style="color:#834DF0">❯</span> <span class="tw">自然语言任务</span></div></div><div style="margin-top:4px"><div style="background:#1a1a22;border:1.5px solid #2a2a35;border-radius:5px;overflow:hidden"><div style="padding:3px 8px;background:#1a1a22;font-size:9px;display:flex;align-items:center;gap:4px;border-bottom:.5px solid #2a2a35"><span class="tag tg2">⬣ Terminal</span></div><div style="padding:5px 8px;font-size:10px"><span class="tg">❯</span> <span class="tg">git status</span></div></div></div></div></div></td>
+            <td class="ui-cell"><div class="mt"><div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">gemini autodetect</span></div><div class="mb"><div style="background:#1a1a22;border:.5px solid #2a2a1a;border-radius:4px;padding:4px 8px;margin-bottom:4px;font-size:10px"><span class="tag ty3">⟳ autodetected: agent</span> <span class="tw">分析这个错误</span></div><div style="background:#1a1a22;border:.5px solid #1a2a1a;border-radius:4px;padding:4px 8px;font-size:10px"><span class="tag tg2">⬣ terminal</span> <span class="tg">ls -la</span></div></div></div></td>
+          <td class="ui-cell"><div class="mt"><div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">codex no mode</span></div><div class="mb"><div class="td" style="font-size:9px">无模式切换，始终是 agent 执行</div><div class="td" style="font-size:9px;margin-top:3px">⠿ Working...</div></div></div></td></tr>
+          <tr><td class="dim-cell">指示机制</td><td>Prompt 前缀文字变化（aider$ / /ask mode&gt; / /code mode&gt;）</td><td>输入框顶部小字标注，Shift+Tab 快捷切换 5 种模式</td><td>输入框有 Badge 标签 + 边框颜色双重强调，Cmd+I 切换</td><td>本地 AI 自动检测输入类型，标签实时变化</td><td>无。只有 agent 执行模式，无需切换</td></tr>
+          <tr><td class="dim-cell">可见性</td><td>低：前缀文字小，混在 prompt 里，容易忽视</td><td>中：需要看顶部小字，不在视觉焦点</td><td>高：Badge + 边框颜色，两种模式视觉差异明显</td><td>中高：标签实时变化，混在输入框内</td><td>无</td></tr>
+          <tr>
+            <td class="dim-cell">优势</td>
+            <td><span class="pt pro">终端原生，无视觉侵入</span><span class="pt pro">/命令精确控制</span></td>
+            <td><span class="pt pro">5 种模式覆盖全场景</span><span class="pt pro">Shift+Tab 快速切换</span></td>
+            <td><span class="pt pro">视觉区分最强，不会混淆</span><span class="pt pro">Badge + 边框双重强调</span></td>
+            <td><span class="pt pro">老用户零感知，自然过渡</span><span class="pt pro">本地检测，不上传，隐私</span></td>
+          <td><span class="pt pro">无需学习模式切换</span></td></tr>
+          <tr>
+            <td class="dim-cell">劣势</td>
+            <td><span class="pt con">模式状态不够显眼，容易忘记当前模式</span><span class="pt con">无 Agent/Terminal 视觉区分</span></td>
+            <td><span class="pt con">小字标注不够醒目</span><span class="pt con">5 种模式记忆负担大</span></td>
+            <td><span class="pt con">依赖 Warp 框架</span></td>
+            <td><span class="pt con">误判时影响信任感</span><span class="pt con">两模式混用心智模型不清晰</span></td>
+          <td><span class="pt con">无法切换模式</span><span class="pt con">灵活性差</span></td></tr>
+          <tr class="sum-row"><td class="dim-cell">总结</td><td class="vd-cell">指示最弱</td><td class="vd-cell">功能全，但可见性不足</td><td class="vd-cell">可见性最强，是最优解</td><td class="vd-cell">最优雅的渗透，靠检测有风险</td><td>无模式即无指示符，最简单</td></tr>
+        </tbody>
+      </table>
+      <div class="t-verdict"><strong>推荐：</strong>借鉴 Warp 的 Badge + 边框颜色（Agent 模式紫色边框，Terminal 模式灰色边框），配合 Cmd+I 显式切换。不做隐式自动检测——避免误判带来的信任损耗。</div>
+    </div>
+  </div>
+</div>
+
+<!-- ──────────── TP: @ 文件补全 ──────────── -->
+<div class="section cmp-section" id="tp-at">
+  <div class="slabel">
+    <span class="sub">Touchpoint 04 · 表达意图 · Industry Comparison</span>
+    <span class="main">@ 文件补全</span>
+  </div>
+  <div class="section-inner">
+    <div class="cmp-wrap">
+      <table class="cmp-tbl">
+        <colgroup><col style="width:10%"><col style="width:18.0%"><col style="width:18.0%"><col style="width:18.0%"><col style="width:18.0%"><col style="width:18.0%"></colgroup>
+        <thead><tr>
+          <th>维度</th>
+          <th class="prod-head"><div class="ph-inner"><span class="ph-name">Aider /add</span><span class="ph-sub">命令式显式添加</span><div class="ph-badges"><span class="bdg bdg-ai">OSS</span></div></div></th>
+          <th class="prod-head"><div class="ph-inner"><span class="ph-name">Claude Code</span><span class="ph-sub">@ 触发补全弹窗</span><div class="ph-badges"><span class="bdg bdg-cc">Anthropic</span></div></div></th>
+          <th class="prod-head"><div class="ph-inner"><span class="ph-name">Warp</span><span class="ph-sub">@引用 + Chips 集成</span><div class="ph-badges"><span class="bdg bdg-wp">Warp</span></div></div></th>
+          <th class="prod-head"><div class="ph-inner"><span class="ph-name">Gemini CLI</span><span class="ph-sub">GEMINI.md 全局上下文</span><div class="ph-badges"><span class="bdg bdg-gc">Google</span></div></div></th>
+        <th class="prod-head"><div class="ph-inner"><span class="ph-name">Codex CLI</span><span class="ph-sub">AI 自动读取 · 无手动引用</span><div class="ph-badges"><span class="bdg bdg-cx">OpenAI</span></div></div></th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="dim-cell">界面形态</td>
+            <td class="ui-cell"><div class="mt"><div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">aider /add</span></div><div class="mb"><div><span class="tp">aider$</span> <span class="tw">/add src/auth.ts src/types.ts</span></div><div class="tg" style="font-size:10px">Added auth.ts, types.ts.</div><div class="td" style="font-size:9px">Repo-map: 1,024 tokens</div></div></div></td>
+            <td class="ui-cell"><div class="mt"><div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">claude code @</span></div><div class="mb"><div style="background:#1a1a22;border:.5px solid #834DF0;border-radius:5px;padding:5px 9px;font-size:10px"><span style="color:#834DF0">❯</span> <span class="tw">重构 </span><span class="tb">@src/auth</span></div><div style="margin-top:3px;background:#0a0a0f;border:.5px solid #1a1a22;border-radius:4px"><div class="td" style="padding:2px 7px;font-size:9px">文件补全</div><div style="padding:2px 7px;font-size:10px;color:#60a5fa">src/auth.ts</div><div style="padding:2px 7px;font-size:10px;background:rgba(131,77,240,.12);color:#a78bfa">src/auth.test.ts ↵</div><div style="padding:2px 7px;font-size:10px;color:#60a5fa">src/authUtils.ts</div></div></div></div></td>
+            <td class="ui-cell"><div class="mt"><div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">warp @+chips</span></div><div class="mb"><div style="background:#0d0f13;border:.5px solid rgba(131,77,240,.3);border-radius:5px;overflow:hidden"><div style="padding:4px 8px;background:rgba(131,77,240,.08);border-bottom:.5px solid rgba(131,77,240,.15);display:flex;gap:3px;flex-wrap:wrap;align-items:center;font-size:9px"><span class="tag tg2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg> auth.ts ×</span><span class="tag tg2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg> types.ts ×</span><span class="tag tb3"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><line x1="6" y1="3" x2="6" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><circle cx="6" cy="6" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg> main +2</span></div><div style="padding:5px 8px;font-size:10px"><span style="color:#834DF0">❯</span> <span class="tw">分析测试失败</span></div></div></div></div></td>
+            <td class="ui-cell"><div class="mt"><div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">gemini 1M context</span></div><div class="mb"><div class="td" style="font-size:9px">GEMINI.md loaded · 1M tokens</div><div style="height:4px"></div><div><span class="tc">~/myapp</span> <span style="color:#834DF0">›</span> <span class="tw">分析整个 monorepo</span></div><div class="td" style="font-size:9px;margin-top:2px">无需 @ 引用</div></div></div></td>
+          <td class="ui-cell"><div class="mt"><div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">codex auto</span></div><div class="mb"><div style="font-size:9px">codex&gt; <span class="tw">重构 auth 模块</span></div><div class="td" style="font-size:9px;margin-top:3px">AI 自动决定读取哪些文件</div></div></div></td></tr>
+          <tr><td class="dim-cell">引用机制</td><td>/add 命令显式添加，repo-map 自动索引相关文件</td><td>@ 触发补全弹窗，引用后 inline Chip 展示</td><td>@ 引用 + Git Chip + 自动推断相关文件</td><td>GEMINI.md 注入全局上下文，1M token 无需手动选</td><td>AI 自动决定读取文件，无手动引用</td></tr>
+          <tr>
+            <td class="dim-cell">优势</td>
+            <td><span class="pt pro">上下文完全可控，精确</span><span class="pt pro">repo-map 自动补充相关文件</span></td>
+            <td><span class="pt pro">@ 触发直觉，学习成本极低</span><span class="pt pro">引用后 Chip 显示，上下文透明</span></td>
+            <td><span class="pt pro">Chip 让上下文持续可见</span><span class="pt pro">Chip 可点击移除，动态调整</span></td>
+            <td><span class="pt pro">1M 上下文无需手动选文件</span><span class="pt pro">GEMINI.md 持久化项目上下文</span></td>
+          <td><span class="pt pro">零操作，AI 全自动</span></td></tr>
+          <tr>
+            <td class="dim-cell">劣势</td>
+            <td><span class="pt con">需记 /add 命令，有学习成本</span><span class="pt con">路径手动输入，容易出错</span></td>
+            <td><span class="pt con">弹窗响应速度影响体验</span><span class="pt con">大 monorepo 补全精准度有限</span></td>
+            <td><span class="pt con">输入框变重，简单任务噪声大</span><span class="pt con">依赖完整 Warp 生态</span></td>
+            <td><span class="pt con">用户不清楚 AI 在看什么</span><span class="pt con">大上下文增加成本和延迟</span></td>
+          <td><span class="pt con">上下文完全不透明</span><span class="pt con">AI 读错文件时无法干预</span></td></tr>
+          <tr class="sum-row"><td class="dim-cell">总结</td><td class="vd-cell">精确控制，摩擦高</td><td class="vd-cell">@ 触发已成行业标准</td><td class="vd-cell">上下文可视化最高水平</td><td class="vd-cell">能力强，透明度不足</td><td>全自动但黑盒</td></tr>
+        </tbody>
+      </table>
+      <div class="t-verdict"><strong>推荐：</strong>@ 补全弹窗延迟 &lt;100ms，模糊搜索 + 最近使用优先排序。引用后以 Chip 展示可移除。AI 自动推断额外读取的文件作为次级提示，透明而非黑盒。</div>
+    </div>
+  </div>
+</div>
+
+<!-- ──────────── TP: Context Chips ──────────── -->
+<div class="section cmp-section" id="tp-chips">
+  <div class="slabel">
+    <span class="sub">Touchpoint 05 · 表达意图 · Industry Comparison</span>
+    <span class="main">Context Chips</span>
+  </div>
+  <div class="section-inner">
+    <div class="cmp-wrap">
+      <table class="cmp-tbl">
+        <colgroup><col style="width:10%"><col style="width:18.0%"><col style="width:18.0%"><col style="width:18.0%"><col style="width:18.0%"><col style="width:18.0%"></colgroup>
+        <thead><tr>
+          <th>维度</th>
+          <th class="prod-head"><div class="ph-inner"><span class="ph-name">Aider</span><span class="ph-sub">无 Chips · 上下文完全隐式</span><div class="ph-badges"><span class="bdg bdg-ai">Aider</span></div></div></th>
+          <th class="prod-head"><div class="ph-inner"><span class="ph-name">Claude Code</span><span class="ph-sub">轻量 Chips · 文件引用内联</span><div class="ph-badges"><span class="bdg bdg-cc">Claude Code</span></div></div></th>
+          <th class="prod-head"><div class="ph-inner"><span class="ph-name">Warp</span><span class="ph-sub">富 Chips · 模式+文件+Git+费用</span><div class="ph-badges"><span class="bdg bdg-wp">Warp</span></div></div></th>
+          <th class="prod-head"><div class="ph-inner"><span class="ph-name">Gemini CLI</span><span class="ph-sub">Prompt 行嵌入 · 状态文字化</span><div class="ph-badges"><span class="bdg bdg-gc">Gemini CLI</span></div></div></th>
+        <th class="prod-head"><div class="ph-inner"><span class="ph-name">Codex CLI</span><span class="ph-sub">无 Chips · 完全隐式</span><div class="ph-badges"><span class="bdg bdg-cx">OpenAI</span></div></div></th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="dim-cell">界面形态</td>
+            <td class="ui-cell"><div class="mt"><div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">aider no chips</span></div><div class="mb"><div class="td" style="font-size:9px">上下文文件隐式存在</div><div class="td" style="font-size:9px">/ls-files 查看列表</div><div style="height:5px"></div><div><span class="tp">aider$</span> <span class="tw">修复 bug</span><div class="cur" style="display:inline-block"></div></div></div></div></td>
+            <td class="ui-cell"><div class="mt"><div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">claude code chips</span></div><div class="mb"><div style="background:#1a1a22;border:.5px solid #834DF0;border-radius:5px;overflow:hidden"><div style="padding:3px 8px;background:rgba(131,77,240,.08);border-bottom:.5px solid rgba(131,77,240,.15);display:flex;gap:3px;font-size:9px;align-items:center"><span class="tag tg2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg> auth.ts</span><span class="tag tg2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg> types.ts</span><span class="tag tb3"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><line x1="6" y1="3" x2="6" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><circle cx="6" cy="6" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg> main</span></div><div style="padding:5px 8px;font-size:10px"><span style="color:#834DF0">❯</span> <span class="tw">修复这个 bug</span></div></div></div></div></td>
+            <td class="ui-cell"><div class="mt"><div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">warp rich chips</span></div><div class="mb"><div style="background:#0d0f13;border:.5px solid rgba(131,77,240,.3);border-radius:5px;overflow:hidden"><div style="padding:4px 8px;background:rgba(131,77,240,.08);border-bottom:.5px solid rgba(131,77,240,.15);display:flex;gap:3px;flex-wrap:wrap;align-items:center;font-size:9px"><span class="tag tp3">✦ Agent</span><span class="tag tg2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg> auth.ts ×</span><span class="tag tg2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg> types.ts ×</span><span class="tag tb3"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><line x1="6" y1="3" x2="6" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><circle cx="6" cy="6" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg> main +2</span><span style="margin-left:auto;font-size:8px;color:var(--td)">sonnet ▾</span></div><div style="padding:5px 8px;font-size:10px"><span style="color:#834DF0">❯</span> <span class="tw">分析失败</span></div></div></div></div></td>
+            <td class="ui-cell"><div class="mt"><div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">gemini prompt</span></div><div class="mb"><div style="font-size:10px"><span class="tc">~/myapp</span><span class="td">[gemini-pro]</span><span class="ty">[plan]</span><span style="color:#834DF0">›</span> <span class="tw">分析</span><div class="cur" style="display:inline-block"></div></div><div class="td" style="font-size:9px;margin-top:3px">状态信息嵌在 prompt 行</div></div></div></td>
+          <td class="ui-cell"><div class="mt"><div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">codex no chips</span></div><div class="mb"><div class="td" style="font-size:9px">上下文：完全不可见</div><div style="height:4px"></div><div style="font-size:9px">codex&gt; <span class="tw">分析错误</span><div class="cur" style="display:inline-block"></div></div></div></div></td></tr>
+          <tr><td class="dim-cell">展示内容</td><td>无。上下文靠 /ls-files 查看，完全隐式</td><td>附加文件、Git 分支，内联在输入框顶部</td><td>模式、附加文件（可关闭）、Git 状态（含变更数）、模型名、费用角标</td><td>工作目录、模型名、Plan Mode 状态嵌入 prompt 行，不可交互</td><td>无。上下文完全不展示</td></tr>
+          <tr><td class="dim-cell">可操作性</td><td>无</td><td>有限：可见但无法直接操作</td><td>强：可点击移除文件、导航分支、切换模型</td><td>无：纯文字标注</td><td>无</td></tr>
+          <tr>
+            <td class="dim-cell">优势</td>
+            <td><span class="pt pro">最简洁，无视觉噪声</span></td>
+            <td><span class="pt pro">基础可见性，零噪声</span><span class="pt pro">与 @ 引用无缝集成</span></td>
+            <td><span class="pt pro">状态与操作合一</span><span class="pt pro">可点击 Chip 操作，减少命令记忆</span></td>
+            <td><span class="pt pro">终端原生，无框架依赖</span></td>
+          <td><span class="pt pro">界面最干净</span></td></tr>
+          <tr>
+            <td class="dim-cell">劣势</td>
+            <td><span class="pt con">上下文完全不透明，容易误操作</span><span class="pt con">忘记添加文件时 AI 无声失败</span></td>
+            <td><span class="pt con">可操作性弱，只能看不能改</span></td>
+            <td><span class="pt con">输入框变重，简单任务噪声大</span><span class="pt con">依赖 Warp 生态</span></td>
+            <td><span class="pt con">交互性弱，纯展示</span><span class="pt con">prompt 行容易过长</span></td>
+          <td><span class="pt con">上下文完全黑盒</span><span class="pt con">出错时无法判断原因</span></td></tr>
+          <tr class="sum-row"><td class="dim-cell">总结</td><td class="vd-cell">上下文黑盒，最不推荐</td><td class="vd-cell">基础可见性，够用</td><td class="vd-cell">最丰富，状态操作合一</td><td class="vd-cell">原生但可见性有限</td><td>最黑盒，不推荐</td></tr>
+        </tbody>
+      </table>
+      <div class="t-verdict"><strong>推荐：</strong>Chips 初始最少（只显示引用文件），随使用深度渐进丰富。Chip 超 3 个折叠为 "+N"。关键 Chip：引用文件（可点击移除）+ 权限模式（颜色区分）+ 费用角标（实时更新）。</div>
+    </div>
+  </div>
+</div>
+
+<!-- ──────────── TP: 模型选择器 ──────────── -->
+<div class="section cmp-section" id="tp-model">
+  <div class="slabel">
+    <span class="sub">Touchpoint 06 · 表达意图 · Industry Comparison</span>
+    <span class="main">模型选择器</span>
+  </div>
+  <div class="section-inner">
+    <div class="cmp-wrap">
+      <table class="cmp-tbl">
+        <colgroup><col style="width:10%"><col style="width:18.0%"><col style="width:18.0%"><col style="width:18.0%"><col style="width:18.0%"><col style="width:18.0%"></colgroup>
+        <thead><tr>
+          <th>维度</th>
+          <th class="prod-head"><div class="ph-inner"><span class="ph-name">Aider</span><span class="ph-sub">/model 命令式</span><div class="ph-badges"><span class="bdg bdg-ai">OSS</span></div></div></th>
+          <th class="prod-head"><div class="ph-inner"><span class="ph-name">Claude Code</span><span class="ph-sub">--model 参数 + /model</span><div class="ph-badges"><span class="bdg bdg-cc">Anthropic</span></div></div></th>
+          <th class="prod-head"><div class="ph-inner"><span class="ph-name">Gemini CLI</span><span class="ph-sub">/model 命令 + 状态可见</span><div class="ph-badges"><span class="bdg bdg-gc">Google</span></div></div></th>
+          <th class="prod-head"><div class="ph-inner"><span class="ph-name">Warp</span><span class="ph-sub">Chip 内嵌下拉选择器</span><div class="ph-badges"><span class="bdg bdg-wp">Warp</span></div></div></th>
+        <th class="prod-head"><div class="ph-inner"><span class="ph-name">Codex CLI</span><span class="ph-sub">Auto-routing · 智能路由</span><div class="ph-badges"><span class="bdg bdg-cx">OpenAI</span></div></div></th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="dim-cell">界面形态</td>
+            <td class="ui-cell"><div class="mt"><div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">aider /model</span></div><div class="mb"><div><span class="tp">aider$</span> <span class="tw">/model claude-haiku</span></div><div class="tg" style="font-size:10px">Switching to haiku-4-5...</div><div style="height:4px"></div><div><span class="tp">aider$</span> <span class="td">[↑↓ 历史]</span></div></div></div></td>
+            <td class="ui-cell"><div class="mt"><div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">claude code</span></div><div class="mb"><div class="td" style="font-size:9px">$ claude --model haiku</div><div class="td" style="font-size:9px">或会话中: /model opus</div><div style="height:4px"></div><div style="background:#1a1a22;border:.5px solid #834DF0;border-radius:4px;padding:4px 8px;font-size:10px"><span style="color:#834DF0">❯</span> <span class="tw">[↑↓ 上一条指令]</span></div></div></div></td>
+            <td class="ui-cell"><div class="mt"><div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">gemini /model</span></div><div class="mb"><div><span class="tc">~/myapp ›</span> <span class="tw">/model flash</span></div><div class="tg" style="font-size:10px">Switched: gemini-2.5-flash</div><div style="height:3px"></div><div style="font-size:10px"><span class="tc">~/myapp</span><span class="td">[flash]</span><span style="color:#834DF0">›</span></div></div></div></td>
+            <td class="ui-cell"><div class="mt"><div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">warp chip dropdown</span></div><div class="mb"><div style="background:#0a0a0f;border:.5px solid #1a1a22;border-radius:5px;font-size:10px;padding:3px 0"><div style="padding:3px 8px;color:#a78bfa;background:rgba(131,77,240,.1)">✓ claude-sonnet · $$ · 快速</div><div style="padding:3px 8px;color:var(--td)">claude-haiku · $ · 极快</div><div style="padding:3px 8px;color:var(--td)">claude-opus · $$$ · 深度</div></div></div></div></td>
+          <td class="ui-cell"><div class="mt"><div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">codex auto-route</span></div><div class="mb"><div class="tg" style="font-size:10px">✔ <span class="td">auto-route: o3-mini</span></div><div class="td" style="font-size:9px;margin-top:2px">根据任务复杂度自动选模型</div><div class="td" style="font-size:9px">--model flag 可手动覆盖</div></div></div></td></tr>
+          <tr><td class="dim-cell">切换方式</td><td>/model 命令，任意 LLM API，无图形界面</td><td>启动参数或 /model 命令，Banner 显示当前模型</td><td>/model 命令，切换后 Prompt 行显示新模型</td><td>Chip 点击弹出下拉，标注成本/速度/场景，无需记命令</td><td>--model flag 覆盖，默认 auto-routing 按复杂度选（o1/o3/o3-mini）</td></tr>
+          <tr><td class="dim-cell">当前模型可见性</td><td>低：只在启动 Banner 显示，切换后不可见</td><td>中：Banner 和 /model 输出可见，非持续</td><td>中高：切换后 Prompt 行持续展示模型名</td><td>高：Chip 中始终可见，可点击切换</td><td>中：auto-route 结果在每次响应前显示</td></tr>
+          <tr>
+            <td class="dim-cell">优势</td>
+            <td><span class="pt pro">支持任意 LLM，最灵活</span><span class="pt pro">老用户熟悉命令行习惯</span></td>
+            <td><span class="pt pro">Haiku/Sonnet/Opus 灵活切换</span><span class="pt pro">支持自定义 base URL</span></td>
+            <td><span class="pt pro">切换后模型名持续可见</span><span class="pt pro">Pro/Flash 快速切换，成本灵活</span></td>
+            <td><span class="pt pro">图形化，无需记命令</span><span class="pt pro">成本/速度/场景标签辅助决策</span></td>
+          <td><span class="pt pro">auto-routing 按任务复杂度智能选模型</span><span class="pt pro">用户无需了解模型差异</span></td></tr>
+          <tr>
+            <td class="dim-cell">劣势</td>
+            <td><span class="pt con">需记 /model 命令，不直观</span><span class="pt con">切换后无持久可见确认</span></td>
+            <td><span class="pt con">无图形化选择器</span><span class="pt con">模型名在 Banner 后不持续可见</span></td>
+            <td><span class="pt con">无模型成本/速度标注</span><span class="pt con">Prompt 行过长影响体验</span></td>
+            <td><span class="pt con">依赖 Warp 框架</span></td>
+          <td><span class="pt con">路由决策对用户不透明</span><span class="pt con">无图形化选择器</span></td></tr>
+          <tr class="sum-row"><td class="dim-cell">总结</td><td class="vd-cell">灵活但不直观</td><td class="vd-cell">功能全，可见性可改进</td><td class="vd-cell">可见性较好，缺成本标注</td><td class="vd-cell">最直观，图形化是正确方向</td><td>Auto-routing 独特，缺可见性</td></tr>
+        </tbody>
+      </table>
+      <div class="t-verdict"><strong>推荐：</strong>Chip 内嵌下拉选择器 + 每个模型标注速度/成本/最适场景。当前模型始终在 Chip 可见。子 Agent 自动使用低成本模型，用户可调整策略控制成本。</div>
+    </div>
+  </div>
+</div>
+
+<!-- ──────────── TP: 历史记录 ──────────── -->
+<div class="section cmp-section" id="tp-history">
+  <div class="slabel">
+    <span class="sub">Touchpoint 07 · 表达意图 · Industry Comparison</span>
+    <span class="main">历史记录</span>
+  </div>
+  <div class="section-inner">
+    <div class="cmp-wrap">
+      <table class="cmp-tbl">
+        <colgroup><col style="width:10%"><col style="width:18.0%"><col style="width:18.0%"><col style="width:18.0%"><col style="width:18.0%"><col style="width:18.0%"></colgroup>
+        <thead><tr>
+          <th>维度</th>
+          <th class="prod-head"><div class="ph-inner"><span class="ph-name">Aider / Claude Code</span><span class="ph-sub">↑↓ 浏览 · 无持久化</span><div class="ph-badges"><span class="bdg bdg-ai">Aider</span><span class="bdg bdg-cc">Claude Code</span></div></div></th>
+          <th class="prod-head"><div class="ph-inner"><span class="ph-name">Gemini CLI</span><span class="ph-sub">Ctrl+R 模糊搜索 · 跨会话</span><div class="ph-badges"><span class="bdg bdg-gc">Google</span></div></div></th>
+          <th class="prod-head"><div class="ph-inner"><span class="ph-name">Warp</span><span class="ph-sub">跨会话持久 + 搜索 + 分组</span><div class="ph-badges"><span class="bdg bdg-wp">Warp</span></div></div></th>
+          <th class="prod-head"><div class="ph-inner"><span class="ph-name">目标方案</span><span class="ph-sub">结合以上优点的设计目标</span><div class="ph-badges"><span class="bdg" style="background:#EFF6FF;color:#1E40AF;border:.5px solid #93C5FD">New</span></div></div></th>
+        <th class="prod-head"><div class="ph-inner"><span class="ph-name">Codex CLI</span><span class="ph-sub">基础 ↑↓ · 无持久化</span><div class="ph-badges"><span class="bdg bdg-cx">OpenAI</span></div></div></th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="dim-cell">界面形态</td>
+            <td class="ui-cell"><div class="mt"><div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">arrow keys history</span></div><div class="mb"><div style="background:#1a1a22;border:.5px solid #834DF0;border-radius:4px;padding:4px 8px;font-size:10px"><span style="color:#834DF0">❯</span> <span class="tw">[↑ 上一条] [↓ 下一条]</span></div><div class="td" style="font-size:9px;margin-top:2px">会话内有效 · 无搜索</div></div></div></td>
+            <td class="ui-cell"><div class="mt"><div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">ctrl+r search</span></div><div class="mb"><div style="background:#1a1a22;border:.5px solid #2a2a2a;border-radius:4px;padding:4px 8px"><div style="color:#4dd0e1;font-size:9px">Ctrl+R 搜索</div><div class="tw" style="font-size:10px">重构 auth (匹配3条)</div></div><div class="td" style="font-size:9px;margin-top:2px">跨会话持久 · 模糊搜索</div></div></div></td>
+            <td class="ui-cell"><div class="mt"><div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">warp history panel</span></div><div class="mb"><div style="border:.5px solid #2a2a35;border-radius:4px;overflow:hidden"><div style="background:#1a1a22;padding:3px 7px;font-size:9px;border-bottom:.5px solid #2a2a35"><span class="tb">History</span></div><div style="padding:3px 7px;font-size:9px;color:#888">重构 auth 错误处理 — 2h</div><div style="padding:3px 7px;font-size:9px;color:#888">写单元测试 @auth — 昨天</div><div style="padding:3px 7px;font-size:9px;color:#888">分析 PR #42 — 3天前</div></div></div></div></td>
+            <td class="ui-cell"><div class="mt"><div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">ideal — our target</span></div><div class="mb"><div style="background:#1a1a22;border:.5px solid #2a2a2a;border-radius:4px;padding:4px 8px"><div style="color:#4dd0e1;font-size:9px">Ctrl+R 搜索 · 200 条 · 跨会话</div><div class="tw" style="font-size:10px">重构 auth.ts 错误处理 — 2h ago</div><div style="font-size:9px;color:#555;margin-top:2px">重构 payment 模块 · 昨天</div></div><div class="td" style="font-size:9px;margin-top:2px">预览完整内容 · 可复用</div></div></div></td>
+          <td class="ui-cell"><div class="mt"><div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">codex history</span></div><div class="mb"><div style="background:#1a1a22;border:.5px solid #2a2a2a;border-radius:4px;padding:4px 8px"><div class="td" style="font-size:9px">↑↓ 浏览 · 仅会话内</div></div></div></div></td></tr>
+          <tr><td class="dim-cell">搜索能力</td><td>无搜索，只能 ↑↓ 遍历</td><td>Ctrl+R 模糊搜索，输入关键词过滤</td><td>搜索 + 按时间/项目分组</td><td>Ctrl+R 模糊搜索，支持搜索文件名和内容关键词</td><td>无搜索</td></tr>
+          <tr><td class="dim-cell">持久化</td><td>会话内，退出后消失</td><td>跨会话持久化，永久保存</td><td>跨会话持久化，可按项目筛选</td><td>跨会话持久，最近 200 条，按项目分组</td><td>会话内，退出后消失</td></tr>
+          <tr>
+            <td class="dim-cell">优势</td>
+            <td><span class="pt pro">零学习，肌肉记忆</span><span class="pt pro">终端原生行为</span></td>
+            <td><span class="pt pro">Ctrl+R 搜索最高效</span><span class="pt pro">跨会话持久化</span></td>
+            <td><span class="pt pro">历史最完整，可按项目筛选</span><span class="pt pro">面板展示预览</span></td>
+            <td><span class="pt pro">搜索 + 持久 + 预览三合一</span></td>
+          <td><span class="pt pro">终端原生</span></td></tr>
+          <tr>
+            <td class="dim-cell">劣势</td>
+            <td><span class="pt con">无搜索，历史条数多时极低效</span><span class="pt con">退出即消失</span></td>
+            <td><span class="pt con">无预览，只显示截断的前几个字</span></td>
+            <td><span class="pt con">依赖 Warp 框架</span><span class="pt con">历史面板切换打断输入</span></td>
+            <td></td>
+          <td><span class="pt con">无搜索，无持久化</span></td></tr>
+          <tr class="sum-row"><td class="dim-cell">总结</td><td class="vd-cell">最基础，高频使用后低效</td><td class="vd-cell">Ctrl+R 是最实用的改进</td><td class="vd-cell">功能最完整</td><td class="vd-cell">结合以上优点的设计目标</td><td>最基础</td></tr>
+        </tbody>
+      </table>
+      <div class="t-verdict"><strong>推荐：</strong>Ctrl+R 模糊搜索（跨会话持久，最近 200 条）+ 搜索结果可预览完整指令内容（不只是截断的前几个字）+ 按项目/时间分组，不需要切面板即可浏览。</div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════ REC SECTIONS ══════ -->
+
+<div class="section rec-section" id="tp-input-pos-rec">
+  <div class="slabel"><span class="sub">Touchpoint 02A · Our Direction</span><span class="main">输入框位置 &amp; 形态 — 我们的方向</span></div>
+  <div class="section-inner"><div class="rec-inner">
+    <div class="rec-l">
+      <div class="rec-hl"><div class="rht">固定底部为基础，长任务自动提示分离视图</div><div class="rhb">默认固定底部（成本最低、体验最佳的起点）。当 AI 进入超过 5 步的长任务执行时，输入框上方出现"切换到 Agent 视图？"提示，用户可选择切换或留在当前视图，不强制。</div></div>
+      <div class="rec-p"><div class="rn">01</div><div><div class="rt">输入框锚定底部，始终在视野内</div><div class="rd">无论对话有多长，输入框永远在屏幕底部。用户不会"找不到输入框"——这是减少使用摩擦最有效的单一设计决策。固定底部同时让输出区域可以自由滚动，历史内容随时可查。</div></div></div>
+      <div class="rec-p"><div class="rn">02</div><div><div class="rt">长任务自动提示切换分离视图</div><div class="rd">检测到 AI 开始执行超过 5 步的长任务时，在输入框上方出现轻量提示："任务正在后台执行（3/8 步）· 切换到 Agent 视图？"。用户可切换或忽略，两种视图都完整支持。</div></div></div>
+      <div class="rec-p"><div class="rn">03</div><div><div class="rt">分离视图：左历史右任务，可同时操作</div><div class="rd">切换到分离视图后，左侧为历史对话（可继续输入短任务），右侧为当前 Agent 任务状态。用户在等待 Agent 执行时可以同时做其他短任务，不需要干等。</div></div></div>
+    </div>
+    <div class="rec-r"><div class="mt" style="font-size:12px;line-height:1.8">
+      <div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">input position · our design</span></div>
+      <div class="mb">
+        <div class="td" style="font-size:9px;margin-bottom:4px">默认：固定底部编辑器</div>
+        <div style="background:#141419;border:.5px solid rgba(131,77,240,.35);border-radius:7px;overflow:hidden;margin-bottom:8px">
+          <div style="padding:4px 9px;background:rgba(131,77,240,.1);border-bottom:.5px solid rgba(131,77,240,.2);font-size:9px;color:#a78bfa"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> 固定底部 · 始终可见</div>
+          <div style="padding:6px 9px;font-size:11px"><span style="color:#834DF0">❯</span> <span class="tw">输入任务</span><div class="cur" style="display:inline-block"></div></div>
+        </div>
+        <div class="td" style="font-size:9px;margin-bottom:4px">长任务执行中：自动提示</div>
+        <div style="background:rgba(131,77,240,.06);border:.5px solid rgba(131,77,240,.2);border-radius:6px;padding:7px 9px;font-size:10px">
+          <div style="color:#a78bfa;margin-bottom:4px">⠿ 任务正在执行 (3/8 步)</div>
+          <div style="display:flex;gap:8px;font-size:9px"><span style="color:#834DF0;cursor:pointer">切换到 Agent 视图 →</span><span style="color:var(--td);cursor:pointer">继续当前</span></div>
+        </div>
+      </div>
+    </div></div>
+  </div></div>
+</div>
+
+<div class="section rec-section" id="tp-input-edit-rec">
+  <div class="slabel"><span class="sub">Touchpoint 02B · Our Direction</span><span class="main">输入框编辑能力 — 我们的方向</span></div>
+  <div class="section-inner"><div class="rec-inner">
+    <div class="rec-l">
+      <div class="rec-hl"><div class="rht">多行编辑 + Ctrl+R 历史搜索 + 语法高亮</div><div class="rhb">多行编辑让复杂指令可以换行写清楚；Ctrl+R 跨会话历史搜索让常用指令可以快速复用；输入区语法高亮（@ 引用蓝色 / /命令紫色 / 路径绿色）让指令结构一目了然。</div></div>
+      <div class="rec-p"><div class="rn">01</div><div><div class="rt">Shift+Enter 换行，光标自由移动</div><div class="rd">支持多行编辑，Shift+Enter 换行，Enter 提交。光标可自由定位，Ctrl+A 全选，Ctrl+K 删到行末。让用户写复杂多步指令时，体验与在编辑器里写注释一样。</div></div></div>
+      <div class="rec-p"><div class="rn">02</div><div><div class="rt">Ctrl+R 历史搜索，Tab 编辑后复用</div><div class="rd">Ctrl+R 触发历史搜索弹窗，支持模糊搜索，结果显示完整指令预览。Enter 直接复用，Tab 填入输入框进入编辑状态，让用户可以在历史基础上微调再复用。跨会话持久 200 条。</div></div></div>
+      <div class="rec-p"><div class="rn">03</div><div><div class="rt">输入区语法高亮，结构一目了然</div><div class="rd">@引用蓝色，/命令紫色，文件路径绿色，普通文字白色。这个高亮不只是好看——它给用户"我的指令被正确解析了"的信心，同时让错误（比如 @ 后面打错文件名）在提交前就能发现。</div></div></div>
+    </div>
+    <div class="rec-r"><div class="mt" style="font-size:12px;line-height:1.8">
+      <div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">editing · multiline + syntax highlight</span></div>
+      <div class="mb">
+        <div style="background:#1a1a22;border:.5px solid #834DF0;border-radius:7px;overflow:hidden;margin-bottom:8px">
+          <div style="padding:4px 9px;background:rgba(131,77,240,.1);border-bottom:.5px solid rgba(131,77,240,.2);font-size:9px;color:#a78bfa">多行编辑 · 语法高亮</div>
+          <div style="padding:6px 9px;font-size:11px">
+            <div><span style="color:#834DF0">❯</span> <span style="color:#60a5fa">@src/auth.ts</span> <span class="tw">重构错误处理，需要：</span></div>
+            <div style="padding-left:14px"><span class="tw">1. </span><span style="color:#f87171">TokenExpiredError</span><span class="tw"> 单独处理</span></div>
+            <div style="padding-left:14px"><span class="tw">2. 网络错误重试 3 次</span><div class="cur" style="display:inline-block"></div></div>
+          </div>
+          <div style="padding:3px 9px;border-top:.5px solid rgba(255,255,255,.05);font-size:9px;color:var(--td)">Shift+Enter 换行 · Enter 发送 · Ctrl+R 历史</div>
+        </div>
+        <div style="background:#1a1a22;border:.5px solid #2a2a2a;border-radius:6px;padding:6px 9px">
+          <div style="color:#4dd0e1;font-size:9px;margin-bottom:4px">Ctrl+R 搜索历史</div>
+          <div class="tw" style="font-size:11px">重构</div>
+          <div style="border-top:.5px solid #2a2a35;margin-top:4px;padding-top:4px">
+            <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:3px"><div><div class="tb" style="font-size:10px">重构 auth.ts 错误处理</div><div class="td" style="font-size:9px">@src/auth.ts 重构错误处理，需要：...</div></div><span class="td" style="font-size:8px;flex-shrink:0;margin-left:8px">2h</span></div>
+            <div style="font-size:9px;color:var(--td)">Enter 复用 · Tab 编辑后复用</div>
+          </div>
+        </div>
+      </div>
+    </div></div>
+  </div></div>
+</div>
+
+<div class="section rec-section" id="tp-mode-rec">
+  <div class="slabel"><span class="sub">Touchpoint 03 · Our Direction</span><span class="main">模式指示符 — 我们的方向</span></div>
+  <div class="section-inner"><div class="rec-inner">
+    <div class="rec-l">
+      <div class="rec-hl"><div class="rht">Badge + 边框颜色双重强调，Cmd+I 显式切换</div><div class="rhb">Agent Mode 紫色边框 + Badge，Terminal Mode 灰色边框 + Badge。两种模式视觉差异足够大，用户扫一眼就能识别。Cmd+I 显式切换，不做隐式自动检测——避免误判带来的信任损耗。</div></div>
+      <div class="rec-p"><div class="rn">01</div><div><div class="rt">两种模式视觉差异要足够大</div><div class="rd">Agent Mode 和 Terminal Mode 在颜色（紫色/灰色）、边框粗细、Badge 图标（✦/⬣）三个维度都有明确差异。不能只靠一个小文字标注——那样用户很容易忽视，在错误模式下操作。</div></div></div>
+      <div class="rec-p"><div class="rn">02</div><div><div class="rt">模式状态作为输入框的一部分，始终可见</div><div class="rd">模式指示不放在 Banner（会滚走），不放在状态栏（离输入框太远）。而是作为输入框顶部的 Badge 行，用户在输入的同时就能看到当前模式，不需要移开视线。</div></div></div>
+      <div class="rec-p"><div class="rn">03</div><div><div class="rt">Cmd+I 显式切换，快捷键提示常显</div><div class="rd">切换快捷键 Cmd+I 显示在 Badge 行旁边（小灰字），发现成本为零。切换时边框颜色平滑过渡（200ms 动画），让用户感知到模式确实发生了变化，而不是静默切换。</div></div></div>
+    </div>
+    <div class="rec-r"><div class="mt" style="font-size:12px;line-height:1.8">
+      <div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">mode indicator · visual diff</span></div>
+      <div class="mb">
+        <div class="td" style="font-size:9px;margin-bottom:5px">Agent Mode — 紫色边框 + ✦ Badge:</div>
+        <div style="background:#0d0f13;border:2px solid #834DF0;border-radius:7px;overflow:hidden;margin-bottom:9px">
+          <div style="padding:4px 9px;background:rgba(131,77,240,.12);border-bottom:.5px solid rgba(131,77,240,.22);display:flex;align-items:center;gap:6px;font-size:9px">
+            <span class="tag tp3">✦ Agent Mode</span><span class="td">Cmd+I 切换</span>
+          </div>
+          <div style="padding:6px 9px;font-size:11px"><span style="color:#834DF0">❯</span> <span class="tw">自然语言任务</span><div class="cur" style="display:inline-block"></div></div>
+        </div>
+        <div class="td" style="font-size:9px;margin-bottom:5px">Terminal Mode — 灰色边框 + ⬣ Badge:</div>
+        <div style="background:#141419;border:2px solid #2a2a35;border-radius:7px;overflow:hidden">
+          <div style="padding:4px 9px;background:#1a1a22;border-bottom:.5px solid #2a2a35;display:flex;align-items:center;gap:6px;font-size:9px">
+            <span class="tag tg2">⬣ Terminal Mode</span><span class="td">Cmd+I 切换</span>
+          </div>
+          <div style="padding:6px 9px;font-size:11px"><span class="tg">❯</span> <span class="tg">git status</span></div>
+        </div>
+      </div>
+    </div></div>
+  </div></div>
+</div>
+
+<div class="section rec-section" id="tp-at-rec">
+  <div class="slabel"><span class="sub">Touchpoint 04 · Our Direction</span><span class="main">@ 文件补全 — 我们的方向</span></div>
+  <div class="section-inner"><div class="rec-inner">
+    <div class="rec-l">
+      <div class="rec-hl"><div class="rht">@ 触发 &lt;100ms + 模糊搜索 + 自动推断透明提示</div><div class="rhb">@ 触发补全弹窗延迟 &lt;100ms（这是用户是否养成习惯的关键阈值）。引用后 Chip 展示，可移除。AI 执行过程中自动推断读取的额外文件会以透明提示展示，让上下文从隐式变显式。</div></div>
+      <div class="rec-p"><div class="rn">01</div><div><div class="rt">延迟 &lt;100ms，路径模糊搜索</div><div class="rd">@ 触发后弹窗必须在 100ms 内出现。支持路径模糊匹配（@auth → src/services/auth.ts），最近引用的文件排在最前。这个延迟阈值决定了用户会不会把 @ 引用变成习惯。</div></div></div>
+      <div class="rec-p"><div class="rn">02</div><div><div class="rt">引用后 Chip 展示，超 3 个折叠</div><div class="rd">引用的文件以绿色 Chip 在输入框顶部持续展示，有 × 可移除。超过 3 个时折叠为 "+N 更多文件"，保证输入框始终有足够的输入空间。</div></div></div>
+      <div class="rec-p"><div class="rn">03</div><div><div class="rt">AI 额外读取的文件作为透明提示</div><div class="rd">AI 在执行过程中读取了用户没有 @ 的文件时，在输出区下方出现"<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><line x1="12" y1="2" x2="12" y2="3"/><path d="M12 22v-1M17 6l-1 1M7 6l1 1M4 12H3m18 0h-1"/><path d="M9 21h6M12 5a7 7 0 0 1 7 7c0 2.5-1.5 4.5-3 6H8c-1.5-1.5-3-3.5-3-6a7 7 0 0 1 7-7z"/></svg> AI 还读取了 types.ts"的提示，一键加入上下文。把隐式行为变显式，让用户不再感觉 AI 在"偷偷做什么"。</div></div></div>
+    </div>
+    <div class="rec-r"><div class="mt" style="font-size:12px;line-height:1.8">
+      <div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">@ completion · our design</span></div>
+      <div class="mb">
+        <div style="background:#1a1a22;border:.5px solid #834DF0;border-radius:7px;overflow:hidden;margin-bottom:6px">
+          <div style="padding:4px 9px;background:rgba(131,77,240,.1);border-bottom:.5px solid rgba(131,77,240,.2);display:flex;gap:4px;align-items:center;font-size:9px">
+            <span class="tag tg2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg> auth.ts ×</span><span class="tag tg2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg> types.ts ×</span><span style="color:var(--td)">+1</span>
+          </div>
+          <div style="padding:5px 9px;font-size:10px"><span style="color:#834DF0">❯</span> <span class="tw">重构 </span><span class="tb">@</span><div class="cur" style="display:inline-block"></div></div>
+          <div style="background:#0a0a0f;border-top:.5px solid #1a1a22;font-size:9px">
+            <div style="padding:2px 9px;color:var(--td);font-size:8px">文件补全 · 模糊搜索 (&lt;100ms)</div>
+            <div style="padding:3px 9px;color:#60a5fa;background:rgba(96,165,250,.08)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg> src/auth.ts</div>
+            <div style="padding:3px 9px;color:#a78bfa;background:rgba(131,77,240,.1)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg> src/auth.test.ts ↵</div>
+            <div style="padding:3px 9px;color:#60a5fa"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg> src/authUtils.ts</div>
+          </div>
+        </div>
+        <div style="background:rgba(52,211,153,.06);border:.5px solid rgba(52,211,153,.2);border-radius:5px;padding:6px 9px;font-size:9px">
+          <div style="color:var(--tg);margin-bottom:3px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><line x1="12" y1="2" x2="12" y2="3"/><path d="M12 22v-1M17 6l-1 1M7 6l1 1M4 12H3m18 0h-1"/><path d="M9 21h6M12 5a7 7 0 0 1 7 7c0 2.5-1.5 4.5-3 6H8c-1.5-1.5-3-3.5-3-6a7 7 0 0 1 7-7z"/></svg> AI 还读取了（自动推断）：</div>
+          <div style="display:flex;justify-content:space-between;align-items:center;font-size:9px"><span class="td">src/middleware/auth.ts</span><span style="color:#34d399;cursor:pointer">+ 加入上下文</span></div>
+        </div>
+      </div>
+    </div></div>
+  </div></div>
+</div>
+
+<div class="section rec-section" id="tp-chips-rec">
+  <div class="slabel"><span class="sub">Touchpoint 05 · Our Direction</span><span class="main">Context Chips — 我们的方向</span></div>
+  <div class="section-inner"><div class="rec-inner">
+    <div class="rec-l">
+      <div class="rec-hl"><div class="rht">渐进式 Chips：初始最少，随使用深度丰富</div><div class="rhb">Chips 不是越多越好。初始状态只显示两个最关键的：权限模式（影响自动化安全性）和费用角标（影响使用决策）。引用文件后才出现文件 Chip。Git 状态等信息按需展示，不强迫。</div></div>
+      <div class="rec-p"><div class="rn">01</div><div><div class="rt">权限模式 Chip 最重要，颜色区分</div><div class="rd">权限模式是所有状态中最需要始终可见的——用户必须随时知道 AI 会不会自动执行危险操作。Normal（绿色）、Auto-accept（橙色）、Plan Mode（蓝色），颜色区分，一眼可识，永远不会漏掉。</div></div></div>
+      <div class="rec-p"><div class="rn">02</div><div><div class="rt">费用角标实时更新，点击展开明细</div><div class="rd">累计费用以黄色小角标显示在 Chips 区右侧，随每次操作实时更新。不出现在每条输出中（避免切碎内容），但始终在视野里（避免被遗忘）。点击展开按任务归因的费用明细。</div></div></div>
+      <div class="rec-p"><div class="rn">03</div><div><div class="rt">超 3 个文件折叠，保证输入空间</div><div class="rd">引用文件 Chip 超过 3 个时，自动折叠为 "+N 更多"。点击展开查看完整列表，点击 × 移除。这个约束保证输入框永远有足够的输入空间，不会被 Chips 占满导致打字区域过窄。</div></div></div>
+    </div>
+    <div class="rec-r"><div class="mt" style="font-size:12px;line-height:1.8">
+      <div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">context chips · progressive</span></div>
+      <div class="mb">
+        <div class="td" style="font-size:9px;margin-bottom:4px">初始最简（仅权限模式 + 费用）:</div>
+        <div style="background:#0d0f13;border:.5px solid rgba(131,77,240,.25);border-radius:7px;overflow:hidden;margin-bottom:7px">
+          <div style="padding:4px 9px;background:rgba(131,77,240,.06);border-bottom:.5px solid rgba(131,77,240,.1);display:flex;gap:4px;align-items:center;font-size:9px">
+            <span class="tag" style="background:rgba(52,211,153,.1);color:#34d399;border:.5px solid rgba(52,211,153,.2)">● Normal</span>
+            <span style="margin-left:auto;color:var(--td);font-size:8px">$0.00</span>
+          </div>
+          <div style="padding:6px 9px;font-size:11px"><span style="color:#834DF0">❯</span> <span class="tw">开始输入...</span><div class="cur" style="display:inline-block"></div></div>
+        </div>
+        <div class="td" style="font-size:9px;margin-bottom:4px">深度使用（含引用文件 + 费用明细）:</div>
+        <div style="background:#0d0f13;border:.5px solid rgba(131,77,240,.3);border-radius:7px;overflow:hidden">
+          <div style="padding:5px 9px;background:rgba(131,77,240,.08);border-bottom:.5px solid rgba(131,77,240,.15);display:flex;gap:4px;flex-wrap:wrap;align-items:center;font-size:9px">
+            <span class="tag" style="background:rgba(52,211,153,.12);color:#34d399;border:.5px solid rgba(52,211,153,.25)">● Normal</span>
+            <span class="tag tg2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg> auth.ts ×</span>
+            <span class="tag tg2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg> types.ts ×</span>
+            <span style="color:var(--td);font-size:8px">+2</span>
+            <span style="margin-left:auto;background:rgba(251,191,36,.12);color:#fbbf24;padding:1px 6px;border-radius:3px;font-size:8px;border:.5px solid rgba(251,191,36,.25);cursor:pointer">$0.087 ▾</span>
+          </div>
+          <div style="padding:6px 9px;font-size:11px"><span style="color:#834DF0">❯</span> <span class="tw">继续分析</span><div class="cur" style="display:inline-block"></div></div>
+        </div>
+      </div>
+    </div></div>
+  </div></div>
+</div>
+
+<div class="section rec-section" id="tp-model-rec">
+  <div class="slabel"><span class="sub">Touchpoint 06 · Our Direction</span><span class="main">模型选择器 — 我们的方向</span></div>
+  <div class="section-inner"><div class="rec-inner">
+    <div class="rec-l">
+      <div class="rec-hl"><div class="rht">Chip 内嵌下拉 + 三维标注 + 子 Agent 自动降级</div><div class="rhb">模型以 Chip 内嵌在输入框，点击弹出下拉列表，每个模型标注成本/速度/最适场景三个维度，让用户不查文档就能做出合理选择。当前模型名始终在 Chip 中可见，不会迷失。</div></div>
+      <div class="rec-p"><div class="rn">01</div><div><div class="rt">三维标注：成本 / 速度 / 最适场景</div><div class="rd">下拉列表中每个模型显示：成本（$/$$/$$$）、速度（极快/快/慢）、最适场景（通用/编码/深度分析）。让"写单元测试选 Haiku（$ · 极快 · 通用）"这样的判断可以直接在选择器内完成。</div></div></div>
+      <div class="rec-p"><div class="rn">02</div><div><div class="rt">当前模型名 Chip 始终可见</div><div class="rd">当前使用的模型以 Chip 形式持续显示在输入框，不需要滚回 Banner 或执行 /model 命令才能确认当前是什么模型。这是最基础的状态透明度，不应该缺失。</div></div></div>
+      <div class="rec-p"><div class="rn">03</div><div><div class="rt">子 Agent 自动使用低成本模型</div><div class="rd">多 Agent 场景中，子 Agent（读文件、搜索、探索性任务）自动使用 Haiku 等低成本快速模型执行，主 Agent 继续使用用户选择的模型。在任务面板中显示各 Agent 使用的模型和产生的费用。</div></div></div>
+    </div>
+    <div class="rec-r"><div class="mt" style="font-size:12px;line-height:1.8">
+      <div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">model selector · chip + dropdown</span></div>
+      <div class="mb">
+        <div style="background:#0a0a0f;border:.5px solid #1a1a22;border-radius:7px;overflow:hidden;margin-bottom:8px">
+          <div style="padding:3px 9px;color:var(--td);font-size:9px;border-bottom:.5px solid #1a1a22;background:#141419">选择模型</div>
+          <div style="padding:4px 9px;display:flex;justify-content:space-between;align-items:center;background:rgba(131,77,240,.1);font-size:11px"><span style="color:#a78bfa">claude-sonnet-4-5</span><span class="td" style="font-size:9px">编码 · $$ · 快速</span></div>
+          <div style="padding:4px 9px;display:flex;justify-content:space-between;align-items:center;font-size:11px"><span style="color:var(--td)">claude-haiku-4-5</span><span class="td" style="font-size:9px">通用 · $ · 极快</span></div>
+          <div style="padding:4px 9px;display:flex;justify-content:space-between;align-items:center;font-size:11px"><span style="color:var(--td)">claude-opus-4-6</span><span class="td" style="font-size:9px">深度分析 · $$$ · 慢</span></div>
+        </div>
+        <div style="background:#141419;border:.5px solid rgba(131,77,240,.3);border-radius:7px;overflow:hidden">
+          <div style="padding:4px 9px;background:rgba(131,77,240,.08);border-bottom:.5px solid rgba(131,77,240,.15);display:flex;gap:4px;align-items:center;font-size:9px">
+            <span class="tag tp3" style="cursor:pointer">claude-sonnet-4-5 ▾</span>
+            <span class="tag" style="background:rgba(52,211,153,.1);color:#34d399;border:.5px solid rgba(52,211,153,.2)">● Normal</span>
+            <span style="margin-left:auto;color:var(--td);font-size:8px">$0.087 ▾</span>
+          </div>
+          <div style="padding:6px 9px;font-size:11px"><span style="color:#834DF0">❯</span> <span class="tw">继续重构</span><div class="cur" style="display:inline-block"></div></div>
+        </div>
+      </div>
+    </div></div>
+  </div></div>
+</div>
+
+<div class="section rec-section" id="tp-history-rec">
+  <div class="slabel"><span class="sub">Touchpoint 07 · Our Direction</span><span class="main">历史记录 — 我们的方向</span></div>
+  <div class="section-inner"><div class="rec-inner">
+    <div class="rec-l">
+      <div class="rec-hl"><div class="rht">Ctrl+R 模糊搜索 + 完整预览 + Tab 编辑后复用</div><div class="rhb">历史跨会话持久化 200 条，Ctrl+R 触发模糊搜索，结果显示完整指令内容预览（不只是截断的前几个字）。Tab 键填入输入框进入编辑状态，让用户在历史基础上微调再复用。</div></div>
+      <div class="rec-p"><div class="rn">01</div><div><div class="rt">Ctrl+R 搜索，结果显示完整预览</div><div class="rd">搜索时，结果项显示指令的完整内容预览（多行折叠为前 2 行）。用户能看到这条历史究竟写了什么，再决定是否复用。大幅减少"复用了错误历史"的情况。</div></div></div>
+      <div class="rec-p"><div class="rn">02</div><div><div class="rt">Enter 复用，Tab 编辑后复用</div><div class="rd">Enter 直接复用历史指令，Tab 把历史内容填入输入框进入编辑状态。后者让用户可以在历史基础上微调（换一个文件名、改一个参数），而不是只能原样复用。这个细节大幅提升历史复用率。</div></div></div>
+      <div class="rec-p"><div class="rn">03</div><div><div class="rt">按项目分组，跨会话持久 200 条</div><div class="rd">历史记录按工作目录/项目分组，防止不同项目的历史混在一起。跨会话持久化最近 200 条，超出时按时间淘汰最旧的。会话结束时自动保存，不需要用户手动操作。</div></div></div>
+    </div>
+    <div class="rec-r"><div class="mt" style="font-size:12px;line-height:1.8">
+      <div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">history · ctrl+r + full preview</span></div>
+      <div class="mb">
+        <div style="background:#1a1a22;border:.5px solid #2a2a2a;border-radius:7px;padding:6px 9px;margin-bottom:6px">
+          <div style="color:#4dd0e1;font-size:9px;margin-bottom:4px">Ctrl+R — 历史搜索 (~/myapp · 47 条)</div>
+          <div class="tw" style="font-size:11px">重构</div>
+        </div>
+        <div style="border:.5px solid #2a2a2a;border-radius:6px;overflow:hidden">
+          <div style="padding:5px 9px;display:flex;gap:6px;border-bottom:.5px solid #1a1a22;background:rgba(96,165,250,.05)">
+            <div style="flex:1">
+              <div class="tb" style="font-size:11px">重构 auth.ts 错误处理逻辑</div>
+              <div class="td" style="font-size:9px;margin-top:2px">@src/auth.ts 重构错误处理，需要：</div>
+              <div class="td" style="font-size:9px;padding-left:8px">1. TokenExpiredError 单独处理...</div>
+            </div>
+            <span class="td" style="font-size:8px;flex-shrink:0">2h ago</span>
+          </div>
+          <div style="padding:5px 9px;display:flex;gap:6px;border-bottom:.5px solid #1a1a22">
+            <div style="flex:1"><div class="td" style="font-size:11px">重构 payment 模块，增加重试机制</div><div class="td" style="font-size:9px;margin-top:2px">@src/payment.ts 增加指数退避...</div></div>
+            <span class="td" style="font-size:8px;flex-shrink:0">昨天</span>
+          </div>
+          <div style="padding:5px 9px;font-size:9px;color:var(--td);background:#141419;display:flex;justify-content:space-between">
+            <span>Enter 直接复用 &nbsp;·&nbsp; Tab 编辑后复用</span><span>Esc 关闭</span>
+          </div>
+        </div>
+      </div>
+    </div></div>
+  </div></div>
+</div>
+
+</div><!-- end snap-container -->
+
+<script src="nav.js"></script>
+<script>
+  // Detect active TP from URL hash
+  const hash = window.location.hash || '#tp-input-pos';
+  const tpId = hash.replace('#', '');
+  buildNav('tp-intent.html', 'intent', tpId);
+  initSnapScroll('intent');
+  initKeyNav();
+
+  window.addEventListener('load', () => {
+    if (window.location.hash) {
+      const el = document.querySelector(window.location.hash);
+      if (el) {
+        const c = document.querySelector('.snap-container');
+        // Use requestAnimationFrame to ensure layout is ready
+        requestAnimationFrame(() => {
+          c.scrollTo({ top: el.offsetTop - 88, behavior: 'instant' });
+        });
+      }
+    }
+  });
+</script>
+</body>
+</html>

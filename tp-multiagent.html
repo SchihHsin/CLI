@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AI CLI 设计报告 — 多智能体 &amp; 设计原则</title>
+<link rel="stylesheet" href="shared.css">
+<style>
+.cmp-section{background:var(--sur)}
+.pr-section{background:var(--sur)}
+.pr-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:14px}
+.pr-card{background:var(--bg2);border:.5px solid var(--bdr2);border-radius:10px;padding:16px 18px}
+.pr-top{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.1em;margin-bottom:9px;padding-bottom:7px;border-bottom:.5px solid var(--bdr2)}
+.pr-item{font-size:13px;color:var(--tx);line-height:1.6;margin-bottom:6px;display:flex;gap:8px}
+.pr-item::before{content:'·';color:var(--acc);font-size:16px;line-height:1.3;flex-shrink:0}
+</style>
+</head>
+<body>
+<div id="global-nav"></div>
+<div id="nav-tp-bar" class="nav-tp-bar"></div>
+<div class="snap-container" style="padding-top:88px">
+
+<!-- ────── 多智能体架构模式 ────── -->
+<div class="section cmp-section" id="tp-ma-arch">
+  <div class="slabel"><span class="sub">Multi-Agent · Special Topic · Industry Comparison</span><span class="main">多智能体 — 架构模式对比</span></div>
+  <div class="section-inner"><div class="cmp-wrap">
+    <table class="cmp-tbl">
+      <colgroup><col style="width:10%"><col style="width:18%"><col style="width:18%"><col style="width:18%"><col style="width:18%"><col style="width:18%"></colgroup>
+      <thead><tr>
+        <th>维度</th>
+        <th class="prod-head"><div class="ph-inner"><span class="ph-name">Aider</span><span class="ph-sub">Hub &amp; Spoke 固定双模型</span><div class="ph-badges"><span class="bdg bdg-ai">OSS</span></div></div></th>
+        <th class="prod-head"><div class="ph-inner"><span class="ph-name">Claude Code</span><span class="ph-sub">Subagents + P2P Agent Teams</span><div class="ph-badges"><span class="bdg bdg-cc">Anthropic</span></div></div></th>
+        <th class="prod-head"><div class="ph-inner"><span class="ph-name">Warp Oz</span><span class="ph-sub">Cloud Orchestration 云端调度</span><div class="ph-badges"><span class="bdg bdg-wp">Warp</span></div></div></th>
+        <th class="prod-head"><div class="ph-inner"><span class="ph-name">GitHub Copilot</span><span class="ph-sub">Agent Sessions 多模型混跑</span><div class="ph-badges"><span class="bdg bdg-gc">GitHub</span></div></div></th>
+      <th class="prod-head"><div class="ph-inner"><span class="ph-name">Codex CLI</span><span class="ph-sub">Cloud Session · 无头单 Agent</span><div class="ph-badges"><span class="bdg bdg-cx">OpenAI</span></div></div></th></tr></thead>
+      <tbody>
+        <tr>
+          <td class="dim-cell">界面形态</td>
+          <td class="ui-cell"><div class="mt"><div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">aider dual-model</span></div><div class="mb"><div><span class="ty">◆ ARCHITECT</span> <span class="td">(sonnet)</span></div><div style="border-left:2px solid #a78bfa;padding:4px 9px;background:#0d0d0d;margin:3px 0;font-size:10px"><div class="td" style="font-size:9px">规划：</div><div class="tw">建议重构为 Result 模式</div></div><div><span class="tp">◆ EDITOR</span> <span class="td">(haiku) applying...</span></div><div style="font-size:8px;color:var(--td);margin-top:3px">固定两 Agent，无法扩展</div></div></div></td>
+          <td class="ui-cell"><div class="mt"><div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">claude code teams</span></div><div class="mb"><div><span class="tp">Team Lead</span> <span class="td">→ 分解任务</span></div><div style="border:.5px solid #2a1a3a;border-radius:4px;padding:5px 9px;margin:3px 0;background:#0d0a13;font-size:10px"><div style="font-size:9px;color:#a78bfa;margin-bottom:3px">SHARED TASK LIST</div><div style="display:flex;align-items:center;gap:5px;margin-bottom:2px"><span style="width:6px;height:6px;border-radius:50%;background:#34d399;animation:pulse .8s ease-in-out infinite alternate;flex-shrink:0"></span><span class="tw">重构 auth 模块</span><span class="tag tp3" style="margin-left:auto;font-size:7px">T-1</span></div><div style="display:flex;align-items:center;gap:5px"><span style="width:6px;height:6px;border-radius:50%;background:#555;flex-shrink:0"></span><span class="td">写单元测试</span><span class="tag tp3" style="margin-left:auto;font-size:7px">T-2</span></div></div><div class="td" style="font-size:8px">P2P mailbox: Teammates 直接通信</div></div></div></td>
+          <td class="ui-cell"><div class="mt"><div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">warp oz agent mgmt</span></div><div class="mb"><div style="border:.5px solid #2a2a35;border-radius:5px;overflow:hidden"><div style="background:#1a1a22;padding:4px 8px;font-size:9px;display:flex;gap:5px;border-bottom:.5px solid #2a2a35"><span class="tb">Agent Mgmt</span><span class="tag tg2" style="font-size:8px">3 running</span><span class="tag ty3" style="font-size:8px">1 wait</span></div><div style="font-size:10px"><div style="padding:3px 8px;display:flex;align-items:center;gap:5px;border-bottom:.5px solid #1a1a22"><span style="width:6px;height:6px;border-radius:50%;background:#34d399;animation:pulse .8s ease-in-out infinite alternate;flex-shrink:0"></span><span class="tw">Refactor auth</span><span class="td" style="font-size:9px;margin-left:auto">local · 4m</span></div><div style="padding:3px 8px;display:flex;align-items:center;gap:5px;background:rgba(251,191,36,.05)"><span style="width:6px;height:6px;border-radius:50%;background:#fbbf24;flex-shrink:0"></span><span class="ty">Update README</span><span class="td" style="font-size:9px;margin-left:auto"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17" stroke-width="2.5"/></svg> wait</span></div></div></div></div></div></td>
+          <td class="ui-cell"><div class="mt"><div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">copilot sessions</span></div><div class="mb"><div style="border:.5px solid #2a2a35;border-radius:5px;overflow:hidden;font-size:10px"><div style="background:#1a1a22;padding:3px 8px;border-bottom:.5px solid #2a2a35;font-size:9px"><span class="tb">Agent Sessions</span></div><div style="padding:3px 8px;display:flex;align-items:center;gap:5px;border-bottom:.5px solid #1a1a22;background:rgba(52,211,153,.05)"><span style="width:6px;height:6px;border-radius:50%;background:#34d399;flex-shrink:0"></span><span class="tg">Claude Agent</span><span class="tag tg2" style="font-size:8px;margin-left:auto">local</span></div><div style="padding:3px 8px;display:flex;align-items:center;gap:5px;border-bottom:.5px solid #1a1a22"><span style="width:6px;height:6px;border-radius:50%;background:#60a5fa;flex-shrink:0"></span><span class="tb">Codex Agent</span><span class="tag tb3" style="font-size:8px;margin-left:auto">cloud</span></div><div style="padding:3px 8px;display:flex;align-items:center;gap:5px;opacity:.5"><span style="width:6px;height:6px;border-radius:50%;background:#555;flex-shrink:0"></span><span class="td">Copilot Agent</span><span class="td" style="font-size:9px;margin-left:auto">done</span></div></div></div></div></td>
+        <td class="ui-cell"><div class="mt"><div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">codex cloud</span></div><div class="mb"><div style="border:.5px solid #2a2a35;border-radius:4px;overflow:hidden;font-size:9px"><div style="background:#1a1a22;padding:3px 7px;border-bottom:.5px solid #2a2a35"><span class="tb">Cloud Session</span></div><div style="padding:3px 7px;display:flex;align-items:center;gap:4px"><span style="width:5px;height:5px;border-radius:50%;background:#34d399;flex-shrink:0"></span><span class="tg">Agent running</span><span class="td" style="margin-left:auto">cloud</span></div></div></div></div></td></tr>
+        <tr><td class="dim-cell">架构模式</td><td>Hub &amp; Spoke 固定：Architect 规划 + Editor 执行，两 Agent 无法扩展</td><td>Hub &amp; Spoke（Subagents）+ P2P Mailbox（Agent Teams，实验性）两种架构</td><td>Cloud Orchestration：事件触发，并发执行，统一管理面板，oz.warp.dev</td><td>多模型混跑：Claude/Codex/Copilot 三种 Agent 在 VS Code Agent Sessions 面板统一管理</td><td>Single Agent 云端 session，支持无头（headless）模式，GitHub Actions 集成，无多 Agent 协作</td></tr>
+        <tr><td class="dim-cell">等待/卡住处理</td><td>无处理机制，Agent 遇到问题会直接失败或无限等待</td><td>Subagents 遇到权限不足时向主 Agent 返回错误，Teams 模式实验中</td><td>等待输入的 Agent 自动标记橙色 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17" stroke-width="2.5"/></svg> warning，不卡死流程</td><td>无专门的等待状态 UI，依赖 IDE 原有通知机制</td><td>云端 session 可设置 timeout，本地无等待 UI</td></tr>
+        <tr>
+          <td class="dim-cell">优势</td>
+          <td><span class="pt pro">最早的多模型实践，推理透明</span><span class="pt pro">双模型 token 效率最佳</span></td>
+          <td><span class="pt pro">P2P mailbox 是行业最先进的协作架构</span><span class="pt pro">Subagent 用 Haiku 执行，成本优化</span></td>
+          <td><span class="pt pro">统一管理面板，本地+云端混排</span><span class="pt pro">等待状态黄色标记，不卡死</span><span class="pt pro">Slack/GitHub/cron 事件触发</span></td>
+          <td><span class="pt pro">三种 Agent 统一管理，多模型混跑</span><span class="pt pro">在 IDE 内，迁移成本最低</span></td>
+        <td><span class="pt pro">云端 session 持久化，可异步运行</span><span class="pt pro">GitHub Actions 原生集成是开发工作流自然延伸</span></td></tr>
+        <tr>
+          <td class="dim-cell">劣势</td>
+          <td><span class="pt con">只有两个固定 Agent，无法横向扩展</span><span class="pt con">无统一管理面板</span></td>
+          <td><span class="pt con">Agent Teams 仍实验性，需 env var 开启</span><span class="pt con">无统一管理 UI，并行状态分散</span></td>
+          <td><span class="pt con">依赖 Warp 整体框架</span><span class="pt con">云端 Agent 中间过程透明度低</span></td>
+          <td><span class="pt con">Agent 间暂无直接通信，仍是 Hub &amp; Spoke</span><span class="pt con">在 IDE 侧边栏，非终端原生体验</span></td>
+        <td><span class="pt con">无多 Agent 协作，仅单 Agent</span><span class="pt con">云端状态对用户不透明</span></td></tr>
+        <tr class="sum-row"><td class="dim-cell">总结</td><td class="vd-cell">最早实践，架构有局限</td><td class="vd-cell">架构最先进，UI 管理待完善</td><td class="vd-cell">云端调度最完善</td><td class="vd-cell">多模型混跑最方便</td><td>—</td></tr>
+      </tbody>
+    </table>
+    <div class="t-verdict"><strong>最关键的 UX 问题：Agent 卡住时如何处理？</strong>Warp 的做法（黄色标记暂停等待，不猜测继续）是目前最安全的方案。推荐：统一任务面板 + 等待状态可视化 + P2P 通信减少主 Agent 瓶颈 + 子 Agent 上下文隔离（只向主 Agent 返回摘要，控制 token 成本）。</div>
+  </div></div>
+</div>
+
+<!-- ────── Agent 管理面板 ────── -->
+<div class="section cmp-section" id="tp-ma-ui">
+  <div class="slabel"><span class="sub">Multi-Agent · Our Direction</span><span class="main">多智能体 — 我们的设计方向</span></div>
+  <div class="section-inner">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;flex:1;overflow:hidden">
+      <div style="display:flex;flex-direction:column;gap:10px;overflow:hidden">
+        <div style="background:var(--sur);border:.5px solid var(--bdr2);border-left:3px solid var(--acc);border-radius:0 8px 8px 0;padding:12px 16px">
+          <div style="font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:var(--tx);margin-bottom:5px">统一任务面板 + 等待状态可视化 + 上下文隔离</div>
+          <div style="font-size:12px;color:var(--tx2);line-height:1.65">多 Agent 有统一的任务管理面板，每个 Agent 有状态标记（运行中/等待/完成/失败）。Agent 遇到不确定时暂停等待而非猜测继续。子 Agent 在独立上下文中执行，主 Agent 只收摘要。</div>
+        </div>
+        <div style="display:flex;gap:11px;padding:10px 13px;background:var(--sur);border-radius:8px;border:.5px solid var(--bdr)">
+          <div style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:var(--acc);line-height:1;min-width:22px;margin-top:2px">01</div>
+          <div>
+            <div style="font-size:13px;font-weight:500;color:var(--tx);margin-bottom:3px;font-family:'Syne',sans-serif">统一任务面板，状态一眼扫全局</div>
+            <div style="font-size:11px;color:var(--tx2);line-height:1.6">所有 Agent 任务列在一个面板里，颜色和图标区分状态：运行中（绿色动画）、等待确认（橙色警告）、已完成（灰色）、失败（红色）。步骤进度条 + 耗时显示。可点击任意任务进入详情。</div>
+          </div>
+        </div>
+        <div style="display:flex;gap:11px;padding:10px 13px;background:var(--sur);border-radius:8px;border:.5px solid var(--bdr)">
+          <div style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:var(--acc);line-height:1;min-width:22px;margin-top:2px">02</div>
+          <div>
+            <div style="font-size:13px;font-weight:500;color:var(--tx);margin-bottom:3px;font-family:'Syne',sans-serif">等待状态：暂停标记，不猜测继续</div>
+            <div style="font-size:11px;color:var(--tx2);line-height:1.6">Agent 遇到权限不够或需要澄清时，自动暂停并标记橙色"<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17" stroke-width="2.5"/></svg> 等待输入"，发送通知给用户。用户处理完后 Agent 继续执行。"安全自主"的核心设计原则。</div>
+          </div>
+        </div>
+        <div style="display:flex;gap:11px;padding:10px 13px;background:var(--sur);border-radius:8px;border:.5px solid var(--bdr)">
+          <div style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:var(--acc);line-height:1;min-width:22px;margin-top:2px">03</div>
+          <div>
+            <div style="font-size:13px;font-weight:500;color:var(--tx);margin-bottom:3px;font-family:'Syne',sans-serif">子 Agent 上下文隔离，主 Agent 只收摘要</div>
+            <div style="font-size:11px;color:var(--tx2);line-height:1.6">子 Agent 在独立上下文窗口中执行（读文件、搜索等探索性任务），完成后只向主 Agent 返回摘要，避免大量中间输出污染主上下文，同时控制 token 成本。</div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="mt" style="font-size:11.5px;line-height:1.8">
+          <div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">multi-agent · task panel</span></div>
+          <div class="mb">
+            <div style="display:flex;align-items:center;gap:7px;margin-bottom:7px;font-size:10px"><span class="tb">任务面板</span><span class="tag tg2">3 运行</span><span class="tag ty3">1 等待</span><span style="color:var(--td);font-size:9px;margin-left:auto">最多 5 并行</span></div>
+            <div style="border:.5px solid #2a2a35;border-radius:6px;overflow:hidden">
+              <div style="padding:6px 10px;display:flex;align-items:center;gap:7px;border-bottom:.5px solid #1a1a22;font-size:10px">
+                <span style="width:7px;height:7px;border-radius:50%;background:#34d399;animation:pulse .8s ease-in-out infinite alternate;flex-shrink:0"></span>
+                <div style="flex:1"><div class="tw">重构 auth 模块</div><div style="height:2px;background:#1a1a22;border-radius:1px;margin-top:3px;overflow:hidden"><div style="width:65%;height:100%;background:#834DF0;border-radius:1px"></div></div></div>
+                <span class="td" style="font-size:9px">local · 4m 23s · 65%</span>
+              </div>
+              <div style="padding:6px 10px;display:flex;align-items:center;gap:7px;border-bottom:.5px solid #1a1a22;background:rgba(251,191,36,.04);font-size:10px">
+                <span style="width:7px;height:7px;border-radius:50%;background:#fbbf24;flex-shrink:0"></span>
+                <div style="flex:1"><div class="ty">更新 README 文档</div><div style="font-size:9px;color:#fbbf24;margin-top:1px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17" stroke-width="2.5"/></svg> 需要你的输入才能继续</div></div>
+                <span style="font-size:9px;padding:2px 7px;border:.5px solid rgba(251,191,36,.3);border-radius:3px;color:#fbbf24;cursor:pointer">处理 →</span>
+              </div>
+              <div style="padding:6px 10px;display:flex;align-items:center;gap:7px;border-bottom:.5px solid #1a1a22;font-size:10px">
+                <span style="width:7px;height:7px;border-radius:50%;background:#34d399;animation:pulse .8s ease-in-out infinite alternate;flex-shrink:0"></span>
+                <div style="flex:1"><div class="tw">PR #42 代码审查</div><div style="height:2px;background:#1a1a22;border-radius:1px;margin-top:3px;overflow:hidden"><div style="width:88%;height:100%;background:#834DF0;border-radius:1px"></div></div></div>
+                <span class="td" style="font-size:9px">cloud · 8m · 88%</span>
+              </div>
+              <div style="padding:6px 10px;display:flex;align-items:center;gap:7px;opacity:.5;font-size:10px">
+                <span style="width:7px;height:7px;border-radius:50%;background:#555;flex-shrink:0"></span>
+                <span class="td">修复 lint 错误</span>
+                <span class="td" style="font-size:9px;margin-left:auto">done · 1m 42s</span>
+              </div>
+            </div>
+            <div style="margin-top:6px;font-size:9px;color:var(--td);display:flex;justify-content:space-between"><span>子 Agent 使用 Haiku 执行探索性任务</span><span style="color:#a78bfa">总费用: $0.042</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ────── 设计原则总结 ────── -->
+<div class="section pr-section" id="principles">
+  <div class="slabel"><span class="sub">Design Principles · Summary</span><span class="main">18 条核心设计原则</span></div>
+  <div class="section-inner">
+    <div class="pr-grid">
+      <div class="pr-card" style="border-top:2px solid var(--g)">
+        <div class="pr-top" style="color:var(--g)">PHASE 01-02 · 启动 &amp; 表达意图</div>
+        <div class="pr-item">零配置首次体验，30 秒内开始第一个任务</div>
+        <div class="pr-item">Banner 只展示：模型名 + 权限模式两个关键信息</div>
+        <div class="pr-item">新用户首次触发一次性引导，此后不再重复</div>
+        <div class="pr-item">输入框固定底部，首次加载即获焦点</div>
+        <div class="pr-item">模式 Badge 颜色区分（Agent 紫色 / Terminal 灰色），永远可见</div>
+        <div class="pr-item">@ 补全延迟 &lt;100ms，Chips 超 3 个折叠为 "+N"</div>
+      </div>
+      <div class="pr-card" style="border-top:2px solid var(--r)">
+        <div class="pr-top" style="color:var(--r)">PHASE 03 · 等待执行（情绪最低谷）</div>
+        <div class="pr-item">Thinking 默认一行摘要，点击展开，完成后自动折叠</div>
+        <div class="pr-item">读取类 Tool call 自动折叠为计数，写入类展开并标色</div>
+        <div class="pr-item">高危操作自动触发 Plan Mode 先提案再执行</div>
+        <div class="pr-item">步骤计数（n/N）+ 整体进度条，双重反馈</div>
+        <div class="pr-item">失败高亮红色 + "让 AI 修复"快捷入口内嵌进度视图</div>
+        <div class="pr-item">Esc 中断按钮始终浮动可见，不需记快捷键</div>
+      </div>
+      <div class="pr-card" style="border-top:2px solid var(--y)">
+        <div class="pr-top" style="color:var(--y)">PHASE 03-06 · 确认 / 审查 / 迭代 / 收尾</div>
+        <div class="pr-item">弹窗颜色编码风险等级（蓝色读取 / 橙色写入 / 红色执行）</div>
+        <div class="pr-item">三档授权（仅此次/会话/永久）+ "修改后执行"第四选项</div>
+        <div class="pr-item">默认输出摘要行，变更 ≥ 3 文件自动建议 Review Panel</div>
+        <div class="pr-item">输出末尾恒有追问入口（✦），驱动自然迭代节奏</div>
+        <div class="pr-item">费用角标始终在 Chip 区可见，点击展开按任务明细</div>
+        <div class="pr-item">退出时展示会话摘要卡，强化完成感和费用意识</div>
+      </div>
+    </div>
+    <div style="margin-top:16px;padding:14px 20px;background:var(--acc-dim);border:.5px solid var(--acc-b);border-radius:10px;font-size:13px;color:var(--tx2);line-height:1.7">
+      <strong style="color:var(--acc2)">总体原则：</strong>让"AI 在做什么"始终可见，让"用户能做什么"始终触手可及。透明度不是噪音，而是信任的基础。自动化程度不是目标，掌控感才是。每一个设计决策都应该问：<em>「这让用户更有掌控感了吗？」</em>
+    </div>
+    <div style="margin-top:12px;text-align:center;font-family:'DM Mono',monospace;font-size:10px;color:var(--tx3);letter-spacing:.12em">
+      AI CLI DESIGN RESEARCH · 2026 · CLAUDE CODE · WARP · GEMINI CLI · AIDER · CODEX CLI
+    </div>
+  </div>
+</div>
+
+
+<div class="section rec-section" id="tp-ma-arch-rec">
+  <div class="slabel"><span class="sub">Multi-Agent · Our Direction</span><span class="main">多智能体架构 — 我们的方向</span></div>
+  <div class="section-inner"><div class="rec-inner">
+    <div class="rec-l">
+      <div class="rec-hl"><div class="rht">Hub &amp; Spoke 起步 + P2P 演进 + 子 Agent 上下文隔离</div><div class="rhb">以 Hub &amp; Spoke（Subagents）起步，实现成本最低；随产品成熟演进到 P2P Mailbox（Agent Teams 架构）。子 Agent 在独立上下文中执行，只向主 Agent 返回摘要，控制 token 成本。</div></div>
+      <div class="rec-p"><div class="rn">01</div><div><div class="rt">Hub &amp; Spoke 起步：主 Agent 委派子任务</div><div class="rd">主 Agent 负责规划和决策，子 Agent 负责执行（读文件、搜索、代码分析等探索性任务）。子 Agent 自动使用低成本模型（Haiku），完成后向主 Agent 返回摘要而非原始输出，避免主上下文被污染。</div></div></div>
+      <div class="rec-p"><div class="rn">02</div><div><div class="rt">等待状态：暂停标记，不猜测继续</div><div class="rd">Agent 遇到权限不够或需要澄清时，自动暂停并标记橙色"<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17" stroke-width="2.5"/></svg> 等待输入"，向用户发送通知。不会猜测"用户可能想要什么"而自动继续——这是"安全自主"的核心原则，避免雪球效应。</div></div></div>
+      <div class="rec-p"><div class="rn">03</div><div><div class="rt">统一任务面板，人随时可介入任意 Agent</div><div class="rd">所有 Agent 任务在统一面板中可见，人可以点击任意任务查看详情或给新指令。不是"启动了就不管"，而是"随时可介入"。人是所有 Agent 的最终决策者，不是被排除在外的观察者。</div></div></div>
+    </div>
+    <div class="rec-r"><div class="mt" style="font-size:12px;line-height:1.8">
+      <div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">multi-agent · our design</span></div>
+      <div class="mb">
+        <div style="display:flex;align-items:center;gap:7px;margin-bottom:7px;font-size:10px"><span class="tb">任务面板</span><span class="tag tg2">3 运行</span><span class="tag ty3">1 等待</span><span style="color:var(--td);font-size:9px;margin-left:auto">主 Agent: sonnet · 子 Agent: haiku</span></div>
+        <div style="border:.5px solid #2a2a35;border-radius:6px;overflow:hidden;margin-bottom:6px">
+          <div style="padding:5px 9px;display:flex;align-items:center;gap:7px;border-bottom:.5px solid #1a1a22;font-size:10px">
+            <span style="width:7px;height:7px;border-radius:50%;background:#34d399;animation:pulse .8s ease-in-out infinite alternate;flex-shrink:0"></span>
+            <div style="flex:1"><div class="tw">重构 auth 模块</div><div style="height:2px;background:#1a1a22;border-radius:1px;margin-top:3px;overflow:hidden"><div style="width:65%;height:100%;background:#834DF0;border-radius:1px"></div></div></div>
+            <span class="td" style="font-size:9px">main · 4m · $0.023</span>
+          </div>
+          <div style="padding:5px 9px;display:flex;align-items:center;gap:7px;border-bottom:.5px solid #1a1a22;background:rgba(251,191,36,.04);font-size:10px">
+            <span style="width:7px;height:7px;border-radius:50%;background:#fbbf24;flex-shrink:0"></span>
+            <div style="flex:1"><div class="ty">写单元测试</div><div style="font-size:9px;color:#fbbf24;margin-top:1px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17" stroke-width="2.5"/></svg> 需要你的输入 — 文件路径不确定</div></div>
+            <span style="font-size:9px;padding:2px 7px;border:.5px solid rgba(251,191,36,.3);border-radius:3px;color:#fbbf24;cursor:pointer">处理 →</span>
+          </div>
+          <div style="padding:5px 9px;display:flex;align-items:center;gap:7px;opacity:.6;font-size:10px">
+            <span style="width:7px;height:7px;border-radius:50%;background:#555;flex-shrink:0"></span>
+            <span class="td">搜索相关文档（子 Agent）</span>
+            <span class="td" style="font-size:9px;margin-left:auto">done · haiku · $0.002</span>
+          </div>
+        </div>
+        <div style="font-size:9px;color:var(--td)">子 Agent 只向主 Agent 返回摘要，不污染主上下文</div>
+      </div>
+    </div></div>
+  </div></div>
+</div>
+
+</div>
+<script src="nav.js"></script>
+<script>
+  const hash = window.location.hash || '#tp-ma-arch';
+  buildNav('tp-multiagent.html', 'startup', hash.replace('#',''));
+  initSnapScroll('multiagent');
+  initKeyNav();
+  window.addEventListener('load', () => {
+    if (window.location.hash) {
+      const el = document.querySelector(window.location.hash);
+      if (el) {
+        const c = document.querySelector('.snap-container');
+        requestAnimationFrame(() => { c.scrollTo({ top: el.offsetTop - 88, behavior: 'instant' }); });
+      }
+    }
+  });
+</script>
+</body>
+</html>

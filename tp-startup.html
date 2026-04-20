@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AI CLI 设计报告 — 启动阶段</title>
+<link rel="stylesheet" href="shared.css">
+<style>
+.cmp-section { background: var(--sur); }
+.rec-section { background: var(--bg); }
+</style>
+</head>
+<body>
+<div id="global-nav"></div>
+<div id="nav-tp-bar" class="nav-tp-bar"></div>
+
+<div class="snap-container" style="padding-top:88px">
+
+<!-- ══════════════════════════════════════
+     TP-BANNER: COMPARISON
+══════════════════════════════════════ -->
+<div class="section cmp-section" id="tp-banner">
+  <div class="slabel">
+    <span class="sub">Touchpoint 01 · 启动阶段 · Industry Comparison</span>
+    <span class="main">Banner / 启动信息 — 业界对比</span>
+  </div>
+  <div class="section-inner">
+    <div class="cmp-wrap">
+      <table class="cmp-tbl">
+        <colgroup><col style="width:10%"><col style="width:18.0%"><col style="width:18.0%"><col style="width:18.0%"><col style="width:18.0%"><col style="width:18.0%"></colgroup>
+        <thead>
+          <tr>
+            <th>维度</th>
+            <th class="prod-head">
+              <div class="ph-inner">
+                <span class="ph-name">Aider</span>
+                <span class="ph-sub">横线分割 Banner</span>
+                <div class="ph-badges"><span class="bdg bdg-ai">OSS</span></div>
+              </div>
+            </th>
+            <th class="prod-head">
+              <div class="ph-inner">
+                <span class="ph-name">Claude Code</span>
+                <span class="ph-sub">最小化 Banner</span>
+                <div class="ph-badges"><span class="bdg bdg-cc">Anthropic</span></div>
+              </div>
+            </th>
+            <th class="prod-head">
+              <div class="ph-inner">
+                <span class="ph-name">Gemini CLI</span>
+                <span class="ph-sub">信息丰富 Banner</span>
+                <div class="ph-badges"><span class="bdg bdg-gc">Google</span></div>
+              </div>
+            </th>
+            <th class="prod-head">
+              <div class="ph-inner">
+                <span class="ph-name">Warp</span>
+                <span class="ph-sub">无 Banner · Chips 代替</span>
+                <div class="ph-badges"><span class="bdg bdg-wp">Warp</span></div>
+              </div>
+            </th>
+          
+            <th class="prod-head"><div class="ph-inner"><span class="ph-name">Codex CLI</span><span class="ph-sub">极简 Banner · 静默启动</span><div class="ph-badges"><span class="bdg bdg-cx">OpenAI</span></div></div></th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="dim-cell">界面形态</td>
+            <td class="ui-cell">
+              <div class="mt">
+                <div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">aider — banner</span></div>
+                <div class="mb">
+                  <div style="border-top:.5px solid #a78bfa;border-bottom:.5px solid #a78bfa;padding:3px 0;margin-bottom:4px">
+                    <div><span class="tp">Aider v0.82</span> <span class="ty">claude-sonnet</span></div>
+                    <div class="td" style="font-size:9px">Git: ~/projects · $0.003/1k · Haiku editor</div>
+                    <div class="td" style="font-size:9px">Repo-map: 2,048 tokens</div>
+                  </div>
+                  <div><span class="tp">aider$</span> <span class="tw">输入任务</span><div class="cur" style="display:inline-block"></div></div>
+                </div>
+              </div>
+            </td>
+            <td class="ui-cell">
+              <div class="mt">
+                <div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">claude code — minimal</span></div>
+                <div class="mb">
+                  <div><span class="tb">Claude Code</span> <span class="td">v1.2 · sonnet-4-5</span></div>
+                  <div style="height:5px"></div>
+                  <div style="background:#1a1a22;border:.5px solid #834DF0;border-radius:5px;padding:5px 9px;font-size:10px">
+                    <span style="color:#834DF0">❯</span> <span class="tw">输入任务</span><div class="cur" style="display:inline-block"></div>
+                  </div>
+                </div>
+              </div>
+            </td>
+            <td class="ui-cell">
+              <div class="mt">
+                <div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">gemini cli — rich banner</span></div>
+                <div class="mb">
+                  <div><span class="tb">Gemini CLI</span> <span class="td">v0.34 · 2.5-pro</span></div>
+                  <div class="td" style="font-size:9px">Context: 1M tokens · Plan Mode: ON</div>
+                  <div class="td" style="font-size:9px">Tools: search, shell, files, edit</div>
+                  <div style="height:4px"></div>
+                  <div><span class="tc">~/myapp</span> <span style="color:#834DF0">›</span> <div class="cur" style="display:inline-block"></div></div>
+                </div>
+              </div>
+            </td>
+            <td class="ui-cell">
+              <div class="mt">
+                <div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">warp — no banner</span></div>
+                <div class="mb">
+                  <div style="background:#0d0f13;border:.5px solid rgba(131,77,240,.3);border-radius:5px;overflow:hidden">
+                    <div style="padding:4px 8px;background:rgba(131,77,240,.08);border-bottom:.5px solid rgba(131,77,240,.15);display:flex;gap:4px;align-items:center;font-size:9px">
+                      <span class="tag tp3">● Normal</span><span class="tag tg2">main</span>
+                      <span style="margin-left:auto;color:#fbbf24;font-size:8px">$0.00</span>
+                    </div>
+                    <div style="padding:5px 8px;font-size:10px"><span style="color:#834DF0">❯</span> <span class="tw">输入任务</span><div class="cur" style="display:inline-block"></div></div>
+                  </div>
+                  <div class="td" style="font-size:9px;margin-top:3px">状态信息在 Chips 和状态栏</div>
+                </div>
+              </div>
+            </td>
+          <td class="ui-cell"><div class="mt"><div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">codex cli</span></div><div class="mb"><div class="td" style="font-size:9px">⠿ Initializing codex...</div><div class="tg" style="font-size:10px">✔ Ready. (o3 · auto-route)</div><div style="height:4px"></div><div style="font-size:9px">codex&gt; <span class="tw">input</span><div class="cur" style="display:inline-block"></div></div></div></div></td><td class="ui-cell"><div class="mt"><div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">codex cli</span></div><div class="mb"><div class="td" style="font-size:9px">⠿ Initializing codex...</div><div class="tg" style="font-size:10px">✔ Ready. (o3 · auto-route)</div><div style="height:4px"></div><div style="font-size:9px">codex&gt; <span class="tw">input</span><div class="cur" style="display:inline-block"></div></div></div></div></td>
+            <td class="ui-cell"><div class="mt"><div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">codex cli</span></div><div class="mb"><div class="td" style="font-size:9px">⠿ Initializing codex...</div><div class="tg" style="font-size:10px">✔ Ready. (o3 · auto-route)</div><div style="height:4px"></div><div style="font-size:9px">codex&gt; <span class="tw">input</span><div class="cur" style="display:inline-block"></div></div></div></div></td>
+          </tr>
+          <tr>
+            <td class="dim-cell">Banner 内容</td>
+            <td>版本号、当前模型、成本单价、Git 路径、Repo-map token 数、Editor 模型</td>
+            <td>仅版本号 + 模型名，Banner 极短，紧接输入框</td>
+            <td>模型名、上下文大小（1M）、工具列表、Plan Mode 开关状态</td>
+            <td>无 Banner。模型、权限模式、费用分布在输入框 Chips 和持久状态栏</td>
+          <td>—</td><td>—</td>
+            <td>—</td>
+          </tr>
+          <tr>
+            <td class="dim-cell">信息量</td>
+            <td>高：7+ 项信息一次性展示</td>
+            <td>极低：2 项（版本 + 模型）</td>
+            <td>中高：4-5 项核心能力信息</td>
+            <td>无（分散在持久 UI 中）</td>
+          <td>极低：几乎无 Banner，仅显示 ready 状态</td><td>极低：几乎无 Banner，仅显示 ready 状态和所路由的模型名</td>
+            <td>极低：几乎无 Banner，仅显示 ready 状态</td>
+          </tr>
+          <tr>
+            <td class="dim-cell">持久性</td>
+            <td>一次性，会话中不可重新查看，被滚走后消失</td>
+            <td>一次性，Banner 消失后配置不可见</td>
+            <td>一次性，Prompt 行保留目录 + 模型信息</td>
+            <td>完全持久：Chips 和状态栏随时可见，可交互</td>
+          <td>无持久 Banner，无状态栏，无费用展示</td><td>无持久 Banner，无状态栏，无费用展示</td>
+            <td>无持久 Banner，无状态栏</td>
+          </tr>
+          <tr>
+            <td class="dim-cell">优势</td>
+            <td>
+              <span class="pt pro">启动时一次性获取全部配置信息</span>
+              <span class="pt pro">符合老终端用户心智模型</span>
+            </td>
+            <td>
+              <span class="pt pro">启动即用，摩擦最低</span>
+              <span class="pt pro">输入框立刻获焦点</span>
+            </td>
+            <td>
+              <span class="pt pro">用户清楚工具能力边界（工具列表）</span>
+              <span class="pt pro">Plan Mode 状态一目了然</span>
+            </td>
+            <td>
+              <span class="pt pro">启动最干净，零视觉噪声</span>
+              <span class="pt pro">状态信息按需持续可见，可交互</span>
+            </td>
+          <td><span class="pt pro">启动最快，几乎无等待</span><span class="pt pro">auto-routing 自动选最优模型</span></td><td><span class="pt pro">启动最快，几乎无等待</span><span class="pt pro">auto-routing 自动选最优模型</span></td>
+            <td><span class="pt pro">启动最快，几乎无等待</span><span class="pt pro">auto-routing 自动选最优模型</span></td>
+          </tr>
+          <tr>
+            <td class="dim-cell">劣势</td>
+            <td>
+              <span class="pt con">Banner 滚走后所有信息消失</span>
+              <span class="pt con">会话中无法重新查看配置</span>
+            </td>
+            <td>
+              <span class="pt con">新用户不清楚能力边界</span>
+              <span class="pt con">无引导，初次使用容易茫然</span>
+            </td>
+            <td>
+              <span class="pt con">信息量大，视觉噪声高</span>
+              <span class="pt con">快速使用场景浪费屏幕空间</span>
+            </td>
+            <td>
+              <span class="pt con">新用户无法快速了解工具能力</span>
+              <span class="pt con">依赖整个 Warp 框架才能实现</span>
+            </td>
+          <td><span class="pt con">新用户完全无引导</span><span class="pt con">无状态信息，不知道当前模型</span></td><td><span class="pt con">新用户完全无引导</span><span class="pt con">无状态信息，不知道当前模型</span></td>
+            <td><span class="pt con">新用户完全无引导</span><span class="pt con">无状态信息</span></td>
+          </tr>
+          <tr class="sum-row">
+            <td class="dim-cell">总结</td>
+            <td class="vd-cell">信息丰富但消失后无用</td>
+            <td class="vd-cell">老用户友好，新用户需引导</td>
+            <td class="vd-cell">信息量适中，能力边界清晰</td>
+            <td class="vd-cell">持久性最好，依赖框架</td>
+          <td>最极简，新用户茫然</td><td>—</td>
+            <td>—</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="t-verdict">
+        <strong>核心张力：</strong>信息量与界面清洁度反向，一次性展示与持久可见性也是矛盾的。
+        <strong>推荐：</strong>Banner 只保留模型名 + 权限模式两个最关键信息；其余收进 Chips 按需查阅；新用户首次触发一次性引导 overlay（三个核心操作：@ 引用、/plan 提案、Esc 中断）。
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     TP-BANNER: OUR DIRECTION
+══════════════════════════════════════ -->
+<div class="section rec-section" id="tp-banner-rec">
+  <div class="slabel">
+    <span class="sub">Touchpoint 01 · Our Direction</span>
+    <span class="main">Banner / 启动信息 — 我们的方向</span>
+  </div>
+  <div class="section-inner">
+    <div class="rec-inner">
+      <div class="rec-l">
+        <div class="rec-hl">
+          <div class="rht">极简 Banner + 首次用户引导 overlay</div>
+          <div class="rhb">Banner 只保留两个核心信息：当前模型（影响能力边界）和权限模式（影响自动化程度）。其余信息（费用、版本、工具列表）收进输入框 Chips 或按需查阅。首次启动时触发一次性引导卡，此后永不重复。</div>
+        </div>
+        <div class="rec-p">
+          <div class="rn">01</div>
+          <div>
+            <div class="rt">Banner 只保留两个关键信息</div>
+            <div class="rd">模型名称（影响能力边界）和权限模式（影响自动化程度）是用户最需要随时知道的。版本号、工具列表、成本单价收进次级区域。减少启动噪声，让用户第一眼看到的是输入框。</div>
+          </div>
+        </div>
+        <div class="rec-p">
+          <div class="rn">02</div>
+          <div>
+            <div class="rt">首次用户触发一次性引导 overlay</div>
+            <div class="rd">检测到新用户（无历史会话）时，启动后显示简洁的功能引导卡，介绍三个核心操作：@ 引用文件、/plan 先提案、Esc 中断随时可用。此后永不重复触发，不打扰老用户。</div>
+          </div>
+        </div>
+        <div class="rec-p">
+          <div class="rn">03</div>
+          <div>
+            <div class="rt">启动即焦点，输入框开箱可用</div>
+            <div class="rd">Banner 信息展示后，光标自动聚焦在输入框。用户无需任何点击即可开始输入，减少一次多余的操作摩擦。体感上应该是"工具在等我"而不是"我在等工具"。</div>
+          </div>
+        </div>
+      </div>
+      <div class="rec-r">
+        <div class="mt" style="font-size:12px;line-height:1.8">
+          <div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">new ai ide — startup · our design</span></div>
+          <div class="mb">
+            <!-- minimal banner -->
+            <div style="display:flex;align-items:center;gap:9px;margin-bottom:7px">
+              <span class="tb" style="font-family:'Syne',sans-serif;font-weight:700;font-size:14px">New AI IDE</span>
+              <span class="tag tb3">claude-sonnet-4-5</span>
+              <span class="tag tg2">● Normal mode</span>
+            </div>
+            <!-- input box -->
+            <div style="background:#141419;border:.5px solid rgba(131,77,240,.35);border-radius:8px;overflow:hidden">
+              <div style="padding:5px 10px;background:rgba(131,77,240,.1);border-bottom:.5px solid rgba(131,77,240,.2);display:flex;gap:5px;align-items:center;font-size:9px">
+                <span class="tag tp3">✦ Agent</span>
+                <span class="tag tg2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg> src</span>
+                <span class="tag tb3"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><line x1="6" y1="3" x2="6" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><circle cx="6" cy="6" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg> main</span>
+                <span style="font-size:8px;color:var(--td);margin-left:auto">$0.00 ▾</span>
+              </div>
+              <div style="padding:8px 10px;display:flex;align-items:center;gap:6px;font-size:11px">
+                <span style="color:#834DF0">❯</span>
+                <span class="tw">开始输入任务...</span>
+                <div class="cur" style="display:inline-block"></div>
+              </div>
+              <div style="padding:3px 10px;border-top:.5px solid rgba(255,255,255,.05);font-size:9px;color:var(--td)">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg> 语音 &nbsp;·&nbsp; <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg> 附件 &nbsp;·&nbsp; /plan &nbsp;·&nbsp; Cmd+I 切换模式
+              </div>
+            </div>
+            <!-- first-time guide overlay -->
+            <div style="margin-top:10px;background:rgba(131,77,240,.06);border:.5px solid rgba(131,77,240,.2);border-radius:8px;padding:10px 12px">
+              <div style="font-size:12px;color:var(--acc2);font-weight:600;margin-bottom:6px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M18 11V6a1 1 0 0 0-1-1h0a1 1 0 0 0-1 1v5m0 0V4.5a1 1 0 0 0-1-1h0a1 1 0 0 0-1 1V11m0 0v-2a1 1 0 0 0-1-1h0a1 1 0 0 0-1 1v2m0 0V7a1 1 0 0 0-1-1h0a1 1 0 0 0-1 1v5a8 8 0 0 0 8 8h2a8 8 0 0 0 5-1.49"/></svg> 首次使用 — 3 个核心操作</div>
+              <div style="font-size:10px;color:var(--td);margin-bottom:3px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg> <span class="tb">@文件名</span> → 引用文件作为上下文</div>
+              <div style="font-size:10px;color:var(--td);margin-bottom:3px"><span class="tp">/plan</span> → AI 先提案，你确认再执行</div>
+              <div style="font-size:10px;color:var(--td);margin-bottom:8px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg> <span class="tr">Esc</span> → 随时中断 AI，重新给指令</div>
+              <div style="font-size:10px;color:var(--acc2);cursor:pointer">了解了，开始使用 → &nbsp;<span class="td">（此后不再显示）</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- end snap-container -->
+
+<script src="nav.js"></script>
+<script>
+  buildNav('tp-startup.html', 'startup', 'tp-banner');
+  initSnapScroll('startup');
+  initKeyNav();
+  window.addEventListener('load', () => {
+    const hash = window.location.hash;
+    if (hash) {
+      const el = document.querySelector(hash);
+      if (el) {
+        const c = document.querySelector('.snap-container');
+        c.scrollTo({ top: el.offsetTop - 88, behavior: 'smooth' });
+      }
+    }
+  });
+</script>
+</body>
+</html>

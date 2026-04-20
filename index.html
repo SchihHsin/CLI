@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AI CLI 设计报告 — 概览</title>
+<link rel="stylesheet" href="shared.css">
+<style>
+/* ── COVER ── */
+.cover-section { background: var(--sur); }
+.cover-stripe { position: absolute; left: 0; top: 0; bottom: 0; width: 5px; background: var(--acc); }
+.cover-body { position: absolute; inset: 0; display: flex; padding: 0 72px; }
+.c-left { flex: 1; display: flex; flex-direction: column; justify-content: center; padding-right: 52px; }
+.c-eyebrow { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--acc); letter-spacing: .18em; text-transform: uppercase; margin-bottom: 18px; }
+.c-title { font-family: 'Syne', sans-serif; font-size: 64px; font-weight: 800; color: var(--tx); line-height: 1; margin-bottom: 14px; }
+.c-title span { color: var(--acc); }
+.c-sub { font-size: 15px; color: var(--tx2); line-height: 1.7; max-width: 520px; margin-bottom: 28px; }
+.c-stats { display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; }
+.cstat { background: var(--bg2); border-radius: 10px; padding: 14px 16px; border: .5px solid var(--bdr2); }
+.csl { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--tx3); letter-spacing: .1em; text-transform: uppercase; margin-bottom: 3px; }
+.csv { font-family: 'Syne', sans-serif; font-size: 24px; font-weight: 700; color: var(--acc); }
+.csd { font-size: 12px; color: var(--tx2); }
+.c-right { width: 360px; display: flex; align-items: center; }
+
+/* ── JOURNEY ── */
+.journey-section { background: var(--sur); }
+.j-body {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 72px repeat(6, 1fr);
+  grid-template-rows: 52px repeat(4, 1fr) 60px;
+  overflow: hidden;
+}
+.jph-blank { background: var(--bg2); border-right: 1px solid var(--bdr2); border-bottom: 2px solid var(--bdr2); display: flex; align-items: center; justify-content: center; }
+.jph-blank span { font-family: 'DM Mono', monospace; font-size: 8px; letter-spacing: .08em; text-transform: uppercase; color: var(--tx3); }
+.jph { padding: 6px 10px; text-align: center; border-right: 1px solid var(--bdr); border-bottom: 2px solid var(--bdr2); background: var(--sur); display: flex; flex-direction: column; justify-content: center; align-items: center; }
+.jph.hot { background: var(--acc-dim); border-bottom-color: var(--acc); }
+.jph.low { background: var(--r-bg); border-bottom-color: var(--r); }
+.jpn { font-family: 'DM Mono', monospace; font-size: 9px; color: var(--acc); letter-spacing: .1em; display: block; margin-bottom: 2px; }
+.jpm { font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 700; color: var(--tx); }
+.jlbl { display: flex; align-items: center; justify-content: center; background: var(--bg2); border-right: 1px solid var(--bdr2); border-bottom: 1px solid var(--bdr); padding: 4px 3px; }
+.jlbl span { font-family: 'DM Mono', monospace; font-size: 8px; letter-spacing: .09em; text-transform: uppercase; color: var(--tx3); text-align: center; line-height: 1.4; }
+.jcell { border-right: 1px solid var(--bdr); border-bottom: 1px solid var(--bdr); padding: 7px 7px 5px; display: flex; flex-direction: column; gap: 3px; overflow: hidden; position: relative; background: var(--sur); }
+.jcell.hot { background: rgba(131,77,240,.03); }
+.jcell.low { background: rgba(220,38,38,.025); }
+
+/* pills */
+.jp { font-size: 10px; padding: 3px 7px; border-radius: 4px; line-height: 1.4; display: flex; align-items: center; gap: 4px; cursor: default; }
+.jp.u { background: rgba(131,77,240,.1); color: #4C1D95; border: .5px solid rgba(131,77,240,.22); }
+.jp.k { background: var(--bl-bg); color: #1E3A8A; border: .5px solid var(--bl-b); }
+.jp.k.link { cursor: pointer; transition: all .15s; text-decoration: none; }
+.jp.k.link:hover { background: var(--acc-dim); color: var(--acc2); border-color: var(--acc-b); }
+.jp.p { background: var(--r-bg); color: #7F1D1D; border: .5px solid var(--r-b); }
+.jp.o { background: var(--g-bg); color: #064E3B; border: .5px solid var(--g-b); }
+
+/* inter-phase arrow */
+.jarrow { position: absolute; right: -10px; top: 50%; transform: translateY(-50%); z-index: 6; pointer-events: none; }
+
+/* emotion row */
+.jemo { grid-column: 1/8; background: var(--bg2); border-top: 1px solid var(--bdr2); }
+
+/* ── FRAMEWORK ── */
+.fw-section { background: var(--sur); }
+.fw-body { flex: 1; display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; overflow: hidden; }
+.fw-col { display: flex; flex-direction: column; gap: 8px; overflow: hidden; }
+.fw-header { padding: 10px 14px; border-radius: 8px 8px 0 0; text-align: center; flex-shrink: 0; }
+.fw-hnum { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: .1em; text-transform: uppercase; display: block; margin-bottom: 3px; color: rgba(255,255,255,.7); }
+.fw-hname { font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 700; color: white; }
+.fw-card { background: var(--bg2); border: .5px solid var(--bdr2); border-radius: 7px; padding: 10px 12px; flex-shrink: 0; }
+.fw-card.pro { background: var(--g-bg); border-color: var(--g-b); }
+.fw-card.con { background: var(--r-bg); border-color: var(--r-b); }
+.fw-cl { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: .1em; text-transform: uppercase; color: var(--tx3); margin-bottom: 5px; display: block; }
+.fw-ct { font-size: 12px; font-weight: 500; color: var(--tx); margin-bottom: 3px; font-family: 'Syne', sans-serif; }
+.fw-cb { font-size: 11px; color: var(--tx2); line-height: 1.55; }
+
+/* framework wireframe SVG row */
+.fw-wireframe { display: flex; gap: 14px; margin-bottom: 10px; flex-shrink: 0; }
+.fw-wf-item { flex: 1; }
+.fw-wf-label { font-family: 'DM Mono', monospace; font-size: 9px; color: var(--tx3); text-align: center; margin-bottom: 4px; text-transform: uppercase; letter-spacing: .1em; }
+
+.fw-insight { background: var(--acc-dim); border: .5px solid var(--acc-b); border-radius: 8px; padding: 12px 16px; margin-top: 6px; flex-shrink: 0; }
+.fw-insight-title { font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 700; color: var(--acc2); margin-bottom: 5px; }
+.fw-insight-body { font-size: 12px; color: var(--tx2); line-height: 1.6; }
+</style>
+</head>
+<body>
+
+<!-- Global Nav -->
+<div id="global-nav"></div>
+<div id="nav-tp-bar" class="nav-tp-bar"></div>
+
+<div class="snap-container" style="padding-top:88px">
+
+<!-- ══════════════ COVER ══════════════ -->
+<div class="section cover-section" id="cover">
+  <div class="cover-stripe"></div>
+  <div class="cover-body" style="padding-top:52px">
+    <div class="c-left">
+      <div class="c-eyebrow">Design Research · 2026</div>
+      <h1 class="c-title">AI CLI<br><span>设计分析</span><br>与探索报告</h1>
+      <p class="c-sub">系统拆解 Claude Code、Warp、Gemini CLI、Aider 等主流产品的页面框架与 15 个交互触点，提炼 18 条设计原则。</p>
+      <div class="c-stats">
+        <div class="cstat"><div class="csl">覆盖产品</div><div class="csv">5</div><div class="csd">主流 AI CLI</div></div>
+        <div class="cstat"><div class="csl">分析触点</div><div class="csv">15</div><div class="csd">细粒度触点</div></div>
+        <div class="cstat"><div class="csl">旅程阶段</div><div class="csv">6</div><div class="csd">用户旅程</div></div>
+        <div class="cstat"><div class="csl">设计建议</div><div class="csv">18</div><div class="csd">设计原则</div></div>
+      </div>
+    </div>
+    <div class="c-right">
+      <div class="mt" style="width:100%;font-size:11.5px;line-height:1.8">
+        <div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">ai-cli-report · navigation</span></div>
+        <div class="mb">
+          <div class="td"># 使用说明</div><div style="height:4px"></div>
+          <div class="tw">· <span style="color:#834DF0">顶部第一行 Tab</span> — 切换阶段</div>
+          <div class="tw">· <span style="color:#60A5FA">顶部第二行 Tab</span> — 跳转触点</div>
+          <div class="tw">· 滚动 / 方向键 — 楼层切换</div>
+          <div style="height:6px"></div>
+          <div class="td"># 报告结构</div><div style="height:4px"></div>
+          <div><span class="tp">00</span> <span class="tw">用户旅程 · 页面框架</span></div>
+          <div><span class="tp">01</span> <span class="tw">启动阶段触点</span></div>
+          <div><span class="tp">02</span> <span class="tw">表达意图阶段触点 (7个)</span></div>
+          <div><span class="tp">03</span> <span class="tw">等待执行阶段触点 (5个)</span></div>
+          <div><span class="tp">04</span> <span class="tw">审查确认阶段触点 (4个)</span></div>
+          <div><span class="tp">05</span> <span class="tw">多智能体 · 设计原则</span></div>
+          <div style="height:6px"></div>
+          <div><span style="color:#834DF0">❯</span> <span class="tw">向下滚动开始</span><div class="cur" style="display:inline-block"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ USER JOURNEY ══════════════ -->
+<div class="section journey-section" id="journey">
+  <div class="slabel">
+    <span class="sub">User Journey Map</span>
+    <span class="main">完整用户旅程地图</span>
+  </div>
+  <div class="section-inner" style="padding-top:88px">
+    <div class="j-body">
+
+      <!-- Phase headers -->
+      <div class="jph-blank"><span>阶段</span></div>
+      <div class="jph"><span class="jpn">PHASE 01</span><span class="jpm">启动</span></div>
+      <div class="jph"><span class="jpn">PHASE 02</span><span class="jpm">表达意图</span></div>
+      <div class="jph hot"><span class="jpn">PHASE 03</span><span class="jpm">等待执行</span></div>
+      <div class="jph"><span class="jpn">PHASE 04</span><span class="jpm">审查确认</span></div>
+      <div class="jph low"><span class="jpn" style="color:var(--r)">PHASE 05</span><span class="jpm" style="color:var(--r)">迭代修正 ▼</span></div>
+      <div class="jph"><span class="jpn">PHASE 06</span><span class="jpm">收尾</span></div>
+
+      <!-- 用户行为 -->
+      <div class="jlbl"><span>用户<br>行为</span></div>
+      <div class="jcell" style="position:relative">
+        <div class="jp u"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg> cd 进入项目目录</div>
+        <div class="jp u"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> 运行 claude / aider</div>
+        <div class="jp u"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/><line x1="9" y1="12" x2="15" y2="12"/><line x1="9" y1="16" x2="13" y2="16"/></svg> 等待工具加载</div>
+        <div class="jp u"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg> 阅读启动信息</div>
+        <svg class="jarrow" width="18" height="14" viewBox="0 0 18 14"><path d="M0 7 L12 7 M8 3 L13 7 L8 11" fill="none" stroke="#834DF0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div class="jcell" style="position:relative">
+        <div class="jp u"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg> 描述任务目标</div>
+        <div class="jp u"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg> @ 引用相关文件</div>
+        <div class="jp u"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg> 附加截图 / PDF</div>
+        <div class="jp u"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg> 选择权限模式</div>
+        <svg class="jarrow" width="18" height="14" viewBox="0 0 18 14"><path d="M0 7 L12 7 M8 3 L13 7 L8 11" fill="none" stroke="#834DF0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div class="jcell hot" style="position:relative">
+        <div class="jp u"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg> 观察 tool call 流</div>
+        <div class="jp u"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96-.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 4.44-1.66z"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96-.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-4.44-1.66z"/></svg> 阅读 thinking 块</div>
+        <div class="jp u"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg> 点 y/n 授权操作</div>
+        <div class="jp u"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg> Esc 随时中断</div>
+        <svg class="jarrow" width="18" height="14" viewBox="0 0 18 14"><path d="M0 7 L12 7 M8 3 L13 7 L8 11" fill="none" stroke="#834DF0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div class="jcell" style="position:relative">
+        <div class="jp u"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg> 阅读输出 diff</div>
+        <div class="jp u">✔️ accept / reject</div>
+        <div class="jp u"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M9 3h6v5l3 9H6L9 8V3z"/><line x1="6" y1="14" x2="18" y2="14"/></svg> 运行测试验证</div>
+        <div class="jp u"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><circle cx="12" cy="12" r="10"/><path d="M12 6v2m0 8v2m-3-6h6m-6 2h6"/></svg> 查看 token 费用</div>
+        <svg class="jarrow" width="18" height="14" viewBox="0 0 18 14"><path d="M0 7 L12 7 M8 3 L13 7 L8 11" fill="none" stroke="#834DF0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div class="jcell low" style="position:relative">
+        <div class="jp u"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> 补充新指令</div>
+        <div class="jp u"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg> 纠正方向偏差</div>
+        <div class="jp u"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><line x1="6" y1="3" x2="6" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><circle cx="6" cy="6" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg> /fork 分支探索</div>
+        <div class="jp u"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg> /clear 重置上下文</div>
+        <svg class="jarrow" width="18" height="14" viewBox="0 0 18 14"><path d="M0 7 L12 7 M8 3 L13 7 L8 11" fill="none" stroke="#DC2626" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div class="jcell">
+        <div class="jp u"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg> 确认最终结果</div>
+        <div class="jp u"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><line x1="16.5" y1="9.4" x2="7.5" y2="4.21"/><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg> git commit</div>
+        <div class="jp u"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg> 查看会话摘要</div>
+        <div class="jp u"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M18 11V6a1 1 0 0 0-1-1h0a1 1 0 0 0-1 1v5m0 0V4.5a1 1 0 0 0-1-1h0a1 1 0 0 0-1 1V11m0 0v-2a1 1 0 0 0-1-1h0a1 1 0 0 0-1 1v2m0 0V7a1 1 0 0 0-1-1h0a1 1 0 0 0-1 1v5a8 8 0 0 0 8 8h2a8 8 0 0 0 5-1.49"/></svg> 退出工具</div>
+      </div>
+
+      <!-- 关键触点 (clickable links) -->
+      <div class="jlbl"><span>关键<br>触点</span></div>
+      <div class="jcell">
+        <a class="jp k link" href="tp-startup.html#tp-banner"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M22 17H2a3 3 0 0 0 3-3V9a7 7 0 0 1 14 0v5a3 3 0 0 0 3 3z"/><line x1="9" y1="21" x2="15" y2="21"/></svg> Banner / 启动信息</a>
+        <a class="jp k link" href="tp-intent.html#tp-input-pos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><line x1="6" y1="11" x2="6" y2="11" stroke-width="2.5"/><line x1="10" y1="11" x2="10" y2="11" stroke-width="2.5"/><line x1="14" y1="11" x2="14" y2="11" stroke-width="2.5"/><line x1="6" y1="15" x2="6" y2="15" stroke-width="2.5"/><line x1="18" y1="11" x2="18" y2="11" stroke-width="2.5"/><line x1="10" y1="15" x2="18" y2="15"/></svg> 输入框样式</a>
+        <a class="jp k link" href="tp-intent.html#tp-mode"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M5.04 5.04a10 10 0 0 0 0 13.92"/><path d="M9.88 9.88a4 4 0 0 0 0 4.24"/><line x1="12" y1="12" x2="12" y2="12" stroke-width="2.5"/><path d="M14.12 9.88a4 4 0 0 1 0 4.24"/><path d="M18.96 5.04a10 10 0 0 1 0 13.92"/></svg> 模式指示符</a>
+      </div>
+      <div class="jcell">
+        <a class="jp k link" href="tp-intent.html#tp-at">@ @ 文件补全</a>
+        <a class="jp k link" href="tp-intent.html#tp-chips"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7" stroke-width="2.5"/></svg> Context Chips</a>
+        <a class="jp k link" href="tp-intent.html#tp-model"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M12 2v4"/><circle cx="12" cy="6" r="2"/><circle cx="9" cy="15" r="1" fill="currentColor"/><circle cx="15" cy="15" r="1" fill="currentColor"/><path d="M8 19h8"/></svg> 模型选择器</a>
+        <a class="jp k link" href="tp-intent.html#tp-history"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg> 历史记录</a>
+      </div>
+      <div class="jcell hot">
+        <a class="jp k link" href="tp-execute.html#tp-thinking"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg> Thinking 折叠块</a>
+        <a class="jp k link" href="tp-execute.html#tp-toolcall"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg> Tool Call 标签流</a>
+        <a class="jp k link" href="tp-execute.html#tp-progress"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg> 进度条 / Spinner</a>
+        <a class="jp k link" href="tp-execute.html#tp-compact"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><polyline points="4 14 10 14 10 20"/><polyline points="20 10 14 10 14 4"/><line x1="10" y1="14" x2="21" y2="3"/><line x1="3" y1="21" x2="14" y2="10"/></svg> 上下文压缩提示</a>
+        <a class="jp k link" href="tp-execute.html#tp-perm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> 权限确认弹窗</a>
+      </div>
+      <div class="jcell">
+        <a class="jp k link" href="tp-review.html#tp-diff">± Diff 高亮展示</a>
+        <a class="jp k link" href="tp-review.html#tp-accept"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg> Accept / Reject</a>
+        <a class="jp k link" href="tp-review.html#tp-review"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg> Review Panel</a>
+        <a class="jp k link" href="tp-review.html#tp-token"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg> Token / 费用行</a>
+      </div>
+      <div class="jcell low">
+        <a class="jp k link" href="tp-intent.html#tp-input-pos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><line x1="6" y1="11" x2="6" y2="11" stroke-width="2.5"/><line x1="10" y1="11" x2="10" y2="11" stroke-width="2.5"/><line x1="14" y1="11" x2="14" y2="11" stroke-width="2.5"/><line x1="6" y1="15" x2="6" y2="15" stroke-width="2.5"/><line x1="18" y1="11" x2="18" y2="11" stroke-width="2.5"/><line x1="10" y1="15" x2="18" y2="15"/></svg> 输入框 (持续)</a>
+        <a class="jp k link" href="tp-review.html#tp-fork"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><line x1="6" y1="3" x2="6" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><circle cx="6" cy="6" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg> /fork /clear 命令</a>
+        <a class="jp k link" href="tp-review.html#tp-esc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg> Esc 中断机制</a>
+      </div>
+      <div class="jcell">
+        <a class="jp k link" href="tp-review.html#tp-token"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg> Token / 费用行</a>
+        <a class="jp k link" href="tp-review.html#tp-summary"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/><line x1="9" y1="12" x2="15" y2="12"/><line x1="9" y1="16" x2="13" y2="16"/></svg> 会话摘要卡</a>
+      </div>
+
+      <!-- Emotion curve -->
+      <div class="jemo">
+        <svg width="100%" height="60" viewBox="0 0 1040 60" preserveAspectRatio="none">
+          <defs><linearGradient id="eg" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#834DF0" stop-opacity=".12"/><stop offset="65%" stop-color="#DC2626" stop-opacity=".2"/><stop offset="100%" stop-color="#059669" stop-opacity=".12"/></linearGradient></defs>
+          <line x1="72" y1="30" x2="1030" y2="30" stroke="#E0E0E8" stroke-width="1" stroke-dasharray="3 4"/>
+          <text x="36" y="15" font-family="DM Mono,monospace" font-size="9" fill="#9090A8" text-anchor="middle">积极</text>
+          <text x="36" y="50" font-family="DM Mono,monospace" font-size="9" fill="#9090A8" text-anchor="middle">消极</text>
+          <!-- phase x-centers at approx: 72+155=227, 227+162=389, 389+162=551... simplified: 160 320 480 640 800 960 -->
+          <path d="M160,32 C220,30 265,18 320,18 C378,18 425,40 480,44 C538,48 576,20 640,16 C700,12 748,48 800,54 C856,58 904,16 960,10 L960,30 L160,30Z" fill="url(#eg)" opacity=".55"/>
+          <path d="M160,32 C220,30 265,18 320,18 C378,18 425,40 480,44 C538,48 576,20 640,16 C700,12 748,48 800,54 C856,58 904,16 960,10" fill="none" stroke="#834DF0" stroke-width="2.5" stroke-linejoin="round"/>
+          <circle cx="160" cy="32" r="4.5" fill="#888780" stroke="white" stroke-width="1.5"/>
+          <circle cx="320" cy="18" r="4.5" fill="#D97706" stroke="white" stroke-width="1.5"/>
+          <circle cx="480" cy="44" r="4.5" fill="#DC2626" stroke="white" stroke-width="1.5"/>
+          <circle cx="640" cy="16" r="4.5" fill="#059669" stroke="white" stroke-width="1.5"/>
+          <circle cx="800" cy="54" r="6.5" fill="#DC2626" stroke="white" stroke-width="2"/>
+          <circle cx="960" cy="10" r="6.5" fill="#059669" stroke="white" stroke-width="2"/>
+          <text x="160" y="57" font-family="DM Mono,monospace" font-size="9" fill="#888" text-anchor="middle">平静</text>
+          <text x="320" y="13" font-family="DM Mono,monospace" font-size="9" fill="#D97706" text-anchor="middle">期待</text>
+          <text x="480" y="58" font-family="DM Mono,monospace" font-size="9" fill="#DC2626" text-anchor="middle">不安</text>
+          <text x="640" y="11" font-family="DM Mono,monospace" font-size="9" fill="#059669" text-anchor="middle">宽慰</text>
+          <text x="800" y="60" font-family="DM Mono,monospace" font-size="10" fill="#DC2626" font-weight="600" text-anchor="middle">▼ 最低谷</text>
+          <text x="960" y="7" font-family="DM Mono,monospace" font-size="10" fill="#059669" font-weight="600" text-anchor="middle">▲ 满足</text>
+        </svg>
+      </div>
+
+      <!-- 摩擦 + 机会 -->
+      <div class="jlbl"><span>摩擦<br>机会</span></div>
+      <div class="jcell">
+        <div class="jp p"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/><line x1="12" y1="16" x2="12" y2="16" stroke-width="2.5"/></svg> 需要登录才能用</div>
+        <div class="jp p"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg> Banner 信息过载</div>
+        <div class="jp o"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="M12 15l-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/></svg> 零配置快速启动</div>
+        <div class="jp o"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M18 11V6a1 1 0 0 0-1-1h0a1 1 0 0 0-1 1v5m0 0V4.5a1 1 0 0 0-1-1h0a1 1 0 0 0-1 1V11m0 0v-2a1 1 0 0 0-1-1h0a1 1 0 0 0-1 1v2m0 0V7a1 1 0 0 0-1-1h0a1 1 0 0 0-1 1v5a8 8 0 0 0 8 8h2a8 8 0 0 0 5-1.49"/></svg> 首次用户引导卡</div>
+      </div>
+      <div class="jcell">
+        <div class="jp p"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><line x1="3" y1="8" x2="21" y2="8"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="5" y1="16" x2="19" y2="16"/></svg> 上下文不透明</div>
+        <div class="jp p"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg> 文件引用不统一</div>
+        <div class="jp o"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7" stroke-width="2.5"/></svg> Context Chips 可视化</div>
+        <div class="jp o"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> @ 补全 &lt;100ms</div>
+      </div>
+      <div class="jcell hot">
+        <div class="jp p">⬛ 黑盒感最强</div>
+        <div class="jp p"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg> 授权弹窗频繁打断</div>
+        <div class="jp o"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M4.9 19.1C1 15.2 1 8.8 4.9 4.9"/><path d="M7.8 16.2c-2.3-2.3-2.3-6.1 0-8.5"/><circle cx="12" cy="12" r="2"/><path d="M16.2 7.8c2.3 2.3 2.3 6.1 0 8.5"/><path d="M19.1 4.9C23 8.8 23 15.1 19.1 19"/></svg> 实时 tool call 流</div>
+        <div class="jp o"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/><line x1="9" y1="12" x2="15" y2="12"/><line x1="9" y1="16" x2="13" y2="16"/></svg> Plan Mode 先提案</div>
+      </div>
+      <div class="jcell">
+        <div class="jp p"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg> Diff 太长看不完</div>
+        <div class="jp p"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" y1="4" x2="8.12" y2="15.88"/><line x1="14.47" y1="14.48" x2="20" y2="20"/></svg> 无法逐行 accept</div>
+        <div class="jp o"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg> 分文件 accept/reject</div>
+        <div class="jp o"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg> inline AI 追问</div>
+      </div>
+      <div class="jcell low">
+        <div class="jp p"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M12 22a10 10 0 1 1 0-20 10 10 0 0 1 0 20z"/><path d="M12 18a6 6 0 1 0 0-12 6 6 0 0 0 0 12z"/><path d="M12 14a2 2 0 1 1 0-4 2 2 0 0 1 0 4z"/></svg> AI 反复跑偏 ▼最低谷</div>
+        <div class="jp p"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg> 上下文越来越乱</div>
+        <div class="jp o"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><line x1="6" y1="3" x2="6" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><circle cx="6" cy="6" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg> /fork 分支对话</div>
+        <div class="jp o"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><polyline points="4 14 10 14 10 20"/><polyline points="20 10 14 10 14 4"/><line x1="10" y1="14" x2="21" y2="3"/><line x1="3" y1="21" x2="14" y2="10"/></svg> auto-compact 压缩</div>
+      </div>
+      <div class="jcell">
+        <div class="jp p"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17" stroke-width="2.5"/></svg> 不知花了多少钱</div>
+        <div class="jp p"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg> 没有会话总结</div>
+        <div class="jp o"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg> 实时累计费用</div>
+        <div class="jp o"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg> 会话摘要卡</div>
+      </div>
+
+    </div><!-- end j-body -->
+  </div>
+</div>
+
+<!-- ══════════════ PAGE FRAMEWORK ══════════════ -->
+<div class="section fw-section" id="framework">
+  <div class="slabel">
+    <span class="sub">Page Framework · 页面框架</span>
+    <span class="main">CLI 页面框架分析 — 5 产品对比</span>
+  </div>
+  <div class="section-inner">
+
+    <!-- Wireframe diagrams row -->
+    <div class="fw-wireframe">
+      <div class="fw-wf-item">
+        <div class="fw-wf-label">Claude Code</div>
+        <svg viewBox="0 0 100 72" xmlns="http://www.w3.org/2000/svg" style="width:100%;border:.5px solid var(--bdr2);border-radius:6px;background:#0C0C11">
+          <!-- output area -->
+          <rect x="2" y="2" width="96" height="48" rx="2" fill="#0C0C11" stroke="#242430" stroke-width=".5"/>
+          <text x="6" y="13" font-family="DM Mono,monospace" font-size="5.5" fill="#34D399">✔ output (scroll)</text>
+          <text x="6" y="22" font-family="DM Mono,monospace" font-size="5.5" fill="#4E4E5E">◉ Reading auth.ts</text>
+          <text x="6" y="31" font-family="DM Mono,monospace" font-size="5.5" fill="#4E4E5E">◉ Editing auth.ts</text>
+          <rect x="3" y="39" width="60" height="4" rx="1" fill="#1a1a22"/>
+          <text x="66" y="43" font-family="DM Mono,monospace" font-size="5" fill="#4E4E5E">80%</text>
+          <!-- divider -->
+          <line x1="2" y1="50" x2="98" y2="50" stroke="#834DF0" stroke-width=".8" opacity=".5"/>
+          <!-- input area -->
+          <rect x="2" y="51" width="96" height="19" rx="2" fill="#1a1a22" stroke="#834DF0" stroke-width=".8"/>
+          <text x="6" y="61" font-family="DM Mono,monospace" font-size="5.5" fill="#834DF0">❯ input</text>
+          <text x="6" y="68" font-family="DM Mono,monospace" font-size="5" fill="#4E4E5E">fixed bottom · 20%</text>
+        </svg>
+      </div>
+      <div class="fw-wf-item">
+        <div class="fw-wf-label">Warp</div>
+        <svg viewBox="0 0 100 72" xmlns="http://www.w3.org/2000/svg" style="width:100%;border:.5px solid var(--bdr2);border-radius:6px;background:#0C0C11">
+          <!-- blocks area -->
+          <rect x="2" y="2" width="96" height="40" rx="2" fill="#0C0C11" stroke="#242430" stroke-width=".5"/>
+          <rect x="4" y="4" width="92" height="11" rx="1" fill="#15151C" stroke="#2a2a35" stroke-width=".5"/>
+          <text x="7" y="11" font-family="DM Mono,monospace" font-size="5.5" fill="#34D399">❯ npm test</text>
+          <rect x="88" y="5" width="7" height="9" rx="1" fill="transparent" stroke="#F87171" stroke-width=".5"/>
+          <text x="89.5" y="11" font-family="DM Mono,monospace" font-size="5" fill="#F87171">✗</text>
+          <rect x="4" y="17" width="92" height="10" rx="1" fill="#15151C" stroke="#2a2a35" stroke-width=".5"/>
+          <text x="7" y="24" font-family="DM Mono,monospace" font-size="5.5" fill="#34D399">❯ git status</text>
+          <rect x="88" y="18" width="7" height="8" rx="1" fill="transparent" stroke="#34D399" stroke-width=".5"/>
+          <text x="89" y="24" font-family="DM Mono,monospace" font-size="5" fill="#34D399">✔</text>
+          <text x="6" y="38" font-family="DM Mono,monospace" font-size="5" fill="#4E4E5E">Block 体系 · each cmd = unit</text>
+          <!-- input + chips -->
+          <rect x="2" y="43" width="96" height="14" rx="2" fill="#0d0f13" stroke="rgba(131,77,240,.4)" stroke-width=".8"/>
+          <rect x="3" y="44" width="94" height="5" rx="1" fill="rgba(131,77,240,.1)"/>
+          <text x="5" y="48.5" font-family="DM Mono,monospace" font-size="4.5" fill="#A78BFA">✦ Agent  · 🌿 main  · sonnet▾</text>
+          <text x="5" y="55" font-family="DM Mono,monospace" font-size="5.5" fill="#834DF0">❯ input</text>
+          <!-- status bar -->
+          <rect x="2" y="58" width="96" height="12" rx="1" fill="#141419" stroke="#242430" stroke-width=".5"/>
+          <text x="5" y="65" font-family="DM Mono,monospace" font-size="5" fill="#60A5FA">sonnet</text>
+          <text x="26" y="65" font-family="DM Mono,monospace" font-size="5" fill="#34D399">Normal</text>
+          <text x="52" y="65" font-family="DM Mono,monospace" font-size="5" fill="#4E4E5E">main</text>
+          <text x="74" y="65" font-family="DM Mono,monospace" font-size="5" fill="#FBBF24">$0.04</text>
+          <text x="6" y="71" font-family="DM Mono,monospace" font-size="4.5" fill="#4E4E5E">persistent status bar</text>
+        </svg>
+      </div>
+      <div class="fw-wf-item">
+        <div class="fw-wf-label">Gemini CLI</div>
+        <svg viewBox="0 0 100 72" xmlns="http://www.w3.org/2000/svg" style="width:100%;border:.5px solid var(--bdr2);border-radius:6px;background:#0C0C11">
+          <rect x="2" y="2" width="96" height="60" rx="2" fill="#0C0C11" stroke="#242430" stroke-width=".5"/>
+          <text x="6" y="13" font-family="DM Mono,monospace" font-size="5.5" fill="#4E4E5E">✓ Plan accepted.</text>
+          <text x="6" y="22" font-family="DM Mono,monospace" font-size="5.5" fill="#2DD4BF">→ read_file(auth.ts)</text>
+          <text x="6" y="31" font-family="DM Mono,monospace" font-size="5.5" fill="#2DD4BF">→ edit_file(auth.ts)</text>
+          <text x="6" y="40" font-family="DM Mono,monospace" font-size="5.5" fill="#34D399">✓ Done.</text>
+          <line x1="4" y1="45" x2="96" y2="45" stroke="#1a1a22" stroke-width=".5"/>
+          <text x="6" y="53" font-family="DM Mono,monospace" font-size="5.5" fill="#2DD4BF">~/myapp</text>
+          <text x="40" y="53" font-family="DM Mono,monospace" font-size="5.5" fill="#4E4E5E">[pro]</text>
+          <text x="55" y="53" font-family="DM Mono,monospace" font-size="5.5" fill="#834DF0">›</text>
+          <text x="60" y="53" font-family="DM Mono,monospace" font-size="5.5" fill="#CECEE0">input</text>
+          <rect x="58" y="47" width="1.5" height="7" fill="#834DF0" opacity=".7"/>
+          <text x="6" y="63" font-family="DM Mono,monospace" font-size="4.5" fill="#4E4E5E">linear flow · PTY · prompt status</text>
+        </svg>
+      </div>
+      <div class="fw-wf-item">
+        <div class="fw-wf-label">Aider</div>
+        <svg viewBox="0 0 100 72" xmlns="http://www.w3.org/2000/svg" style="width:100%;border:.5px solid var(--bdr2);border-radius:6px;background:#0C0C11">
+          <rect x="2" y="2" width="96" height="60" rx="2" fill="#0C0C11" stroke="#242430" stroke-width=".5"/>
+          <text x="6" y="12" font-family="DM Mono,monospace" font-size="5.5" fill="#A78BFA">◆ ARCHITECT (sonnet)</text>
+          <text x="6" y="21" font-family="DM Mono,monospace" font-size="5.5" fill="#4E4E5E">  建议重构为 Result</text>
+          <text x="6" y="30" font-family="DM Mono,monospace" font-size="5.5" fill="#A78BFA">◆ EDITOR (haiku)</text>
+          <text x="6" y="39" font-family="DM Mono,monospace" font-size="5.5" fill="#34D399">  SEARCH/REPLACE ✔</text>
+          <line x1="4" y1="44" x2="96" y2="44" stroke="#a78bfa" stroke-width=".5"/>
+          <text x="6" y="53" font-family="DM Mono,monospace" font-size="5.5" fill="#A78BFA">aider$</text>
+          <text x="32" y="53" font-family="DM Mono,monospace" font-size="5.5" fill="#CECEE0">input</text>
+          <rect x="55" y="47" width="1.5" height="7" fill="#834DF0" opacity=".7"/>
+          <text x="6" y="63" font-family="DM Mono,monospace" font-size="4.5" fill="#4E4E5E">pure linear · no layout zones</text>
+        </svg>
+      </div>
+      <div class="fw-wf-item">
+        <div class="fw-wf-label">Codex CLI</div>
+        <svg viewBox="0 0 100 72" xmlns="http://www.w3.org/2000/svg" style="width:100%;border:.5px solid var(--bdr2);border-radius:6px;background:#0C0C11">
+          <rect x="2" y="2" width="96" height="34" rx="2" fill="#0C0C11" stroke="#242430" stroke-width=".5"/>
+          <text x="6" y="13" font-family="DM Mono,monospace" font-size="5.5" fill="#FBBF24">⠿ Working (o3)...</text>
+          <text x="6" y="22" font-family="DM Mono,monospace" font-size="5.5" fill="#4E4E5E">auto-routing model</text>
+          <text x="6" y="31" font-family="DM Mono,monospace" font-size="5.5" fill="#34D399">✔ Done. 3 files.</text>
+          <!-- cloud section -->
+          <rect x="2" y="38" width="96" height="26" rx="2" fill="#1a1a22" stroke="#2a2a35" stroke-width=".5"/>
+          <text x="6" y="48" font-family="DM Mono,monospace" font-size="5.5" fill="#60A5FA">Cloud / GitHub Actions</text>
+          <text x="6" y="57" font-family="DM Mono,monospace" font-size="5.5" fill="#4E4E5E">headless async mode</text>
+          <text x="6" y="66" font-family="DM Mono,monospace" font-size="4.5" fill="#4E4E5E">local thin + cloud orchestration</text>
+        </svg>
+      </div>
+    </div>
+    <!-- Detail cards -->
+    <div class="fw-body">
+      <!-- Claude Code -->
+      <div class="fw-col">
+        <div class="fw-header" style="background:#059669">
+          <span class="fw-hnum">A · Claude Code</span>
+          <div class="fw-hname">固定分离式</div>
+        </div>
+        <div class="fw-card"><span class="fw-cl">框架</span><div class="fw-cb">输出流 + 底部编辑器物理分离，React/Ink 渲染 TUI</div></div>
+        <div class="fw-card pro"><span class="fw-cl">优势</span><div class="fw-cb">输入位置稳定，IDE 级编辑体验，框架清晰</div></div>
+        <div class="fw-card con"><span class="fw-cl">局限</span><div class="fw-cb">无全局状态栏，SSH/tmux 兼容性差</div></div>
+      </div>
+      <!-- Warp -->
+      <div class="fw-col">
+        <div class="fw-header" style="background:#0D9488">
+          <span class="fw-hnum">B · Warp</span>
+          <div class="fw-hname">Block + 状态栏</div>
+        </div>
+        <div class="fw-card"><span class="fw-cl">框架</span><div class="fw-cb">每条命令是 Block 单元，有 badge 和工具栏，底部持久状态栏，Rust/GPU 渲染</div></div>
+        <div class="fw-card pro"><span class="fw-cl">优势</span><div class="fw-cb">状态信息最完整持续可见，Block 可操作</div></div>
+        <div class="fw-card con"><span class="fw-cl">局限</span><div class="fw-cb">需要完全重写渲染层，迁移成本极高</div></div>
+      </div>
+      <!-- Gemini -->
+      <div class="fw-col">
+        <div class="fw-header" style="background:#2563EB">
+          <span class="fw-hnum">C · Gemini CLI</span>
+          <div class="fw-hname">对话流 + PTY</div>
+        </div>
+        <div class="fw-card"><span class="fw-cl">框架</span><div class="fw-cb">线性对话流，底层有 PTY 进程支持真实交互式工具，状态嵌入 prompt 行，Go 实现</div></div>
+        <div class="fw-card pro"><span class="fw-cl">优势</span><div class="fw-cb">PTY 可运行任何交互式程序，1M 上下文</div></div>
+        <div class="fw-card con"><span class="fw-cl">局限</span><div class="fw-cb">无固定输入框，状态信息不持久</div></div>
+      </div>
+      <!-- Aider -->
+      <div class="fw-col">
+        <div class="fw-header" style="background:#7C3AED">
+          <span class="fw-hnum">D · Aider</span>
+          <div class="fw-hname">纯线性流</div>
+        </div>
+        <div class="fw-card"><span class="fw-cl">框架</span><div class="fw-cb">最传统，完全线性文字流，Python/Rich 渲染，无 TUI，支持 iTerm2 分屏</div></div>
+        <div class="fw-card pro"><span class="fw-cl">优势</span><div class="fw-cb">无框架依赖，任何终端可跑，git 集成最深</div></div>
+        <div class="fw-card con"><span class="fw-cl">局限</span><div class="fw-cb">长对话体验最差，输入框随输出滚走</div></div>
+      </div>
+      <!-- Codex -->
+      <div class="fw-col">
+        <div class="fw-header" style="background:#D97706">
+          <span class="fw-hnum">E · Codex CLI</span>
+          <div class="fw-hname">本地 + 云端</div>
+        </div>
+        <div class="fw-card"><span class="fw-cl">框架</span><div class="fw-cb">本地轻量交互 + 云端异步执行，GitHub Actions 集成，支持无头模式</div></div>
+        <div class="fw-card pro"><span class="fw-cl">优势</span><div class="fw-cb">唯一真正支持"fire and forget"，CI/CD 原生集成</div></div>
+        <div class="fw-card con"><span class="fw-cl">局限</span><div class="fw-cb">本地体验薄弱，缺乏实时反馈</div></div>
+      </div>
+    </div>
+
+    <div class="fw-insight">
+      <div class="fw-insight-title">核心洞察：框架选择决定了能做什么，而不只是长什么样</div>
+      <div class="fw-insight-body">Warp 的 Block 体系把输出变成可操作结构单元，是 inline AI 追问的前提。Gemini 的 PTY 是唯一能运行所有交互式工具的方案。<strong>我们的方向：</strong>固定底部编辑器（成本最低的起点）+ 轻量 Block 概念（只对写入操作的输出加 badge，不依赖 GPU 渲染）+ 输入框内嵌 Context Chips 和费用角标。</div>
+    </div>
+
+  </div>
+</div>
+
+</div><!-- end snap-container -->
+
+<script src="nav.js"></script>
+<script>
+  buildNav('index.html', 'overview', null);
+  initSnapScroll('overview');
+  initKeyNav();
+
+  // Snap to hash on load
+  window.addEventListener('load', () => {
+    const hash = window.location.hash;
+    if (hash) {
+      const el = document.querySelector(hash);
+      if (el) {
+        const container = document.querySelector('.snap-container');
+        container.scrollTo({ top: el.offsetTop - 88, behavior: 'smooth' });
+      }
+    }
+  });
+</script>
+</body>
+</html>
