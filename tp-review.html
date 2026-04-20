@@ -56,6 +56,38 @@
   </div></div>
 </div>
 
+<div class="section rec-section" id="tp-diff-rec">
+  <div class="slabel"><span class="sub">Touchpoint 13 · Our Direction</span><span class="main">Diff 高亮展示 — 我们的方向</span></div>
+  <div class="section-inner"><div class="rec-inner">
+    <div class="rec-l">
+      <div class="rec-hl"><div class="rht">默认摘要行 + 按需展开 + ≥3 文件建议 Review Panel</div><div class="rhb">任务完成后先显示一行摘要（"✔ 修改了 3 个文件 · +18 -6 · $0.023"），点击展开完整 inline diff（含行号 + 语法高亮）。变更文件 ≥ 3 个或行数 ≥ 50 时自动建议切换 Review Panel，用户可选择。</div></div>
+      <div class="rec-p"><div class="rn">01</div><div><div class="rt">默认一行摘要，降低输出密度</div><div class="rd">高频使用者不需要每次都审查所有 diff，一行摘要（文件数 + 行数 + 费用）提供足够的信息。需要审查时点击展开，展开后有行号、语法高亮、文件折叠三件套，和专业 diff 工具一样。</div></div></div>
+      <div class="rec-p"><div class="rn">02</div><div><div class="rt">≥3 文件自动建议 Review Panel</div><div class="rd">检测到变更文件 ≥ 3 个或 diff 行数 ≥ 50 时，在摘要行旁出现"建议在 Review Panel 中查看"的提示（可忽略）。用户一键切换，也可以继续 inline 查看，不强制改变工作流。</div></div></div>
+      <div class="rec-p"><div class="rn">03</div><div><div class="rt">输出末尾恒有追问入口</div><div class="rd">每次任务完成，输出末尾始终显示"✦ 对这个结果有什么问题？"的追问占位符，形成自然的迭代节奏。降低进入下一轮对话的摩擦，让用户不需要思考"怎么继续"，直接写就好了。</div></div></div>
+    </div>
+    <div class="rec-r"><div class="mt" style="font-size:12px;line-height:1.8">
+      <div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">diff · summary + expand</span></div>
+      <div class="mb">
+        <div style="display:flex;align-items:center;gap:7px;margin-bottom:5px;font-size:11px"><span class="tg" style="font-size:13px">✔</span><span class="tw">任务完成</span><span class="td">3 files · +18 -6 · $0.023</span><span style="color:#a78bfa;margin-left:auto;cursor:pointer">展开 ▾</span></div>
+        <div style="font-family:'DM Mono',monospace;font-size:10px;background:#0a0a0f;border-radius:5px;padding:6px 8px;border:.5px solid #1a1a22;margin-bottom:5px">
+          <div class="td" style="font-size:9px;margin-bottom:2px">src/auth.ts  +8 -3</div>
+          <div style="background:rgba(248,113,113,.07);color:#f87171">- return decoded as JWTPayload;</div>
+          <div style="background:rgba(52,211,153,.07);color:#34d399">+ return safeVerify(token, secret);</div>
+        </div>
+        <div style="padding:5px 9px;background:rgba(131,77,240,.06);border:.5px solid rgba(131,77,240,.18);border-radius:5px;font-size:10px;display:flex;justify-content:space-between;align-items:center;margin-bottom:5px">
+          <span style="color:#a78bfa">建议在 Review Panel 中查看 (3 文件)</span>
+          <span style="color:#834DF0;cursor:pointer;font-weight:500">打开 →</span>
+        </div>
+        <div style="padding:6px 9px;background:#0d0d12;border:.5px solid rgba(131,77,240,.18);border-radius:5px;display:flex;align-items:center;gap:6px">
+          <span style="color:#834DF0;font-size:13px">✦</span>
+          <span style="font-size:10px;color:var(--td)">对这个结果有什么问题？</span>
+          <div class="cur" style="display:inline-block"></div>
+        </div>
+      </div>
+    </div></div>
+  </div></div>
+</div>
+
 <!-- ────── Accept / Reject 按钮 ────── -->
 <div class="section cmp-section" id="tp-accept">
   <div class="slabel"><span class="sub">Touchpoint 14 · 审查确认 · Industry Comparison</span><span class="main">Accept / Reject 按钮</span></div>
@@ -100,6 +132,40 @@
   </div></div>
 </div>
 
+<div class="section rec-section" id="tp-accept-rec">
+  <div class="slabel"><span class="sub">Touchpoint 14 · Our Direction</span><span class="main">Accept / Reject 按钮 — 我们的方向</span></div>
+  <div class="section-inner"><div class="rec-inner">
+    <div class="rec-l">
+      <div class="rec-hl"><div class="rht">Accept all 一键 + By file 分文件 + Ask AI 追问</div><div class="rhb">默认"Accept all"一键接受（96% 的场景）；提供"By file"分文件审查（超 3 文件时推荐）；Accept 按钮旁始终有"✦ 追问 AI"入口，让审查和对话在同一位置完成，无需跳出上下文。</div></div>
+      <div class="rec-p"><div class="rn">01</div><div><div class="rt">Accept all 是主路径，一键完成</div><div class="rd">Warp 数据显示 96% 的 diff 会直接接受。把 Accept all 设计为最显眼的主按钮，By file 和 Reject 作为次要选项。让最常见的操作一步完成，不因为要支持少数场景而复杂化主路径。</div></div></div>
+      <div class="rec-p"><div class="rn">02</div><div><div class="rt">By file 是 ≥3 文件时的推荐路径</div><div class="rd">变更 ≥ 3 文件时，在 Accept all 旁边高亮显示"By file"选项（带文件数量提示）。点击进入分文件审查视图，每个文件独立有 Accept/Reject 按钮，可以精确控制哪些文件的修改被接受。</div></div></div>
+      <div class="rec-p"><div class="rn">03</div><div><div class="rt">Accept 旁始终有 Ask AI 追问入口</div><div class="rd">无论在哪种审查视图里，Ask AI 按钮始终在 Accept/Reject 旁边。让"我想问 AI 这段代码为什么这么改"的需求可以在审查上下文内完成，不需要退出审查、重新开启对话、手动复制代码。</div></div></div>
+    </div>
+    <div class="rec-r"><div class="mt" style="font-size:12px;line-height:1.8">
+      <div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">accept/reject · our design</span></div>
+      <div class="mb">
+        <div style="border:.5px solid #2a2a35;border-radius:7px;overflow:hidden;margin-bottom:6px">
+          <div style="background:#1a1a22;padding:4px 9px;display:flex;justify-content:space-between;border-bottom:.5px solid #2a2a35;font-size:10px">
+            <span class="tb">2 files changed</span><span><span class="tg">+18</span> <span class="tr">-6</span></span>
+          </div>
+          <div style="padding:6px 9px;display:flex;gap:5px;flex-wrap:wrap">
+            <span style="font-size:11px;padding:4px 12px;border:.5px solid rgba(52,211,153,.35);border-radius:5px;color:#34d399;background:rgba(52,211,153,.06);cursor:pointer;font-weight:500">✓ Accept all</span>
+            <span style="font-size:11px;padding:4px 12px;border:.5px solid rgba(248,113,113,.2);border-radius:5px;color:#f87171;cursor:pointer">✗ Reject</span>
+            <span style="font-size:11px;padding:4px 12px;border:.5px solid rgba(96,165,250,.2);border-radius:5px;color:#60a5fa;cursor:pointer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg> By file</span>
+            <span style="font-size:11px;padding:4px 12px;border:.5px solid rgba(131,77,240,.2);border-radius:5px;color:#a78bfa;cursor:pointer">✦ Ask AI</span>
+          </div>
+        </div>
+        <div class="td" style="font-size:9px;margin-bottom:5px">By file 视图（≥3 文件时推荐）:</div>
+        <div style="border:.5px solid #2a2a35;border-radius:6px;overflow:hidden">
+          <div style="padding:3px 9px;background:#1a1a22;font-size:9px;border-bottom:.5px solid #2a2a35;display:flex;justify-content:space-between"><span class="tb">分文件审查</span><span class="td">3 files</span></div>
+          <div style="padding:4px 9px;display:flex;justify-content:space-between;align-items:center;border-bottom:.5px solid #1a1a22;font-size:10px"><span class="tg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg> auth.ts  +8 -3</span><div style="display:flex;gap:4px"><span style="color:#34d399;cursor:pointer;font-size:9px">✓</span><span style="color:#f87171;cursor:pointer;font-size:9px">✗</span></div></div>
+          <div style="padding:4px 9px;display:flex;justify-content:space-between;align-items:center;font-size:10px"><span class="td"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg> types.ts  +6 -1</span><div style="display:flex;gap:4px"><span style="color:#34d399;cursor:pointer;font-size:9px">✓</span><span style="color:#f87171;cursor:pointer;font-size:9px">✗</span></div></div>
+        </div>
+      </div>
+    </div></div>
+  </div></div>
+</div>
+
 <!-- ────── Review Panel ────── -->
 <div class="section cmp-section" id="tp-review">
   <div class="slabel"><span class="sub">Touchpoint 15 · 审查确认 · Industry Comparison</span><span class="main">Review Panel</span></div>
@@ -137,6 +203,47 @@
       </tbody>
     </table>
     <div class="t-verdict"><strong>推荐：</strong>默认 inline 查看 + 末尾追问入口（恒显示）；变更 ≥ 3 文件时自动建议 Review Panel（可忽略）；Review Panel 内支持分文件 accept/reject + inline Ask AI。审查后无缝回到终端流。</div>
+  </div></div>
+</div>
+
+<div class="section rec-section" id="tp-review-rec">
+  <div class="slabel"><span class="sub">Touchpoint 15 · Our Direction</span><span class="main">Review Panel — 我们的方向</span></div>
+  <div class="section-inner"><div class="rec-inner">
+    <div class="rec-l">
+      <div class="rec-hl"><div class="rht">按需触发 + 文件树双栏 + 追问入口内嵌</div><div class="rhb">Review Panel 不是强制视图，而是按需触发的审查工具。变更 ≥ 3 文件时自动建议切换，用户可选择。Panel 内左侧文件树，右侧 diff 视图，支持分文件 accept/reject，并有 Ask AI 追问入口直接内嵌在 Panel 内。</div></div>
+      <div class="rec-p"><div class="rn">01</div><div><div class="rt">按需触发，不强制切换视图</div><div class="rd">Review Panel 是工具，不是义务。≥3 文件时自动提示（可忽略），用户始终可以选择在 inline 模式审查。切换后审查完毕，自动回到终端流，不改变整体工作流的线性感。</div></div></div>
+      <div class="rec-p"><div class="rn">02</div><div><div class="rt">文件树 + diff 双栏，分文件操作</div><div class="rd">左侧文件树显示所有变更文件（含 +/- 行数统计），右侧 diff 视图显示当前文件的完整变更。点击文件树切换查看，每个文件独立有 Accept/Reject 按钮。先审查哪个文件由用户决定。</div></div></div>
+      <div class="rec-p"><div class="rn">03</div><div><div class="rt">Ask AI 追问内嵌在 Review Panel 内</div><div class="rd">Review Panel 内直接有 Ask AI 输入框，让"这段代码为什么这么改？有什么风险？能否更简洁？"这类审查问题可以在 Panel 内完成。AI 的回答也直接显示在 Panel 内，不需要跳出到主对话。</div></div></div>
+    </div>
+    <div class="rec-r"><div class="mt" style="font-size:12px;line-height:1.8">
+      <div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">review panel · our design</span></div>
+      <div class="mb">
+        <div style="border:.5px solid #2a2a35;border-radius:7px;overflow:hidden">
+          <div style="background:#1a1a22;padding:4px 9px;display:flex;justify-content:space-between;border-bottom:.5px solid #2a2a35;font-size:10px">
+            <span class="tb">Code Review · 3 files</span>
+            <div style="display:flex;gap:4px"><span style="font-size:9px;padding:1px 7px;border:.5px solid rgba(52,211,153,.3);border-radius:3px;color:#34d399;cursor:pointer">Accept all</span><span style="font-size:9px;padding:1px 7px;border:.5px solid rgba(248,113,113,.2);border-radius:3px;color:#f87171;cursor:pointer">Reject</span></div>
+          </div>
+          <div style="display:flex;min-height:60px">
+            <div style="width:35%;border-right:.5px solid #2a2a35;padding:5px 8px;font-size:10px">
+              <div class="tg" style="margin-bottom:3px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg> auth.ts <span class="td" style="font-size:8px">+8 -3 ✓</span></div>
+              <div class="td" style="margin-bottom:3px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg> types.ts <span style="font-size:8px">+6 -1</span></div>
+              <div class="td"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8d"/><polyline points="14 2 14 8 20 8"/></svg> utils.ts <span style="font-size:8px">+4 -0</span></div>
+            </div>
+            <div style="flex:1;padding:5px 8px">
+              <div style="font-family:'DM Mono',monospace;font-size:9px">
+                <div class="td" style="margin-bottom:2px">src/auth.ts</div>
+                <div style="background:rgba(248,113,113,.07);color:#f87171">- return decoded;</div>
+                <div style="background:rgba(52,211,153,.07);color:#34d399">+ return safeVerify(t);</div>
+              </div>
+            </div>
+          </div>
+          <div style="border-top:.5px solid #1a1a22;padding:5px 9px;background:#141419">
+            <div style="font-size:9px;color:#a78bfa;margin-bottom:3px">✦ 在 Review 上下文中追问 AI</div>
+            <div style="font-size:10px;display:flex;gap:4px;align-items:center"><span class="td">这段代码为什么用 safeVerify 而不是直接返回？</span><div class="cur" style="display:inline-block"></div></div>
+          </div>
+        </div>
+      </div>
+    </div></div>
   </div></div>
 </div>
 
@@ -184,116 +291,6 @@
   </div></div>
 </div>
 
-
-<!-- ══════ REC SECTIONS ══════ -->
-
-<div class="section rec-section" id="tp-diff-rec">
-  <div class="slabel"><span class="sub">Touchpoint 13 · Our Direction</span><span class="main">Diff 高亮展示 — 我们的方向</span></div>
-  <div class="section-inner"><div class="rec-inner">
-    <div class="rec-l">
-      <div class="rec-hl"><div class="rht">默认摘要行 + 按需展开 + ≥3 文件建议 Review Panel</div><div class="rhb">任务完成后先显示一行摘要（"✔ 修改了 3 个文件 · +18 -6 · $0.023"），点击展开完整 inline diff（含行号 + 语法高亮）。变更文件 ≥ 3 个或行数 ≥ 50 时自动建议切换 Review Panel，用户可选择。</div></div>
-      <div class="rec-p"><div class="rn">01</div><div><div class="rt">默认一行摘要，降低输出密度</div><div class="rd">高频使用者不需要每次都审查所有 diff，一行摘要（文件数 + 行数 + 费用）提供足够的信息。需要审查时点击展开，展开后有行号、语法高亮、文件折叠三件套，和专业 diff 工具一样。</div></div></div>
-      <div class="rec-p"><div class="rn">02</div><div><div class="rt">≥3 文件自动建议 Review Panel</div><div class="rd">检测到变更文件 ≥ 3 个或 diff 行数 ≥ 50 时，在摘要行旁出现"建议在 Review Panel 中查看"的提示（可忽略）。用户一键切换，也可以继续 inline 查看，不强制改变工作流。</div></div></div>
-      <div class="rec-p"><div class="rn">03</div><div><div class="rt">输出末尾恒有追问入口</div><div class="rd">每次任务完成，输出末尾始终显示"✦ 对这个结果有什么问题？"的追问占位符，形成自然的迭代节奏。降低进入下一轮对话的摩擦，让用户不需要思考"怎么继续"，直接写就好了。</div></div></div>
-    </div>
-    <div class="rec-r"><div class="mt" style="font-size:12px;line-height:1.8">
-      <div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">diff · summary + expand</span></div>
-      <div class="mb">
-        <div style="display:flex;align-items:center;gap:7px;margin-bottom:5px;font-size:11px"><span class="tg" style="font-size:13px">✔</span><span class="tw">任务完成</span><span class="td">3 files · +18 -6 · $0.023</span><span style="color:#a78bfa;margin-left:auto;cursor:pointer">展开 ▾</span></div>
-        <div style="font-family:'DM Mono',monospace;font-size:10px;background:#0a0a0f;border-radius:5px;padding:6px 8px;border:.5px solid #1a1a22;margin-bottom:5px">
-          <div class="td" style="font-size:9px;margin-bottom:2px">src/auth.ts  +8 -3</div>
-          <div style="background:rgba(248,113,113,.07);color:#f87171">- return decoded as JWTPayload;</div>
-          <div style="background:rgba(52,211,153,.07);color:#34d399">+ return safeVerify(token, secret);</div>
-        </div>
-        <div style="padding:5px 9px;background:rgba(131,77,240,.06);border:.5px solid rgba(131,77,240,.18);border-radius:5px;font-size:10px;display:flex;justify-content:space-between;align-items:center;margin-bottom:5px">
-          <span style="color:#a78bfa">建议在 Review Panel 中查看 (3 文件)</span>
-          <span style="color:#834DF0;cursor:pointer;font-weight:500">打开 →</span>
-        </div>
-        <div style="padding:6px 9px;background:#0d0d12;border:.5px solid rgba(131,77,240,.18);border-radius:5px;display:flex;align-items:center;gap:6px">
-          <span style="color:#834DF0;font-size:13px">✦</span>
-          <span style="font-size:10px;color:var(--td)">对这个结果有什么问题？</span>
-          <div class="cur" style="display:inline-block"></div>
-        </div>
-      </div>
-    </div></div>
-  </div></div>
-</div>
-
-<div class="section rec-section" id="tp-accept-rec">
-  <div class="slabel"><span class="sub">Touchpoint 14 · Our Direction</span><span class="main">Accept / Reject 按钮 — 我们的方向</span></div>
-  <div class="section-inner"><div class="rec-inner">
-    <div class="rec-l">
-      <div class="rec-hl"><div class="rht">Accept all 一键 + By file 分文件 + Ask AI 追问</div><div class="rhb">默认"Accept all"一键接受（96% 的场景）；提供"By file"分文件审查（超 3 文件时推荐）；Accept 按钮旁始终有"✦ 追问 AI"入口，让审查和对话在同一位置完成，无需跳出上下文。</div></div>
-      <div class="rec-p"><div class="rn">01</div><div><div class="rt">Accept all 是主路径，一键完成</div><div class="rd">Warp 数据显示 96% 的 diff 会直接接受。把 Accept all 设计为最显眼的主按钮，By file 和 Reject 作为次要选项。让最常见的操作一步完成，不因为要支持少数场景而复杂化主路径。</div></div></div>
-      <div class="rec-p"><div class="rn">02</div><div><div class="rt">By file 是 ≥3 文件时的推荐路径</div><div class="rd">变更 ≥ 3 文件时，在 Accept all 旁边高亮显示"By file"选项（带文件数量提示）。点击进入分文件审查视图，每个文件独立有 Accept/Reject 按钮，可以精确控制哪些文件的修改被接受。</div></div></div>
-      <div class="rec-p"><div class="rn">03</div><div><div class="rt">Accept 旁始终有 Ask AI 追问入口</div><div class="rd">无论在哪种审查视图里，Ask AI 按钮始终在 Accept/Reject 旁边。让"我想问 AI 这段代码为什么这么改"的需求可以在审查上下文内完成，不需要退出审查、重新开启对话、手动复制代码。</div></div></div>
-    </div>
-    <div class="rec-r"><div class="mt" style="font-size:12px;line-height:1.8">
-      <div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">accept/reject · our design</span></div>
-      <div class="mb">
-        <div style="border:.5px solid #2a2a35;border-radius:7px;overflow:hidden;margin-bottom:6px">
-          <div style="background:#1a1a22;padding:4px 9px;display:flex;justify-content:space-between;border-bottom:.5px solid #2a2a35;font-size:10px">
-            <span class="tb">2 files changed</span><span><span class="tg">+18</span> <span class="tr">-6</span></span>
-          </div>
-          <div style="padding:6px 9px;display:flex;gap:5px;flex-wrap:wrap">
-            <span style="font-size:11px;padding:4px 12px;border:.5px solid rgba(52,211,153,.35);border-radius:5px;color:#34d399;background:rgba(52,211,153,.06);cursor:pointer;font-weight:500">✓ Accept all</span>
-            <span style="font-size:11px;padding:4px 12px;border:.5px solid rgba(248,113,113,.2);border-radius:5px;color:#f87171;cursor:pointer">✗ Reject</span>
-            <span style="font-size:11px;padding:4px 12px;border:.5px solid rgba(96,165,250,.2);border-radius:5px;color:#60a5fa;cursor:pointer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg> By file</span>
-            <span style="font-size:11px;padding:4px 12px;border:.5px solid rgba(131,77,240,.2);border-radius:5px;color:#a78bfa;cursor:pointer">✦ Ask AI</span>
-          </div>
-        </div>
-        <div class="td" style="font-size:9px;margin-bottom:5px">By file 视图（≥3 文件时推荐）:</div>
-        <div style="border:.5px solid #2a2a35;border-radius:6px;overflow:hidden">
-          <div style="padding:3px 9px;background:#1a1a22;font-size:9px;border-bottom:.5px solid #2a2a35;display:flex;justify-content:space-between"><span class="tb">分文件审查</span><span class="td">3 files</span></div>
-          <div style="padding:4px 9px;display:flex;justify-content:space-between;align-items:center;border-bottom:.5px solid #1a1a22;font-size:10px"><span class="tg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg> auth.ts  +8 -3</span><div style="display:flex;gap:4px"><span style="color:#34d399;cursor:pointer;font-size:9px">✓</span><span style="color:#f87171;cursor:pointer;font-size:9px">✗</span></div></div>
-          <div style="padding:4px 9px;display:flex;justify-content:space-between;align-items:center;font-size:10px"><span class="td"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg> types.ts  +6 -1</span><div style="display:flex;gap:4px"><span style="color:#34d399;cursor:pointer;font-size:9px">✓</span><span style="color:#f87171;cursor:pointer;font-size:9px">✗</span></div></div>
-        </div>
-      </div>
-    </div></div>
-  </div></div>
-</div>
-
-<div class="section rec-section" id="tp-review-rec">
-  <div class="slabel"><span class="sub">Touchpoint 15 · Our Direction</span><span class="main">Review Panel — 我们的方向</span></div>
-  <div class="section-inner"><div class="rec-inner">
-    <div class="rec-l">
-      <div class="rec-hl"><div class="rht">按需触发 + 文件树双栏 + 追问入口内嵌</div><div class="rhb">Review Panel 不是强制视图，而是按需触发的审查工具。变更 ≥ 3 文件时自动建议切换，用户可选择。Panel 内左侧文件树，右侧 diff 视图，支持分文件 accept/reject，并有 Ask AI 追问入口直接内嵌在 Panel 内。</div></div>
-      <div class="rec-p"><div class="rn">01</div><div><div class="rt">按需触发，不强制切换视图</div><div class="rd">Review Panel 是工具，不是义务。≥3 文件时自动提示（可忽略），用户始终可以选择在 inline 模式审查。切换后审查完毕，自动回到终端流，不改变整体工作流的线性感。</div></div></div>
-      <div class="rec-p"><div class="rn">02</div><div><div class="rt">文件树 + diff 双栏，分文件操作</div><div class="rd">左侧文件树显示所有变更文件（含 +/- 行数统计），右侧 diff 视图显示当前文件的完整变更。点击文件树切换查看，每个文件独立有 Accept/Reject 按钮。先审查哪个文件由用户决定。</div></div></div>
-      <div class="rec-p"><div class="rn">03</div><div><div class="rt">Ask AI 追问内嵌在 Review Panel 内</div><div class="rd">Review Panel 内直接有 Ask AI 输入框，让"这段代码为什么这么改？有什么风险？能否更简洁？"这类审查问题可以在 Panel 内完成。AI 的回答也直接显示在 Panel 内，不需要跳出到主对话。</div></div></div>
-    </div>
-    <div class="rec-r"><div class="mt" style="font-size:12px;line-height:1.8">
-      <div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">review panel · our design</span></div>
-      <div class="mb">
-        <div style="border:.5px solid #2a2a35;border-radius:7px;overflow:hidden">
-          <div style="background:#1a1a22;padding:4px 9px;display:flex;justify-content:space-between;border-bottom:.5px solid #2a2a35;font-size:10px">
-            <span class="tb">Code Review · 3 files</span>
-            <div style="display:flex;gap:4px"><span style="font-size:9px;padding:1px 7px;border:.5px solid rgba(52,211,153,.3);border-radius:3px;color:#34d399;cursor:pointer">Accept all</span><span style="font-size:9px;padding:1px 7px;border:.5px solid rgba(248,113,113,.2);border-radius:3px;color:#f87171;cursor:pointer">Reject</span></div>
-          </div>
-          <div style="display:flex;min-height:60px">
-            <div style="width:35%;border-right:.5px solid #2a2a35;padding:5px 8px;font-size:10px">
-              <div class="tg" style="margin-bottom:3px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg> auth.ts <span class="td" style="font-size:8px">+8 -3 ✓</span></div>
-              <div class="td" style="margin-bottom:3px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg> types.ts <span style="font-size:8px">+6 -1</span></div>
-              <div class="td"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg> utils.ts <span style="font-size:8px">+4 -0</span></div>
-            </div>
-            <div style="flex:1;padding:5px 8px">
-              <div style="font-family:'DM Mono',monospace;font-size:9px">
-                <div class="td" style="margin-bottom:2px">src/auth.ts</div>
-                <div style="background:rgba(248,113,113,.07);color:#f87171">- return decoded;</div>
-                <div style="background:rgba(52,211,153,.07);color:#34d399">+ return safeVerify(t);</div>
-              </div>
-            </div>
-          </div>
-          <div style="border-top:.5px solid #1a1a22;padding:5px 9px;background:#141419">
-            <div style="font-size:9px;color:#a78bfa;margin-bottom:3px">✦ 在 Review 上下文中追问 AI</div>
-            <div style="font-size:10px;display:flex;gap:4px;align-items:center"><span class="td">这段代码为什么用 safeVerify 而不是直接返回？</span><div class="cur" style="display:inline-block"></div></div>
-          </div>
-        </div>
-      </div>
-    </div></div>
-  </div></div>
-</div>
-
 <div class="section rec-section" id="tp-token-rec">
   <div class="slabel"><span class="sub">Touchpoint 16 · Our Direction</span><span class="main">Token / 费用行 — 我们的方向</span></div>
   <div class="section-inner"><div class="rec-inner">
@@ -329,7 +326,6 @@
     </div></div>
   </div></div>
 </div>
-
 
 <!-- ══════ PHASE 05: 迭代修正阶段触点 ══════ -->
 
