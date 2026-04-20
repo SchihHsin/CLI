@@ -40,7 +40,8 @@
 .jpm { font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 700; color: var(--tx); }
 .jlbl { display: flex; align-items: center; justify-content: center; background: var(--bg2); border-right: 1px solid var(--bdr2); border-bottom: 1px solid var(--bdr); padding: 4px 3px; }
 .jlbl span { font-family: 'DM Mono', monospace; font-size: 8px; letter-spacing: .09em; text-transform: uppercase; color: var(--tx3); text-align: center; line-height: 1.4; }
-.jcell { border-right: 1px solid var(--bdr); border-bottom: 1px solid var(--bdr); padding: 7px 7px 5px; display: flex; flex-direction: column; gap: 3px; overflow: hidden; position: relative; background: var(--sur); }
+.jcell { border-right: 1px solid var(--bdr); border-bottom: 1px solid var(--bdr); padding: 7px 7px 5px; display: flex; flex-direction: column; gap: 3px; overflow: visible; position: relative; background: var(--sur); }
+.jnarr { display: block; text-align: center; font-size: 7px; color: var(--acc); opacity: 0.4; line-height: 1; margin: -1px 0; user-select: none; pointer-events: none; }
 .jcell.hot { background: rgba(131,77,240,.03); }
 .jcell.low { background: rgba(220,38,38,.025); }
 
@@ -468,6 +469,20 @@
   buildNav('index.html', 'overview', null);
   initSnapScroll('overview');
   initKeyNav();
+
+  // Inject between-node arrows in the behavior row (first 6 .jcell elements)
+  const jcells = document.querySelectorAll('.j-body .jcell');
+  for (let i = 0; i < 6 && i < jcells.length; i++) {
+    const pills = [...jcells[i].querySelectorAll('.jp')];
+    pills.forEach((pill, j) => {
+      if (j < pills.length - 1) {
+        const arr = document.createElement('span');
+        arr.className = 'jnarr';
+        arr.textContent = '↓';
+        pill.after(arr);
+      }
+    });
+  }
 
   // Snap to hash on load
   window.addEventListener('load', () => {
