@@ -90,12 +90,177 @@
   </div></div>
 </div>
 
+<!-- ══════════════ 设计总结 ══════════════ -->
+<div class="section" id="design-summary" style="background:var(--bg)">
+  <div class="slabel">
+    <span class="sub">Design Summary · 设计总结</span>
+    <span class="main">从用户诉求到设计点 — 完整链路</span>
+  </div>
+  <div class="section-inner" style="gap:10px">
+
+    <!-- 5-column flow -->
+    <div style="flex:1;display:grid;grid-template-columns:repeat(5,1fr);gap:0;overflow:hidden;border-radius:10px;border:.5px solid var(--bdr2)">
+
+      <!-- ① 用户诉求 -->
+      <div style="display:flex;flex-direction:column;border-right:.5px solid var(--bdr2)">
+        <div style="background:#1D4ED8;padding:10px 14px;flex-shrink:0">
+          <div style="font-family:'DM Mono',monospace;font-size:9px;color:rgba(255,255,255,.55);letter-spacing:.12em;text-transform:uppercase;margin-bottom:3px">User Needs</div>
+          <div style="font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:#fff">用户诉求</div>
+        </div>
+        <div style="flex:1;padding:10px 12px;display:flex;flex-direction:column;gap:7px;background:rgba(37,99,235,.04);overflow:hidden">
+          <div style="padding:8px 10px;background:rgba(37,99,235,.08);border-left:2px solid #3B82F6;border-radius:0 5px 5px 0">
+            <div style="font-size:11px;font-weight:600;color:#1D4ED8;font-family:'Syne',sans-serif;margin-bottom:2px">快速开始</div>
+            <div style="font-size:10px;color:var(--tx2);line-height:1.5">无需繁琐配置，30 秒内启动第一个任务，不被工具本身拖慢节奏</div>
+          </div>
+          <div style="padding:8px 10px;background:rgba(37,99,235,.08);border-left:2px solid #3B82F6;border-radius:0 5px 5px 0">
+            <div style="font-size:11px;font-weight:600;color:#1D4ED8;font-family:'Syne',sans-serif;margin-bottom:2px">执行透明</div>
+            <div style="font-size:10px;color:var(--tx2);line-height:1.5">清楚知道 AI 在做什么、做到哪一步，不产生"黑盒焦虑"</div>
+          </div>
+          <div style="padding:8px 10px;background:rgba(37,99,235,.08);border-left:2px solid #3B82F6;border-radius:0 5px 5px 0">
+            <div style="font-size:11px;font-weight:600;color:#1D4ED8;font-family:'Syne',sans-serif;margin-bottom:2px">随时介入</div>
+            <div style="font-size:10px;color:var(--tx2);line-height:1.5">出现偏差时能快速中断、修正方向，而不是等 AI 跑完再收拾残局</div>
+          </div>
+          <div style="padding:8px 10px;background:rgba(37,99,235,.08);border-left:2px solid #3B82F6;border-radius:0 5px 5px 0">
+            <div style="font-size:11px;font-weight:600;color:#1D4ED8;font-family:'Syne',sans-serif;margin-bottom:2px">费用可感知</div>
+            <div style="font-size:10px;color:var(--tx2);line-height:1.5">每次操作的 token 消耗和费用实时可见，能主动控制成本</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ② 用户痛点 -->
+      <div style="display:flex;flex-direction:column;border-right:.5px solid var(--bdr2)">
+        <div style="background:#B91C1C;padding:10px 14px;flex-shrink:0">
+          <div style="font-family:'DM Mono',monospace;font-size:9px;color:rgba(255,255,255,.55);letter-spacing:.12em;text-transform:uppercase;margin-bottom:3px">Pain Points</div>
+          <div style="font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:#fff">用户痛点</div>
+        </div>
+        <div style="flex:1;padding:10px 12px;display:flex;flex-direction:column;gap:7px;background:rgba(220,38,38,.04);overflow:hidden">
+          <div style="padding:8px 10px;background:rgba(220,38,38,.07);border-left:2px solid #EF4444;border-radius:0 5px 5px 0">
+            <div style="font-size:11px;font-weight:600;color:#B91C1C;font-family:'Syne',sans-serif;margin-bottom:2px">启动信息冗余</div>
+            <div style="font-size:10px;color:var(--tx2);line-height:1.5">Banner 噪音多于信号，版本号、Tips、广告挤占注意力，认知负担高</div>
+          </div>
+          <div style="padding:8px 10px;background:rgba(220,38,38,.07);border-left:2px solid #EF4444;border-radius:0 5px 5px 0">
+            <div style="font-size:11px;font-weight:600;color:#B91C1C;font-family:'Syne',sans-serif;margin-bottom:2px">执行黑盒</div>
+            <div style="font-size:10px;color:var(--tx2);line-height:1.5">等待时不知进度、不知做到哪步，长任务中焦虑感持续累积</div>
+          </div>
+          <div style="padding:8px 10px;background:rgba(220,38,38,.07);border-left:2px solid #EF4444;border-radius:0 5px 5px 0">
+            <div style="font-size:11px;font-weight:600;color:#B91C1C;font-family:'Syne',sans-serif;margin-bottom:2px">高危无预警</div>
+            <div style="font-size:10px;color:var(--tx2);line-height:1.5">删文件、执行脚本等高风险操作缺乏分级提示，事后难撤回</div>
+          </div>
+          <div style="padding:8px 10px;background:rgba(220,38,38,.07);border-left:2px solid #EF4444;border-radius:0 5px 5px 0">
+            <div style="font-size:11px;font-weight:600;color:#B91C1C;font-family:'Syne',sans-serif;margin-bottom:2px">费用不透明</div>
+            <div style="font-size:10px;color:var(--tx2);line-height:1.5">单次和累计消耗均不可见，无法评估 AI 的使用价值与 ROI</div>
+          </div>
+          <div style="padding:8px 10px;background:rgba(220,38,38,.07);border-left:2px solid #EF4444;border-radius:0 5px 5px 0">
+            <div style="font-size:11px;font-weight:600;color:#B91C1C;font-family:'Syne',sans-serif;margin-bottom:2px">多 Agent 失控</div>
+            <div style="font-size:10px;color:var(--tx2);line-height:1.5">并行任务状态分散，无统一视图，Agent 卡住时无感知也无入口处理</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ③ 体验目标 -->
+      <div style="display:flex;flex-direction:column;border-right:.5px solid var(--bdr2)">
+        <div style="background:#6B38D4;padding:10px 14px;flex-shrink:0">
+          <div style="font-family:'DM Mono',monospace;font-size:9px;color:rgba(255,255,255,.55);letter-spacing:.12em;text-transform:uppercase;margin-bottom:3px">UX Goals</div>
+          <div style="font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:#fff">体验目标</div>
+        </div>
+        <div style="flex:1;padding:10px 12px;display:flex;flex-direction:column;gap:7px;background:rgba(107,56,212,.04);overflow:hidden">
+          <div style="padding:8px 10px;background:rgba(107,56,212,.08);border-left:2px solid #834DF0;border-radius:0 5px 5px 0">
+            <div style="font-size:11px;font-weight:600;color:#6B38D4;font-family:'Syne',sans-serif;margin-bottom:2px">透明</div>
+            <div style="font-size:10px;color:var(--tx2);line-height:1.5">AI 的每一步行为都有迹可循，用户永远不处于信息真空中</div>
+          </div>
+          <div style="padding:8px 10px;background:rgba(107,56,212,.08);border-left:2px solid #834DF0;border-radius:0 5px 5px 0">
+            <div style="font-size:11px;font-weight:600;color:#6B38D4;font-family:'Syne',sans-serif;margin-bottom:2px">掌控</div>
+            <div style="font-size:10px;color:var(--tx2);line-height:1.5">用户永远是最终决策者，任何时刻都能中断、修正、介入任意任务</div>
+          </div>
+          <div style="padding:8px 10px;background:rgba(107,56,212,.08);border-left:2px solid #834DF0;border-radius:0 5px 5px 0">
+            <div style="font-size:11px;font-weight:600;color:#6B38D4;font-family:'Syne',sans-serif;margin-bottom:2px">效率</div>
+            <div style="font-size:10px;color:var(--tx2);line-height:1.5">减少认知摩擦与等待焦虑，让注意力聚焦在任务目标而非工具操作上</div>
+          </div>
+          <div style="padding:8px 10px;background:rgba(107,56,212,.08);border-left:2px solid #834DF0;border-radius:0 5px 5px 0">
+            <div style="font-size:11px;font-weight:600;color:#6B38D4;font-family:'Syne',sans-serif;margin-bottom:2px">信任</div>
+            <div style="font-size:10px;color:var(--tx2);line-height:1.5">行为可预期、结果可解释、操作可撤销，长期建立用户与 AI 的信任关系</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ④ 体验机会点 -->
+      <div style="display:flex;flex-direction:column;border-right:.5px solid var(--bdr2)">
+        <div style="background:#0F766E;padding:10px 14px;flex-shrink:0">
+          <div style="font-family:'DM Mono',monospace;font-size:9px;color:rgba(255,255,255,.55);letter-spacing:.12em;text-transform:uppercase;margin-bottom:3px">Opportunities</div>
+          <div style="font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:#fff">体验机会点</div>
+        </div>
+        <div style="flex:1;padding:10px 12px;display:flex;flex-direction:column;gap:7px;background:rgba(13,148,136,.04);overflow:hidden">
+          <div style="padding:8px 10px;background:rgba(13,148,136,.08);border-left:2px solid #14B8A6;border-radius:0 5px 5px 0">
+            <div style="font-size:11px;font-weight:600;color:#0F766E;font-family:'Syne',sans-serif;margin-bottom:2px">极简 Banner</div>
+            <div style="font-size:10px;color:var(--tx2);line-height:1.5">仅显示模型名 + 权限模式两个关键信号，消除其余噪音，降低启动门槛</div>
+          </div>
+          <div style="padding:8px 10px;background:rgba(13,148,136,.08);border-left:2px solid #14B8A6;border-radius:0 5px 5px 0">
+            <div style="font-size:11px;font-weight:600;color:#0F766E;font-family:'Syne',sans-serif;margin-bottom:2px">结构化执行流</div>
+            <div style="font-size:10px;color:var(--tx2);line-height:1.5">读取类 Tool Call 自动折叠计数，写入类展开加 Block badge，让过程可读可扫</div>
+          </div>
+          <div style="padding:8px 10px;background:rgba(13,148,136,.08);border-left:2px solid #14B8A6;border-radius:0 5px 5px 0">
+            <div style="font-size:11px;font-weight:600;color:#0F766E;font-family:'Syne',sans-serif;margin-bottom:2px">风险分级弹窗</div>
+            <div style="font-size:10px;color:var(--tx2);line-height:1.5">权限确认颜色编码（蓝/橙/红），高危操作触发 Plan Mode 先提案再执行</div>
+          </div>
+          <div style="padding:8px 10px;background:rgba(13,148,136,.08);border-left:2px solid #14B8A6;border-radius:0 5px 5px 0">
+            <div style="font-size:11px;font-weight:600;color:#0F766E;font-family:'Syne',sans-serif;margin-bottom:2px">统一任务面板</div>
+            <div style="font-size:10px;color:var(--tx2);line-height:1.5">多 Agent 状态一屏掌控，等待中的 Agent 橙色暂停标记，非阻塞处理</div>
+          </div>
+          <div style="padding:8px 10px;background:rgba(13,148,136,.08);border-left:2px solid #14B8A6;border-radius:0 5px 5px 0">
+            <div style="font-size:11px;font-weight:600;color:#0F766E;font-family:'Syne',sans-serif;margin-bottom:2px">会话摘要卡</div>
+            <div style="font-size:10px;color:var(--tx2);line-height:1.5">退出时展示完成任务数/费用/用时，强化完成感，驱动费用意识</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ⑤ 设计点 -->
+      <div style="display:flex;flex-direction:column">
+        <div style="background:#065F46;padding:10px 14px;flex-shrink:0">
+          <div style="font-family:'DM Mono',monospace;font-size:9px;color:rgba(255,255,255,.55);letter-spacing:.12em;text-transform:uppercase;margin-bottom:3px">Design Actions</div>
+          <div style="font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:#fff">设计点</div>
+        </div>
+        <div style="flex:1;padding:10px 12px;display:flex;flex-direction:column;gap:7px;background:rgba(5,150,105,.04);overflow:hidden">
+          <div style="padding:8px 10px;background:rgba(5,150,105,.08);border-left:2px solid #10B981;border-radius:0 5px 5px 0">
+            <div style="font-size:11px;font-weight:600;color:#065F46;font-family:'Syne',sans-serif;margin-bottom:2px">固定底部输入区</div>
+            <div style="font-size:10px;color:var(--tx2);line-height:1.5">输入框定位底部 20%，含 Context Chips、模型切换、费用角标，位置永远稳定</div>
+          </div>
+          <div style="padding:8px 10px;background:rgba(5,150,105,.08);border-left:2px solid #10B981;border-radius:0 5px 5px 0">
+            <div style="font-size:11px;font-weight:600;color:#065F46;font-family:'Syne',sans-serif;margin-bottom:2px">Thinking 折叠 + Block 展开</div>
+            <div style="font-size:10px;color:var(--tx2);line-height:1.5">Thinking 默认一行摘要可展开；写入操作 Block 展开标色，完成后可折叠</div>
+          </div>
+          <div style="padding:8px 10px;background:rgba(5,150,105,.08);border-left:2px solid #10B981;border-radius:0 5px 5px 0">
+            <div style="font-size:11px;font-weight:600;color:#065F46;font-family:'Syne',sans-serif;margin-bottom:2px">弹窗风险配色</div>
+            <div style="font-size:10px;color:var(--tx2);line-height:1.5">蓝色=读取，橙色=写入，红色=执行；三档授权 + "修改后执行"第四选项</div>
+          </div>
+          <div style="padding:8px 10px;background:rgba(5,150,105,.08);border-left:2px solid #10B981;border-radius:0 5px 5px 0">
+            <div style="font-size:11px;font-weight:600;color:#065F46;font-family:'Syne',sans-serif;margin-bottom:2px">非阻塞暂停标记</div>
+            <div style="font-size:10px;color:var(--tx2);line-height:1.5">Agent 等待时橙色标记 + 桌面通知，不卡死其他任务，用户主动处理</div>
+          </div>
+          <div style="padding:8px 10px;background:rgba(5,150,105,.08);border-left:2px solid #10B981;border-radius:0 5px 5px 0">
+            <div style="font-size:11px;font-weight:600;color:#065F46;font-family:'Syne',sans-serif;margin-bottom:2px">退出摘要 + 费用归因</div>
+            <div style="font-size:10px;color:var(--tx2);line-height:1.5">退出时摘要卡自动弹出，可展开按任务费用明细，可复制分享给团队</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- 底部总体原则 -->
+    <div style="flex-shrink:0;padding:11px 18px;background:var(--acc-dim);border:.5px solid var(--acc-b);border-radius:8px;display:flex;align-items:center;gap:16px">
+      <div style="font-family:'Syne',sans-serif;font-size:12px;font-weight:700;color:var(--acc2);white-space:nowrap">总体原则</div>
+      <div style="width:.5px;height:28px;background:var(--acc-b);flex-shrink:0"></div>
+      <div style="font-size:11.5px;color:var(--tx2);line-height:1.6">让「AI 在做什么」始终可见，让「用户能做什么」始终触手可及。<strong style="color:var(--acc2);font-weight:500">透明度不是噪音，而是信任的基础。自动化程度不是目标，掌控感才是。</strong>每一个设计决策都应该问：<em>「这让用户更有掌控感了吗？」</em></div>
+    </div>
+
+  </div>
+</div>
+
 </div>
 <script src="nav.js"></script>
 <script>
   const hash = window.location.hash || '#tp-summary';
-  buildNav('tp-wrapup.html', 'review', hash.replace('#',''));
-  initSnapScroll('review');
+  buildNav('tp-wrapup.html', 'wrapup', hash.replace('#',''));
+  initSnapScroll('wrapup');
   initKeyNav();
 </script>
 </body>
