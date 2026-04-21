@@ -14,7 +14,7 @@
 <div id="global-nav"></div>
 <div id="nav-tp-bar" class="nav-tp-bar"></div>
 
-<div class="snap-container" style="padding-top:88px">
+<div class="snap-container">
 
 <!-- ══════════════════════════════════════
      TP-BANNER: COMPARISON
@@ -117,8 +117,7 @@
                 </div>
               </div>
             </td>
-          <td class="ui-cell"><div class="mt"><div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">codex cli</span></div><div class="mb"><div class="td" style="font-size:9px">⠿ Initializing codex...</div><div class="tg" style="font-size:10px">✔ Ready. (o3 · auto-route)</div><div style="height:4px"></div><div style="font-size:9px">codex&gt; <span class="tw">input</span><div class="cur" style="display:inline-block"></div></div></div></div></td><td class="ui-cell"><div class="mt"><div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">codex cli</span></div><div class="mb"><div class="td" style="font-size:9px">⠿ Initializing codex...</div><div class="tg" style="font-size:10px">✔ Ready. (o3 · auto-route)</div><div style="height:4px"></div><div style="font-size:9px">codex&gt; <span class="tw">input</span><div class="cur" style="display:inline-block"></div></div></div></div></td>
-            <td class="ui-cell"><div class="mt"><div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">codex cli</span></div><div class="mb"><div class="td" style="font-size:9px">⠿ Initializing codex...</div><div class="tg" style="font-size:10px">✔ Ready. (o3 · auto-route)</div><div style="height:4px"></div><div style="font-size:9px">codex&gt; <span class="tw">input</span><div class="cur" style="display:inline-block"></div></div></div></div></td>
+          <td class="ui-cell"><div class="mt"><div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">codex cli</span></div><div class="mb"><div class="td" style="font-size:9px">⠿ Initializing codex...</div><div class="tg" style="font-size:10px">✔ Ready. (o3 · auto-route)</div><div style="height:4px"></div><div style="font-size:9px">codex&gt; <span class="tw">input</span><div class="cur" style="display:inline-block"></div></div></div></div></td>
           </tr>
           <tr>
             <td class="dim-cell">Banner 内容</td>
@@ -126,8 +125,7 @@
             <td>仅版本号 + 模型名，Banner 极短，紧接输入框</td>
             <td>模型名、上下文大小（1M）、工具列表、Plan Mode 开关状态</td>
             <td>无 Banner。模型、权限模式、费用分布在输入框 Chips 和持久状态栏</td>
-          <td>—</td><td>—</td>
-            <td>—</td>
+          <td>极低 · 仅显示 ready 状态，无引导</td>
           </tr>
           <tr>
             <td class="dim-cell">信息量</td>
@@ -135,8 +133,7 @@
             <td>极低：2 项（版本 + 模型）</td>
             <td>中高：4-5 项核心能力信息</td>
             <td>无（分散在持久 UI 中）</td>
-          <td>极低：几乎无 Banner，仅显示 ready 状态</td><td>极低：几乎无 Banner，仅显示 ready 状态和所路由的模型名</td>
-            <td>极低：几乎无 Banner，仅显示 ready 状态</td>
+          <td>极低：几乎无 Banner，仅显示 ready 状态</td>
           </tr>
           <tr>
             <td class="dim-cell">持久性</td>
@@ -144,8 +141,7 @@
             <td>一次性，Banner 消失后配置不可见</td>
             <td>一次性，Prompt 行保留目录 + 模型信息</td>
             <td>完全持久：Chips 和状态栏随时可见，可交互</td>
-          <td>无持久 Banner，无状态栏，无费用展示</td><td>无持久 Banner，无状态栏，无费用展示</td>
-            <td>无持久 Banner，无状态栏</td>
+          <td>无持久 Banner，无状态栏，无费用展示</td>
           </tr>
           <tr>
             <td class="dim-cell">优势</td>
@@ -165,8 +161,7 @@
               <span class="pt pro">启动最干净，零视觉噪声</span>
               <span class="pt pro">状态信息按需持续可见，可交互</span>
             </td>
-          <td><span class="pt pro">启动最快，几乎无等待</span><span class="pt pro">auto-routing 自动选最优模型</span></td><td><span class="pt pro">启动最快，几乎无等待</span><span class="pt pro">auto-routing 自动选最优模型</span></td>
-            <td><span class="pt pro">启动最快，几乎无等待</span><span class="pt pro">auto-routing 自动选最优模型</span></td>
+          <td><span class="pt pro">启动最快，几乎无等待</span><span class="pt pro">auto-routing 自动选最优模型</span></td>
           </tr>
           <tr>
             <td class="dim-cell">劣势</td>
@@ -186,8 +181,7 @@
               <span class="pt con">新用户无法快速了解工具能力</span>
               <span class="pt con">依赖整个 Warp 框架才能实现</span>
             </td>
-          <td><span class="pt con">新用户完全无引导</span><span class="pt con">无状态信息，不知道当前模型</span></td><td><span class="pt con">新用户完全无引导</span><span class="pt con">无状态信息，不知道当前模型</span></td>
-            <td><span class="pt con">新用户完全无引导</span><span class="pt con">无状态信息</span></td>
+          <td><span class="pt con">新用户完全无引导</span><span class="pt con">无状态信息，不知道当前模型</span></td>
           </tr>
           <tr class="sum-row">
             <td class="dim-cell">总结</td>
@@ -195,8 +189,7 @@
             <td class="vd-cell">老用户友好，新用户需引导</td>
             <td class="vd-cell">信息量适中，能力边界清晰</td>
             <td class="vd-cell">持久性最好，依赖框架</td>
-          <td>最极简，新用户茫然</td><td>—</td>
-            <td>—</td>
+          <td class="vd-cell">最极简，新用户芒然</td>
           </tr>
         </tbody>
       </table>
@@ -294,16 +287,6 @@
   buildNav('tp-startup.html', 'startup', 'tp-banner');
   initSnapScroll('startup');
   initKeyNav();
-  window.addEventListener('load', () => {
-    const hash = window.location.hash;
-    if (hash) {
-      const el = document.querySelector(hash);
-      if (el) {
-        const c = document.querySelector('.snap-container');
-        c.scrollTo({ top: el.offsetTop - 88, behavior: 'smooth' });
-      }
-    }
-  });
 </script>
 </body>
-</html>
+</html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AI CLI 设计报告 — 收尾总结</title>
+<link rel="stylesheet" href="shared.css">
+<style>
+.cmp-section{background:var(--sur)}
+</style>
+</head>
+<body>
+<div id="global-nav"></div>
+<div id="nav-tp-bar" class="nav-tp-bar"></div>
+<div class="snap-container">
+
+<!-- 会话摘要卡 -->
+<div class="section cmp-section" id="tp-summary">
+  <div class="slabel"><span class="sub">Touchpoint · 收尾阶段 · Industry Comparison</span><span class="main">会话摘要卡</span></div>
+  <div class="section-inner"><div class="cmp-wrap">
+    <table class="cmp-tbl">
+      <colgroup><col style="width:10%"><col style="width:22.5%"><col style="width:22.5%"><col style="width:22.5%"><col style="width:22.5%"></colgroup>
+      <thead><tr>
+        <th>维度</th>
+        <th class="prod-head"><div class="ph-inner"><span class="ph-name">Aider / Gemini CLI</span><span class="ph-sub">无会话摘要 · 无费用展示</span><span class="ph-sub">直接退出，无收尾信息</span><div class="ph-badges"><span class="bdg bdg-ai">Aider</span><span class="bdg bdg-gc">Gemini CLI</span></div></div></th>
+        <th class="prod-head"><div class="ph-inner"><span class="ph-name">Claude Code</span><span class="ph-sub">每条末尾 token 摘要行</span><div class="ph-badges"><span class="bdg bdg-cc">Anthropic</span></div></div></th>
+        <th class="prod-head"><div class="ph-inner"><span class="ph-name">目标方案</span><span class="ph-sub">退出时完整摘要 + 费用明细</span><div class="ph-badges"><span class="bdg" style="background:#EFF6FF;color:#1E40AF;border:.5px solid #93C5FD">New IDE</span></div></div></th>
+      <th class="prod-head"><div class="ph-inner"><span class="ph-name">Codex CLI</span><span class="ph-sub">无摘要 · 云端日志查</span><div class="ph-badges"><span class="bdg bdg-cx">OpenAI</span></div></div></th></tr></thead>
+      <tbody>
+        <tr>
+          <td class="dim-cell">界面形态</td>
+          <td class="ui-cell"><div class="mt"><div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">no summary</span></div><div class="mb"><div class="tp">aider$</div><div class="tw">exit</div><div class="td" style="font-size:9px;margin-top:3px">退出 · 无任何收尾信息</div><div class="td" style="font-size:9px">费用 / 任务数 / 用时均不可知</div></div></div></td>
+          <td class="ui-cell"><div class="mt"><div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">claude code per-reply</span></div><div class="mb"><div class="tg">✔ <span class="td">done</span></div><div style="border-top:.5px solid #1a1a22;margin-top:3px;padding-top:3px;font-size:9px;color:#444"><div>tokens: 4.2k in · 1.8k out · cache: 28k</div><div>cost: $0.023 · 15s</div></div><div class="td" style="font-size:9px;margin-top:3px">无会话总结，只有单次摘要</div></div></div></td>
+          <td class="ui-cell"><div class="mt"><div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">session summary card</span></div><div class="mb"><div style="background:rgba(52,211,153,.06);border:.5px solid rgba(52,211,153,.15);border-radius:6px;padding:7px 9px"><div style="color:#34d399;font-size:10px;margin-bottom:5px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M3 3l7.07 16.97 2.51-7.39 7.39-2.51L3 3z"/><path d="M13 13l6 6"/></svg> 会话完成</div><div class="td" style="font-size:9px">任务: 3 个 · 文件: 5 个修改</div><div class="td" style="font-size:9px">Token: 18.4k · 费用: $0.087</div><div class="td" style="font-size:9px">用时: 24m 15s</div></div></div></div></td>
+        <td class="ui-cell"><div class="mt"><div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">codex no summary</span></div><div class="mb"><div class="tg">✔ <span class="td">Done. 3 files modified.</span></div><div class="td" style="font-size:9px;margin-top:5px">无会话摘要，无费用</div></div></div></td></tr>
+        <tr><td class="dim-cell">信息完整性</td><td>无任何收尾信息，用户不知道这次会话做了什么、花了多少</td><td>每条有单次摘要，无整体会话总结</td><td>退出时展示完整会话摘要：任务数 / 文件数 / 总费用 / 用时</td><td>—</td></tr>
+        <tr>
+          <td class="dim-cell">优势</td>
+          <td><span class="pt pro">无额外信息，退出最快速</span></td>
+          <td><span class="pt pro">每条费用透明，随时可查</span></td>
+          <td><span class="pt pro">强化完成感，清楚知道这次做了什么</span><span class="pt pro">费用意识：知道这次用了多少钱</span></td>
+        <td><span class="pt pro">输出简洁</span></td></tr>
+        <tr>
+          <td class="dim-cell">劣势</td>
+          <td><span class="pt con">无收尾感，会话虎头蛇尾</span><span class="pt con">费用完全不可知</span></td>
+          <td><span class="pt con">分散的单次摘要需自己汇总</span><span class="pt con">无完整的会话级总结</span></td>
+          <td></td>
+        <td><span class="pt con">无任何收尾感</span></td></tr>
+        <tr class="sum-row"><td class="dim-cell">总结</td><td class="vd-cell">缺乏收尾感，不推荐</td><td class="vd-cell">透明但缺乏整体感</td><td class="vd-cell">我们的推荐方案</td><td>无收尾，最差</td></tr>
+      </tbody>
+    </table>
+    <div class="t-verdict"><strong>推荐：</strong>退出时展示会话摘要卡（完成任务数 / 修改文件数 / 总 token / 总费用 / 用时），强化每次会话的完成感。摘要卡可展开查看按任务归因的费用明细，帮助用户了解哪类任务最值得用 AI。</div>
+  </div></div>
+</div>
+
+<div class="section rec-section" id="tp-summary-rec">
+  <div class="slabel"><span class="sub">Touchpoint · Our Direction</span><span class="main">会话摘要卡 — 我们的方向</span></div>
+  <div class="section-inner"><div class="rec-inner">
+    <div class="rec-l">
+      <div class="rec-hl"><div class="rht">退出时自动展示 + 按任务归因 + 可分享</div><div class="rhb">用户退出会话时自动展示摘要卡：完成任务数、修改文件数、总 token 用量、总费用、总时长。摘要卡可展开查看按任务归因的明细，可选择复制摘要或分享（适合团队汇报）。</div></div>
+      <div class="rec-p"><div class="rn">01</div><div><div class="rt">退出时自动弹出，不需要主动查</div><div class="rd">用户输入 exit 或关闭终端时，摘要卡自动弹出显示 3-5 秒（或用户主动关闭）。不需要用户记得去查，做完了自然就知道这次花了多少、做了什么。强化每次会话的完成仪式感。</div></div></div>
+      <div class="rec-p"><div class="rn">02</div><div><div class="rt">展开查看按任务归因的明细</div><div class="rd">摘要卡默认显示汇总数据，点击展开后显示每条任务的费用归因（任务描述 + token + 费用）。让用户了解"哪类任务最贵"，下次可以有意识地用更便宜的模型处理简单任务，主动控制成本。</div></div></div>
+      <div class="rec-p"><div class="rn">03</div><div><div class="rt">可复制摘要，适合团队汇报</div><div class="rd">摘要卡右上角有"复制摘要"按钮，生成适合粘贴到 Slack/PR 描述的文本（"用 AI 完成了 3 个任务，修改了 5 个文件，用时 24 分钟"）。降低汇报 AI 工作成果的摩擦。</div></div></div>
+    </div>
+    <div class="rec-r"><div class="mt" style="font-size:12px;line-height:1.8">
+      <div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">session summary card</span></div>
+      <div class="mb">
+        <div style="background:rgba(52,211,153,.06);border:.5px solid rgba(52,211,153,.18);border-radius:8px;overflow:hidden">
+          <div style="background:rgba(52,211,153,.08);padding:6px 10px;border-bottom:.5px solid rgba(52,211,153,.15);display:flex;justify-content:space-between;align-items:center">
+            <span style="color:#34d399;font-size:11px;font-family:Syne,sans-serif;font-weight:600"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M3 3l7.07 16.97 2.51-7.39 7.39-2.51L3 3z"/><path d="M13 13l6 6"/></svg> 会话完成</span>
+            <span style="color:var(--td);font-size:9px;cursor:pointer">复制摘要</span>
+          </div>
+          <div style="padding:8px 10px">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:8px">
+              <div style="background:rgba(52,211,153,.05);border-radius:5px;padding:6px 8px;text-align:center"><div class="td" style="font-size:9px">完成任务</div><div style="color:#34d399;font-size:18px;font-family:Syne,sans-serif;font-weight:700">3</div></div>
+              <div style="background:rgba(52,211,153,.05);border-radius:5px;padding:6px 8px;text-align:center"><div class="td" style="font-size:9px">修改文件</div><div style="color:#34d399;font-size:18px;font-family:Syne,sans-serif;font-weight:700">5</div></div>
+              <div style="background:rgba(251,191,36,.05);border-radius:5px;padding:6px 8px;text-align:center"><div class="td" style="font-size:9px">总费用</div><div style="color:#fbbf24;font-size:18px;font-family:Syne,sans-serif;font-weight:700">$0.09</div></div>
+              <div style="background:rgba(96,165,250,.05);border-radius:5px;padding:6px 8px;text-align:center"><div class="td" style="font-size:9px">总用时</div><div style="color:#60a5fa;font-size:18px;font-family:Syne,sans-serif;font-weight:700">24m</div></div>
+            </div>
+            <div style="border-top:.5px solid rgba(52,211,153,.1);padding-top:6px">
+              <div style="color:var(--td);font-size:9px;margin-bottom:3px;cursor:pointer">▸ 展开费用明细</div>
+              <div style="font-size:9px;display:flex;justify-content:space-between;color:var(--td)"><span>重构 auth 模块</span><span style="color:#fbbf24">$0.023</span></div>
+              <div style="font-size:9px;display:flex;justify-content:space-between;color:var(--td)"><span>写单元测试</span><span style="color:#fbbf24">$0.041</span></div>
+              <div style="font-size:9px;display:flex;justify-content:space-between;color:var(--td)"><span>更新文档</span><span style="color:#fbbf24">$0.023</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div></div>
+  </div></div>
+</div>
+
+</div>
+<script src="nav.js"></script>
+<script>
+  const hash = window.location.hash || '#tp-summary';
+  buildNav('tp-wrapup.html', 'review', hash.replace('#',''));
+  initSnapScroll('review');
+  initKeyNav();
+</script>
+</body>
+</html>

@@ -31,26 +31,25 @@ window.NAV_CONFIG = {
   stages: [
     { id: 'overview', label: '概览', num: '00',
       tps: [
-        { id: 'journey',   icon: I.map,       label: '用户旅程', file: 'index.html#journey' },
+        { id: 'framework',    icon: I.framework, label: '页面框架',      file: 'index.html#framework' },
+        { id: 'tp-ma-arch',   icon: I.agents,    label: '多智能体架构',  file: 'index.html#tp-ma-arch' },
+        { id: 'tp-ma-ui',     icon: I.panel,     label: 'Agent 管理面板', file: 'index.html#tp-ma-ui' },
       ]
     },
     { id: 'startup', label: '启动', num: '01',
       tps: [
-        { id: 'framework', icon: I.framework, label: '页面框架',         file: 'index.html#framework' },
-        { id: 'tp-banner',  icon: I.banner,  label: 'Banner 启动信息', file: 'tp-startup.html#tp-banner' },
-        { id: 'tp-ma-arch', icon: I.agents,  label: '多智能体架构',    file: 'tp-multiagent.html#tp-ma-arch' },
-        { id: 'tp-ma-ui',   icon: I.panel,   label: 'Agent 管理面板',  file: 'tp-multiagent.html#tp-ma-ui' },
+        { id: 'tp-banner',     icon: I.banner, label: 'Banner 启动信息',  file: 'tp-startup.html#tp-banner' },
+        { id: 'tp-input-pos',  icon: I.input,  label: '输入框 位置形态',  file: 'tp-intent.html#tp-input-pos' },
+        { id: 'tp-input-edit', icon: I.edit,   label: '输入框 编辑能力',  file: 'tp-intent.html#tp-input-edit' },
       ]
     },
     { id: 'intent', label: '表达意图', num: '02',
       tps: [
-        { id: 'tp-input-pos',  icon: I.input,   label: '输入框 位置形态', file: 'tp-intent.html#tp-input-pos' },
-        { id: 'tp-input-edit', icon: I.edit,    label: '输入框 编辑能力', file: 'tp-intent.html#tp-input-edit' },
-        { id: 'tp-mode',       icon: I.mode,    label: '模式指示符',      file: 'tp-intent.html#tp-mode' },
-        { id: 'tp-at',         icon: I.at,      label: '@ 文件补全',      file: 'tp-intent.html#tp-at' },
-        { id: 'tp-chips',      icon: I.chips,   label: 'Context Chips',   file: 'tp-intent.html#tp-chips' },
-        { id: 'tp-model',      icon: I.model,   label: '模型选择器',      file: 'tp-intent.html#tp-model' },
-        { id: 'tp-history',    icon: I.history, label: '历史记录',        file: 'tp-intent.html#tp-history' },
+        { id: 'tp-mode',       icon: I.mode,    label: '模式指示符',   file: 'tp-intent.html#tp-mode' },
+        { id: 'tp-at',         icon: I.at,      label: '添加上下文',   file: 'tp-intent.html#tp-at' },
+        { id: 'tp-chips',      icon: I.chips,   label: 'Context Chips', file: 'tp-intent.html#tp-chips' },
+        { id: 'tp-model',      icon: I.model,   label: '模型选择器',   file: 'tp-intent.html#tp-model' },
+        { id: 'tp-history',    icon: I.history, label: '历史记录',     file: 'tp-intent.html#tp-history' },
       ]
     },
     { id: 'execute', label: '等待执行', num: '03',
@@ -68,9 +67,17 @@ window.NAV_CONFIG = {
         { id: 'tp-accept',  icon: I.accept,  label: 'Accept/Reject', file: 'tp-review.html#tp-accept' },
         { id: 'tp-review',  icon: I.review,  label: 'Review Panel',  file: 'tp-review.html#tp-review' },
         { id: 'tp-token',   icon: I.token,   label: 'Token 费用',    file: 'tp-review.html#tp-token' },
+      ]
+    },
+    { id: 'iterate', label: '迭代修正', num: '05',
+      tps: [
         { id: 'tp-fork',    icon: I.fork,    label: '/fork & /clear', file: 'tp-review.html#tp-fork' },
         { id: 'tp-esc',     icon: I.esc,     label: 'Esc 中断',      file: 'tp-review.html#tp-esc' },
-        { id: 'tp-summary', icon: I.summary, label: '会话摘要卡',    file: 'tp-review.html#tp-summary' },
+      ]
+    },
+    { id: 'wrapup', label: '收尾', num: '06',
+      tps: [
+        { id: 'tp-summary', icon: I.summary, label: '会话摘要卡',    file: 'tp-wrapup.html#tp-summary' },
       ]
     },
   ]
@@ -78,79 +85,79 @@ window.NAV_CONFIG = {
 
 function buildNav(currentFile, activeStageId, activeTpId) {
   const cfg = window.NAV_CONFIG;
-  const logoHTML = `<a class="nav-logo" href="index.html"><div class="nav-logo-dot"></div><span class="nav-logo-text">AI CLI 设计报告</span></a>`;
-  const stagesHTML = cfg.stages.map(stage => {
-    const isActive = stage.id === activeStageId;
-    return `<button class="nav-stage-btn ${isActive ? 'active' : ''}" onclick="switchStage('${stage.id}')" data-stage="${stage.id}"><span class="snum">${stage.num}</span><span class="sname">${stage.label}</span></button>`;
-  }).join('');
-  const navEl = document.getElementById('global-nav');
-  if (navEl) navEl.innerHTML = logoHTML + `<div class="nav-stages">${stagesHTML}</div>`;
-  updateTpBar(activeStageId, activeTpId);
-}
 
-function updateTpBar(stageId, activeTpId) {
-  const cfg = window.NAV_CONFIG;
-  const stage = cfg.stages.find(s => s.id === stageId);
-  const tpBar = document.getElementById('nav-tp-bar');
-  if (!tpBar || !stage) return;
-  tpBar.innerHTML = stage.tps.map(tp => {
-    const isActive = tp.id === activeTpId;
-    return `<a class="nav-tp-btn ${isActive ? 'active' : ''}" href="${tp.file}" data-tp="${tp.id}"><span class="tp-icon-svg">${tp.icon}</span>${tp.label}</a>`;
-  }).join('');
+  // Build secStageMap: section id → stage id
+  const secStageMap = {};
+  cfg.stages.forEach(stage => stage.tps.forEach(tp => { secStageMap[tp.id] = stage.id; }));
+
+  // Inject a .section-nav into every .section[id] that has a known tp mapping
+  document.querySelectorAll('.section[id]').forEach(section => {
+    const secId = section.id;
+    const baseId = secId.replace(/-rec$/, '');
+    if (!secStageMap[secId] && !secStageMap[baseId]) return; // skip unmapped sections (e.g. cover)
+    const stageId = secStageMap[secId] || secStageMap[baseId] || activeStageId;
+    const tpId    = secStageMap[secId] ? secId : (secStageMap[baseId] ? baseId : null);
+    const stageData = cfg.stages.find(s => s.id === stageId);
+
+    const stagesHTML = cfg.stages.map(s => {
+      const active = s.id === stageId;
+      return `<button class="nav-stage-btn${active ? ' active' : ''}" onclick="switchStage('${s.id}')" data-stage="${s.id}"><span class="snum">${s.num}</span><span class="sname">${s.label}</span></button>`;
+    }).join('');
+
+    const tpHTML = stageData ? stageData.tps.map(tp => {
+      const active = tp.id === tpId;
+      return `<a class="nav-tp-btn${active ? ' active' : ''}" href="${tp.file}" data-tp="${tp.id}"><span class="tp-icon-svg">${tp.icon}</span>${tp.label}</a>`;
+    }).join('') : '';
+
+    const navEl = document.createElement('div');
+    navEl.className = 'section-nav';
+    navEl.innerHTML = `<div class="nav-stages">${stagesHTML}</div>${tpHTML ? `<div class="sn-tp-bar">${tpHTML}</div>` : ''}`;
+    section.appendChild(navEl);
+  });
 }
 
 function switchStage(stageId) {
-  const cfg = window.NAV_CONFIG;
-  const stage = cfg.stages.find(s => s.id === stageId);
-  if (!stage || !stage.tps.length) return;
-  document.querySelectorAll('.nav-stage-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.stage === stageId));
-  updateTpBar(stageId, null);
-  window.location.href = stage.tps[0].file;
+  const stage = NAV_CONFIG.stages.find(s => s.id === stageId);
+  if (stage && stage.tps.length) window.location.href = stage.tps[0].file;
+}
+
+function scrollToSection(container, idx, instant) {
+  container.scrollTo({ top: idx * container.clientHeight, behavior: instant ? 'instant' : 'smooth' });
+}
+
+function scrollToHash(container, hash) {
+  if (!hash) return;
+  const sections = [...container.querySelectorAll('.section[id]')];
+  const el = container.querySelector(hash);
+  if (!el) return;
+  const idx = sections.indexOf(el);
+  if (idx >= 0) scrollToSection(container, idx, true); // instant to bypass scroll-snap-stop:always
 }
 
 function initSnapScroll(stageId) {
   const container = document.querySelector('.snap-container');
   if (!container) return;
-  const sections = [...document.querySelectorAll('.section[id]')];
-  const tpBar = document.getElementById('nav-tp-bar');
-
-  // Build section→stage map from NAV_CONFIG
-  const secStageMap = {};
-  NAV_CONFIG.stages.forEach(stage => {
-    stage.tps.forEach(tp => {
-      secStageMap[tp.id] = stage.id;
-    });
-  });
-
-  let lastStage = stageId;
-
-  function onScroll() {
-    const scrollTop = container.scrollTop;
-    let activeId = null;
-    sections.forEach(sec => { if (scrollTop >= sec.offsetTop - container.clientHeight * 0.4) activeId = sec.id; });
-    if (activeId) {
-      tpBar && tpBar.querySelectorAll('.nav-tp-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.tp === activeId));
-      // Update stage highlight if changed
-      const newStage = secStageMap[activeId] || stageId;
-      if (newStage !== lastStage) {
-        lastStage = newStage;
-        document.querySelectorAll('.nav-stage-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.stage === newStage));
-        updateTpBar(newStage, activeId);
-      }
-    }
-  }
-  container.addEventListener('scroll', onScroll, { passive: true });
-  onScroll();
+  const hash = window.location.hash;
+  if (hash) requestAnimationFrame(() => scrollToHash(container, hash));
+  // Handle same-page hash changes (e.g. clicking a stage tab while already on this page)
+  window.addEventListener('hashchange', () => scrollToHash(container, window.location.hash));
 }
 
 function initKeyNav() {
   const container = document.querySelector('.snap-container');
   if (!container) return;
+  let busy = false;
   document.addEventListener('keydown', e => {
-    const sections = [...document.querySelectorAll('.section[id]')];
-    let currentIdx = 0;
-    sections.forEach((sec, i) => { if (container.scrollTop >= sec.offsetTop - 10) currentIdx = i; });
-    if (e.key === 'ArrowDown' || e.key === 'PageDown') { e.preventDefault(); const next = sections[currentIdx + 1]; if (next) container.scrollTo({ top: next.offsetTop, behavior: 'smooth' }); }
-    else if (e.key === 'ArrowUp' || e.key === 'PageUp') { e.preventDefault(); const prev = sections[Math.max(0, currentIdx - 1)]; if (prev) container.scrollTo({ top: prev.offsetTop, behavior: 'smooth' }); }
+    if (busy) return;
+    if (e.key !== 'ArrowDown' && e.key !== 'ArrowUp' && e.key !== 'PageDown' && e.key !== 'PageUp') return;
+    e.preventDefault();
+    const sections = [...container.querySelectorAll('.section[id]')];
+    const cur = Math.round(container.scrollTop / container.clientHeight);
+    const next = (e.key === 'ArrowDown' || e.key === 'PageDown')
+      ? Math.min(cur + 1, sections.length - 1)
+      : Math.max(cur - 1, 0);
+    busy = true;
+    scrollToSection(container, next);
+    setTimeout(() => { busy = false; }, 600);
   });
 }

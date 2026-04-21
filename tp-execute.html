@@ -10,7 +10,7 @@
 <body>
 <div id="global-nav"></div>
 <div id="nav-tp-bar" class="nav-tp-bar"></div>
-<div class="snap-container" style="padding-top:88px">
+<div class="snap-container">
 
 <!-- ────── Thinking 折叠块 ────── -->
 <div class="section cmp-section" id="tp-thinking">
@@ -56,6 +56,39 @@
 </div>
 
 <!-- ────── Tool Call 标签流 ────── -->
+
+<div class="section rec-section" id="tp-thinking-rec">
+  <div class="slabel"><span class="sub">Touchpoint 08 · Our Direction</span><span class="main">Thinking 折叠块 — 我们的方向</span></div>
+  <div class="section-inner"><div class="rec-inner">
+    <div class="rec-l">
+      <div class="rec-hl"><div class="rht">摘要行 + 按需展开 + 高危操作自动 Plan Mode</div><div class="rhb">Thinking 默认只显示一行摘要（"分析了 3 个文件，发现 2 处问题 · 2.1k tokens"），点击展开完整推理链。任务完成后自动折叠。检测到高危操作时自动切换为 Plan Mode 先提案。</div></div>
+      <div class="rec-p"><div class="rn">01</div><div><div class="rt">默认一行摘要，点击展开完整推理</div><div class="rd">摘要行包含关键信息（发现了什么问题/做了什么决策）和 token 消耗。调试时可展开查看完整推理链，确认 AI 的逻辑是否合理。任务完成后自动折叠，不让历史 thinking 占用屏幕。</div></div></div>
+      <div class="rec-p"><div class="rn">02</div><div><div class="rt">高危操作前自动触发 Plan Mode</div><div class="rd">检测到涉及写入/删除/执行命令的操作时，自动切换为先提案模式，展示结构化变更清单，用户确认后再执行。普通读取操作无需审批，流程不打断。这是"安全自主"的核心机制。</div></div></div>
+      <div class="rec-p"><div class="rn">03</div><div><div class="rt">Thinking 展开时高亮关键决策点</div><div class="rd">完整 thinking 展开后，对关键决策点（"因此选择方案 B"、"发现了这个边界情况"）进行高亮标注，让用户不需要阅读全部推理链就能快速找到最重要的判断节点。</div></div></div>
+    </div>
+    <div class="rec-r"><div class="mt" style="font-size:12px;line-height:1.8">
+      <div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">thinking · summary + expand</span></div>
+      <div class="mb">
+        <div style="border-left:2px solid rgba(131,77,240,.5);padding:5px 9px;background:rgba(131,77,240,.04);border-radius:0 5px 5px 0;margin-bottom:6px;cursor:pointer">
+          <div style="font-size:9px;color:#a78bfa;display:flex;justify-content:space-between">
+            <span>▸ THINKING · 分析了 3 文件，发现 2 处问题</span><span class="td">2.1k tok</span>
+          </div>
+        </div>
+        <div style="border-left:2px solid rgba(131,77,240,.3);padding:5px 9px;background:rgba(131,77,240,.02);border-radius:0 5px 5px 0;margin-bottom:6px;font-size:10px">
+          <div style="font-size:9px;color:#a78bfa;margin-bottom:3px">▾ THINKING 展开 (点击折叠)</div>
+          <div class="td">Let me analyze auth.ts. The verify() function catches errors, but doesn't handle TokenExpiredError specifically...</div>
+          <div style="margin-top:4px;background:rgba(251,191,36,.08);border-left:2px solid #fbbf24;padding:3px 6px;border-radius:0 3px 3px 0;font-size:9px;color:#fbbf24">★ 关键决策：选择方案 B（返回 Result 类型）而非抛出异常</div>
+        </div>
+        <div style="border:.5px solid rgba(131,77,240,.3);border-radius:5px;overflow:hidden">
+          <div style="background:rgba(131,77,240,.12);padding:4px 9px;font-size:9px;color:#c4b5fd">✦ PLAN — 检测到写入操作，需要确认</div>
+          <div style="padding:5px 9px;font-size:10px"><div class="tw">1. Edit src/auth.ts</div><div class="tw">2. Edit src/types.ts</div></div>
+          <div style="padding:4px 9px;display:flex;gap:5px;border-top:.5px solid rgba(255,255,255,.05)"><span style="font-size:9px;padding:2px 8px;border:.5px solid rgba(52,211,153,.3);border-radius:3px;color:#34d399">✓ 执行</span><span style="font-size:9px;padding:2px 8px;border:.5px solid rgba(248,113,113,.2);border-radius:3px;color:#f87171">✗ 取消</span><span style="font-size:9px;padding:2px 8px;border:.5px solid #333;border-radius:3px;color:#888">✎ 修改</span></div>
+        </div>
+      </div>
+    </div></div>
+  </div></div>
+</div>
+
 <div class="section cmp-section" id="tp-toolcall">
   <div class="slabel"><span class="sub">Touchpoint 09 · 等待执行 · Industry Comparison</span><span class="main">Tool Call 标签流</span></div>
   <div class="section-inner"><div class="cmp-wrap">
@@ -100,6 +133,32 @@
 </div>
 
 <!-- ────── 进度条 / Spinner ────── -->
+
+<div class="section rec-section" id="tp-toolcall-rec">
+  <div class="slabel"><span class="sub">Touchpoint 09 · Our Direction</span><span class="main">Tool Call 标签流 — 我们的方向</span></div>
+  <div class="section-inner"><div class="rec-inner">
+    <div class="rec-l">
+      <div class="rec-hl"><div class="rht">颜色区分读/写/执行 + 读取类自动折叠</div><div class="rhb">读取类操作（Read/Search）蓝色标签，自动折叠为"读取了 N 个文件 ▸"；写入类（Edit）绿色标签，始终展开；执行类（Bash）橙色标签，始终展开。失败时红色高亮并展开错误详情。</div></div>
+      <div class="rec-p"><div class="rn">01</div><div><div class="rt">三色区分：蓝读取 / 绿写入 / 橙执行</div><div class="rd">颜色区分让用户扫一眼就知道"AI 在观察还是在行动"。读取操作风险低（蓝色低调），写入操作影响代码（绿色提示），执行命令风险最高（橙色警示）。不需要阅读文字就能感知风险等级。</div></div></div>
+      <div class="rec-p"><div class="rn">02</div><div><div class="rt">读取类自动折叠，写入类始终展开</div><div class="rd">读文件/搜索等读取操作自动折叠为计数行（"读取了 3 个文件 ▸"），点击展开查看详情。写入/执行操作始终展开，让用户清楚知道代码被改了什么、哪个命令被执行了。</div></div></div>
+      <div class="rec-p"><div class="rn">03</div><div><div class="rt">失败高亮 + 一键 AI 修复入口</div><div class="rd">工具调用失败时，该步骤变红色高亮，自动展开错误详情（包含完整错误信息），并在下方出现"✦ 让 AI 分析并修复这个错误 →"的快捷入口。把调试流程内嵌在进度视图里，减少上下文切换。</div></div></div>
+    </div>
+    <div class="rec-r"><div class="mt" style="font-size:12px;line-height:1.8">
+      <div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">tool call · color coded + grouped</span></div>
+      <div class="mb">
+        <div style="padding:3px 8px;background:rgba(96,165,250,.06);border:.5px solid rgba(96,165,250,.15);border-radius:4px;margin-bottom:4px;cursor:pointer;font-size:10px;color:#60a5fa">▸ 读取操作 (3 个文件) · 完成 — 点击展开</div>
+        <div style="margin-bottom:3px;display:flex;align-items:center;gap:6px;font-size:11px"><span class="tg">✔</span><span class="td">Edit</span><span class="tag tg2">src/auth.ts</span><span style="font-size:9px;color:var(--td);margin-left:auto">0.8s</span></div>
+        <div style="margin-bottom:5px;display:flex;align-items:center;gap:6px;font-size:11px"><span class="ty">⠿</span><span class="td">Bash</span><span class="tag ty3">npm test</span><span style="font-size:9px;color:#fbbf24;margin-left:auto">running...</span></div>
+        <div style="padding:6px 9px;background:rgba(248,113,113,.07);border:.5px solid rgba(248,113,113,.2);border-radius:5px">
+          <div style="display:flex;align-items:center;gap:6px;margin-bottom:3px;font-size:11px"><span class="tr">✗</span><span class="td">Bash</span><span class="tag tr3">npm run lint</span><span style="font-size:9px;color:#f87171;margin-left:auto">failed</span></div>
+          <div style="font-size:10px;color:#fca5a5;padding-left:14px">Error: 3 lint errors in src/types.ts</div>
+          <div style="font-size:10px;color:#a78bfa;padding-left:14px;margin-top:3px;cursor:pointer">✦ 让 AI 分析并修复这个错误 →</div>
+        </div>
+      </div>
+    </div></div>
+  </div></div>
+</div>
+
 <div class="section cmp-section" id="tp-progress">
   <div class="slabel"><span class="sub">Touchpoint 10 · 等待执行 · Industry Comparison</span><span class="main">进度条 &amp; Spinner</span></div>
   <div class="section-inner"><div class="cmp-wrap">
@@ -143,6 +202,40 @@
 </div>
 
 <!-- ────── 上下文压缩提示 ────── -->
+
+<div class="section rec-section" id="tp-progress-rec">
+  <div class="slabel"><span class="sub">Touchpoint 10 · Our Direction</span><span class="main">进度条 &amp; Spinner — 我们的方向</span></div>
+  <div class="section-inner"><div class="rec-inner">
+    <div class="rec-l">
+      <div class="rec-hl"><div class="rht">步骤计数 + 整体进度条 + Esc 按钮浮动可见</div><div class="rhb">步骤计数（n/N）给用户"还有多少步"的预期感；整体进度条给视觉上的进展感；Esc 中断按钮始终浮动在输入框旁边，不需要记快捷键，用户随时可以叫停。</div></div>
+      <div class="rec-p"><div class="rn">01</div><div><div class="rt">步骤计数（n/N）提供预期感</div><div class="rd">"3/7 steps" 比旋转 spinner 有价值得多——用户知道还有 4 步，可以决定是等待还是去做别的事。AI 开始执行前先估算步骤数，实际执行时动态更新，不需要精确，只需要给用户"心里有数"的感觉。</div></div></div>
+      <div class="rec-p"><div class="rn">02</div><div><div class="rt">失败步骤红色高亮 + 一键 AI 修复</div><div class="rd">某步骤失败时，进度条中该步变红，自动展开错误详情，并出现"让 AI 分析并修复"快捷入口。用户不需要结束当前任务、新开对话、复制错误信息——调试流程内嵌在进度视图里。</div></div></div>
+      <div class="rec-p"><div class="rn">03</div><div><div class="rt">Esc 按钮始终浮动可见</div><div class="rd">执行过程中，"Esc 中断"按钮始终以红色小按钮形式浮动在输入框右侧。不需要记快捷键，不需要猜"这个工具支不支持中断"——用户看到按钮就知道可以随时叫停，消除失控感。</div></div></div>
+    </div>
+    <div class="rec-r"><div class="mt" style="font-size:12px;line-height:1.8">
+      <div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">progress · n/N + float esc</span></div>
+      <div class="mb">
+        <div style="display:flex;align-items:center;justify-content:space-between;font-size:10px;margin-bottom:5px">
+          <span class="td">执行进度</span>
+          <div style="display:flex;align-items:center;gap:7px">
+            <span style="color:#a78bfa">4 / 7 steps</span>
+            <span style="font-size:9px;padding:2px 8px;border:.5px solid rgba(248,113,113,.3);border-radius:3px;color:#f87171;cursor:pointer;background:rgba(248,113,113,.06)">Esc 中断</span>
+          </div>
+        </div>
+        <div style="height:3px;background:#1a1a22;border-radius:1px;margin-bottom:8px;overflow:hidden"><div style="height:100%;width:57%;background:#834DF0;border-radius:1px"></div></div>
+        <div style="padding:3px 7px;background:rgba(96,165,250,.06);border:.5px solid rgba(96,165,250,.15);border-radius:4px;margin-bottom:4px;font-size:10px;color:#60a5fa">▸ 读取操作 (3 文件) · 完成</div>
+        <div style="margin-bottom:3px;display:flex;align-items:center;gap:6px;font-size:11px"><span class="tg">✔</span><span class="td">Edit auth.ts</span><span style="font-size:9px;color:var(--td);margin-left:auto">0.8s</span></div>
+        <div style="margin-bottom:5px;display:flex;align-items:center;gap:6px;font-size:11px"><span class="ty">⠿</span><span class="td">Bash npm test</span><span style="font-size:9px;color:#fbbf24;margin-left:auto">running...</span></div>
+        <div style="padding:5px 9px;background:rgba(248,113,113,.07);border:.5px solid rgba(248,113,113,.2);border-radius:5px">
+          <div style="display:flex;align-items:center;gap:6px;margin-bottom:3px;font-size:11px"><span class="tr">✗</span><span class="td">Bash npm lint</span><span style="font-size:9px;color:#f87171;margin-left:auto">failed</span></div>
+          <div style="font-size:10px;color:#fca5a5;padding-left:14px">3 errors in types.ts</div>
+          <div style="font-size:10px;color:#a78bfa;padding-left:14px;margin-top:2px;cursor:pointer">让 AI 分析并修复 →</div>
+        </div>
+      </div>
+    </div></div>
+  </div></div>
+</div>
+
 <div class="section cmp-section" id="tp-compact">
   <div class="slabel"><span class="sub">Touchpoint 11 · 等待执行 · Industry Comparison</span><span class="main">上下文压缩提示</span></div>
   <div class="section-inner"><div class="cmp-wrap">
@@ -183,6 +276,42 @@
 </div>
 
 <!-- ────── 权限确认弹窗 ────── -->
+
+<div class="section rec-section" id="tp-compact-rec">
+  <div class="slabel"><span class="sub">Touchpoint 11 · Our Direction</span><span class="main">上下文压缩提示 — 我们的方向</span></div>
+  <div class="section-inner"><div class="rec-inner">
+    <div class="rec-l">
+      <div class="rec-hl"><div class="rht">上下文仪表盘 + 自动压缩透明 + /fork 选项</div><div class="rhb">上下文用量以仪表盘形式持续展示在 Chip 区（如"上下文 68%"）。接近限制时黄色预警，触发限制时提供两个选择：自动压缩（附压缩摘要）或 /fork 新分支（保留完整历史）。</div></div>
+      <div class="rec-p"><div class="rn">01</div><div><div class="rt">上下文用量 Chip 持续可见</div><div class="rd">上下文使用百分比以小 Chip 形式显示在输入框（"上下文 68%"），颜色随用量变化：&lt;70% 灰色，70-90% 黄色，&gt;90% 红色。用户随时知道"还能用多久"，不会突然被截断惊到。</div></div></div>
+      <div class="rec-p"><div class="rn">02</div><div><div class="rt">自动压缩：透明展示压缩摘要</div><div class="rd">自动压缩触发时，展示一个紫色提示块，清楚告知"已将对话从 180k 压缩到 24k tokens"，并提供"查看压缩摘要"选项。让压缩过程透明，用户知道哪些内容被保留、哪些被压缩。</div></div></div>
+      <div class="rec-p"><div class="rn">03</div><div><div class="rt">/fork 新分支：保留完整历史的替代方案</div><div class="rd">除自动压缩外，提供 /fork 选项：在当前对话快照基础上开启新分支，保持完整历史可查，新分支从清洁的上下文开始继续工作。适合不想丢失任何历史的用户。</div></div></div>
+    </div>
+    <div class="rec-r"><div class="mt" style="font-size:12px;line-height:1.8">
+      <div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">context compact · transparent</span></div>
+      <div class="mb">
+        <div class="td" style="font-size:9px;margin-bottom:4px">上下文用量 Chip（接近限制）:</div>
+        <div style="background:#0d0f13;border:.5px solid rgba(251,191,36,.3);border-radius:7px;overflow:hidden;margin-bottom:8px">
+          <div style="padding:4px 9px;background:rgba(251,191,36,.06);border-bottom:.5px solid rgba(251,191,36,.15);display:flex;gap:4px;align-items:center;font-size:9px">
+            <span class="tag" style="background:rgba(52,211,153,.1);color:#34d399;border:.5px solid rgba(52,211,153,.2)">● Normal</span>
+            <span class="tag" style="background:rgba(251,191,36,.12);color:#fbbf24;border:.5px solid rgba(251,191,36,.25)">上下文 87% <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17" stroke-width="2.5"/></svg></span>
+            <span style="margin-left:auto;color:var(--td);font-size:8px">$0.12 ▾</span>
+          </div>
+          <div style="padding:6px 9px;font-size:11px"><span style="color:#834DF0">❯</span> <span class="tw">继续</span><div class="cur" style="display:inline-block"></div></div>
+        </div>
+        <div class="td" style="font-size:9px;margin-bottom:4px">触发限制时的选择:</div>
+        <div style="background:rgba(131,77,240,.06);border:.5px solid rgba(131,77,240,.2);border-radius:6px;padding:8px 9px;font-size:10px">
+          <div style="color:#a78bfa;font-size:10px;font-weight:500;margin-bottom:5px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> 上下文接近限制，已自动压缩</div>
+          <div class="td" style="font-size:9px;margin-bottom:6px">180k tokens → 压缩后 24k · 查看压缩摘要</div>
+          <div style="display:flex;gap:8px;font-size:9px">
+            <span style="color:#834DF0;cursor:pointer">继续（已压缩）</span>
+            <span style="color:var(--td);cursor:pointer">/fork 新分支（保留完整历史）</span>
+          </div>
+        </div>
+      </div>
+    </div></div>
+  </div></div>
+</div>
+
 <div class="section cmp-section" id="tp-perm">
   <div class="slabel"><span class="sub">Touchpoint 12 · 等待执行 · Industry Comparison</span><span class="main">权限确认弹窗</span></div>
   <div class="section-inner"><div class="cmp-wrap">
@@ -228,131 +357,6 @@
 
 <!-- ══════ REC SECTIONS ══════ -->
 
-<div class="section rec-section" id="tp-thinking-rec">
-  <div class="slabel"><span class="sub">Touchpoint 08 · Our Direction</span><span class="main">Thinking 折叠块 — 我们的方向</span></div>
-  <div class="section-inner"><div class="rec-inner">
-    <div class="rec-l">
-      <div class="rec-hl"><div class="rht">摘要行 + 按需展开 + 高危操作自动 Plan Mode</div><div class="rhb">Thinking 默认只显示一行摘要（"分析了 3 个文件，发现 2 处问题 · 2.1k tokens"），点击展开完整推理链。任务完成后自动折叠。检测到高危操作时自动切换为 Plan Mode 先提案。</div></div>
-      <div class="rec-p"><div class="rn">01</div><div><div class="rt">默认一行摘要，点击展开完整推理</div><div class="rd">摘要行包含关键信息（发现了什么问题/做了什么决策）和 token 消耗。调试时可展开查看完整推理链，确认 AI 的逻辑是否合理。任务完成后自动折叠，不让历史 thinking 占用屏幕。</div></div></div>
-      <div class="rec-p"><div class="rn">02</div><div><div class="rt">高危操作前自动触发 Plan Mode</div><div class="rd">检测到涉及写入/删除/执行命令的操作时，自动切换为先提案模式，展示结构化变更清单，用户确认后再执行。普通读取操作无需审批，流程不打断。这是"安全自主"的核心机制。</div></div></div>
-      <div class="rec-p"><div class="rn">03</div><div><div class="rt">Thinking 展开时高亮关键决策点</div><div class="rd">完整 thinking 展开后，对关键决策点（"因此选择方案 B"、"发现了这个边界情况"）进行高亮标注，让用户不需要阅读全部推理链就能快速找到最重要的判断节点。</div></div></div>
-    </div>
-    <div class="rec-r"><div class="mt" style="font-size:12px;line-height:1.8">
-      <div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">thinking · summary + expand</span></div>
-      <div class="mb">
-        <div style="border-left:2px solid rgba(131,77,240,.5);padding:5px 9px;background:rgba(131,77,240,.04);border-radius:0 5px 5px 0;margin-bottom:6px;cursor:pointer">
-          <div style="font-size:9px;color:#a78bfa;display:flex;justify-content:space-between">
-            <span>▸ THINKING · 分析了 3 文件，发现 2 处问题</span><span class="td">2.1k tok</span>
-          </div>
-        </div>
-        <div style="border-left:2px solid rgba(131,77,240,.3);padding:5px 9px;background:rgba(131,77,240,.02);border-radius:0 5px 5px 0;margin-bottom:6px;font-size:10px">
-          <div style="font-size:9px;color:#a78bfa;margin-bottom:3px">▾ THINKING 展开 (点击折叠)</div>
-          <div class="td">Let me analyze auth.ts. The verify() function catches errors, but doesn't handle TokenExpiredError specifically...</div>
-          <div style="margin-top:4px;background:rgba(251,191,36,.08);border-left:2px solid #fbbf24;padding:3px 6px;border-radius:0 3px 3px 0;font-size:9px;color:#fbbf24">★ 关键决策：选择方案 B（返回 Result 类型）而非抛出异常</div>
-        </div>
-        <div style="border:.5px solid rgba(131,77,240,.3);border-radius:5px;overflow:hidden">
-          <div style="background:rgba(131,77,240,.12);padding:4px 9px;font-size:9px;color:#c4b5fd">✦ PLAN — 检测到写入操作，需要确认</div>
-          <div style="padding:5px 9px;font-size:10px"><div class="tw">1. Edit src/auth.ts</div><div class="tw">2. Edit src/types.ts</div></div>
-          <div style="padding:4px 9px;display:flex;gap:5px;border-top:.5px solid rgba(255,255,255,.05)"><span style="font-size:9px;padding:2px 8px;border:.5px solid rgba(52,211,153,.3);border-radius:3px;color:#34d399">✓ 执行</span><span style="font-size:9px;padding:2px 8px;border:.5px solid rgba(248,113,113,.2);border-radius:3px;color:#f87171">✗ 取消</span><span style="font-size:9px;padding:2px 8px;border:.5px solid #333;border-radius:3px;color:#888">✎ 修改</span></div>
-        </div>
-      </div>
-    </div></div>
-  </div></div>
-</div>
-
-<div class="section rec-section" id="tp-toolcall-rec">
-  <div class="slabel"><span class="sub">Touchpoint 09 · Our Direction</span><span class="main">Tool Call 标签流 — 我们的方向</span></div>
-  <div class="section-inner"><div class="rec-inner">
-    <div class="rec-l">
-      <div class="rec-hl"><div class="rht">颜色区分读/写/执行 + 读取类自动折叠</div><div class="rhb">读取类操作（Read/Search）蓝色标签，自动折叠为"读取了 N 个文件 ▸"；写入类（Edit）绿色标签，始终展开；执行类（Bash）橙色标签，始终展开。失败时红色高亮并展开错误详情。</div></div>
-      <div class="rec-p"><div class="rn">01</div><div><div class="rt">三色区分：蓝读取 / 绿写入 / 橙执行</div><div class="rd">颜色区分让用户扫一眼就知道"AI 在观察还是在行动"。读取操作风险低（蓝色低调），写入操作影响代码（绿色提示），执行命令风险最高（橙色警示）。不需要阅读文字就能感知风险等级。</div></div></div>
-      <div class="rec-p"><div class="rn">02</div><div><div class="rt">读取类自动折叠，写入类始终展开</div><div class="rd">读文件/搜索等读取操作自动折叠为计数行（"读取了 3 个文件 ▸"），点击展开查看详情。写入/执行操作始终展开，让用户清楚知道代码被改了什么、哪个命令被执行了。</div></div></div>
-      <div class="rec-p"><div class="rn">03</div><div><div class="rt">失败高亮 + 一键 AI 修复入口</div><div class="rd">工具调用失败时，该步骤变红色高亮，自动展开错误详情（包含完整错误信息），并在下方出现"✦ 让 AI 分析并修复这个错误 →"的快捷入口。把调试流程内嵌在进度视图里，减少上下文切换。</div></div></div>
-    </div>
-    <div class="rec-r"><div class="mt" style="font-size:12px;line-height:1.8">
-      <div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">tool call · color coded + grouped</span></div>
-      <div class="mb">
-        <div style="padding:3px 8px;background:rgba(96,165,250,.06);border:.5px solid rgba(96,165,250,.15);border-radius:4px;margin-bottom:4px;cursor:pointer;font-size:10px;color:#60a5fa">▸ 读取操作 (3 个文件) · 完成 — 点击展开</div>
-        <div style="margin-bottom:3px;display:flex;align-items:center;gap:6px;font-size:11px"><span class="tg">✔</span><span class="td">Edit</span><span class="tag tg2">src/auth.ts</span><span style="font-size:9px;color:var(--td);margin-left:auto">0.8s</span></div>
-        <div style="margin-bottom:5px;display:flex;align-items:center;gap:6px;font-size:11px"><span class="ty">⠿</span><span class="td">Bash</span><span class="tag ty3">npm test</span><span style="font-size:9px;color:#fbbf24;margin-left:auto">running...</span></div>
-        <div style="padding:6px 9px;background:rgba(248,113,113,.07);border:.5px solid rgba(248,113,113,.2);border-radius:5px">
-          <div style="display:flex;align-items:center;gap:6px;margin-bottom:3px;font-size:11px"><span class="tr">✗</span><span class="td">Bash</span><span class="tag tr3">npm run lint</span><span style="font-size:9px;color:#f87171;margin-left:auto">failed</span></div>
-          <div style="font-size:10px;color:#fca5a5;padding-left:14px">Error: 3 lint errors in src/types.ts</div>
-          <div style="font-size:10px;color:#a78bfa;padding-left:14px;margin-top:3px;cursor:pointer">✦ 让 AI 分析并修复这个错误 →</div>
-        </div>
-      </div>
-    </div></div>
-  </div></div>
-</div>
-
-<div class="section rec-section" id="tp-progress-rec">
-  <div class="slabel"><span class="sub">Touchpoint 10 · Our Direction</span><span class="main">进度条 &amp; Spinner — 我们的方向</span></div>
-  <div class="section-inner"><div class="rec-inner">
-    <div class="rec-l">
-      <div class="rec-hl"><div class="rht">步骤计数 + 整体进度条 + Esc 按钮浮动可见</div><div class="rhb">步骤计数（n/N）给用户"还有多少步"的预期感；整体进度条给视觉上的进展感；Esc 中断按钮始终浮动在输入框旁边，不需要记快捷键，用户随时可以叫停。</div></div>
-      <div class="rec-p"><div class="rn">01</div><div><div class="rt">步骤计数（n/N）提供预期感</div><div class="rd">"3/7 steps" 比旋转 spinner 有价值得多——用户知道还有 4 步，可以决定是等待还是去做别的事。AI 开始执行前先估算步骤数，实际执行时动态更新，不需要精确，只需要给用户"心里有数"的感觉。</div></div></div>
-      <div class="rec-p"><div class="rn">02</div><div><div class="rt">失败步骤红色高亮 + 一键 AI 修复</div><div class="rd">某步骤失败时，进度条中该步变红，自动展开错误详情，并出现"让 AI 分析并修复"快捷入口。用户不需要结束当前任务、新开对话、复制错误信息——调试流程内嵌在进度视图里。</div></div></div>
-      <div class="rec-p"><div class="rn">03</div><div><div class="rt">Esc 按钮始终浮动可见</div><div class="rd">执行过程中，"Esc 中断"按钮始终以红色小按钮形式浮动在输入框右侧。不需要记快捷键，不需要猜"这个工具支不支持中断"——用户看到按钮就知道可以随时叫停，消除失控感。</div></div></div>
-    </div>
-    <div class="rec-r"><div class="mt" style="font-size:12px;line-height:1.8">
-      <div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">progress · n/N + float esc</span></div>
-      <div class="mb">
-        <div style="display:flex;align-items:center;justify-content:space-between;font-size:10px;margin-bottom:5px">
-          <span class="td">执行进度</span>
-          <div style="display:flex;align-items:center;gap:7px">
-            <span style="color:#a78bfa">4 / 7 steps</span>
-            <span style="font-size:9px;padding:2px 8px;border:.5px solid rgba(248,113,113,.3);border-radius:3px;color:#f87171;cursor:pointer;background:rgba(248,113,113,.06)">Esc 中断</span>
-          </div>
-        </div>
-        <div style="height:3px;background:#1a1a22;border-radius:1px;margin-bottom:8px;overflow:hidden"><div style="height:100%;width:57%;background:#834DF0;border-radius:1px"></div></div>
-        <div style="padding:3px 7px;background:rgba(96,165,250,.06);border:.5px solid rgba(96,165,250,.15);border-radius:4px;margin-bottom:4px;font-size:10px;color:#60a5fa">▸ 读取操作 (3 文件) · 完成</div>
-        <div style="margin-bottom:3px;display:flex;align-items:center;gap:6px;font-size:11px"><span class="tg">✔</span><span class="td">Edit auth.ts</span><span style="font-size:9px;color:var(--td);margin-left:auto">0.8s</span></div>
-        <div style="margin-bottom:5px;display:flex;align-items:center;gap:6px;font-size:11px"><span class="ty">⠿</span><span class="td">Bash npm test</span><span style="font-size:9px;color:#fbbf24;margin-left:auto">running...</span></div>
-        <div style="padding:5px 9px;background:rgba(248,113,113,.07);border:.5px solid rgba(248,113,113,.2);border-radius:5px">
-          <div style="display:flex;align-items:center;gap:6px;margin-bottom:3px;font-size:11px"><span class="tr">✗</span><span class="td">Bash npm lint</span><span style="font-size:9px;color:#f87171;margin-left:auto">failed</span></div>
-          <div style="font-size:10px;color:#fca5a5;padding-left:14px">3 errors in types.ts</div>
-          <div style="font-size:10px;color:#a78bfa;padding-left:14px;margin-top:2px;cursor:pointer">让 AI 分析并修复 →</div>
-        </div>
-      </div>
-    </div></div>
-  </div></div>
-</div>
-
-<div class="section rec-section" id="tp-compact-rec">
-  <div class="slabel"><span class="sub">Touchpoint 11 · Our Direction</span><span class="main">上下文压缩提示 — 我们的方向</span></div>
-  <div class="section-inner"><div class="rec-inner">
-    <div class="rec-l">
-      <div class="rec-hl"><div class="rht">上下文仪表盘 + 自动压缩透明 + /fork 选项</div><div class="rhb">上下文用量以仪表盘形式持续展示在 Chip 区（如"上下文 68%"）。接近限制时黄色预警，触发限制时提供两个选择：自动压缩（附压缩摘要）或 /fork 新分支（保留完整历史）。</div></div>
-      <div class="rec-p"><div class="rn">01</div><div><div class="rt">上下文用量 Chip 持续可见</div><div class="rd">上下文使用百分比以小 Chip 形式显示在输入框（"上下文 68%"），颜色随用量变化：&lt;70% 灰色，70-90% 黄色，&gt;90% 红色。用户随时知道"还能用多久"，不会突然被截断惊到。</div></div></div>
-      <div class="rec-p"><div class="rn">02</div><div><div class="rt">自动压缩：透明展示压缩摘要</div><div class="rd">自动压缩触发时，展示一个紫色提示块，清楚告知"已将对话从 180k 压缩到 24k tokens"，并提供"查看压缩摘要"选项。让压缩过程透明，用户知道哪些内容被保留、哪些被压缩。</div></div></div>
-      <div class="rec-p"><div class="rn">03</div><div><div class="rt">/fork 新分支：保留完整历史的替代方案</div><div class="rd">除自动压缩外，提供 /fork 选项：在当前对话快照基础上开启新分支，保持完整历史可查，新分支从清洁的上下文开始继续工作。适合不想丢失任何历史的用户。</div></div></div>
-    </div>
-    <div class="rec-r"><div class="mt" style="font-size:12px;line-height:1.8">
-      <div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">context compact · transparent</span></div>
-      <div class="mb">
-        <div class="td" style="font-size:9px;margin-bottom:4px">上下文用量 Chip（接近限制）:</div>
-        <div style="background:#0d0f13;border:.5px solid rgba(251,191,36,.3);border-radius:7px;overflow:hidden;margin-bottom:8px">
-          <div style="padding:4px 9px;background:rgba(251,191,36,.06);border-bottom:.5px solid rgba(251,191,36,.15);display:flex;gap:4px;align-items:center;font-size:9px">
-            <span class="tag" style="background:rgba(52,211,153,.1);color:#34d399;border:.5px solid rgba(52,211,153,.2)">● Normal</span>
-            <span class="tag" style="background:rgba(251,191,36,.12);color:#fbbf24;border:.5px solid rgba(251,191,36,.25)">上下文 87% <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17" stroke-width="2.5"/></svg></span>
-            <span style="margin-left:auto;color:var(--td);font-size:8px">$0.12 ▾</span>
-          </div>
-          <div style="padding:6px 9px;font-size:11px"><span style="color:#834DF0">❯</span> <span class="tw">继续</span><div class="cur" style="display:inline-block"></div></div>
-        </div>
-        <div class="td" style="font-size:9px;margin-bottom:4px">触发限制时的选择:</div>
-        <div style="background:rgba(131,77,240,.06);border:.5px solid rgba(131,77,240,.2);border-radius:6px;padding:8px 9px;font-size:10px">
-          <div style="color:#a78bfa;font-size:10px;font-weight:500;margin-bottom:5px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> 上下文接近限制，已自动压缩</div>
-          <div class="td" style="font-size:9px;margin-bottom:6px">180k tokens → 压缩后 24k · 查看压缩摘要</div>
-          <div style="display:flex;gap:8px;font-size:9px">
-            <span style="color:#834DF0;cursor:pointer">继续（已压缩）</span>
-            <span style="color:var(--td);cursor:pointer">/fork 新分支（保留完整历史）</span>
-          </div>
-        </div>
-      </div>
-    </div></div>
-  </div></div>
-</div>
-
 <div class="section rec-section" id="tp-perm-rec">
   <div class="slabel"><span class="sub">Touchpoint 12 · Our Direction</span><span class="main">权限确认弹窗 — 我们的方向</span></div>
   <div class="section-inner"><div class="rec-inner">
@@ -396,15 +400,6 @@
   buildNav('tp-execute.html', 'execute', hash.replace('#',''));
   initSnapScroll('execute');
   initKeyNav();
-  window.addEventListener('load', () => {
-    if (window.location.hash) {
-      const el = document.querySelector(window.location.hash);
-      if (el) {
-        const c = document.querySelector('.snap-container');
-        requestAnimationFrame(() => { c.scrollTo({ top: el.offsetTop - 88, behavior: 'instant' }); });
-      }
-    }
-  });
 </script>
 </body>
 </html>

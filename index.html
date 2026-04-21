@@ -83,6 +83,14 @@
 .fw-insight { background: var(--acc-dim); border: .5px solid var(--acc-b); border-radius: 8px; padding: 12px 16px; margin-top: 6px; flex-shrink: 0; }
 .fw-insight-title { font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 700; color: var(--acc2); margin-bottom: 5px; }
 .fw-insight-body { font-size: 12px; color: var(--tx2); line-height: 1.6; }
+
+/* ── MULTI-AGENT (from tp-multiagent) ── */
+.pr-section{background:var(--sur)}
+.pr-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:14px}
+.pr-card{background:var(--bg2);border:.5px solid var(--bdr2);border-radius:10px;padding:16px 18px}
+.pr-top{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.1em;margin-bottom:9px;padding-bottom:7px;border-bottom:.5px solid var(--bdr2)}
+.pr-item{font-size:13px;color:var(--tx);line-height:1.6;margin-bottom:6px;display:flex;gap:8px}
+.pr-item::before{content:'·';color:var(--acc);font-size:16px;line-height:1.3;flex-shrink:0}
 </style>
 </head>
 <body>
@@ -91,7 +99,7 @@
 <div id="global-nav"></div>
 <div id="nav-tp-bar" class="nav-tp-bar"></div>
 
-<div class="snap-container" style="padding-top:88px">
+<div class="snap-container">
 
 <!-- ══════════════ COVER ══════════════ -->
 <div class="section cover-section" id="cover">
@@ -109,23 +117,40 @@
       </div>
     </div>
     <div class="c-right">
-      <div class="mt" style="width:100%;font-size:11.5px;line-height:1.8">
-        <div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">ai-cli-report · navigation</span></div>
-        <div class="mb">
-          <div class="td"># 使用说明</div><div style="height:4px"></div>
-          <div class="tw">· <span style="color:#834DF0">顶部第一行 Tab</span> — 切换阶段</div>
-          <div class="tw">· <span style="color:#60A5FA">顶部第二行 Tab</span> — 跳转触点</div>
-          <div class="tw">· 滚动 / 方向键 — 楼层切换</div>
-          <div style="height:6px"></div>
-          <div class="td"># 报告结构</div><div style="height:4px"></div>
-          <div><span class="tp">00</span> <span class="tw">用户旅程 · 页面框架</span></div>
-          <div><span class="tp">01</span> <span class="tw">启动阶段触点</span></div>
-          <div><span class="tp">02</span> <span class="tw">表达意图阶段触点 (7个)</span></div>
-          <div><span class="tp">03</span> <span class="tw">等待执行阶段触点 (5个)</span></div>
-          <div><span class="tp">04</span> <span class="tw">审查确认阶段触点 (4个)</span></div>
-          <div><span class="tp">05</span> <span class="tw">多智能体 · 设计原则</span></div>
-          <div style="height:6px"></div>
-          <div><span style="color:#834DF0">❯</span> <span class="tw">向下滚动开始</span><div class="cur" style="display:inline-block"></div></div>
+      <div style="position:relative;width:100%">
+        <!-- Decorative: top-left floating chip -->
+        <div style="position:absolute;top:-18px;left:8px;background:rgba(131,77,240,.12);border:.5px solid rgba(131,77,240,.3);border-radius:5px;padding:3px 9px;font-family:'DM Mono',monospace;font-size:9px;color:#A78BFA;letter-spacing:.1em;white-space:nowrap">5 products · 15 touchpoints</div>
+        <!-- Decorative: top-right glow dot -->
+        <div style="position:absolute;top:-10px;right:14px;width:8px;height:8px;border-radius:50%;background:#834DF0;box-shadow:0 0 10px 4px rgba(131,77,240,.45)"></div>
+        <!-- Decorative: bottom-left small badge -->
+        <div style="position:absolute;bottom:-16px;left:14px;background:rgba(52,211,153,.1);border:.5px solid rgba(52,211,153,.25);border-radius:4px;padding:2px 7px;font-family:'DM Mono',monospace;font-size:8px;color:#34D399">● 18 design principles</div>
+        <!-- Decorative: bottom-right accent line -->
+        <div style="position:absolute;bottom:-8px;right:0;width:60px;height:2px;background:linear-gradient(90deg,transparent,rgba(131,77,240,.5))"></div>
+
+        <!-- Terminal -->
+        <div class="mt" style="width:100%;font-size:11.5px;line-height:1.8;border:.5px solid rgba(131,77,240,.35);box-shadow:0 0 0 1px rgba(131,77,240,.08),0 8px 32px rgba(0,0,0,.28),0 0 24px rgba(131,77,240,.12)">
+          <div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">ai-cli-report · navigation</span></div>
+          <div class="mb">
+            <div class="td"># 使用说明</div><div style="height:4px"></div>
+            <div class="tw">· <span style="color:#834DF0">顶部第一行 Tab</span> — 切换阶段</div>
+            <div class="tw">· <span style="color:#60A5FA">顶部第二行 Tab</span> — 跳转触点</div>
+            <div class="tw">· 滚动 / 方向键 — 楼层切换</div>
+            <div style="height:6px"></div>
+            <div class="td"># 报告结构</div><div style="height:4px"></div>
+            <div><span class="tp">00</span> <span class="tw">用户旅程 · 页面框架 · 多智能体</span></div>
+            <div><span class="tp">01</span> <span class="tw">启动阶段触点</span></div>
+            <div><span class="tp">02</span> <span class="tw">表达意图阶段触点 (5个)</span></div>
+            <div><span class="tp">03</span> <span class="tw">等待执行阶段触点 (5个)</span></div>
+            <div><span class="tp">04</span> <span class="tw">审查确认阶段触点 (4个)</span></div>
+            <div><span class="tp">05</span> <span class="tw">迭代修正 · 06 收尾总结</span></div>
+            <div style="height:6px"></div>
+            <div style="border-top:.5px solid #242430;padding-top:6px;display:flex;align-items:center;gap:8px">
+              <span style="background:rgba(131,77,240,.15);border:.5px solid rgba(131,77,240,.3);color:#A78BFA;padding:1px 6px;border-radius:3px;font-size:9px">claude-sonnet-4</span>
+              <span class="tg" style="font-size:9px">● Normal</span>
+              <span style="margin-left:auto;color:#4E4E5E;font-size:8px">$0.00</span>
+            </div>
+            <div style="margin-top:5px"><span style="color:#834DF0">❯</span> <span class="tw">向下滚动开始</span><div class="cur" style="display:inline-block"></div></div>
+          </div>
         </div>
       </div>
     </div>
@@ -138,7 +163,7 @@
     <span class="sub">User Journey Map</span>
     <span class="main">完整用户旅程地图</span>
   </div>
-  <div class="section-inner" style="padding-top:88px">
+  <div class="section-inner" style="padding-top:0">
     <div class="j-body">
 
       <!-- Phase headers -->
@@ -310,94 +335,145 @@
     <div class="fw-wireframe">
       <div class="fw-wf-item">
         <div class="fw-wf-label">Claude Code</div>
-        <svg viewBox="0 0 100 72" xmlns="http://www.w3.org/2000/svg" style="width:100%;border:.5px solid var(--bdr2);border-radius:6px;background:#0C0C11">
-          <!-- output area -->
-          <rect x="2" y="2" width="96" height="48" rx="2" fill="#0C0C11" stroke="#242430" stroke-width=".5"/>
-          <text x="6" y="13" font-family="DM Mono,monospace" font-size="4.2" fill="#34D399">✔ output (scroll)</text>
-          <text x="6" y="21" font-family="DM Mono,monospace" font-size="4.2" fill="#4E4E5E">◉ Reading auth.ts</text>
-          <text x="6" y="29" font-family="DM Mono,monospace" font-size="4.2" fill="#4E4E5E">◉ Editing auth.ts</text>
-          <rect x="3" y="36" width="60" height="3.5" rx="1" fill="#1a1a22"/>
-          <text x="66" y="40" font-family="DM Mono,monospace" font-size="3.8" fill="#4E4E5E">80%</text>
-          <!-- divider -->
-          <line x1="2" y1="50" x2="98" y2="50" stroke="#834DF0" stroke-width=".8" opacity=".5"/>
-          <!-- input area -->
-          <rect x="2" y="51" width="96" height="19" rx="2" fill="#1a1a22" stroke="#834DF0" stroke-width=".8"/>
-          <text x="6" y="62" font-family="DM Mono,monospace" font-size="4.2" fill="#834DF0">❯ input</text>
+        <svg viewBox="0 0 100 72" xmlns="http://www.w3.org/2000/svg" style="width:100%;border-radius:6px;background:#0C0C11">
+          <!-- title bar -->
+          <rect x="0" y="0" width="100" height="9" rx="2" fill="#15151C"/>
+          <rect x="0" y="5" width="100" height="4" fill="#15151C"/>
+          <circle cx="5.5" cy="4.5" r="1.5" fill="#FF5F57"/>
+          <circle cx="11" cy="4.5" r="1.5" fill="#FEBC2E"/>
+          <circle cx="16.5" cy="4.5" r="1.5" fill="#28C840"/>
+          <line x1="0" y1="9" x2="100" y2="9" stroke="#242430" stroke-width=".5"/>
+          <!-- scrollable output -->
+          <text x="5" y="18" font-family="DM Mono,monospace" font-size="3.8" fill="#4E4E5E">◉ reading auth.ts</text>
+          <text x="5" y="25" font-family="DM Mono,monospace" font-size="3.8" fill="#34D399">✔ edited auth.ts</text>
+          <rect x="72" y="22" width="11" height="5" rx="1.5" fill="rgba(52,211,153,.15)" stroke="rgba(52,211,153,.3)" stroke-width=".4"/>
+          <text x="73.5" y="26" font-family="DM Mono,monospace" font-size="3" fill="#34D399">EDIT</text>
+          <text x="5" y="32" font-family="DM Mono,monospace" font-size="3.8" fill="#2DD4BF">→ run_tests()</text>
+          <!-- purple divider -->
+          <line x1="0" y1="41" x2="100" y2="41" stroke="#834DF0" stroke-width=".8" opacity=".6"/>
+          <!-- fixed input area -->
+          <rect x="0" y="41" width="100" height="31" fill="#1a1a22"/>
+          <rect x="2" y="43" width="96" height="5.5" rx="1" fill="rgba(131,77,240,.1)"/>
+          <rect x="4" y="44" width="14" height="3.5" rx="1.5" fill="rgba(96,165,250,.15)" stroke="rgba(96,165,250,.3)" stroke-width=".4"/>
+          <text x="5.5" y="47" font-family="DM Mono,monospace" font-size="2.8" fill="#60A5FA">@auth.ts</text>
+          <rect x="20" y="44" width="17" height="3.5" rx="1.5" fill="rgba(167,139,250,.15)" stroke="rgba(167,139,250,.3)" stroke-width=".4"/>
+          <text x="21.5" y="47" font-family="DM Mono,monospace" font-size="2.8" fill="#A78BFA">sonnet▾</text>
+          <text x="82" y="47" font-family="DM Mono,monospace" font-size="2.8" fill="#FBBF24">$0.04</text>
+          <text x="5" y="58" font-family="DM Mono,monospace" font-size="3.8" fill="#834DF0">❯</text>
+          <text x="11" y="58" font-family="DM Mono,monospace" font-size="3.8" fill="#CECEE0">input task...</text>
+          <rect x="9" y="52" width="1.2" height="6.5" fill="#834DF0" opacity=".8"/>
         </svg>
-        <div class="fw-wf-desc">fixed bottom editor · 20% height</div>
+        <div class="fw-wf-desc">固定底部输入框 · 上下分离式</div>
       </div>
       <div class="fw-wf-item">
         <div class="fw-wf-label">Warp</div>
-        <svg viewBox="0 0 100 72" xmlns="http://www.w3.org/2000/svg" style="width:100%;border:.5px solid var(--bdr2);border-radius:6px;background:#0C0C11">
-          <!-- blocks area -->
-          <rect x="2" y="2" width="96" height="40" rx="2" fill="#0C0C11" stroke="#242430" stroke-width=".5"/>
-          <rect x="4" y="4" width="92" height="11" rx="1" fill="#15151C" stroke="#2a2a35" stroke-width=".5"/>
-          <text x="7" y="11" font-family="DM Mono,monospace" font-size="4.2" fill="#34D399">❯ npm test</text>
-          <rect x="88" y="5" width="7" height="9" rx="1" fill="transparent" stroke="#F87171" stroke-width=".5"/>
-          <text x="89.5" y="11" font-family="DM Mono,monospace" font-size="3.8" fill="#F87171">✗</text>
-          <rect x="4" y="17" width="92" height="10" rx="1" fill="#15151C" stroke="#2a2a35" stroke-width=".5"/>
-          <text x="7" y="24" font-family="DM Mono,monospace" font-size="4.2" fill="#34D399">❯ git status</text>
-          <rect x="88" y="18" width="7" height="8" rx="1" fill="transparent" stroke="#34D399" stroke-width=".5"/>
-          <text x="89" y="24" font-family="DM Mono,monospace" font-size="3.8" fill="#34D399">✔</text>
-          <!-- input + chips -->
-          <rect x="2" y="43" width="96" height="14" rx="2" fill="#0d0f13" stroke="rgba(131,77,240,.4)" stroke-width=".8"/>
-          <rect x="3" y="44" width="94" height="5" rx="1" fill="rgba(131,77,240,.1)"/>
-          <text x="5" y="48.5" font-family="DM Mono,monospace" font-size="3.5" fill="#A78BFA">✦ Agent  · 🌿 main  · sonnet▾</text>
-          <text x="5" y="55" font-family="DM Mono,monospace" font-size="4.2" fill="#834DF0">❯ input</text>
+        <svg viewBox="0 0 100 72" xmlns="http://www.w3.org/2000/svg" style="width:100%;border-radius:6px;background:#0C0C11">
+          <!-- title bar -->
+          <rect x="0" y="0" width="100" height="9" rx="2" fill="#15151C"/>
+          <rect x="0" y="5" width="100" height="4" fill="#15151C"/>
+          <circle cx="5.5" cy="4.5" r="1.5" fill="#FF5F57"/>
+          <circle cx="11" cy="4.5" r="1.5" fill="#FEBC2E"/>
+          <circle cx="16.5" cy="4.5" r="1.5" fill="#28C840"/>
+          <line x1="0" y1="9" x2="100" y2="9" stroke="#242430" stroke-width=".5"/>
+          <!-- block 1 -->
+          <rect x="2" y="11" width="96" height="12" rx="1.5" fill="#15151C" stroke="#2a2a35" stroke-width=".5"/>
+          <text x="5" y="19" font-family="DM Mono,monospace" font-size="3.8" fill="#34D399">❯ npm test</text>
+          <rect x="87" y="12.5" width="9" height="9" rx="1.5" fill="transparent" stroke="#F87171" stroke-width=".5"/>
+          <text x="89" y="19" font-family="DM Mono,monospace" font-size="3.5" fill="#F87171">✗</text>
+          <!-- block 2 -->
+          <rect x="2" y="25" width="96" height="12" rx="1.5" fill="#15151C" stroke="#2a2a35" stroke-width=".5"/>
+          <text x="5" y="33" font-family="DM Mono,monospace" font-size="3.8" fill="#34D399">❯ git status</text>
+          <rect x="87" y="26.5" width="9" height="9" rx="1.5" fill="transparent" stroke="#34D399" stroke-width=".5"/>
+          <text x="88.5" y="33" font-family="DM Mono,monospace" font-size="3.5" fill="#34D399">✔</text>
+          <!-- chips + input -->
+          <rect x="2" y="39" width="96" height="20" rx="1.5" fill="#0d0f13" stroke="rgba(131,77,240,.4)" stroke-width=".8"/>
+          <rect x="3" y="40" width="94" height="5.5" rx="1" fill="rgba(131,77,240,.1)"/>
+          <text x="5" y="44.5" font-family="DM Mono,monospace" font-size="3.2" fill="#A78BFA">✦ Agent  ·  main  ·  sonnet▾</text>
+          <text x="5" y="54" font-family="DM Mono,monospace" font-size="3.8" fill="#834DF0">❯ input</text>
           <!-- status bar -->
-          <rect x="2" y="58" width="96" height="12" rx="1" fill="#141419" stroke="#242430" stroke-width=".5"/>
-          <text x="5" y="65" font-family="DM Mono,monospace" font-size="3.8" fill="#60A5FA">sonnet</text>
-          <text x="26" y="65" font-family="DM Mono,monospace" font-size="3.8" fill="#34D399">Normal</text>
-          <text x="52" y="65" font-family="DM Mono,monospace" font-size="3.8" fill="#4E4E5E">main</text>
-          <text x="74" y="65" font-family="DM Mono,monospace" font-size="3.8" fill="#FBBF24">$0.04</text>
+          <rect x="0" y="60" width="100" height="12" fill="#141419"/>
+          <line x1="0" y1="60" x2="100" y2="60" stroke="#242430" stroke-width=".5"/>
+          <text x="4" y="67.5" font-family="DM Mono,monospace" font-size="3.5" fill="#60A5FA">sonnet</text>
+          <text x="28" y="67.5" font-family="DM Mono,monospace" font-size="3.5" fill="#34D399">Normal</text>
+          <text x="55" y="67.5" font-family="DM Mono,monospace" font-size="3.5" fill="#4E4E5E">main</text>
+          <text x="76" y="67.5" font-family="DM Mono,monospace" font-size="3.5" fill="#FBBF24">$0.04</text>
         </svg>
-        <div class="fw-wf-desc">block units · persistent status bar</div>
+        <div class="fw-wf-desc">Block 单元体系 · 持久状态栏</div>
       </div>
       <div class="fw-wf-item">
         <div class="fw-wf-label">Gemini CLI</div>
-        <svg viewBox="0 0 100 62" xmlns="http://www.w3.org/2000/svg" style="width:100%;border:.5px solid var(--bdr2);border-radius:6px;background:#0C0C11">
-          <rect x="2" y="2" width="96" height="56" rx="2" fill="#0C0C11" stroke="#242430" stroke-width=".5"/>
-          <text x="6" y="12" font-family="DM Mono,monospace" font-size="4.2" fill="#4E4E5E">✓ Plan accepted.</text>
-          <text x="6" y="20" font-family="DM Mono,monospace" font-size="4.2" fill="#2DD4BF">→ read_file(auth.ts)</text>
-          <text x="6" y="28" font-family="DM Mono,monospace" font-size="4.2" fill="#2DD4BF">→ edit_file(auth.ts)</text>
-          <text x="6" y="36" font-family="DM Mono,monospace" font-size="4.2" fill="#34D399">✓ Done.</text>
-          <line x1="4" y1="41" x2="96" y2="41" stroke="#1a1a22" stroke-width=".5"/>
-          <text x="6" y="50" font-family="DM Mono,monospace" font-size="4.2" fill="#2DD4BF">~/myapp</text>
-          <text x="38" y="50" font-family="DM Mono,monospace" font-size="4.2" fill="#4E4E5E">[pro]</text>
-          <text x="53" y="50" font-family="DM Mono,monospace" font-size="4.2" fill="#834DF0">›</text>
-          <text x="57" y="50" font-family="DM Mono,monospace" font-size="4.2" fill="#CECEE0">input</text>
-          <rect x="55" y="44" width="1.5" height="7" fill="#834DF0" opacity=".7"/>
+        <svg viewBox="0 0 100 72" xmlns="http://www.w3.org/2000/svg" style="width:100%;border-radius:6px;background:#0C0C11">
+          <!-- title bar -->
+          <rect x="0" y="0" width="100" height="9" rx="2" fill="#15151C"/>
+          <rect x="0" y="5" width="100" height="4" fill="#15151C"/>
+          <circle cx="5.5" cy="4.5" r="1.5" fill="#FF5F57"/>
+          <circle cx="11" cy="4.5" r="1.5" fill="#FEBC2E"/>
+          <circle cx="16.5" cy="4.5" r="1.5" fill="#28C840"/>
+          <line x1="0" y1="9" x2="100" y2="9" stroke="#242430" stroke-width=".5"/>
+          <!-- linear output follows input -->
+          <text x="5" y="19" font-family="DM Mono,monospace" font-size="3.8" fill="#60A5FA">Gemini v0.34 · 2.5-pro · 1M</text>
+          <text x="5" y="27" font-family="DM Mono,monospace" font-size="3.8" fill="#4E4E5E">✓ Plan accepted.</text>
+          <text x="5" y="35" font-family="DM Mono,monospace" font-size="3.8" fill="#2DD4BF">→ edit_file(auth.ts)</text>
+          <text x="5" y="43" font-family="DM Mono,monospace" font-size="3.8" fill="#34D399">✓ Done.</text>
+          <!-- inline prompt follows output -->
+          <line x1="3" y1="50" x2="97" y2="50" stroke="#1e2a1e" stroke-width=".5"/>
+          <text x="5" y="59" font-family="DM Mono,monospace" font-size="3.8" fill="#2DD4BF">~/myapp</text>
+          <text x="37" y="59" font-family="DM Mono,monospace" font-size="3.8" fill="#4E4E5E">[pro]</text>
+          <text x="53" y="59" font-family="DM Mono,monospace" font-size="3.8" fill="#834DF0">›</text>
+          <text x="58" y="59" font-family="DM Mono,monospace" font-size="3.8" fill="#CECEE0">input</text>
+          <rect x="56" y="53" width="1.2" height="7" fill="#834DF0" opacity=".8"/>
+          <text x="5" y="69" font-family="DM Mono,monospace" font-size="3" fill="#4E4E5E">↑ prompt 跟随输出流末尾</text>
         </svg>
-        <div class="fw-wf-desc">linear flow · PTY · prompt status</div>
+        <div class="fw-wf-desc">线性对话流 · PTY 进程 · 状态行提示</div>
       </div>
       <div class="fw-wf-item">
         <div class="fw-wf-label">Aider</div>
-        <svg viewBox="0 0 100 62" xmlns="http://www.w3.org/2000/svg" style="width:100%;border:.5px solid var(--bdr2);border-radius:6px;background:#0C0C11">
-          <rect x="2" y="2" width="96" height="56" rx="2" fill="#0C0C11" stroke="#242430" stroke-width=".5"/>
-          <text x="6" y="12" font-family="DM Mono,monospace" font-size="4.2" fill="#A78BFA">◆ ARCHITECT (sonnet)</text>
-          <text x="6" y="20" font-family="DM Mono,monospace" font-size="4.2" fill="#4E4E5E">  建议重构为 Result</text>
-          <text x="6" y="28" font-family="DM Mono,monospace" font-size="4.2" fill="#A78BFA">◆ EDITOR (haiku)</text>
-          <text x="6" y="36" font-family="DM Mono,monospace" font-size="4.2" fill="#34D399">  SEARCH/REPLACE ✔</text>
-          <line x1="4" y1="41" x2="96" y2="41" stroke="#a78bfa" stroke-width=".5"/>
-          <text x="6" y="50" font-family="DM Mono,monospace" font-size="4.2" fill="#A78BFA">aider$</text>
-          <text x="30" y="50" font-family="DM Mono,monospace" font-size="4.2" fill="#CECEE0">input</text>
-          <rect x="53" y="44" width="1.5" height="7" fill="#834DF0" opacity=".7"/>
+        <svg viewBox="0 0 100 72" xmlns="http://www.w3.org/2000/svg" style="width:100%;border-radius:6px;background:#0C0C11">
+          <!-- title bar -->
+          <rect x="0" y="0" width="100" height="9" rx="2" fill="#15151C"/>
+          <rect x="0" y="5" width="100" height="4" fill="#15151C"/>
+          <circle cx="5.5" cy="4.5" r="1.5" fill="#FF5F57"/>
+          <circle cx="11" cy="4.5" r="1.5" fill="#FEBC2E"/>
+          <circle cx="16.5" cy="4.5" r="1.5" fill="#28C840"/>
+          <line x1="0" y1="9" x2="100" y2="9" stroke="#242430" stroke-width=".5"/>
+          <!-- banner -->
+          <line x1="3" y1="10" x2="97" y2="10" stroke="#a78bfa" stroke-width=".4" opacity=".5"/>
+          <text x="5" y="19" font-family="DM Mono,monospace" font-size="3.8" fill="#A78BFA">Aider v0.82 · claude-sonnet</text>
+          <line x1="3" y1="22" x2="97" y2="22" stroke="#a78bfa" stroke-width=".4" opacity=".5"/>
+          <!-- linear output -->
+          <text x="5" y="31" font-family="DM Mono,monospace" font-size="3.8" fill="#A78BFA">◆ ARCHITECT (sonnet)</text>
+          <text x="5" y="39" font-family="DM Mono,monospace" font-size="3.8" fill="#4E4E5E">  建议重构为 Result</text>
+          <text x="5" y="47" font-family="DM Mono,monospace" font-size="3.8" fill="#A78BFA">◆ EDITOR (haiku)</text>
+          <text x="5" y="55" font-family="DM Mono,monospace" font-size="3.8" fill="#34D399">  SEARCH/REPLACE ✔</text>
+          <!-- inline prompt -->
+          <line x1="3" y1="60" x2="97" y2="60" stroke="#4a2a4a" stroke-width=".5"/>
+          <text x="5" y="68" font-family="DM Mono,monospace" font-size="3.8" fill="#A78BFA">aider$</text>
+          <text x="29" y="68" font-family="DM Mono,monospace" font-size="3.8" fill="#CECEE0">input</text>
+          <rect x="27" y="62" width="1.2" height="7" fill="#834DF0" opacity=".8"/>
         </svg>
-        <div class="fw-wf-desc">pure linear · no layout zones</div>
+        <div class="fw-wf-desc">纯线性流 · 无布局分区</div>
       </div>
       <div class="fw-wf-item">
         <div class="fw-wf-label">Codex CLI</div>
-        <svg viewBox="0 0 100 68" xmlns="http://www.w3.org/2000/svg" style="width:100%;border:.5px solid var(--bdr2);border-radius:6px;background:#0C0C11">
-          <rect x="2" y="2" width="96" height="30" rx="2" fill="#0C0C11" stroke="#242430" stroke-width=".5"/>
-          <text x="6" y="12" font-family="DM Mono,monospace" font-size="4.2" fill="#FBBF24">⠿ Working (o3)...</text>
-          <text x="6" y="20" font-family="DM Mono,monospace" font-size="4.2" fill="#4E4E5E">auto-routing model</text>
-          <text x="6" y="28" font-family="DM Mono,monospace" font-size="4.2" fill="#34D399">✔ Done. 3 files.</text>
-          <!-- cloud section -->
-          <rect x="2" y="35" width="96" height="30" rx="2" fill="#1a1a22" stroke="#2a2a35" stroke-width=".5"/>
-          <text x="6" y="46" font-family="DM Mono,monospace" font-size="4.2" fill="#60A5FA">Cloud / GitHub Actions</text>
-          <text x="6" y="56" font-family="DM Mono,monospace" font-size="4.2" fill="#4E4E5E">headless async mode</text>
+        <svg viewBox="0 0 100 72" xmlns="http://www.w3.org/2000/svg" style="width:100%;border-radius:6px;background:#0C0C11">
+          <!-- title bar -->
+          <rect x="0" y="0" width="100" height="9" rx="2" fill="#15151C"/>
+          <rect x="0" y="5" width="100" height="4" fill="#15151C"/>
+          <circle cx="5.5" cy="4.5" r="1.5" fill="#FF5F57"/>
+          <circle cx="11" cy="4.5" r="1.5" fill="#FEBC2E"/>
+          <circle cx="16.5" cy="4.5" r="1.5" fill="#28C840"/>
+          <line x1="0" y1="9" x2="100" y2="9" stroke="#242430" stroke-width=".5"/>
+          <!-- local thin UI -->
+          <text x="5" y="19" font-family="DM Mono,monospace" font-size="3.8" fill="#FBBF24">⠿ Working (o3)...</text>
+          <text x="5" y="27" font-family="DM Mono,monospace" font-size="3.8" fill="#4E4E5E">auto-routing model</text>
+          <text x="5" y="35" font-family="DM Mono,monospace" font-size="3.8" fill="#34D399">✔ Done. 3 files edited.</text>
+          <text x="5" y="43" font-family="DM Mono,monospace" font-size="3.8" fill="#4E4E5E">codex&gt; next task</text>
+          <!-- cloud async section -->
+          <rect x="2" y="47" width="96" height="24" rx="2" fill="#111827" stroke="#1e3a5f" stroke-width=".8"/>
+          <text x="6" y="56" font-family="DM Mono,monospace" font-size="3.5" fill="#60A5FA">☁ GitHub Actions (async)</text>
+          <text x="6" y="64" font-family="DM Mono,monospace" font-size="3.5" fill="#4E4E5E">headless · fire-and-forget</text>
         </svg>
-        <div class="fw-wf-desc">local thin + cloud orchestration</div>
+        <div class="fw-wf-desc">本地轻量 · 云端异步执行</div>
       </div>
     </div>
     <!-- Detail cards -->
@@ -462,6 +538,274 @@
   </div>
 </div>
 
+<!-- ══════════════ FRAMEWORK DIRECTION ══════════════ -->
+<div class="section rec-section" id="framework-rec">
+  <div class="slabel">
+    <span class="sub">Page Framework · 页面框架</span>
+    <span class="main">设计方向</span>
+  </div>
+  <div class="section-inner rec-inner">
+    <div class="rec-l">
+      <div class="rec-hl">
+        <div class="rht">推荐页面框架：固定分离式 + 轻量 Block</div>
+        <div class="rhb">以 Claude Code 的上下分离为基础，叠加 Warp 的 Block 可操作性概念，在保持兼容性的前提下最大化信息密度与可操作性。</div>
+      </div>
+      <div class="rec-p">
+        <div class="rn">1</div>
+        <div>
+          <div class="rt">固定底部输入区</div>
+          <div class="rd">输入框始终定位在底部 20% 区域，包含 Context Chips、模型切换与费用角标，输入位置永远稳定，降低用户视线跳跃成本。</div>
+        </div>
+      </div>
+      <div class="rec-p">
+        <div class="rn">2</div>
+        <div>
+          <div class="rt">轻量 Block 标注</div>
+          <div class="rd">仅对工具调用产生的写入操作输出加可折叠 badge，不依赖 GPU 渲染，兼容 SSH/tmux，同时提供类 Warp 的结构化感知。</div>
+        </div>
+      </div>
+      <div class="rec-p">
+        <div class="rn">3</div>
+        <div>
+          <div class="rt">顶部轻量状态栏（可选）</div>
+          <div class="rd">参考 Warp 的 status bar 概念，在顶部用单行显示当前模型、Token 用量与 Git branch，不占用主内容区。</div>
+        </div>
+      </div>
+      <div class="rec-p">
+        <div class="rn">4</div>
+        <div>
+          <div class="rt">渐进式升级路径</div>
+          <div class="rd">先落地固定分离式框架（与现有 Claude Code 完全一致），再逐步引入 Block badge，避免一次性重构风险。</div>
+        </div>
+      </div>
+      <div class="t-verdict">
+        <strong>总结：</strong>固定分离式框架成本最低、兼容性最强，是最合理的起点。轻量 Block 标注作为第二阶段叠加，可显著提升工具调用可读性，同时不破坏现有 PTY/SSH 场景。
+      </div>
+    </div>
+    <div class="rec-r" style="justify-content:center">
+      <div class="mt" style="font-size:12px;line-height:1.7;flex-shrink:0;width:100%">
+        <div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">our direction — page framework</span></div>
+        <div style="padding:0">
+          <!-- optional top status bar -->
+          <div style="background:#141419;border-bottom:.5px solid #242430;padding:3px 10px;display:flex;gap:14px;align-items:center">
+            <span class="tb" style="font-size:9px">claude-sonnet-4</span>
+            <span class="tg" style="font-size:9px">● Normal</span>
+            <span style="margin-left:auto;color:#4E4E5E;font-size:8px">main · $0.04</span>
+          </div>
+          <!-- scrollable output -->
+          <div style="padding:7px 10px">
+            <div class="td" style="font-size:9px">◉ reading auth.ts</div>
+            <div style="display:flex;align-items:center;gap:6px;margin:3px 0">
+              <span class="tg" style="font-size:10px">✔ edited auth.ts</span>
+              <span style="background:rgba(52,211,153,.15);color:#34D399;border:.5px solid rgba(52,211,153,.3);font-size:8px;padding:1px 5px;border-radius:3px">EDIT</span>
+            </div>
+            <div class="tc" style="font-size:9px">→ run_tests()</div>
+          </div>
+          <!-- purple divider -->
+          <div style="border-top:.8px solid rgba(131,77,240,.55)"></div>
+          <!-- fixed input area -->
+          <div style="background:#1a1a22;padding:5px 10px 8px">
+            <div style="background:rgba(131,77,240,.1);border-radius:4px;padding:3px 8px;margin-bottom:5px;display:flex;gap:6px;align-items:center">
+              <span style="background:rgba(96,165,250,.15);border:.5px solid rgba(96,165,250,.3);color:#60A5FA;padding:1px 5px;border-radius:3px;font-size:8px;font-family:'DM Mono',monospace">@auth.ts</span>
+              <span style="background:rgba(167,139,250,.15);border:.5px solid rgba(167,139,250,.3);color:#A78BFA;padding:1px 5px;border-radius:3px;font-size:8px;font-family:'DM Mono',monospace">sonnet▾</span>
+              <span style="margin-left:auto;color:#FBBF24;font-size:8px;font-family:'DM Mono',monospace">$0.04</span>
+            </div>
+            <div style="font-size:10px"><span style="color:#834DF0">❯</span> <span class="tw">input task...</span><div class="cur" style="display:inline-block"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ MULTI-AGENT ARCH ══════════════ -->
+<div class="section cmp-section" id="tp-ma-arch">
+  <div class="slabel"><span class="sub">Multi-Agent · Special Topic · Industry Comparison</span><span class="main">多智能体 — 架构模式对比</span></div>
+  <div class="section-inner"><div class="cmp-wrap">
+    <table class="cmp-tbl">
+      <colgroup><col style="width:10%"><col style="width:18%"><col style="width:18%"><col style="width:18%"><col style="width:18%"><col style="width:18%"></colgroup>
+      <thead><tr>
+        <th>维度</th>
+        <th class="prod-head"><div class="ph-inner"><span class="ph-name">Aider</span><span class="ph-sub">Hub &amp; Spoke 固定双模型</span><div class="ph-badges"><span class="bdg bdg-ai">OSS</span></div></div></th>
+        <th class="prod-head"><div class="ph-inner"><span class="ph-name">Claude Code</span><span class="ph-sub">Subagents + P2P Agent Teams</span><div class="ph-badges"><span class="bdg bdg-cc">Anthropic</span></div></div></th>
+        <th class="prod-head"><div class="ph-inner"><span class="ph-name">Warp Oz</span><span class="ph-sub">Cloud Orchestration 云端调度</span><div class="ph-badges"><span class="bdg bdg-wp">Warp</span></div></div></th>
+        <th class="prod-head"><div class="ph-inner"><span class="ph-name">GitHub Copilot</span><span class="ph-sub">Agent Sessions 多模型混跑</span><div class="ph-badges"><span class="bdg bdg-gc">GitHub</span></div></div></th>
+      <th class="prod-head"><div class="ph-inner"><span class="ph-name">Codex CLI</span><span class="ph-sub">Cloud Session · 无头单 Agent</span><div class="ph-badges"><span class="bdg bdg-cx">OpenAI</span></div></div></th></tr></thead>
+      <tbody>
+        <tr>
+          <td class="dim-cell">界面形态</td>
+          <td class="ui-cell"><div class="mt"><div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">aider dual-model</span></div><div class="mb"><div><span class="ty">◆ ARCHITECT</span> <span class="td">(sonnet)</span></div><div style="border-left:2px solid #a78bfa;padding:4px 9px;background:#0d0d0d;margin:3px 0;font-size:10px"><div class="td" style="font-size:9px">规划：</div><div class="tw">建议重构为 Result 模式</div></div><div><span class="tp">◆ EDITOR</span> <span class="td">(haiku) applying...</span></div><div style="font-size:8px;color:var(--td);margin-top:3px">固定两 Agent，无法扩展</div></div></div></td>
+          <td class="ui-cell"><div class="mt"><div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">claude code teams</span></div><div class="mb"><div><span class="tp">Team Lead</span> <span class="td">→ 分解任务</span></div><div style="border:.5px solid #2a1a3a;border-radius:4px;padding:5px 9px;margin:3px 0;background:#0d0a13;font-size:10px"><div style="font-size:9px;color:#a78bfa;margin-bottom:3px">SHARED TASK LIST</div><div style="display:flex;align-items:center;gap:5px;margin-bottom:2px"><span style="width:6px;height:6px;border-radius:50%;background:#34d399;animation:pulse .8s ease-in-out infinite alternate;flex-shrink:0"></span><span class="tw">重构 auth 模块</span><span class="tag tp3" style="margin-left:auto;font-size:7px">T-1</span></div><div style="display:flex;align-items:center;gap:5px"><span style="width:6px;height:6px;border-radius:50%;background:#555;flex-shrink:0"></span><span class="td">写单元测试</span><span class="tag tp3" style="margin-left:auto;font-size:7px">T-2</span></div></div><div class="td" style="font-size:8px">P2P mailbox: Teammates 直接通信</div></div></div></td>
+          <td class="ui-cell"><div class="mt"><div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">warp oz agent mgmt</span></div><div class="mb"><div style="border:.5px solid #2a2a35;border-radius:5px;overflow:hidden"><div style="background:#1a1a22;padding:4px 8px;font-size:9px;display:flex;gap:5px;border-bottom:.5px solid #2a2a35"><span class="tb">Agent Mgmt</span><span class="tag tg2" style="font-size:8px">3 running</span><span class="tag ty3" style="font-size:8px">1 wait</span></div><div style="font-size:10px"><div style="padding:3px 8px;display:flex;align-items:center;gap:5px;border-bottom:.5px solid #1a1a22"><span style="width:6px;height:6px;border-radius:50%;background:#34d399;animation:pulse .8s ease-in-out infinite alternate;flex-shrink:0"></span><span class="tw">Refactor auth</span><span class="td" style="font-size:9px;margin-left:auto">local · 4m</span></div><div style="padding:3px 8px;display:flex;align-items:center;gap:5px;background:rgba(251,191,36,.05)"><span style="width:6px;height:6px;border-radius:50%;background:#fbbf24;flex-shrink:0"></span><span class="ty">Update README</span><span class="td" style="font-size:9px;margin-left:auto"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17" stroke-width="2.5"/></svg> wait</span></div></div></div></div></div></td>
+          <td class="ui-cell"><div class="mt"><div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">copilot sessions</span></div><div class="mb"><div style="border:.5px solid #2a2a35;border-radius:5px;overflow:hidden;font-size:10px"><div style="background:#1a1a22;padding:3px 8px;border-bottom:.5px solid #2a2a35;font-size:9px"><span class="tb">Agent Sessions</span></div><div style="padding:3px 8px;display:flex;align-items:center;gap:5px;border-bottom:.5px solid #1a1a22;background:rgba(52,211,153,.05)"><span style="width:6px;height:6px;border-radius:50%;background:#34d399;flex-shrink:0"></span><span class="tg">Claude Agent</span><span class="tag tg2" style="font-size:8px;margin-left:auto">local</span></div><div style="padding:3px 8px;display:flex;align-items:center;gap:5px;border-bottom:.5px solid #1a1a22"><span style="width:6px;height:6px;border-radius:50%;background:#60a5fa;flex-shrink:0"></span><span class="tb">Codex Agent</span><span class="tag tb3" style="font-size:8px;margin-left:auto">cloud</span></div><div style="padding:3px 8px;display:flex;align-items:center;gap:5px;opacity:.5"><span style="width:6px;height:6px;border-radius:50%;background:#555;flex-shrink:0"></span><span class="td">Copilot Agent</span><span class="td" style="font-size:9px;margin-left:auto">done</span></div></div></div></div></td>
+        <td class="ui-cell"><div class="mt"><div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">codex cloud</span></div><div class="mb"><div style="border:.5px solid #2a2a35;border-radius:4px;overflow:hidden;font-size:9px"><div style="background:#1a1a22;padding:3px 7px;border-bottom:.5px solid #2a2a35"><span class="tb">Cloud Session</span></div><div style="padding:3px 7px;display:flex;align-items:center;gap:4px"><span style="width:5px;height:5px;border-radius:50%;background:#34d399;flex-shrink:0"></span><span class="tg">Agent running</span><span class="td" style="margin-left:auto">cloud</span></div></div></div></div></td></tr>
+        <tr><td class="dim-cell">架构模式</td><td>Hub &amp; Spoke 固定：Architect 规划 + Editor 执行，两 Agent 无法扩展</td><td>Hub &amp; Spoke（Subagents）+ P2P Mailbox（Agent Teams，实验性）两种架构</td><td>Cloud Orchestration：事件触发，并发执行，统一管理面板，oz.warp.dev</td><td>多模型混跑：Claude/Codex/Copilot 三种 Agent 在 VS Code Agent Sessions 面板统一管理</td><td>Single Agent 云端 session，支持无头（headless）模式，GitHub Actions 集成，无多 Agent 协作</td></tr>
+        <tr><td class="dim-cell">等待/卡住处理</td><td>无处理机制，Agent 遇到问题会直接失败或无限等待</td><td>Subagents 遇到权限不足时向主 Agent 返回错误，Teams 模式实验中</td><td>等待输入的 Agent 自动标记橙色 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17" stroke-width="2.5"/></svg> warning，不卡死流程</td><td>无专门的等待状态 UI，依赖 IDE 原有通知机制</td><td>云端 session 可设置 timeout，本地无等待 UI</td></tr>
+        <tr>
+          <td class="dim-cell">优势</td>
+          <td><span class="pt pro">最早的多模型实践，推理透明</span><span class="pt pro">双模型 token 效率最佳</span></td>
+          <td><span class="pt pro">P2P mailbox 是行业最先进的协作架构</span><span class="pt pro">Subagent 用 Haiku 执行，成本优化</span></td>
+          <td><span class="pt pro">统一管理面板，本地+云端混排</span><span class="pt pro">等待状态黄色标记，不卡死</span><span class="pt pro">Slack/GitHub/cron 事件触发</span></td>
+          <td><span class="pt pro">三种 Agent 统一管理，多模型混跑</span><span class="pt pro">在 IDE 内，迁移成本最低</span></td>
+        <td><span class="pt pro">云端 session 持久化，可异步运行</span><span class="pt pro">GitHub Actions 原生集成是开发工作流自然延伸</span></td></tr>
+        <tr>
+          <td class="dim-cell">劣势</td>
+          <td><span class="pt con">只有两个固定 Agent，无法横向扩展</span><span class="pt con">无统一管理面板</span></td>
+          <td><span class="pt con">Agent Teams 仍实验性，需 env var 开启</span><span class="pt con">无统一管理 UI，并行状态分散</span></td>
+          <td><span class="pt con">依赖 Warp 整体框架</span><span class="pt con">云端 Agent 中间过程透明度低</span></td>
+          <td><span class="pt con">Agent 间暂无直接通信，仍是 Hub &amp; Spoke</span><span class="pt con">在 IDE 侧边栏，非终端原生体验</span></td>
+        <td><span class="pt con">无多 Agent 协作，仅单 Agent</span><span class="pt con">云端状态对用户不透明</span></td></tr>
+        <tr class="sum-row"><td class="dim-cell">总结</td><td class="vd-cell">最早实践，架构有局限</td><td class="vd-cell">架构最先进，UI 管理待完善</td><td class="vd-cell">云端调度最完善</td><td class="vd-cell">多模型混跑最方便</td><td>—</td></tr>
+      </tbody>
+    </table>
+    <div class="t-verdict"><strong>最关键的 UX 问题：Agent 卡住时如何处理？</strong>Warp 的做法（黄色标记暂停等待，不猜测继续）是目前最安全的方案。推荐：统一任务面板 + 等待状态可视化 + P2P 通信减少主 Agent 瓶颈 + 子 Agent 上下文隔离（只向主 Agent 返回摘要，控制 token 成本）。</div>
+  </div></div>
+</div>
+
+<!-- ══════════════ MULTI-AGENT ARCH REC ══════════════ -->
+<div class="section rec-section" id="tp-ma-arch-rec">
+  <div class="slabel"><span class="sub">Multi-Agent · Our Direction</span><span class="main">多智能体架构 — 我们的方向</span></div>
+  <div class="section-inner"><div class="rec-inner">
+    <div class="rec-l">
+      <div class="rec-hl"><div class="rht">Hub &amp; Spoke 起步 + P2P 演进 + 子 Agent 上下文隔离</div><div class="rhb">以 Hub &amp; Spoke（Subagents）起步，实现成本最低；随产品成熟演进到 P2P Mailbox（Agent Teams 架构）。子 Agent 在独立上下文中执行，只向主 Agent 返回摘要，控制 token 成本。</div></div>
+      <div class="rec-p"><div class="rn">01</div><div><div class="rt">Hub &amp; Spoke 起步：主 Agent 委派子任务</div><div class="rd">主 Agent 负责规划和决策，子 Agent 负责执行（读文件、搜索、代码分析等探索性任务）。子 Agent 自动使用低成本模型（Haiku），完成后向主 Agent 返回摘要而非原始输出，避免主上下文被污染。</div></div></div>
+      <div class="rec-p"><div class="rn">02</div><div><div class="rt">等待状态：暂停标记，不猜测继续</div><div class="rd">Agent 遇到权限不够或需要澄清时，自动暂停并标记橙色"<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17" stroke-width="2.5"/></svg> 等待输入"，向用户发送通知。不会猜测"用户可能想要什么"而自动继续——这是"安全自主"的核心原则，避免雪球效应。</div></div></div>
+      <div class="rec-p"><div class="rn">03</div><div><div class="rt">统一任务面板，人随时可介入任意 Agent</div><div class="rd">所有 Agent 任务在统一面板中可见，人可以点击任意任务查看详情或给新指令。不是"启动了就不管"，而是"随时可介入"。人是所有 Agent 的最终决策者，不是被排除在外的观察者。</div></div></div>
+    </div>
+    <div class="rec-r"><div class="mt" style="font-size:12px;line-height:1.8">
+      <div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">multi-agent · our design</span></div>
+      <div class="mb">
+        <div style="display:flex;align-items:center;gap:7px;margin-bottom:7px;font-size:10px"><span class="tb">任务面板</span><span class="tag tg2">3 运行</span><span class="tag ty3">1 等待</span><span style="color:var(--td);font-size:9px;margin-left:auto">主 Agent: sonnet · 子 Agent: haiku</span></div>
+        <div style="border:.5px solid #2a2a35;border-radius:6px;overflow:hidden;margin-bottom:6px">
+          <div style="padding:5px 9px;display:flex;align-items:center;gap:7px;border-bottom:.5px solid #1a1a22;font-size:10px">
+            <span style="width:7px;height:7px;border-radius:50%;background:#34d399;animation:pulse .8s ease-in-out infinite alternate;flex-shrink:0"></span>
+            <div style="flex:1"><div class="tw">重构 auth 模块</div><div style="height:2px;background:#1a1a22;border-radius:1px;margin-top:3px;overflow:hidden"><div style="width:65%;height:100%;background:#834DF0;border-radius:1px"></div></div></div>
+            <span class="td" style="font-size:9px">main · 4m · $0.023</span>
+          </div>
+          <div style="padding:5px 9px;display:flex;align-items:center;gap:7px;border-bottom:.5px solid #1a1a22;background:rgba(251,191,36,.04);font-size:10px">
+            <span style="width:7px;height:7px;border-radius:50%;background:#fbbf24;flex-shrink:0"></span>
+            <div style="flex:1"><div class="ty">写单元测试</div><div style="font-size:9px;color:#fbbf24;margin-top:1px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17" stroke-width="2.5"/></svg> 需要你的输入 — 文件路径不确定</div></div>
+            <span style="font-size:9px;padding:2px 7px;border:.5px solid rgba(251,191,36,.3);border-radius:3px;color:#fbbf24;cursor:pointer">处理 →</span>
+          </div>
+          <div style="padding:5px 9px;display:flex;align-items:center;gap:7px;opacity:.6;font-size:10px">
+            <span style="width:7px;height:7px;border-radius:50%;background:#555;flex-shrink:0"></span>
+            <span class="td">搜索相关文档（子 Agent）</span>
+            <span class="td" style="font-size:9px;margin-left:auto">done · haiku · $0.002</span>
+          </div>
+        </div>
+        <div style="font-size:9px;color:var(--td)">子 Agent 只向主 Agent 返回摘要，不污染主上下文</div>
+      </div>
+    </div></div>
+  </div></div>
+</div>
+
+<!-- ══════════════ AGENT PANEL COMPARISON ══════════════ -->
+<div class="section cmp-section" id="tp-ma-ui">
+  <div class="slabel"><span class="sub">Touchpoint · 多智能体 · Industry Comparison</span><span class="main">Agent 管理面板 — 产品对比</span></div>
+  <div class="section-inner"><div class="cmp-wrap">
+    <table class="cmp-tbl">
+      <colgroup><col style="width:10%"><col style="width:18%"><col style="width:18%"><col style="width:18%"><col style="width:18%"><col style="width:18%"></colgroup>
+      <thead><tr>
+        <th>维度</th>
+        <th class="prod-head"><div class="ph-inner"><span class="ph-name">Aider</span><span class="ph-sub">纯线性 CLI，无面板</span><div class="ph-badges"><span class="bdg bdg-ai">OSS</span></div></div></th>
+        <th class="prod-head"><div class="ph-inner"><span class="ph-name">Claude Code</span><span class="ph-sub">内联工具调用，无独立面板</span><div class="ph-badges"><span class="bdg bdg-cc">Anthropic</span></div></div></th>
+        <th class="prod-head"><div class="ph-inner"><span class="ph-name">Warp</span><span class="ph-sub">Block 体系 + 云端 Dashboard</span><div class="ph-badges"><span class="bdg bdg-wp">Warp</span></div></div></th>
+        <th class="prod-head"><div class="ph-inner"><span class="ph-name">VS Code Copilot</span><span class="ph-sub">Agent Sessions 侧边栏面板</span><div class="ph-badges"><span class="bdg" style="background:#EFF6FF;color:#1E40AF;border:.5px solid #93C5FD">Microsoft</span></div></div></th>
+        <th class="prod-head"><div class="ph-inner"><span class="ph-name">Codex CLI</span><span class="ph-sub">本地无面板，云端 Dashboard</span><div class="ph-badges"><span class="bdg bdg-cx">OpenAI</span></div></div></th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td class="dim-cell">界面形态</td>
+          <td class="ui-cell"><div class="mt"><div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">aider linear</span></div><div class="mb"><div class="tg" style="font-size:10px">✔ SEARCH/REPLACE applied</div><div class="td" style="font-size:9px;margin-top:5px">任务输出混在对话流中<br>无独立面板或状态标记</div></div></div></td>
+          <td class="ui-cell"><div class="mt"><div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">claude code inline</span></div><div class="mb"><div style="font-size:10px;font-family:'DM Mono',monospace"><div class="tw">◉ Reading auth.ts</div><div class="tw">◉ Editing auth.ts</div></div><div style="height:3px;background:#1a1a22;border-radius:1px;margin-top:5px;overflow:hidden"><div style="width:65%;height:100%;background:#834DF0;border-radius:1px"></div></div><div class="td" style="font-size:9px;margin-top:3px">内联进度，无独立面板</div></div></div></td>
+          <td class="ui-cell"><div class="mt"><div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">warp task panel</span></div><div class="mb"><div style="border:.5px solid #2a2a35;border-radius:5px;overflow:hidden;font-size:9px"><div style="background:#1a1a22;padding:3px 7px;border-bottom:.5px solid #2a2a35;display:flex;justify-content:space-between"><span class="tb">任务面板</span><span class="tag tg2" style="font-size:7px;padding:0 4px">3 运行</span></div><div style="padding:4px 7px;display:flex;align-items:center;gap:5px;border-bottom:.5px solid #1a1a22"><span style="width:5px;height:5px;border-radius:50%;background:#34d399;flex-shrink:0"></span><div style="flex:1"><div class="tw">重构 auth 模块</div><div style="height:2px;background:#1a1a22;border-radius:1px;margin-top:2px;overflow:hidden"><div style="width:65%;height:100%;background:#834DF0"></div></div></div></div><div style="padding:4px 7px;display:flex;align-items:center;gap:5px;background:rgba(251,191,36,.04)"><span style="width:5px;height:5px;border-radius:50%;background:#fbbf24;flex-shrink:0"></span><span class="ty">更新文档 — 等待输入</span><span style="color:#fbbf24;margin-left:auto">→</span></div></div></div></div></td>
+          <td class="ui-cell"><div class="mt"><div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">vscode agent sessions</span></div><div class="mb"><div style="border:.5px solid #2a2a35;border-radius:5px;overflow:hidden;font-size:9px"><div style="background:#1a1a22;padding:3px 7px;border-bottom:.5px solid #2a2a35"><span class="tb">Agent Sessions</span></div><div style="padding:3px 7px;display:flex;align-items:center;gap:5px;border-bottom:.5px solid #1a1a22"><span style="color:#34d399;font-size:7px">●</span><span class="tw">Claude Agent · auth 重构</span></div><div style="padding:3px 7px;display:flex;align-items:center;gap:5px;border-bottom:.5px solid #1a1a22"><span style="color:#34d399;font-size:7px">●</span><span class="tw">Copilot · 单元测试</span></div><div style="padding:3px 7px;display:flex;align-items:center;gap:5px;opacity:.5"><span style="color:#555;font-size:7px">●</span><span class="td">Codex · 文档更新</span></div></div></div></div></td>
+          <td class="ui-cell"><div class="mt"><div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">codex no local panel</span></div><div class="mb"><div class="tg" style="font-size:10px">✔ <span class="td">Done. 3 files.</span></div><div class="td" style="font-size:9px;margin-top:5px">本地无状态面板</div><div style="margin-top:4px;padding:3px 7px;background:#1a1a22;border-radius:3px;font-size:9px;color:#60a5fa;text-align:center">dashboard.openai.com ↗</div></div></div></td>
+        </tr>
+        <tr><td class="dim-cell">状态可视化</td><td>文本输出，无状态标记</td><td>Spinner + 进度条 + 文件计数，内联展示</td><td>彩色状态点（绿/橙/灰）+ 进度条 + 耗时，独立面板</td><td>Session 状态图标（运行/暂停/完成），IDE 侧边栏</td><td>本地无；云端有运行/完成/失败标记</td></tr>
+        <tr><td class="dim-cell">多 Agent 支持</td><td>无，单任务线性</td><td>Subagents 实验性，无统一面板</td><td>本地 + 云端任务混排，最多 5 并行，统一管理</td><td>多模型 Session 并行（Claude/Copilot/Codex），VS Code 原生集成</td><td>云端 session 并发；本地单任务，无多 Agent</td></tr>
+        <tr><td class="dim-cell">等待处理</td><td>终端 y/n 文字提示，阻塞继续</td><td>授权弹窗 y/n/always，Esc 中断，阻塞式</td><td>橙色暂停标记 + 桌面通知，非阻塞，用户主动处理</td><td>编辑器内确认提示，阻塞当前 Session</td><td>云端状态 pending，需登录 Dashboard 处理</td></tr>
+        <tr>
+          <td class="dim-cell">优势</td>
+          <td><span class="pt pro">零额外 UI，学习成本最低</span></td>
+          <td><span class="pt pro">与对话流无缝衔接</span><span class="pt pro">Esc 随时中断，响应快</span></td>
+          <td><span class="pt pro">状态最完整，本地+云端统一</span><span class="pt pro">非阻塞等待，不卡死其他任务</span></td>
+          <td><span class="pt pro">多模型 Session 可见性强</span><span class="pt pro">IDE 原生，无需切换工具</span></td>
+          <td><span class="pt pro">云端面板信息完整</span><span class="pt pro">无头模式适合 CI/CD</span></td>
+        </tr>
+        <tr>
+          <td class="dim-cell">劣势</td>
+          <td><span class="pt con">多任务时状态完全不可见</span><span class="pt con">无任何可视化，只靠文本</span></td>
+          <td><span class="pt con">无独立面板，多 Agent 无法统一管理</span><span class="pt con">阻塞式等待影响效率</span></td>
+          <td><span class="pt con">依赖 Warp 框架，迁移成本高</span></td>
+          <td><span class="pt con">仅限 VS Code 生态</span><span class="pt con">跨 IDE 无法使用</span></td>
+          <td><span class="pt con">本地体验薄弱</span><span class="pt con">处理等待需切换到浏览器</span></td>
+        </tr>
+        <tr class="sum-row"><td class="dim-cell">总结</td><td class="vd-cell">无面板，体验最基础</td><td class="vd-cell">够用但扩展有限</td><td class="vd-cell">面板最完整，推荐参考</td><td class="vd-cell">IDE 集成最佳</td><td>本地薄弱，云端补足</td></tr>
+      </tbody>
+    </table>
+    <div class="t-verdict"><strong>推荐：</strong>统一任务面板是多 Agent 场景的必要基础。参考 Warp 的非阻塞等待暂停标记（橙色 + 通知），结合 VS Code Agent Sessions 的多 Session 可见性，实现本地 + 云端任务统一展示，支持用户随时点击任意 Agent 介入处理。</div>
+  </div></div>
+</div>
+
+<!-- ══════════════ AGENT PANEL REC ══════════════ -->
+<div class="section rec-section" id="tp-ma-ui-rec">
+  <div class="slabel"><span class="sub">Touchpoint · Our Direction</span><span class="main">Agent 管理面板 — 我们的方向</span></div>
+  <div class="section-inner">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;flex:1;overflow:hidden">
+      <div style="display:flex;flex-direction:column;gap:10px;overflow:hidden">
+        <div style="background:var(--sur);border:.5px solid var(--bdr2);border-left:3px solid var(--acc);border-radius:0 8px 8px 0;padding:12px 16px">
+          <div style="font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:var(--tx);margin-bottom:5px">统一任务面板 + 等待状态可视化 + 上下文隔离</div>
+          <div style="font-size:12px;color:var(--tx2);line-height:1.65">多 Agent 有统一的任务管理面板，每个 Agent 有状态标记（运行中/等待/完成/失败）。Agent 遇到不确定时暂停等待而非猜测继续。子 Agent 在独立上下文中执行，主 Agent 只收摘要。</div>
+        </div>
+        <div style="display:flex;gap:11px;padding:10px 13px;background:var(--sur);border-radius:8px;border:.5px solid var(--bdr)">
+          <div style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:var(--acc);line-height:1;min-width:22px;margin-top:2px">01</div>
+          <div><div style="font-size:13px;font-weight:500;color:var(--tx);margin-bottom:3px;font-family:'Syne',sans-serif">统一任务面板，状态一眼扫全局</div><div style="font-size:11px;color:var(--tx2);line-height:1.6">所有 Agent 任务列在一个面板里，颜色和图标区分状态：运行中（绿色动画）、等待确认（橙色警告）、已完成（灰色）、失败（红色）。步骤进度条 + 耗时显示。可点击任意任务进入详情。</div></div>
+        </div>
+        <div style="display:flex;gap:11px;padding:10px 13px;background:var(--sur);border-radius:8px;border:.5px solid var(--bdr)">
+          <div style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:var(--acc);line-height:1;min-width:22px;margin-top:2px">02</div>
+          <div><div style="font-size:13px;font-weight:500;color:var(--tx);margin-bottom:3px;font-family:'Syne',sans-serif">等待状态：暂停标记，不猜测继续</div><div style="font-size:11px;color:var(--tx2);line-height:1.6">Agent 遇到权限不够或需要澄清时，自动暂停并标记橙色"<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17" stroke-width="2.5"/></svg> 等待输入"，发送通知给用户。用户处理完后 Agent 继续执行。"安全自主"的核心设计原则。</div></div>
+        </div>
+        <div style="display:flex;gap:11px;padding:10px 13px;background:var(--sur);border-radius:8px;border:.5px solid var(--bdr)">
+          <div style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:var(--acc);line-height:1;min-width:22px;margin-top:2px">03</div>
+          <div><div style="font-size:13px;font-weight:500;color:var(--tx);margin-bottom:3px;font-family:'Syne',sans-serif">子 Agent 上下文隔离，主 Agent 只收摘要</div><div style="font-size:11px;color:var(--tx2);line-height:1.6">子 Agent 在独立上下文窗口中执行（读文件、搜索等探索性任务），完成后只向主 Agent 返回摘要，避免大量中间输出污染主上下文，同时控制 token 成本。</div></div>
+        </div>
+      </div>
+      <div>
+        <div class="mt" style="font-size:11.5px;line-height:1.8">
+          <div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">multi-agent · task panel</span></div>
+          <div class="mb">
+            <div style="display:flex;align-items:center;gap:7px;margin-bottom:7px;font-size:10px"><span class="tb">任务面板</span><span class="tag tg2">3 运行</span><span class="tag ty3">1 等待</span><span style="color:var(--td);font-size:9px;margin-left:auto">最多 5 并行</span></div>
+            <div style="border:.5px solid #2a2a35;border-radius:6px;overflow:hidden">
+              <div style="padding:6px 10px;display:flex;align-items:center;gap:7px;border-bottom:.5px solid #1a1a22;font-size:10px">
+                <span style="width:7px;height:7px;border-radius:50%;background:#34d399;animation:pulse .8s ease-in-out infinite alternate;flex-shrink:0"></span>
+                <div style="flex:1"><div class="tw">重构 auth 模块</div><div style="height:2px;background:#1a1a22;border-radius:1px;margin-top:3px;overflow:hidden"><div style="width:65%;height:100%;background:#834DF0;border-radius:1px"></div></div></div>
+                <span class="td" style="font-size:9px">local · 4m 23s · 65%</span>
+              </div>
+              <div style="padding:6px 10px;display:flex;align-items:center;gap:7px;border-bottom:.5px solid #1a1a22;background:rgba(251,191,36,.04);font-size:10px">
+                <span style="width:7px;height:7px;border-radius:50%;background:#fbbf24;flex-shrink:0"></span>
+                <div style="flex:1"><div class="ty">更新 README 文档</div><div style="font-size:9px;color:#fbbf24;margin-top:1px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17" stroke-width="2.5"/></svg> 需要你的输入才能继续</div></div>
+                <span style="font-size:9px;padding:2px 7px;border:.5px solid rgba(251,191,36,.3);border-radius:3px;color:#fbbf24;cursor:pointer">处理 →</span>
+              </div>
+              <div style="padding:6px 10px;display:flex;align-items:center;gap:7px;border-bottom:.5px solid #1a1a22;font-size:10px">
+                <span style="width:7px;height:7px;border-radius:50%;background:#34d399;animation:pulse .8s ease-in-out infinite alternate;flex-shrink:0"></span>
+                <div style="flex:1"><div class="tw">PR #42 代码审查</div><div style="height:2px;background:#1a1a22;border-radius:1px;margin-top:3px;overflow:hidden"><div style="width:88%;height:100%;background:#834DF0;border-radius:1px"></div></div></div>
+                <span class="td" style="font-size:9px">cloud · 8m · 88%</span>
+              </div>
+              <div style="padding:6px 10px;display:flex;align-items:center;gap:7px;opacity:.5;font-size:10px">
+                <span style="width:7px;height:7px;border-radius:50%;background:#555;flex-shrink:0"></span>
+                <span class="td">修复 lint 错误</span>
+                <span class="td" style="font-size:9px;margin-left:auto">done · 1m 42s</span>
+              </div>
+            </div>
+            <div style="margin-top:6px;font-size:9px;color:var(--td);display:flex;justify-content:space-between"><span>子 Agent 使用 Haiku 执行探索性任务</span><span style="color:#a78bfa">总费用: $0.042</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 </div><!-- end snap-container -->
 
 <script src="nav.js"></script>
@@ -483,18 +827,6 @@
       }
     });
   }
-
-  // Snap to hash on load
-  window.addEventListener('load', () => {
-    const hash = window.location.hash;
-    if (hash) {
-      const el = document.querySelector(hash);
-      if (el) {
-        const container = document.querySelector('.snap-container');
-        container.scrollTo({ top: el.offsetTop - 88, behavior: 'smooth' });
-      }
-    }
-  });
 </script>
 </body>
 </html>

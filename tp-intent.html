@@ -17,7 +17,7 @@
 <div id="global-nav"></div>
 <div id="nav-tp-bar" class="nav-tp-bar"></div>
 
-<div class="snap-container" style="padding-top:88px">
+<div class="snap-container">
 
 <!-- ──────────── TP: 输入框位置/形态 ──────────── -->
 <div class="section cmp-section" id="tp-input-pos">
@@ -74,6 +74,34 @@
 </div>
 
 <!-- ──────────── TP: 输入框编辑能力 ──────────── -->
+
+<div class="section rec-section" id="tp-input-pos-rec">
+  <div class="slabel"><span class="sub">Touchpoint 02A · Our Direction</span><span class="main">输入框位置 &amp; 形态 — 我们的方向</span></div>
+  <div class="section-inner"><div class="rec-inner">
+    <div class="rec-l">
+      <div class="rec-hl"><div class="rht">固定底部为基础，长任务自动提示分离视图</div><div class="rhb">默认固定底部（成本最低、体验最佳的起点）。当 AI 进入超过 5 步的长任务执行时，输入框上方出现"切换到 Agent 视图？"提示，用户可选择切换或留在当前视图，不强制。</div></div>
+      <div class="rec-p"><div class="rn">01</div><div><div class="rt">输入框锚定底部，始终在视野内</div><div class="rd">无论对话有多长，输入框永远在屏幕底部。用户不会"找不到输入框"——这是减少使用摩擦最有效的单一设计决策。固定底部同时让输出区域可以自由滚动，历史内容随时可查。</div></div></div>
+      <div class="rec-p"><div class="rn">02</div><div><div class="rt">长任务自动提示切换分离视图</div><div class="rd">检测到 AI 开始执行超过 5 步的长任务时，在输入框上方出现轻量提示："任务正在后台执行（3/8 步）· 切换到 Agent 视图？"。用户可切换或忽略，两种视图都完整支持。</div></div></div>
+      <div class="rec-p"><div class="rn">03</div><div><div class="rt">分离视图：左历史右任务，可同时操作</div><div class="rd">切换到分离视图后，左侧为历史对话（可继续输入短任务），右侧为当前 Agent 任务状态。用户在等待 Agent 执行时可以同时做其他短任务，不需要干等。</div></div></div>
+    </div>
+    <div class="rec-r"><div class="mt" style="font-size:12px;line-height:1.8">
+      <div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">input position · our design</span></div>
+      <div class="mb">
+        <div class="td" style="font-size:9px;margin-bottom:4px">默认：固定底部编辑器</div>
+        <div style="background:#141419;border:.5px solid rgba(131,77,240,.35);border-radius:7px;overflow:hidden;margin-bottom:8px">
+          <div style="padding:4px 9px;background:rgba(131,77,240,.1);border-bottom:.5px solid rgba(131,77,240,.2);font-size:9px;color:#a78bfa"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> 固定底部 · 始终可见</div>
+          <div style="padding:6px 9px;font-size:11px"><span style="color:#834DF0">❯</span> <span class="tw">输入任务</span><div class="cur" style="display:inline-block"></div></div>
+        </div>
+        <div class="td" style="font-size:9px;margin-bottom:4px">长任务执行中：自动提示</div>
+        <div style="background:rgba(131,77,240,.06);border:.5px solid rgba(131,77,240,.2);border-radius:6px;padding:7px 9px;font-size:10px">
+          <div style="color:#a78bfa;margin-bottom:4px">⠿ 任务正在执行 (3/8 步)</div>
+          <div style="display:flex;gap:8px;font-size:9px"><span style="color:#834DF0;cursor:pointer">切换到 Agent 视图 →</span><span style="color:var(--td);cursor:pointer">继续当前</span></div>
+        </div>
+      </div>
+    </div></div>
+  </div></div>
+</div>
+
 <div class="section cmp-section" id="tp-input-edit">
   <div class="slabel">
     <span class="sub">Touchpoint 02B · 表达意图 · Industry Comparison</span>
@@ -123,6 +151,41 @@
 </div>
 
 <!-- ──────────── TP: 模式指示符 ──────────── -->
+
+<div class="section rec-section" id="tp-input-edit-rec">
+  <div class="slabel"><span class="sub">Touchpoint 02B · Our Direction</span><span class="main">输入框编辑能力 — 我们的方向</span></div>
+  <div class="section-inner"><div class="rec-inner">
+    <div class="rec-l">
+      <div class="rec-hl"><div class="rht">多行编辑 + Ctrl+R 历史搜索 + 语法高亮</div><div class="rhb">多行编辑让复杂指令可以换行写清楚；Ctrl+R 跨会话历史搜索让常用指令可以快速复用；输入区语法高亮（@ 引用蓝色 / /命令紫色 / 路径绿色）让指令结构一目了然。</div></div>
+      <div class="rec-p"><div class="rn">01</div><div><div class="rt">Shift+Enter 换行，光标自由移动</div><div class="rd">支持多行编辑，Shift+Enter 换行，Enter 提交。光标可自由定位，Ctrl+A 全选，Ctrl+K 删到行末。让用户写复杂多步指令时，体验与在编辑器里写注释一样。</div></div></div>
+      <div class="rec-p"><div class="rn">02</div><div><div class="rt">Ctrl+R 历史搜索，Tab 编辑后复用</div><div class="rd">Ctrl+R 触发历史搜索弹窗，支持模糊搜索，结果显示完整指令预览。Enter 直接复用，Tab 填入输入框进入编辑状态，让用户可以在历史基础上微调再复用。跨会话持久 200 条。</div></div></div>
+      <div class="rec-p"><div class="rn">03</div><div><div class="rt">输入区语法高亮，结构一目了然</div><div class="rd">@引用蓝色，/命令紫色，文件路径绿色，普通文字白色。这个高亮不只是好看——它给用户"我的指令被正确解析了"的信心，同时让错误（比如 @ 后面打错文件名）在提交前就能发现。</div></div></div>
+    </div>
+    <div class="rec-r"><div class="mt" style="font-size:12px;line-height:1.8">
+      <div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">editing · multiline + syntax highlight</span></div>
+      <div class="mb">
+        <div style="background:#1a1a22;border:.5px solid #834DF0;border-radius:7px;overflow:hidden;margin-bottom:8px">
+          <div style="padding:4px 9px;background:rgba(131,77,240,.1);border-bottom:.5px solid rgba(131,77,240,.2);font-size:9px;color:#a78bfa">多行编辑 · 语法高亮</div>
+          <div style="padding:6px 9px;font-size:11px">
+            <div><span style="color:#834DF0">❯</span> <span style="color:#60a5fa">@src/auth.ts</span> <span class="tw">重构错误处理，需要：</span></div>
+            <div style="padding-left:14px"><span class="tw">1. </span><span style="color:#f87171">TokenExpiredError</span><span class="tw"> 单独处理</span></div>
+            <div style="padding-left:14px"><span class="tw">2. 网络错误重试 3 次</span><div class="cur" style="display:inline-block"></div></div>
+          </div>
+          <div style="padding:3px 9px;border-top:.5px solid rgba(255,255,255,.05);font-size:9px;color:var(--td)">Shift+Enter 换行 · Enter 发送 · Ctrl+R 历史</div>
+        </div>
+        <div style="background:#1a1a22;border:.5px solid #2a2a2a;border-radius:6px;padding:6px 9px">
+          <div style="color:#4dd0e1;font-size:9px;margin-bottom:4px">Ctrl+R 搜索历史</div>
+          <div class="tw" style="font-size:11px">重构</div>
+          <div style="border-top:.5px solid #2a2a35;margin-top:4px;padding-top:4px">
+            <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:3px"><div><div class="tb" style="font-size:10px">重构 auth.ts 错误处理</div><div class="td" style="font-size:9px">@src/auth.ts 重构错误处理，需要：...</div></div><span class="td" style="font-size:8px;flex-shrink:0;margin-left:8px">2h</span></div>
+            <div style="font-size:9px;color:var(--td)">Enter 复用 · Tab 编辑后复用</div>
+          </div>
+        </div>
+      </div>
+    </div></div>
+  </div></div>
+</div>
+
 <div class="section cmp-section" id="tp-mode">
   <div class="slabel">
     <span class="sub">Touchpoint 03 · 表达意图 · Industry Comparison</span>
@@ -172,10 +235,42 @@
 </div>
 
 <!-- ──────────── TP: @ 文件补全 ──────────── -->
+
+<div class="section rec-section" id="tp-mode-rec">
+  <div class="slabel"><span class="sub">Touchpoint 03 · Our Direction</span><span class="main">模式指示符 — 我们的方向</span></div>
+  <div class="section-inner"><div class="rec-inner">
+    <div class="rec-l">
+      <div class="rec-hl"><div class="rht">Badge + 边框颜色双重强调，Cmd+I 显式切换</div><div class="rhb">Agent Mode 紫色边框 + Badge，Terminal Mode 灰色边框 + Badge。两种模式视觉差异足够大，用户扫一眼就能识别。Cmd+I 显式切换，不做隐式自动检测——避免误判带来的信任损耗。</div></div>
+      <div class="rec-p"><div class="rn">01</div><div><div class="rt">两种模式视觉差异要足够大</div><div class="rd">Agent Mode 和 Terminal Mode 在颜色（紫色/灰色）、边框粗细、Badge 图标（✦/⬣）三个维度都有明确差异。不能只靠一个小文字标注——那样用户很容易忽视，在错误模式下操作。</div></div></div>
+      <div class="rec-p"><div class="rn">02</div><div><div class="rt">模式状态作为输入框的一部分，始终可见</div><div class="rd">模式指示不放在 Banner（会滚走），不放在状态栏（离输入框太远）。而是作为输入框顶部的 Badge 行，用户在输入的同时就能看到当前模式，不需要移开视线。</div></div></div>
+      <div class="rec-p"><div class="rn">03</div><div><div class="rt">Cmd+I 显式切换，快捷键提示常显</div><div class="rd">切换快捷键 Cmd+I 显示在 Badge 行旁边（小灰字），发现成本为零。切换时边框颜色平滑过渡（200ms 动画），让用户感知到模式确实发生了变化，而不是静默切换。</div></div></div>
+    </div>
+    <div class="rec-r"><div class="mt" style="font-size:12px;line-height:1.8">
+      <div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">mode indicator · visual diff</span></div>
+      <div class="mb">
+        <div class="td" style="font-size:9px;margin-bottom:5px">Agent Mode — 紫色边框 + ✦ Badge:</div>
+        <div style="background:#0d0f13;border:2px solid #834DF0;border-radius:7px;overflow:hidden;margin-bottom:9px">
+          <div style="padding:4px 9px;background:rgba(131,77,240,.12);border-bottom:.5px solid rgba(131,77,240,.22);display:flex;align-items:center;gap:6px;font-size:9px">
+            <span class="tag tp3">✦ Agent Mode</span><span class="td">Cmd+I 切换</span>
+          </div>
+          <div style="padding:6px 9px;font-size:11px"><span style="color:#834DF0">❯</span> <span class="tw">自然语言任务</span><div class="cur" style="display:inline-block"></div></div>
+        </div>
+        <div class="td" style="font-size:9px;margin-bottom:5px">Terminal Mode — 灰色边框 + ⬣ Badge:</div>
+        <div style="background:#141419;border:2px solid #2a2a35;border-radius:7px;overflow:hidden">
+          <div style="padding:4px 9px;background:#1a1a22;border-bottom:.5px solid #2a2a35;display:flex;align-items:center;gap:6px;font-size:9px">
+            <span class="tag tg2">⬣ Terminal Mode</span><span class="td">Cmd+I 切换</span>
+          </div>
+          <div style="padding:6px 9px;font-size:11px"><span class="tg">❯</span> <span class="tg">git status</span></div>
+        </div>
+      </div>
+    </div></div>
+  </div></div>
+</div>
+
 <div class="section cmp-section" id="tp-at">
   <div class="slabel">
     <span class="sub">Touchpoint 04 · 表达意图 · Industry Comparison</span>
-    <span class="main">@ 文件补全</span>
+    <span class="main">添加上下文</span>
   </div>
   <div class="section-inner">
     <div class="cmp-wrap">
@@ -220,6 +315,40 @@
 </div>
 
 <!-- ──────────── TP: Context Chips ──────────── -->
+
+<div class="section rec-section" id="tp-at-rec">
+  <div class="slabel"><span class="sub">Touchpoint 04 · Our Direction</span><span class="main">添加上下文 — 我们的方向</span></div>
+  <div class="section-inner"><div class="rec-inner">
+    <div class="rec-l">
+      <div class="rec-hl"><div class="rht">@ 触发 &lt;100ms + 模糊搜索 + 自动推断透明提示</div><div class="rhb">@ 触发补全弹窗延迟 &lt;100ms（这是用户是否养成习惯的关键阈值）。引用后 Chip 展示，可移除。AI 执行过程中自动推断读取的额外文件会以透明提示展示，让上下文从隐式变显式。</div></div>
+      <div class="rec-p"><div class="rn">01</div><div><div class="rt">延迟 &lt;100ms，路径模糊搜索</div><div class="rd">@ 触发后弹窗必须在 100ms 内出现。支持路径模糊匹配（@auth → src/services/auth.ts），最近引用的文件排在最前。这个延迟阈值决定了用户会不会把 @ 引用变成习惯。</div></div></div>
+      <div class="rec-p"><div class="rn">02</div><div><div class="rt">引用后 Chip 展示，超 3 个折叠</div><div class="rd">引用的文件以绿色 Chip 在输入框顶部持续展示，有 × 可移除。超过 3 个时折叠为 "+N 更多文件"，保证输入框始终有足够的输入空间。</div></div></div>
+      <div class="rec-p"><div class="rn">03</div><div><div class="rt">AI 额外读取的文件作为透明提示</div><div class="rd">AI 在执行过程中读取了用户没有 @ 的文件时，在输出区下方出现"<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><line x1="12" y1="2" x2="12" y2="3"/><path d="M12 22v-1M17 6l-1 1M7 6l1 1M4 12H3m18 0h-1"/><path d="M9 21h6M12 5a7 7 0 0 1 7 7c0 2.5-1.5 4.5-3 6H8c-1.5-1.5-3-3.5-3-6a7 7 0 0 1 7-7z"/></svg> AI 还读取了 types.ts"的提示，一键加入上下文。把隐式行为变显式，让用户不再感觉 AI 在"偷偷做什么"。</div></div></div>
+    </div>
+    <div class="rec-r"><div class="mt" style="font-size:12px;line-height:1.8">
+      <div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">@ completion · our design</span></div>
+      <div class="mb">
+        <div style="background:#1a1a22;border:.5px solid #834DF0;border-radius:7px;overflow:hidden;margin-bottom:6px">
+          <div style="padding:4px 9px;background:rgba(131,77,240,.1);border-bottom:.5px solid rgba(131,77,240,.2);display:flex;gap:4px;align-items:center;font-size:9px">
+            <span class="tag tg2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg> auth.ts ×</span><span class="tag tg2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg> types.ts ×</span><span style="color:var(--td)">+1</span>
+          </div>
+          <div style="padding:5px 9px;font-size:10px"><span style="color:#834DF0">❯</span> <span class="tw">重构 </span><span class="tb">@</span><div class="cur" style="display:inline-block"></div></div>
+          <div style="background:#0a0a0f;border-top:.5px solid #1a1a22;font-size:9px">
+            <div style="padding:2px 9px;color:var(--td);font-size:8px">文件补全 · 模糊搜索 (&lt;100ms)</div>
+            <div style="padding:3px 9px;color:#60a5fa;background:rgba(96,165,250,.08)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg> src/auth.ts</div>
+            <div style="padding:3px 9px;color:#a78bfa;background:rgba(131,77,240,.1)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg> src/auth.test.ts ↵</div>
+            <div style="padding:3px 9px;color:#60a5fa"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg> src/authUtils.ts</div>
+          </div>
+        </div>
+        <div style="background:rgba(52,211,153,.06);border:.5px solid rgba(52,211,153,.2);border-radius:5px;padding:6px 9px;font-size:9px">
+          <div style="color:var(--tg);margin-bottom:3px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><line x1="12" y1="2" x2="12" y2="3"/><path d="M12 22v-1M17 6l-1 1M7 6l1 1M4 12H3m18 0h-1"/><path d="M9 21h6M12 5a7 7 0 0 1 7 7c0 2.5-1.5 4.5-3 6H8c-1.5-1.5-3-3.5-3-6a7 7 0 0 1 7-7z"/></svg> AI 还读取了（自动推断）：</div>
+          <div style="display:flex;justify-content:space-between;align-items:center;font-size:9px"><span class="td">src/middleware/auth.ts</span><span style="color:#34d399;cursor:pointer">+ 加入上下文</span></div>
+        </div>
+      </div>
+    </div></div>
+  </div></div>
+</div>
+
 <div class="section cmp-section" id="tp-chips">
   <div class="slabel">
     <span class="sub">Touchpoint 05 · 表达意图 · Industry Comparison</span>
@@ -269,6 +398,43 @@
 </div>
 
 <!-- ──────────── TP: 模型选择器 ──────────── -->
+
+<div class="section rec-section" id="tp-chips-rec">
+  <div class="slabel"><span class="sub">Touchpoint 05 · Our Direction</span><span class="main">Context Chips — 我们的方向</span></div>
+  <div class="section-inner"><div class="rec-inner">
+    <div class="rec-l">
+      <div class="rec-hl"><div class="rht">渐进式 Chips：初始最少，随使用深度丰富</div><div class="rhb">Chips 不是越多越好。初始状态只显示两个最关键的：权限模式（影响自动化安全性）和费用角标（影响使用决策）。引用文件后才出现文件 Chip。Git 状态等信息按需展示，不强迫。</div></div>
+      <div class="rec-p"><div class="rn">01</div><div><div class="rt">权限模式 Chip 最重要，颜色区分</div><div class="rd">权限模式是所有状态中最需要始终可见的——用户必须随时知道 AI 会不会自动执行危险操作。Normal（绿色）、Auto-accept（橙色）、Plan Mode（蓝色），颜色区分，一眼可识，永远不会漏掉。</div></div></div>
+      <div class="rec-p"><div class="rn">02</div><div><div class="rt">费用角标实时更新，点击展开明细</div><div class="rd">累计费用以黄色小角标显示在 Chips 区右侧，随每次操作实时更新。不出现在每条输出中（避免切碎内容），但始终在视野里（避免被遗忘）。点击展开按任务归因的费用明细。</div></div></div>
+      <div class="rec-p"><div class="rn">03</div><div><div class="rt">超 3 个文件折叠，保证输入空间</div><div class="rd">引用文件 Chip 超过 3 个时，自动折叠为 "+N 更多"。点击展开查看完整列表，点击 × 移除。这个约束保证输入框永远有足够的输入空间，不会被 Chips 占满导致打字区域过窄。</div></div></div>
+    </div>
+    <div class="rec-r"><div class="mt" style="font-size:12px;line-height:1.8">
+      <div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">context chips · progressive</span></div>
+      <div class="mb">
+        <div class="td" style="font-size:9px;margin-bottom:4px">初始最简（仅权限模式 + 费用）:</div>
+        <div style="background:#0d0f13;border:.5px solid rgba(131,77,240,.25);border-radius:7px;overflow:hidden;margin-bottom:7px">
+          <div style="padding:4px 9px;background:rgba(131,77,240,.06);border-bottom:.5px solid rgba(131,77,240,.1);display:flex;gap:4px;align-items:center;font-size:9px">
+            <span class="tag" style="background:rgba(52,211,153,.1);color:#34d399;border:.5px solid rgba(52,211,153,.2)">● Normal</span>
+            <span style="margin-left:auto;color:var(--td);font-size:8px">$0.00</span>
+          </div>
+          <div style="padding:6px 9px;font-size:11px"><span style="color:#834DF0">❯</span> <span class="tw">开始输入...</span><div class="cur" style="display:inline-block"></div></div>
+        </div>
+        <div class="td" style="font-size:9px;margin-bottom:4px">深度使用（含引用文件 + 费用明细）:</div>
+        <div style="background:#0d0f13;border:.5px solid rgba(131,77,240,.3);border-radius:7px;overflow:hidden">
+          <div style="padding:5px 9px;background:rgba(131,77,240,.08);border-bottom:.5px solid rgba(131,77,240,.15);display:flex;gap:4px;flex-wrap:wrap;align-items:center;font-size:9px">
+            <span class="tag" style="background:rgba(52,211,153,.12);color:#34d399;border:.5px solid rgba(52,211,153,.25)">● Normal</span>
+            <span class="tag tg2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg> auth.ts ×</span>
+            <span class="tag tg2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg> types.ts ×</span>
+            <span style="color:var(--td);font-size:8px">+2</span>
+            <span style="margin-left:auto;background:rgba(251,191,36,.12);color:#fbbf24;padding:1px 6px;border-radius:3px;font-size:8px;border:.5px solid rgba(251,191,36,.25);cursor:pointer">$0.087 ▾</span>
+          </div>
+          <div style="padding:6px 9px;font-size:11px"><span style="color:#834DF0">❯</span> <span class="tw">继续分析</span><div class="cur" style="display:inline-block"></div></div>
+        </div>
+      </div>
+    </div></div>
+  </div></div>
+</div>
+
 <div class="section cmp-section" id="tp-model">
   <div class="slabel">
     <span class="sub">Touchpoint 06 · 表达意图 · Industry Comparison</span>
@@ -318,6 +484,38 @@
 </div>
 
 <!-- ──────────── TP: 历史记录 ──────────── -->
+
+<div class="section rec-section" id="tp-model-rec">
+  <div class="slabel"><span class="sub">Touchpoint 06 · Our Direction</span><span class="main">模型选择器 — 我们的方向</span></div>
+  <div class="section-inner"><div class="rec-inner">
+    <div class="rec-l">
+      <div class="rec-hl"><div class="rht">Chip 内嵌下拉 + 三维标注 + 子 Agent 自动降级</div><div class="rhb">模型以 Chip 内嵌在输入框，点击弹出下拉列表，每个模型标注成本/速度/最适场景三个维度，让用户不查文档就能做出合理选择。当前模型名始终在 Chip 中可见，不会迷失。</div></div>
+      <div class="rec-p"><div class="rn">01</div><div><div class="rt">三维标注：成本 / 速度 / 最适场景</div><div class="rd">下拉列表中每个模型显示：成本（$/$$/$$$）、速度（极快/快/慢）、最适场景（通用/编码/深度分析）。让"写单元测试选 Haiku（$ · 极快 · 通用）"这样的判断可以直接在选择器内完成。</div></div></div>
+      <div class="rec-p"><div class="rn">02</div><div><div class="rt">当前模型名 Chip 始终可见</div><div class="rd">当前使用的模型以 Chip 形式持续显示在输入框，不需要滚回 Banner 或执行 /model 命令才能确认当前是什么模型。这是最基础的状态透明度，不应该缺失。</div></div></div>
+      <div class="rec-p"><div class="rn">03</div><div><div class="rt">子 Agent 自动使用低成本模型</div><div class="rd">多 Agent 场景中，子 Agent（读文件、搜索、探索性任务）自动使用 Haiku 等低成本快速模型执行，主 Agent 继续使用用户选择的模型。在任务面板中显示各 Agent 使用的模型和产生的费用。</div></div></div>
+    </div>
+    <div class="rec-r"><div class="mt" style="font-size:12px;line-height:1.8">
+      <div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">model selector · chip + dropdown</span></div>
+      <div class="mb">
+        <div style="background:#0a0a0f;border:.5px solid #1a1a22;border-radius:7px;overflow:hidden;margin-bottom:8px">
+          <div style="padding:3px 9px;color:var(--td);font-size:9px;border-bottom:.5px solid #1a1a22;background:#141419">选择模型</div>
+          <div style="padding:4px 9px;display:flex;justify-content:space-between;align-items:center;background:rgba(131,77,240,.1);font-size:11px"><span style="color:#a78bfa">claude-sonnet-4-5</span><span class="td" style="font-size:9px">编码 · $$ · 快速</span></div>
+          <div style="padding:4px 9px;display:flex;justify-content:space-between;align-items:center;font-size:11px"><span style="color:var(--td)">claude-haiku-4-5</span><span class="td" style="font-size:9px">通用 · $ · 极快</span></div>
+          <div style="padding:4px 9px;display:flex;justify-content:space-between;align-items:center;font-size:11px"><span style="color:var(--td)">claude-opus-4-6</span><span class="td" style="font-size:9px">深度分析 · $$$ · 慢</span></div>
+        </div>
+        <div style="background:#141419;border:.5px solid rgba(131,77,240,.3);border-radius:7px;overflow:hidden">
+          <div style="padding:4px 9px;background:rgba(131,77,240,.08);border-bottom:.5px solid rgba(131,77,240,.15);display:flex;gap:4px;align-items:center;font-size:9px">
+            <span class="tag tp3" style="cursor:pointer">claude-sonnet-4-5 ▾</span>
+            <span class="tag" style="background:rgba(52,211,153,.1);color:#34d399;border:.5px solid rgba(52,211,153,.2)">● Normal</span>
+            <span style="margin-left:auto;color:var(--td);font-size:8px">$0.087 ▾</span>
+          </div>
+          <div style="padding:6px 9px;font-size:11px"><span style="color:#834DF0">❯</span> <span class="tw">继续重构</span><div class="cur" style="display:inline-block"></div></div>
+        </div>
+      </div>
+    </div></div>
+  </div></div>
+</div>
+
 <div class="section cmp-section" id="tp-history">
   <div class="slabel">
     <span class="sub">Touchpoint 07 · 表达意图 · Industry Comparison</span>
@@ -369,198 +567,6 @@
 
 <!-- ══════ REC SECTIONS ══════ -->
 
-<div class="section rec-section" id="tp-input-pos-rec">
-  <div class="slabel"><span class="sub">Touchpoint 02A · Our Direction</span><span class="main">输入框位置 &amp; 形态 — 我们的方向</span></div>
-  <div class="section-inner"><div class="rec-inner">
-    <div class="rec-l">
-      <div class="rec-hl"><div class="rht">固定底部为基础，长任务自动提示分离视图</div><div class="rhb">默认固定底部（成本最低、体验最佳的起点）。当 AI 进入超过 5 步的长任务执行时，输入框上方出现"切换到 Agent 视图？"提示，用户可选择切换或留在当前视图，不强制。</div></div>
-      <div class="rec-p"><div class="rn">01</div><div><div class="rt">输入框锚定底部，始终在视野内</div><div class="rd">无论对话有多长，输入框永远在屏幕底部。用户不会"找不到输入框"——这是减少使用摩擦最有效的单一设计决策。固定底部同时让输出区域可以自由滚动，历史内容随时可查。</div></div></div>
-      <div class="rec-p"><div class="rn">02</div><div><div class="rt">长任务自动提示切换分离视图</div><div class="rd">检测到 AI 开始执行超过 5 步的长任务时，在输入框上方出现轻量提示："任务正在后台执行（3/8 步）· 切换到 Agent 视图？"。用户可切换或忽略，两种视图都完整支持。</div></div></div>
-      <div class="rec-p"><div class="rn">03</div><div><div class="rt">分离视图：左历史右任务，可同时操作</div><div class="rd">切换到分离视图后，左侧为历史对话（可继续输入短任务），右侧为当前 Agent 任务状态。用户在等待 Agent 执行时可以同时做其他短任务，不需要干等。</div></div></div>
-    </div>
-    <div class="rec-r"><div class="mt" style="font-size:12px;line-height:1.8">
-      <div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">input position · our design</span></div>
-      <div class="mb">
-        <div class="td" style="font-size:9px;margin-bottom:4px">默认：固定底部编辑器</div>
-        <div style="background:#141419;border:.5px solid rgba(131,77,240,.35);border-radius:7px;overflow:hidden;margin-bottom:8px">
-          <div style="padding:4px 9px;background:rgba(131,77,240,.1);border-bottom:.5px solid rgba(131,77,240,.2);font-size:9px;color:#a78bfa"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> 固定底部 · 始终可见</div>
-          <div style="padding:6px 9px;font-size:11px"><span style="color:#834DF0">❯</span> <span class="tw">输入任务</span><div class="cur" style="display:inline-block"></div></div>
-        </div>
-        <div class="td" style="font-size:9px;margin-bottom:4px">长任务执行中：自动提示</div>
-        <div style="background:rgba(131,77,240,.06);border:.5px solid rgba(131,77,240,.2);border-radius:6px;padding:7px 9px;font-size:10px">
-          <div style="color:#a78bfa;margin-bottom:4px">⠿ 任务正在执行 (3/8 步)</div>
-          <div style="display:flex;gap:8px;font-size:9px"><span style="color:#834DF0;cursor:pointer">切换到 Agent 视图 →</span><span style="color:var(--td);cursor:pointer">继续当前</span></div>
-        </div>
-      </div>
-    </div></div>
-  </div></div>
-</div>
-
-<div class="section rec-section" id="tp-input-edit-rec">
-  <div class="slabel"><span class="sub">Touchpoint 02B · Our Direction</span><span class="main">输入框编辑能力 — 我们的方向</span></div>
-  <div class="section-inner"><div class="rec-inner">
-    <div class="rec-l">
-      <div class="rec-hl"><div class="rht">多行编辑 + Ctrl+R 历史搜索 + 语法高亮</div><div class="rhb">多行编辑让复杂指令可以换行写清楚；Ctrl+R 跨会话历史搜索让常用指令可以快速复用；输入区语法高亮（@ 引用蓝色 / /命令紫色 / 路径绿色）让指令结构一目了然。</div></div>
-      <div class="rec-p"><div class="rn">01</div><div><div class="rt">Shift+Enter 换行，光标自由移动</div><div class="rd">支持多行编辑，Shift+Enter 换行，Enter 提交。光标可自由定位，Ctrl+A 全选，Ctrl+K 删到行末。让用户写复杂多步指令时，体验与在编辑器里写注释一样。</div></div></div>
-      <div class="rec-p"><div class="rn">02</div><div><div class="rt">Ctrl+R 历史搜索，Tab 编辑后复用</div><div class="rd">Ctrl+R 触发历史搜索弹窗，支持模糊搜索，结果显示完整指令预览。Enter 直接复用，Tab 填入输入框进入编辑状态，让用户可以在历史基础上微调再复用。跨会话持久 200 条。</div></div></div>
-      <div class="rec-p"><div class="rn">03</div><div><div class="rt">输入区语法高亮，结构一目了然</div><div class="rd">@引用蓝色，/命令紫色，文件路径绿色，普通文字白色。这个高亮不只是好看——它给用户"我的指令被正确解析了"的信心，同时让错误（比如 @ 后面打错文件名）在提交前就能发现。</div></div></div>
-    </div>
-    <div class="rec-r"><div class="mt" style="font-size:12px;line-height:1.8">
-      <div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">editing · multiline + syntax highlight</span></div>
-      <div class="mb">
-        <div style="background:#1a1a22;border:.5px solid #834DF0;border-radius:7px;overflow:hidden;margin-bottom:8px">
-          <div style="padding:4px 9px;background:rgba(131,77,240,.1);border-bottom:.5px solid rgba(131,77,240,.2);font-size:9px;color:#a78bfa">多行编辑 · 语法高亮</div>
-          <div style="padding:6px 9px;font-size:11px">
-            <div><span style="color:#834DF0">❯</span> <span style="color:#60a5fa">@src/auth.ts</span> <span class="tw">重构错误处理，需要：</span></div>
-            <div style="padding-left:14px"><span class="tw">1. </span><span style="color:#f87171">TokenExpiredError</span><span class="tw"> 单独处理</span></div>
-            <div style="padding-left:14px"><span class="tw">2. 网络错误重试 3 次</span><div class="cur" style="display:inline-block"></div></div>
-          </div>
-          <div style="padding:3px 9px;border-top:.5px solid rgba(255,255,255,.05);font-size:9px;color:var(--td)">Shift+Enter 换行 · Enter 发送 · Ctrl+R 历史</div>
-        </div>
-        <div style="background:#1a1a22;border:.5px solid #2a2a2a;border-radius:6px;padding:6px 9px">
-          <div style="color:#4dd0e1;font-size:9px;margin-bottom:4px">Ctrl+R 搜索历史</div>
-          <div class="tw" style="font-size:11px">重构</div>
-          <div style="border-top:.5px solid #2a2a35;margin-top:4px;padding-top:4px">
-            <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:3px"><div><div class="tb" style="font-size:10px">重构 auth.ts 错误处理</div><div class="td" style="font-size:9px">@src/auth.ts 重构错误处理，需要：...</div></div><span class="td" style="font-size:8px;flex-shrink:0;margin-left:8px">2h</span></div>
-            <div style="font-size:9px;color:var(--td)">Enter 复用 · Tab 编辑后复用</div>
-          </div>
-        </div>
-      </div>
-    </div></div>
-  </div></div>
-</div>
-
-<div class="section rec-section" id="tp-mode-rec">
-  <div class="slabel"><span class="sub">Touchpoint 03 · Our Direction</span><span class="main">模式指示符 — 我们的方向</span></div>
-  <div class="section-inner"><div class="rec-inner">
-    <div class="rec-l">
-      <div class="rec-hl"><div class="rht">Badge + 边框颜色双重强调，Cmd+I 显式切换</div><div class="rhb">Agent Mode 紫色边框 + Badge，Terminal Mode 灰色边框 + Badge。两种模式视觉差异足够大，用户扫一眼就能识别。Cmd+I 显式切换，不做隐式自动检测——避免误判带来的信任损耗。</div></div>
-      <div class="rec-p"><div class="rn">01</div><div><div class="rt">两种模式视觉差异要足够大</div><div class="rd">Agent Mode 和 Terminal Mode 在颜色（紫色/灰色）、边框粗细、Badge 图标（✦/⬣）三个维度都有明确差异。不能只靠一个小文字标注——那样用户很容易忽视，在错误模式下操作。</div></div></div>
-      <div class="rec-p"><div class="rn">02</div><div><div class="rt">模式状态作为输入框的一部分，始终可见</div><div class="rd">模式指示不放在 Banner（会滚走），不放在状态栏（离输入框太远）。而是作为输入框顶部的 Badge 行，用户在输入的同时就能看到当前模式，不需要移开视线。</div></div></div>
-      <div class="rec-p"><div class="rn">03</div><div><div class="rt">Cmd+I 显式切换，快捷键提示常显</div><div class="rd">切换快捷键 Cmd+I 显示在 Badge 行旁边（小灰字），发现成本为零。切换时边框颜色平滑过渡（200ms 动画），让用户感知到模式确实发生了变化，而不是静默切换。</div></div></div>
-    </div>
-    <div class="rec-r"><div class="mt" style="font-size:12px;line-height:1.8">
-      <div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">mode indicator · visual diff</span></div>
-      <div class="mb">
-        <div class="td" style="font-size:9px;margin-bottom:5px">Agent Mode — 紫色边框 + ✦ Badge:</div>
-        <div style="background:#0d0f13;border:2px solid #834DF0;border-radius:7px;overflow:hidden;margin-bottom:9px">
-          <div style="padding:4px 9px;background:rgba(131,77,240,.12);border-bottom:.5px solid rgba(131,77,240,.22);display:flex;align-items:center;gap:6px;font-size:9px">
-            <span class="tag tp3">✦ Agent Mode</span><span class="td">Cmd+I 切换</span>
-          </div>
-          <div style="padding:6px 9px;font-size:11px"><span style="color:#834DF0">❯</span> <span class="tw">自然语言任务</span><div class="cur" style="display:inline-block"></div></div>
-        </div>
-        <div class="td" style="font-size:9px;margin-bottom:5px">Terminal Mode — 灰色边框 + ⬣ Badge:</div>
-        <div style="background:#141419;border:2px solid #2a2a35;border-radius:7px;overflow:hidden">
-          <div style="padding:4px 9px;background:#1a1a22;border-bottom:.5px solid #2a2a35;display:flex;align-items:center;gap:6px;font-size:9px">
-            <span class="tag tg2">⬣ Terminal Mode</span><span class="td">Cmd+I 切换</span>
-          </div>
-          <div style="padding:6px 9px;font-size:11px"><span class="tg">❯</span> <span class="tg">git status</span></div>
-        </div>
-      </div>
-    </div></div>
-  </div></div>
-</div>
-
-<div class="section rec-section" id="tp-at-rec">
-  <div class="slabel"><span class="sub">Touchpoint 04 · Our Direction</span><span class="main">@ 文件补全 — 我们的方向</span></div>
-  <div class="section-inner"><div class="rec-inner">
-    <div class="rec-l">
-      <div class="rec-hl"><div class="rht">@ 触发 &lt;100ms + 模糊搜索 + 自动推断透明提示</div><div class="rhb">@ 触发补全弹窗延迟 &lt;100ms（这是用户是否养成习惯的关键阈值）。引用后 Chip 展示，可移除。AI 执行过程中自动推断读取的额外文件会以透明提示展示，让上下文从隐式变显式。</div></div>
-      <div class="rec-p"><div class="rn">01</div><div><div class="rt">延迟 &lt;100ms，路径模糊搜索</div><div class="rd">@ 触发后弹窗必须在 100ms 内出现。支持路径模糊匹配（@auth → src/services/auth.ts），最近引用的文件排在最前。这个延迟阈值决定了用户会不会把 @ 引用变成习惯。</div></div></div>
-      <div class="rec-p"><div class="rn">02</div><div><div class="rt">引用后 Chip 展示，超 3 个折叠</div><div class="rd">引用的文件以绿色 Chip 在输入框顶部持续展示，有 × 可移除。超过 3 个时折叠为 "+N 更多文件"，保证输入框始终有足够的输入空间。</div></div></div>
-      <div class="rec-p"><div class="rn">03</div><div><div class="rt">AI 额外读取的文件作为透明提示</div><div class="rd">AI 在执行过程中读取了用户没有 @ 的文件时，在输出区下方出现"<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><line x1="12" y1="2" x2="12" y2="3"/><path d="M12 22v-1M17 6l-1 1M7 6l1 1M4 12H3m18 0h-1"/><path d="M9 21h6M12 5a7 7 0 0 1 7 7c0 2.5-1.5 4.5-3 6H8c-1.5-1.5-3-3.5-3-6a7 7 0 0 1 7-7z"/></svg> AI 还读取了 types.ts"的提示，一键加入上下文。把隐式行为变显式，让用户不再感觉 AI 在"偷偷做什么"。</div></div></div>
-    </div>
-    <div class="rec-r"><div class="mt" style="font-size:12px;line-height:1.8">
-      <div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">@ completion · our design</span></div>
-      <div class="mb">
-        <div style="background:#1a1a22;border:.5px solid #834DF0;border-radius:7px;overflow:hidden;margin-bottom:6px">
-          <div style="padding:4px 9px;background:rgba(131,77,240,.1);border-bottom:.5px solid rgba(131,77,240,.2);display:flex;gap:4px;align-items:center;font-size:9px">
-            <span class="tag tg2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg> auth.ts ×</span><span class="tag tg2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg> types.ts ×</span><span style="color:var(--td)">+1</span>
-          </div>
-          <div style="padding:5px 9px;font-size:10px"><span style="color:#834DF0">❯</span> <span class="tw">重构 </span><span class="tb">@</span><div class="cur" style="display:inline-block"></div></div>
-          <div style="background:#0a0a0f;border-top:.5px solid #1a1a22;font-size:9px">
-            <div style="padding:2px 9px;color:var(--td);font-size:8px">文件补全 · 模糊搜索 (&lt;100ms)</div>
-            <div style="padding:3px 9px;color:#60a5fa;background:rgba(96,165,250,.08)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg> src/auth.ts</div>
-            <div style="padding:3px 9px;color:#a78bfa;background:rgba(131,77,240,.1)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg> src/auth.test.ts ↵</div>
-            <div style="padding:3px 9px;color:#60a5fa"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg> src/authUtils.ts</div>
-          </div>
-        </div>
-        <div style="background:rgba(52,211,153,.06);border:.5px solid rgba(52,211,153,.2);border-radius:5px;padding:6px 9px;font-size:9px">
-          <div style="color:var(--tg);margin-bottom:3px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><line x1="12" y1="2" x2="12" y2="3"/><path d="M12 22v-1M17 6l-1 1M7 6l1 1M4 12H3m18 0h-1"/><path d="M9 21h6M12 5a7 7 0 0 1 7 7c0 2.5-1.5 4.5-3 6H8c-1.5-1.5-3-3.5-3-6a7 7 0 0 1 7-7z"/></svg> AI 还读取了（自动推断）：</div>
-          <div style="display:flex;justify-content:space-between;align-items:center;font-size:9px"><span class="td">src/middleware/auth.ts</span><span style="color:#34d399;cursor:pointer">+ 加入上下文</span></div>
-        </div>
-      </div>
-    </div></div>
-  </div></div>
-</div>
-
-<div class="section rec-section" id="tp-chips-rec">
-  <div class="slabel"><span class="sub">Touchpoint 05 · Our Direction</span><span class="main">Context Chips — 我们的方向</span></div>
-  <div class="section-inner"><div class="rec-inner">
-    <div class="rec-l">
-      <div class="rec-hl"><div class="rht">渐进式 Chips：初始最少，随使用深度丰富</div><div class="rhb">Chips 不是越多越好。初始状态只显示两个最关键的：权限模式（影响自动化安全性）和费用角标（影响使用决策）。引用文件后才出现文件 Chip。Git 状态等信息按需展示，不强迫。</div></div>
-      <div class="rec-p"><div class="rn">01</div><div><div class="rt">权限模式 Chip 最重要，颜色区分</div><div class="rd">权限模式是所有状态中最需要始终可见的——用户必须随时知道 AI 会不会自动执行危险操作。Normal（绿色）、Auto-accept（橙色）、Plan Mode（蓝色），颜色区分，一眼可识，永远不会漏掉。</div></div></div>
-      <div class="rec-p"><div class="rn">02</div><div><div class="rt">费用角标实时更新，点击展开明细</div><div class="rd">累计费用以黄色小角标显示在 Chips 区右侧，随每次操作实时更新。不出现在每条输出中（避免切碎内容），但始终在视野里（避免被遗忘）。点击展开按任务归因的费用明细。</div></div></div>
-      <div class="rec-p"><div class="rn">03</div><div><div class="rt">超 3 个文件折叠，保证输入空间</div><div class="rd">引用文件 Chip 超过 3 个时，自动折叠为 "+N 更多"。点击展开查看完整列表，点击 × 移除。这个约束保证输入框永远有足够的输入空间，不会被 Chips 占满导致打字区域过窄。</div></div></div>
-    </div>
-    <div class="rec-r"><div class="mt" style="font-size:12px;line-height:1.8">
-      <div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">context chips · progressive</span></div>
-      <div class="mb">
-        <div class="td" style="font-size:9px;margin-bottom:4px">初始最简（仅权限模式 + 费用）:</div>
-        <div style="background:#0d0f13;border:.5px solid rgba(131,77,240,.25);border-radius:7px;overflow:hidden;margin-bottom:7px">
-          <div style="padding:4px 9px;background:rgba(131,77,240,.06);border-bottom:.5px solid rgba(131,77,240,.1);display:flex;gap:4px;align-items:center;font-size:9px">
-            <span class="tag" style="background:rgba(52,211,153,.1);color:#34d399;border:.5px solid rgba(52,211,153,.2)">● Normal</span>
-            <span style="margin-left:auto;color:var(--td);font-size:8px">$0.00</span>
-          </div>
-          <div style="padding:6px 9px;font-size:11px"><span style="color:#834DF0">❯</span> <span class="tw">开始输入...</span><div class="cur" style="display:inline-block"></div></div>
-        </div>
-        <div class="td" style="font-size:9px;margin-bottom:4px">深度使用（含引用文件 + 费用明细）:</div>
-        <div style="background:#0d0f13;border:.5px solid rgba(131,77,240,.3);border-radius:7px;overflow:hidden">
-          <div style="padding:5px 9px;background:rgba(131,77,240,.08);border-bottom:.5px solid rgba(131,77,240,.15);display:flex;gap:4px;flex-wrap:wrap;align-items:center;font-size:9px">
-            <span class="tag" style="background:rgba(52,211,153,.12);color:#34d399;border:.5px solid rgba(52,211,153,.25)">● Normal</span>
-            <span class="tag tg2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg> auth.ts ×</span>
-            <span class="tag tg2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg> types.ts ×</span>
-            <span style="color:var(--td);font-size:8px">+2</span>
-            <span style="margin-left:auto;background:rgba(251,191,36,.12);color:#fbbf24;padding:1px 6px;border-radius:3px;font-size:8px;border:.5px solid rgba(251,191,36,.25);cursor:pointer">$0.087 ▾</span>
-          </div>
-          <div style="padding:6px 9px;font-size:11px"><span style="color:#834DF0">❯</span> <span class="tw">继续分析</span><div class="cur" style="display:inline-block"></div></div>
-        </div>
-      </div>
-    </div></div>
-  </div></div>
-</div>
-
-<div class="section rec-section" id="tp-model-rec">
-  <div class="slabel"><span class="sub">Touchpoint 06 · Our Direction</span><span class="main">模型选择器 — 我们的方向</span></div>
-  <div class="section-inner"><div class="rec-inner">
-    <div class="rec-l">
-      <div class="rec-hl"><div class="rht">Chip 内嵌下拉 + 三维标注 + 子 Agent 自动降级</div><div class="rhb">模型以 Chip 内嵌在输入框，点击弹出下拉列表，每个模型标注成本/速度/最适场景三个维度，让用户不查文档就能做出合理选择。当前模型名始终在 Chip 中可见，不会迷失。</div></div>
-      <div class="rec-p"><div class="rn">01</div><div><div class="rt">三维标注：成本 / 速度 / 最适场景</div><div class="rd">下拉列表中每个模型显示：成本（$/$$/$$$）、速度（极快/快/慢）、最适场景（通用/编码/深度分析）。让"写单元测试选 Haiku（$ · 极快 · 通用）"这样的判断可以直接在选择器内完成。</div></div></div>
-      <div class="rec-p"><div class="rn">02</div><div><div class="rt">当前模型名 Chip 始终可见</div><div class="rd">当前使用的模型以 Chip 形式持续显示在输入框，不需要滚回 Banner 或执行 /model 命令才能确认当前是什么模型。这是最基础的状态透明度，不应该缺失。</div></div></div>
-      <div class="rec-p"><div class="rn">03</div><div><div class="rt">子 Agent 自动使用低成本模型</div><div class="rd">多 Agent 场景中，子 Agent（读文件、搜索、探索性任务）自动使用 Haiku 等低成本快速模型执行，主 Agent 继续使用用户选择的模型。在任务面板中显示各 Agent 使用的模型和产生的费用。</div></div></div>
-    </div>
-    <div class="rec-r"><div class="mt" style="font-size:12px;line-height:1.8">
-      <div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">model selector · chip + dropdown</span></div>
-      <div class="mb">
-        <div style="background:#0a0a0f;border:.5px solid #1a1a22;border-radius:7px;overflow:hidden;margin-bottom:8px">
-          <div style="padding:3px 9px;color:var(--td);font-size:9px;border-bottom:.5px solid #1a1a22;background:#141419">选择模型</div>
-          <div style="padding:4px 9px;display:flex;justify-content:space-between;align-items:center;background:rgba(131,77,240,.1);font-size:11px"><span style="color:#a78bfa">claude-sonnet-4-5</span><span class="td" style="font-size:9px">编码 · $$ · 快速</span></div>
-          <div style="padding:4px 9px;display:flex;justify-content:space-between;align-items:center;font-size:11px"><span style="color:var(--td)">claude-haiku-4-5</span><span class="td" style="font-size:9px">通用 · $ · 极快</span></div>
-          <div style="padding:4px 9px;display:flex;justify-content:space-between;align-items:center;font-size:11px"><span style="color:var(--td)">claude-opus-4-6</span><span class="td" style="font-size:9px">深度分析 · $$$ · 慢</span></div>
-        </div>
-        <div style="background:#141419;border:.5px solid rgba(131,77,240,.3);border-radius:7px;overflow:hidden">
-          <div style="padding:4px 9px;background:rgba(131,77,240,.08);border-bottom:.5px solid rgba(131,77,240,.15);display:flex;gap:4px;align-items:center;font-size:9px">
-            <span class="tag tp3" style="cursor:pointer">claude-sonnet-4-5 ▾</span>
-            <span class="tag" style="background:rgba(52,211,153,.1);color:#34d399;border:.5px solid rgba(52,211,153,.2)">● Normal</span>
-            <span style="margin-left:auto;color:var(--td);font-size:8px">$0.087 ▾</span>
-          </div>
-          <div style="padding:6px 9px;font-size:11px"><span style="color:#834DF0">❯</span> <span class="tw">继续重构</span><div class="cur" style="display:inline-block"></div></div>
-        </div>
-      </div>
-    </div></div>
-  </div></div>
-</div>
-
 <div class="section rec-section" id="tp-history-rec">
   <div class="slabel"><span class="sub">Touchpoint 07 · Our Direction</span><span class="main">历史记录 — 我们的方向</span></div>
   <div class="section-inner"><div class="rec-inner">
@@ -609,19 +615,6 @@
   buildNav('tp-intent.html', 'intent', tpId);
   initSnapScroll('intent');
   initKeyNav();
-
-  window.addEventListener('load', () => {
-    if (window.location.hash) {
-      const el = document.querySelector(window.location.hash);
-      if (el) {
-        const c = document.querySelector('.snap-container');
-        // Use requestAnimationFrame to ensure layout is ready
-        requestAnimationFrame(() => {
-          c.scrollTo({ top: el.offsetTop - 88, behavior: 'instant' });
-        });
-      }
-    }
-  });
 </script>
 </body>
 </html>
