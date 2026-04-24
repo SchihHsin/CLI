@@ -1,23 +1,30 @@
-
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Terminal Theme Inspector</title>
 <style>
-  .wrap { display: flex; height: 620px; font-family: var(--font-mono); font-size: 12px; background: #0f0f14; color: #a9b1d6; overflow: hidden; border-radius: var(--border-radius-lg); }
-  .sidebar { width: 272px; border-right: 1px solid #565f89; background: #1a1b26; overflow-y: auto; padding: 10px; flex-shrink: 0; }
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; height: 100%; background: #0f0f14; }
+  .wrap { display: flex; height: 100vh; font-family: monospace; font-size: 14px; background: #0f0f14; color: #a9b1d6; overflow: hidden; }
+  .sidebar { width: 300px; border-right: 1px solid #565f89; background: #1a1b26; overflow-y: auto; padding: 12px; flex-shrink: 0; }
   .sidebar::-webkit-scrollbar { width: 4px; }
   .sidebar::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
-  .main { flex: 1; overflow-y: auto; padding: 20px; background: #1a1b26; }
+  .main { flex: 1; overflow-y: auto; padding: 24px; background: #1a1b26; }
   .main::-webkit-scrollbar { width: 4px; }
   .main::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
-  .section-label { font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; opacity: 0.45; font-weight: 700; margin: 14px 0 5px; display: flex; align-items: center; gap: 5px; font-family: var(--font-mono); }
-  .swatch-row { display: flex; align-items: center; gap: 8px; padding: 6px 7px; border-radius: 6px; cursor: crosshair; border: 1px solid transparent; transition: background 0.1s; }
+  .section-label { font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; opacity: 0.45; font-weight: 700; margin: 16px 0 6px; display: flex; align-items: center; gap: 5px; }
+  .swatch-row { display: flex; align-items: center; gap: 8px; padding: 7px 8px; border-radius: 6px; cursor: crosshair; border: 1px solid transparent; transition: background 0.1s; }
   .swatch-row:hover, .swatch-row.active { background: rgba(255,255,255,0.07); border-color: rgba(255,255,255,0.12); }
-  .swatch-dot { width: 28px; height: 28px; border-radius: 4px; flex-shrink: 0; }
-  .swatch-dot-sm { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; margin: 0 9px; }
-  .swatch-info { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
-  .swatch-key { font-size: 11px; font-weight: 700; color: #c0caf5; line-height: 1.3; }
-  .swatch-desc { font-size: 9.5px; color: #565f89; line-height: 1.4; font-family: var(--font-sans); letter-spacing: 0; white-space: normal; }
-  .preview-block { border-radius: 10px; padding: 14px; margin-bottom: 14px; font-size: 12px; line-height: 1.7; }
-  .topbar { height: 44px; border-bottom: 1px solid #565f89; display: flex; align-items: center; padding: 0 14px; gap: 8px; flex-shrink: 0; background: #1a1b26; }
-  .topbar-icon { padding: 5px; border-radius: 6px; background: #7aa2f7; color: #1a1b26; display: flex; }
+  .swatch-dot { width: 30px; height: 30px; border-radius: 4px; flex-shrink: 0; }
+  .swatch-dot-sm { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; margin: 0 9px; }
+  .swatch-info { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+  .swatch-key { font-size: 13px; font-weight: 700; color: #c0caf5; line-height: 1.3; }
+  .swatch-desc { font-size: 11px; color: #565f89; line-height: 1.4; letter-spacing: 0; white-space: normal; }
+  .preview-block { border-radius: 10px; padding: 16px; margin-bottom: 16px; font-size: 13px; line-height: 1.7; }
+  .topbar { height: 50px; border-bottom: 1px solid #565f89; display: flex; align-items: center; padding: 0 16px; gap: 10px; flex-shrink: 0; background: #1a1b26; }
+  .topbar-icon { padding: 6px; border-radius: 6px; background: #7aa2f7; color: #1a1b26; display: flex; }
   .highlight { outline: 2px solid rgba(255,255,255,0.65); outline-offset: 1px; border-radius: 3px; }
 </style>
 
@@ -27,8 +34,8 @@
       <div class="topbar-icon">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
       </div>
-      <span style="font-weight:900;letter-spacing:-0.04em;font-size:13px;">TEMINAL <span style="color:#7aa2f7">THEME</span></span>
-      <div style="margin-left:auto;font-size:10px;border:1px solid #bb9af7;color:#bb9af7;padding:2px 8px;border-radius:20px;letter-spacing:0.08em;">HOVER TO INSPECT</div>
+      <span style="font-weight:900;letter-spacing:-0.04em;font-size:15px;">TEMINAL <span style="color:#7aa2f7">THEME</span></span>
+      <div style="margin-left:auto;font-size:11px;border:1px solid #bb9af7;color:#bb9af7;padding:3px 10px;border-radius:20px;letter-spacing:0.08em;">HOVER TO INSPECT</div>
     </div>
     <div style="display:flex;flex:1;overflow:hidden;">
       <div class="sidebar" id="sidebar">
@@ -199,3 +206,5 @@ function render() {
 
 render();
 </script>
+</body>
+</html>
