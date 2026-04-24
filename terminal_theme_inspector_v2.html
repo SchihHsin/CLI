@@ -1,0 +1,201 @@
+
+<style>
+  .wrap { display: flex; height: 620px; font-family: var(--font-mono); font-size: 12px; background: #0f0f14; color: #a9b1d6; overflow: hidden; border-radius: var(--border-radius-lg); }
+  .sidebar { width: 272px; border-right: 1px solid #565f89; background: #1a1b26; overflow-y: auto; padding: 10px; flex-shrink: 0; }
+  .sidebar::-webkit-scrollbar { width: 4px; }
+  .sidebar::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
+  .main { flex: 1; overflow-y: auto; padding: 20px; background: #1a1b26; }
+  .main::-webkit-scrollbar { width: 4px; }
+  .main::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
+  .section-label { font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; opacity: 0.45; font-weight: 700; margin: 14px 0 5px; display: flex; align-items: center; gap: 5px; font-family: var(--font-mono); }
+  .swatch-row { display: flex; align-items: center; gap: 8px; padding: 6px 7px; border-radius: 6px; cursor: crosshair; border: 1px solid transparent; transition: background 0.1s; }
+  .swatch-row:hover, .swatch-row.active { background: rgba(255,255,255,0.07); border-color: rgba(255,255,255,0.12); }
+  .swatch-dot { width: 28px; height: 28px; border-radius: 4px; flex-shrink: 0; }
+  .swatch-dot-sm { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; margin: 0 9px; }
+  .swatch-info { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
+  .swatch-key { font-size: 11px; font-weight: 700; color: #c0caf5; line-height: 1.3; }
+  .swatch-desc { font-size: 9.5px; color: #565f89; line-height: 1.4; font-family: var(--font-sans); letter-spacing: 0; white-space: normal; }
+  .preview-block { border-radius: 10px; padding: 14px; margin-bottom: 14px; font-size: 12px; line-height: 1.7; }
+  .topbar { height: 44px; border-bottom: 1px solid #565f89; display: flex; align-items: center; padding: 0 14px; gap: 8px; flex-shrink: 0; background: #1a1b26; }
+  .topbar-icon { padding: 5px; border-radius: 6px; background: #7aa2f7; color: #1a1b26; display: flex; }
+  .highlight { outline: 2px solid rgba(255,255,255,0.65); outline-offset: 1px; border-radius: 3px; }
+</style>
+
+<div class="wrap">
+  <div style="display:flex;flex-direction:column;flex:1;overflow:hidden;">
+    <div class="topbar">
+      <div class="topbar-icon">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+      </div>
+      <span style="font-weight:900;letter-spacing:-0.04em;font-size:13px;">TEMINAL <span style="color:#7aa2f7">THEME</span></span>
+      <div style="margin-left:auto;font-size:10px;border:1px solid #bb9af7;color:#bb9af7;padding:2px 8px;border-radius:20px;letter-spacing:0.08em;">HOVER TO INSPECT</div>
+    </div>
+    <div style="display:flex;flex:1;overflow:hidden;">
+      <div class="sidebar" id="sidebar">
+        <div class="section-label">Palette 调色板</div>
+        <div id="palette-list"></div>
+        <div class="section-label">Syntax 语法着色</div>
+        <div id="syntax-list"></div>
+        <div class="section-label">Markdown 文档渲染</div>
+        <div id="markdown-list"></div>
+      </div>
+      <div class="main" id="main-preview"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const palette = {
+  neutral:    { color: '#1a1b26', desc: '界面主背景色' },
+  ink:        { color: '#a9b1d6', desc: '默认正文文字色' },
+  primary:    { color: '#7aa2f7', desc: '品牌主色，用于高亮与交互' },
+  accent:     { color: '#bb9af7', desc: '强调色，用于次级高亮' },
+  success:    { color: '#9ece6a', desc: '成功状态提示色' },
+  warning:    { color: '#e0af68', desc: '警告状态提示色' },
+  error:      { color: '#f7768e', desc: '错误状态提示色' },
+  info:       { color: '#7dcfff', desc: '信息状态提示色' },
+  diffAdd:    { color: '#283b4d', desc: 'Git diff 新增行背景' },
+  diffDelete: { color: '#3f2d3d', desc: 'Git diff 删除行背景' },
+};
+const syntax = {
+  comment:     { color: '#565f89', desc: '注释文字' },
+  keyword:     { color: '#bb9af7', desc: '关键字，如 const / export' },
+  string:      { color: '#9ece6a', desc: '字符串字面量' },
+  primitive:   { color: '#ff9e64', desc: '原始值，如 true / false / null' },
+  variable:    { color: '#c0caf5', desc: '变量名标识符' },
+  property:    { color: '#7aa2f7', desc: '对象属性名' },
+  type:        { color: '#2ac3de', desc: 'TypeScript 类型名' },
+  constant:    { color: '#ff9e64', desc: '常量名，如 MAX_RETRIES' },
+  operator:    { color: '#89ddff', desc: '运算符，如 = / => / +' },
+  punctuation: { color: '#89ddff', desc: '标点符号，如 { } ( ) ;' },
+  object:      { color: '#73daca', desc: '内置对象，如 Math / JSON' },
+};
+const markdown = {
+  heading:            { color: '#9d7cd8', desc: '标题 # ## ###' },
+  text:               { color: '#eeeeee', desc: '普通正文段落' },
+  link:               { color: '#fab283', desc: '链接 URL 颜色' },
+  'link-text':        { color: '#56b6c2', desc: '链接文字 [text](url)' },
+  code:               { color: '#7fd88f', desc: '行内代码 `code`' },
+  'block-quote':      { color: '#e5c07b', desc: '引用块 > quote' },
+  emph:               { color: '#e5c07b', desc: '斜体强调 *emph*' },
+  strong:             { color: '#f5a742', desc: '粗体强调 **strong**' },
+  'horizontal-rule':  { color: '#808080', desc: '分隔线 ---' },
+  'list-item':        { color: '#fab283', desc: '无序列表项 • item' },
+  'list-enumeration': { color: '#56b6c2', desc: '有序列表序号 1. 2.' },
+  image:              { color: '#fab283', desc: '图片链接 ![](url)' },
+  'image-text':       { color: '#56b6c2', desc: '图片替代文字 ![text]()' },
+  'code-block':       { color: '#eeeeee', desc: '代码块文字 ```code```' },
+};
+
+let hovered = null;
+
+function buildSwatch(key, val, idPrefix, shape) {
+  const row = document.createElement('div');
+  row.className = 'swatch-row';
+  row.id = `swatch-${idPrefix}-${key}`;
+
+  if (shape === 'circle') {
+    const dot = document.createElement('div');
+    dot.className = 'swatch-dot-sm';
+    dot.style.background = val.color;
+    row.appendChild(dot);
+  } else {
+    const dot = document.createElement('div');
+    dot.className = 'swatch-dot';
+    dot.style.background = val.color;
+    row.appendChild(dot);
+  }
+
+  const info = document.createElement('div');
+  info.className = 'swatch-info';
+  info.innerHTML = `<span class="swatch-key">${key}</span><span class="swatch-desc">${val.desc}</span>`;
+  row.appendChild(info);
+
+  row.addEventListener('mouseenter', () => { hovered = `${idPrefix}-${key}`; render(); });
+  row.addEventListener('mouseleave', () => { hovered = null; render(); });
+  return row;
+}
+
+const paletteList = document.getElementById('palette-list');
+const syntaxList = document.getElementById('syntax-list');
+const markdownList = document.getElementById('markdown-list');
+
+Object.entries(palette).forEach(([k,v]) => paletteList.appendChild(buildSwatch(k, v, 'palette', 'square')));
+Object.entries(syntax).forEach(([k,v]) => syntaxList.appendChild(buildSwatch(k, v, 'syntax', 'circle')));
+Object.entries(markdown).forEach(([k,v]) => markdownList.appendChild(buildSwatch(k, v, 'markdown', 'circle')));
+
+function hl(id) { return hovered === id ? ' highlight' : ''; }
+
+function getColor(obj, key) { return obj[key]?.color || obj[key]; }
+
+function render() {
+  const p = key => palette[key].color;
+  const s = key => syntax[key].color;
+  const m = key => markdown[key].color;
+
+  document.getElementById('main-preview').innerHTML = `
+    <div style="font-size:10px;opacity:0.5;text-transform:uppercase;letter-spacing:0.15em;margin-bottom:8px;font-weight:700;">▸ Shell Session</div>
+    <div class="preview-block" style="background:#16161e;font-family:var(--font-mono);">
+      <div style="margin-bottom:6px;">
+        <span class="${hl('palette-primary')}" style="color:${p('primary')}">user@teminal</span>
+        <span class="${hl('palette-accent')}" style="color:${p('accent')}"> [~/projects/theme]</span>
+        <span style="color:${p('ink')}"> $ npm run build</span>
+      </div>
+      <div style="line-height:1.9;">
+        <div><span class="${hl('palette-info')}" style="color:${p('info')}">[info]</span> <span style="color:${p('ink')}">Starting theme compilation...</span></div>
+        <div><span class="${hl('palette-success')}" style="color:${p('success')}">[success]</span> <span style="color:${p('ink')}">All assets optimized in 2.4s</span></div>
+        <div><span class="${hl('palette-warning')}" style="color:${p('warning')}">[warn]</span> <span style="color:${p('ink')}">Large bundle size detected.</span></div>
+        <div><span class="${hl('palette-error')}" style="color:${p('error')}">[error]</span> <span style="color:${p('ink')}">Failed to push to remote.</span></div>
+      </div>
+    </div>
+
+    <div style="font-size:10px;opacity:0.5;text-transform:uppercase;letter-spacing:0.15em;margin-bottom:8px;font-weight:700;">▸ Syntax Highlighting</div>
+    <div class="preview-block" style="background:#16161e;font-family:var(--font-mono);">
+      <div style="display:flex;gap:14px;"><span style="opacity:0.2;width:12px;text-align:right;">1</span><span style="color:${s('comment')}" class="${hl('syntax-comment')}">// Keyword &amp; Variable</span></div>
+      <div style="display:flex;gap:14px;"><span style="opacity:0.2;width:12px;text-align:right;">2</span><span><span style="color:${s('keyword')}" class="${hl('syntax-keyword')}">export</span> <span style="color:${s('keyword')}">const</span> <span style="color:${s('variable')}" class="${hl('syntax-variable')}">appConfig</span> <span style="color:${s('operator')}" class="${hl('syntax-operator')}">=</span> <span style="color:${s('punctuation')}">{</span></span></div>
+      <div style="display:flex;gap:14px;"><span style="opacity:0.2;width:12px;text-align:right;">3</span><span style="padding-left:14px;"><span style="color:${s('property')}" class="${hl('syntax-property')}">isLive</span><span style="color:${s('punctuation')}">:</span> <span style="color:${s('primitive')}" class="${hl('syntax-primitive')}">true</span><span style="color:${s('punctuation')};">,</span></span></div>
+      <div style="display:flex;gap:14px;"><span style="opacity:0.2;width:12px;text-align:right;">4</span><span style="padding-left:14px;"><span style="color:${s('property')}">name</span><span style="color:${s('punctuation')}">:</span> <span style="color:${s('string')}" class="${hl('syntax-string')}">"Teminal Core"</span> <span style="color:${s('keyword')}">as</span> <span style="color:${s('type')}" class="${hl('syntax-type')}">ThemeType</span><span style="color:${s('punctuation')};">,</span></span></div>
+      <div style="display:flex;gap:14px;"><span style="opacity:0.2;width:12px;text-align:right;">5</span><span style="padding-left:14px;"><span style="color:${s('object')}" class="${hl('syntax-object')}">Math</span><span style="color:${s('punctuation')}">.</span><span style="color:${s('property')}">floor</span><span style="color:${s('punctuation')};">(</span><span style="color:${s('constant')}" class="${hl('syntax-constant')}">MAX_RETRIES</span><span style="color:${s('punctuation')};">)</span></span></div>
+      <div style="display:flex;gap:14px;"><span style="opacity:0.2;width:12px;text-align:right;">6</span><span style="color:${s('punctuation')};">};</span></div>
+    </div>
+
+    <div style="font-size:10px;opacity:0.5;text-transform:uppercase;letter-spacing:0.15em;margin-bottom:8px;font-weight:700;">▸ Git Diff</div>
+    <div style="border-radius:8px;overflow:hidden;border:1px solid #565f89;margin-bottom:14px;font-family:var(--font-mono);">
+      <div style="padding:5px 10px;font-size:10px;background:rgba(0,0,0,0.2);opacity:0.6;display:flex;justify-content:space-between;"><span>@@ -12,4 +12,6 @@</span><span>main.ts</span></div>
+      <div class="${hl('palette-diffDelete')}" style="background:${p('diffDelete')};padding:5px 12px;display:flex;"><span style="opacity:0.3;width:16px;">-</span><span style="color:${p('error')}">const oldWay = "manual";</span></div>
+      <div class="${hl('palette-diffAdd')}" style="background:${p('diffAdd')};padding:5px 12px;display:flex;"><span style="opacity:0.3;width:16px;">+</span><span style="color:${p('success')}">const newWay = "automatic";</span></div>
+    </div>
+
+    <div style="font-size:10px;opacity:0.5;text-transform:uppercase;letter-spacing:0.15em;margin-bottom:8px;font-weight:700;">▸ Markdown Preview</div>
+    <div class="preview-block" style="background:${p('neutral')};border:1px solid #565f89;">
+      <h2 style="font-size:15px;font-weight:700;margin:0 0 9px;color:${m('heading')}" class="${hl('markdown-heading')}">Theme Architecture</h2>
+      <p style="font-size:12px;line-height:1.7;margin:0 0 9px;color:${m('text')}" class="${hl('markdown-text')}">
+        This is a <strong style="color:${m('strong')}" class="${hl('markdown-strong')}">strongly typed</strong> config.
+        See the <a href="#" style="color:${m('link')};text-decoration:underline;" class="${hl('markdown-link')}">docs</a>
+        (<span style="color:${m('link-text')}" class="${hl('markdown-link-text')}">link text</span>) for more.
+      </p>
+      <div style="padding:7px 10px;border-radius:5px;margin:0 0 9px;display:flex;align-items:center;gap:8px;" class="${hl('markdown-block-quote')}">
+        <div style="width:3px;height:30px;border-radius:2px;background:${m('block-quote')}"></div>
+        <em style="color:${m('emph')};font-size:11px;" class="${hl('markdown-emph')}">"Consistency is the key to a great terminal experience."</em>
+      </div>
+      <div style="background:rgba(255,255,255,0.04);border:1px solid #565f89;border-radius:5px;padding:5px 10px;margin:0 0 9px;font-family:var(--font-mono);" class="${hl('markdown-code-block')}">
+        <span style="color:${m('code')}" class="${hl('markdown-code')}">const theme = "teminal";</span>
+      </div>
+      <div style="border-top:1px solid ${m('horizontal-rule')};margin:8px 0;" class="${hl('markdown-horizontal-rule')}"></div>
+      <ul style="margin:0;padding-left:0;list-style:none;">
+        <li style="margin-bottom:4px;font-size:12px;"><span style="color:${m('list-item')};margin-right:6px;" class="${hl('markdown-list-item')}">•</span>Scalable palette</li>
+        <li style="margin-bottom:4px;font-size:12px;"><span style="color:${m('list-enumeration')};margin-right:6px;" class="${hl('markdown-list-enumeration')}">1.</span>Enumerated item</li>
+        <li style="font-size:12px;"><span style="color:${m('image')};margin-right:6px;" class="${hl('markdown-image')}">⬡</span><span style="color:${m('image-text')}" class="${hl('markdown-image-text')}">image alt text</span></li>
+      </ul>
+    </div>
+  `;
+
+  document.querySelectorAll('.swatch-row').forEach(el => el.classList.remove('active'));
+  if (hovered) {
+    const active = document.getElementById(`swatch-${hovered}`);
+    if (active) active.classList.add('active');
+  }
+}
+
+render();
+</script>

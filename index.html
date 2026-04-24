@@ -7,43 +7,20 @@
 <link rel="stylesheet" href="shared.css">
 <style>
 /* ── COVER ── */
-.cover-section { background: var(--sur); overflow: hidden; }
-.cover-body { position: absolute; inset: 0; display: flex; }
-.c-left {
-  flex: 1; display: flex; flex-direction: column; justify-content: center;
-  padding: 0 56px 0 72px; position: relative; z-index: 1;
-}
-.c-eyebrow { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--acc); letter-spacing: .2em; text-transform: uppercase; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
-.c-eyebrow::before { content: ''; display: inline-block; width: 24px; height: 1.5px; background: var(--acc); }
-.c-title { font-family: 'Syne', sans-serif; font-size: 58px; font-weight: 800; color: var(--tx); line-height: 1.05; margin-bottom: 16px; letter-spacing: -.02em; }
+.cover-section { background: var(--sur); }
+.cover-stripe { position: absolute; left: 0; top: 0; bottom: 0; width: 5px; background: var(--acc); }
+.cover-body { position: absolute; inset: 0; display: flex; padding: 0 72px; }
+.c-left { flex: 1; display: flex; flex-direction: column; justify-content: center; padding-right: 52px; }
+.c-eyebrow { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--acc); letter-spacing: .18em; text-transform: uppercase; margin-bottom: 18px; }
+.c-title { font-family: 'Syne', sans-serif; font-size: 64px; font-weight: 800; color: var(--tx); line-height: 1; margin-bottom: 14px; }
 .c-title span { color: var(--acc); }
-.c-sub { font-size: 13px; color: var(--tx2); line-height: 1.75; margin-bottom: 32px; max-width: 400px; }
-.c-stats { display: flex; gap: 0; border: .5px solid var(--bdr2); border-radius: 10px; overflow: hidden; }
-.cstat { flex: 1; padding: 14px 16px; border-right: .5px solid var(--bdr2); }
-.cstat:last-child { border-right: none; }
-.csl { font-family: 'DM Mono', monospace; font-size: 9px; color: var(--tx3); letter-spacing: .1em; text-transform: uppercase; margin-bottom: 4px; }
-.csv { font-family: 'Syne', sans-serif; font-size: 28px; font-weight: 800; color: var(--acc); line-height: 1; margin-bottom: 2px; }
-.csd { font-size: 10px; color: var(--tx3); }
-.c-products { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 20px; }
-.c-prod-tag { font-family: 'DM Mono', monospace; font-size: 9px; padding: 3px 8px; border-radius: 4px; border: .5px solid var(--bdr2); color: var(--tx3); background: var(--bg2); letter-spacing: .05em; }
-.c-right {
-  width: 46%; background: #08080E; position: relative;
-  display: flex; flex-direction: column; justify-content: center;
-  padding: 48px 44px;
-}
-/* subtle purple radial glow in dark panel */
-.c-right::before {
-  content: ''; position: absolute; inset: 0; z-index: 0;
-  background: radial-gradient(ellipse 70% 60% at 60% 40%, rgba(131,77,240,.18) 0%, transparent 70%);
-  pointer-events: none;
-}
-/* decorative dot grid */
-.c-right::after {
-  content: ''; position: absolute; inset: 0; z-index: 0; opacity: .35;
-  background-image: radial-gradient(circle, rgba(131,77,240,.4) 1px, transparent 1px);
-  background-size: 28px 28px;
-  pointer-events: none;
-}
+.c-sub { font-size: 15px; color: var(--tx2); line-height: 1.7; max-width: 520px; margin-bottom: 28px; }
+.c-stats { display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; }
+.cstat { background: var(--bg2); border-radius: 10px; padding: 14px 16px; border: .5px solid var(--bdr2); }
+.csl { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--tx3); letter-spacing: .1em; text-transform: uppercase; margin-bottom: 3px; }
+.csv { font-family: 'Syne', sans-serif; font-size: 24px; font-weight: 700; color: var(--acc); }
+.csd { font-size: 12px; color: var(--tx2); }
+.c-right { width: 360px; display: flex; align-items: center; }
 
 /* ── JOURNEY ── */
 .journey-section { background: var(--sur); }
@@ -126,107 +103,40 @@
 
 <!-- ══════════════ COVER ══════════════ -->
 <div class="section cover-section" id="cover">
-  <div class="cover-body">
-
-    <!-- LEFT: text -->
+  <div class="cover-stripe"></div>
+  <div class="cover-body" style="padding-top:52px">
     <div class="c-left">
       <div class="c-eyebrow">Design Research · 2026</div>
-      <h1 class="c-title">AI CLI<br><span>设计分析</span><br>报告</h1>
-      <p class="c-sub">系统拆解 Claude Code、Warp、Gemini CLI、Aider、Codex CLI 五款主流产品，覆盖 15 个交互触点，提炼 18 条设计原则。</p>
+      <h1 class="c-title">AI CLI<br><span>设计分析</span><br>与探索报告</h1>
+      <p class="c-sub">系统拆解 Claude Code、Warp、Gemini CLI、Aider 等主流产品的页面框架与 15 个交互触点，提炼 18 条设计原则。</p>
       <div class="c-stats">
-        <div class="cstat"><div class="csl">产品</div><div class="csv">5</div><div class="csd">主流 AI CLI</div></div>
-        <div class="cstat"><div class="csl">触点</div><div class="csv">15</div><div class="csd">细粒度分析</div></div>
-        <div class="cstat"><div class="csl">阶段</div><div class="csv">6</div><div class="csd">用户旅程</div></div>
-        <div class="cstat"><div class="csl">原则</div><div class="csv">18</div><div class="csd">设计建议</div></div>
-      </div>
-      <div class="c-products">
-        <span class="c-prod-tag">Claude Code</span>
-        <span class="c-prod-tag">Warp</span>
-        <span class="c-prod-tag">Gemini CLI</span>
-        <span class="c-prod-tag">Aider</span>
-        <span class="c-prod-tag">Codex CLI</span>
+        <div class="cstat"><div class="csl">覆盖产品</div><div class="csv">5</div><div class="csd">主流 AI CLI</div></div>
+        <div class="cstat"><div class="csl">分析触点</div><div class="csv">15</div><div class="csd">细粒度触点</div></div>
+        <div class="cstat"><div class="csl">旅程阶段</div><div class="csv">6</div><div class="csd">用户旅程</div></div>
+        <div class="cstat"><div class="csl">设计建议</div><div class="csv">18</div><div class="csd">设计原则</div></div>
       </div>
     </div>
-
-    <!-- RIGHT: dark panel + terminal -->
     <div class="c-right">
-      <!-- floating accent dots -->
-      <div style="position:absolute;top:32px;right:36px;z-index:2;display:flex;gap:6px">
-        <div style="width:6px;height:6px;border-radius:50%;background:#834DF0;opacity:.7"></div>
-        <div style="width:6px;height:6px;border-radius:50%;background:#834DF0;opacity:.4"></div>
-        <div style="width:6px;height:6px;border-radius:50%;background:#834DF0;opacity:.2"></div>
-      </div>
-      <!-- floating top badge -->
-      <div style="position:absolute;top:28px;left:44px;z-index:2;background:rgba(131,77,240,.18);border:.5px solid rgba(131,77,240,.4);border-radius:6px;padding:4px 10px;font-family:'DM Mono',monospace;font-size:9px;color:#C4B5FD;letter-spacing:.1em">AI CLI DESIGN REPORT · 2026</div>
-
-      <!-- main terminal -->
-      <div style="position:relative;z-index:1;width:100%">
-        <div class="mt" style="font-size:11.5px;line-height:1.85;border:.5px solid rgba(131,77,240,.4);box-shadow:0 0 0 1px rgba(131,77,240,.1),0 20px 60px rgba(0,0,0,.5),0 0 40px rgba(131,77,240,.15)">
-          <div class="mtbar" style="background:#111118;border-bottom:.5px solid #1e1e28">
-            <div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div>
-            <span class="mtt">ai-cli-report — zsh</span>
-          </div>
-          <div class="mb" style="padding:10px 14px">
-            <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;padding-bottom:8px;border-bottom:.5px solid #1a1a24">
-              <span style="background:rgba(131,77,240,.2);border:.5px solid rgba(131,77,240,.35);color:#A78BFA;padding:2px 7px;border-radius:3px;font-size:9px;font-family:'DM Mono',monospace">claude-sonnet-4</span>
-              <span class="tg" style="font-size:9px">● Normal</span>
-              <span style="margin-left:auto;font-family:'DM Mono',monospace;font-size:8px;color:#3a3a4a">main · $0.00</span>
-            </div>
-            <div class="td" style="font-size:9px;margin-bottom:6px"># 报告导航</div>
-            <div style="display:flex;flex-direction:column;gap:2px;margin-bottom:8px">
-              <div style="display:flex;align-items:center;gap:8px;padding:3px 0">
-                <span style="font-family:'DM Mono',monospace;font-size:9px;color:#834DF0;min-width:20px">00</span>
-                <span class="tw" style="font-size:10px">用户旅程 · 页面框架 · 多智能体</span>
-              </div>
-              <div style="display:flex;align-items:center;gap:8px;padding:3px 0">
-                <span style="font-family:'DM Mono',monospace;font-size:9px;color:#834DF0;min-width:20px">01</span>
-                <span class="tw" style="font-size:10px">启动阶段</span>
-                <span style="background:rgba(52,211,153,.12);color:#34D399;border:.5px solid rgba(52,211,153,.25);padding:1px 5px;border-radius:3px;font-size:8px;margin-left:auto">3 触点</span>
-              </div>
-              <div style="display:flex;align-items:center;gap:8px;padding:3px 0">
-                <span style="font-family:'DM Mono',monospace;font-size:9px;color:#834DF0;min-width:20px">02</span>
-                <span class="tw" style="font-size:10px">表达意图阶段</span>
-                <span style="background:rgba(52,211,153,.12);color:#34D399;border:.5px solid rgba(52,211,153,.25);padding:1px 5px;border-radius:3px;font-size:8px;margin-left:auto">5 触点</span>
-              </div>
-              <div style="display:flex;align-items:center;gap:8px;padding:3px 0;background:rgba(131,77,240,.08);border-radius:4px;margin:0 -4px;padding-left:4px;padding-right:4px">
-                <span style="font-family:'DM Mono',monospace;font-size:9px;color:#834DF0;min-width:20px">03</span>
-                <span class="tw" style="font-size:10px">等待执行阶段</span>
-                <span style="background:rgba(251,191,36,.12);color:#FBBF24;border:.5px solid rgba(251,191,36,.25);padding:1px 5px;border-radius:3px;font-size:8px;margin-left:auto">⚡ 5 触点</span>
-              </div>
-              <div style="display:flex;align-items:center;gap:8px;padding:3px 0">
-                <span style="font-family:'DM Mono',monospace;font-size:9px;color:#834DF0;min-width:20px">04</span>
-                <span class="tw" style="font-size:10px">审查确认阶段</span>
-                <span style="background:rgba(52,211,153,.12);color:#34D399;border:.5px solid rgba(52,211,153,.25);padding:1px 5px;border-radius:3px;font-size:8px;margin-left:auto">4 触点</span>
-              </div>
-              <div style="display:flex;align-items:center;gap:8px;padding:3px 0">
-                <span style="font-family:'DM Mono',monospace;font-size:9px;color:#834DF0;min-width:20px">05</span>
-                <span class="tw" style="font-size:10px">迭代修正</span>
-                <span style="background:rgba(52,211,153,.12);color:#34D399;border:.5px solid rgba(52,211,153,.25);padding:1px 5px;border-radius:3px;font-size:8px;margin-left:auto">2 触点</span>
-              </div>
-              <div style="display:flex;align-items:center;gap:8px;padding:3px 0">
-                <span style="font-family:'DM Mono',monospace;font-size:9px;color:#834DF0;min-width:20px">06</span>
-                <span class="tw" style="font-size:10px">收尾 · 设计总结</span>
-                <span style="background:rgba(52,211,153,.12);color:#34D399;border:.5px solid rgba(52,211,153,.25);padding:1px 5px;border-radius:3px;font-size:8px;margin-left:auto">2 触点</span>
-              </div>
-            </div>
-            <div style="border-top:.5px solid #1a1a24;padding-top:8px">
-              <div><span style="color:#834DF0">❯</span> <span class="tw">向下滚动开始浏览</span><div class="cur" style="display:inline-block"></div></div>
-            </div>
-          </div>
-        </div>
-
-        <!-- bottom floating strip -->
-        <div style="margin-top:14px;display:flex;align-items:center;gap:10px">
-          <div style="flex:1;height:.5px;background:linear-gradient(90deg,rgba(131,77,240,.5),transparent)"></div>
-          <span style="font-family:'DM Mono',monospace;font-size:8px;color:#3a3a52;letter-spacing:.1em">SCROLL TO NAVIGATE</span>
-          <div style="flex:1;height:.5px;background:linear-gradient(90deg,transparent,rgba(131,77,240,.5))"></div>
+      <div class="mt" style="width:100%;font-size:11.5px;line-height:1.8">
+        <div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">ai-cli-report · navigation</span></div>
+        <div class="mb">
+          <div class="td"># 使用说明</div><div style="height:4px"></div>
+          <div class="tw">· <span style="color:#834DF0">顶部第一行 Tab</span> — 切换阶段</div>
+          <div class="tw">· <span style="color:#60A5FA">顶部第二行 Tab</span> — 跳转触点</div>
+          <div class="tw">· 滚动 / 方向键 — 楼层切换</div>
+          <div style="height:6px"></div>
+          <div class="td"># 报告结构</div><div style="height:4px"></div>
+          <div><span class="tp">00</span> <span class="tw">用户旅程 · 页面框架</span></div>
+          <div><span class="tp">01</span> <span class="tw">启动阶段触点</span></div>
+          <div><span class="tp">02</span> <span class="tw">表达意图阶段触点 (7个)</span></div>
+          <div><span class="tp">03</span> <span class="tw">等待执行阶段触点 (5个)</span></div>
+          <div><span class="tp">04</span> <span class="tw">审查确认阶段触点 (4个)</span></div>
+          <div><span class="tp">05</span> <span class="tw">多智能体 · 设计原则</span></div>
+          <div style="height:6px"></div>
+          <div><span style="color:#834DF0">❯</span> <span class="tw">向下滚动开始</span><div class="cur" style="display:inline-block"></div></div>
         </div>
       </div>
-
-      <!-- bottom-right label -->
-      <div style="position:absolute;bottom:28px;right:44px;z-index:2;font-family:'DM Mono',monospace;font-size:8px;color:#2a2a38;letter-spacing:.12em">ANTHROPIC · WARP · GOOGLE · OPENAI</div>
     </div>
-
   </div>
 </div>
 
