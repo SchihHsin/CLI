@@ -146,13 +146,13 @@ function render() {
       <div style="margin-bottom:6px;">
         <span class="${hl('palette-primary')}" style="color:${p('primary')}">user@teminal</span>
         <span class="${hl('palette-accent')}" style="color:${p('accent')}"> [~/projects/theme]</span>
-        <span style="color:${p('ink')}"> $ npm run build</span>
+        <span class="${hl('palette-ink')}" style="color:${p('ink')}"> $ npm run build</span>
       </div>
       <div style="line-height:1.9;">
-        <div><span class="${hl('palette-info')}" style="color:${p('info')}">[info]</span> <span style="color:${p('ink')}">Starting theme compilation...</span></div>
-        <div><span class="${hl('palette-success')}" style="color:${p('success')}">[success]</span> <span style="color:${p('ink')}">All assets optimized in 2.4s</span></div>
-        <div><span class="${hl('palette-warning')}" style="color:${p('warning')}">[warn]</span> <span style="color:${p('ink')}">Large bundle size detected.</span></div>
-        <div><span class="${hl('palette-error')}" style="color:${p('error')}">[error]</span> <span style="color:${p('ink')}">Failed to push to remote.</span></div>
+        <div><span class="${hl('palette-info')}" style="color:${p('info')}">[info]</span> <span class="${hl('palette-ink')}" style="color:${p('ink')}">Starting theme compilation...</span></div>
+        <div><span class="${hl('palette-success')}" style="color:${p('success')}">[success]</span> <span class="${hl('palette-ink')}" style="color:${p('ink')}">All assets optimized in 2.4s</span></div>
+        <div><span class="${hl('palette-warning')}" style="color:${p('warning')}">[warn]</span> <span class="${hl('palette-ink')}" style="color:${p('ink')}">Large bundle size detected.</span></div>
+        <div><span class="${hl('palette-error')}" style="color:${p('error')}">[error]</span> <span class="${hl('palette-ink')}" style="color:${p('ink')}">Failed to push to remote.</span></div>
       </div>
     </div>
 
@@ -174,7 +174,7 @@ function render() {
     </div>
 
     <div style="font-size:10px;opacity:0.5;text-transform:uppercase;letter-spacing:0.15em;margin-bottom:8px;font-weight:700;">▸ Markdown Preview</div>
-    <div class="preview-block" style="background:${p('neutral')};border:1px solid #565f89;">
+    <div class="preview-block${hl('palette-neutral')}" style="background:${p('neutral')};border:1px solid #565f89;">
       <h2 style="font-size:15px;font-weight:700;margin:0 0 9px;color:${m('heading')}" class="${hl('markdown-heading')}">Theme Architecture</h2>
       <p style="font-size:12px;line-height:1.7;margin:0 0 9px;color:${m('text')}" class="${hl('markdown-text')}">
         This is a <strong style="color:${m('strong')}" class="${hl('markdown-strong')}">strongly typed</strong> config.
