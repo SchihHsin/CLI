@@ -32,8 +32,8 @@ window.NAV_CONFIG = {
   stages: [
     { id: 'context', label: '背景洞察', num: 'BG',
       tps: [
-        { id: 'tp-cli-trend',     icon: I.progress, label: 'CLI 崛起趋势',  file: 'tp-context.html#tp-cli-trend' },
-        { id: 'tp-opencode-gaps', icon: I.summary,  label: 'OpenCode 不足', file: 'tp-context.html#tp-opencode-gaps' },
+        { id: 'tp-cli-trend',     icon: I.progress, label: 'CLI 崛起趋势',  file: 'index.html#tp-cli-trend' },
+        { id: 'tp-opencode-gaps', icon: I.summary,  label: 'OpenCode 不足', file: 'index.html#tp-opencode-gaps' },
       ]
     },
     { id: 'overview', label: '概览', num: '00',
