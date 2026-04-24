@@ -156,6 +156,13 @@ function render() {
       </div>
     </div>
 
+    <div style="font-size:10px;opacity:0.5;text-transform:uppercase;letter-spacing:0.15em;margin-bottom:8px;font-weight:700;">▸ Git Diff</div>
+    <div style="border-radius:8px;overflow:hidden;border:1px solid #565f89;margin-bottom:14px;font-family:var(--font-mono);">
+      <div style="padding:5px 10px;font-size:10px;background:rgba(0,0,0,0.2);opacity:0.6;display:flex;justify-content:space-between;"><span>@@ -12,4 +12,6 @@</span><span>main.ts</span></div>
+      <div class="${hl('palette-diffDelete')}" style="background:${p('diffDelete')};padding:5px 12px;display:flex;"><span style="opacity:0.3;width:16px;">-</span><span style="color:${p('error')}">const oldWay = "manual";</span></div>
+      <div class="${hl('palette-diffAdd')}" style="background:${p('diffAdd')};padding:5px 12px;display:flex;"><span style="opacity:0.3;width:16px;">+</span><span style="color:${p('success')}">const newWay = "automatic";</span></div>
+    </div>
+
     <div style="font-size:10px;opacity:0.5;text-transform:uppercase;letter-spacing:0.15em;margin-bottom:8px;font-weight:700;">▸ Syntax Highlighting</div>
     <div class="preview-block" style="background:#16161e;font-family:var(--font-mono);">
       <div style="display:flex;gap:14px;"><span style="opacity:0.2;width:12px;text-align:right;">1</span><span style="color:${s('comment')}" class="${hl('syntax-comment')}">// Keyword &amp; Variable</span></div>
@@ -164,13 +171,6 @@ function render() {
       <div style="display:flex;gap:14px;"><span style="opacity:0.2;width:12px;text-align:right;">4</span><span style="padding-left:14px;"><span style="color:${s('property')}">name</span><span style="color:${s('punctuation')}">:</span> <span style="color:${s('string')}" class="${hl('syntax-string')}">"Teminal Core"</span> <span style="color:${s('keyword')}">as</span> <span style="color:${s('type')}" class="${hl('syntax-type')}">ThemeType</span><span style="color:${s('punctuation')};">,</span></span></div>
       <div style="display:flex;gap:14px;"><span style="opacity:0.2;width:12px;text-align:right;">5</span><span style="padding-left:14px;"><span style="color:${s('object')}" class="${hl('syntax-object')}">Math</span><span style="color:${s('punctuation')}">.</span><span style="color:${s('property')}">floor</span><span style="color:${s('punctuation')};">(</span><span style="color:${s('constant')}" class="${hl('syntax-constant')}">MAX_RETRIES</span><span style="color:${s('punctuation')};">)</span></span></div>
       <div style="display:flex;gap:14px;"><span style="opacity:0.2;width:12px;text-align:right;">6</span><span style="color:${s('punctuation')};">};</span></div>
-    </div>
-
-    <div style="font-size:10px;opacity:0.5;text-transform:uppercase;letter-spacing:0.15em;margin-bottom:8px;font-weight:700;">▸ Git Diff</div>
-    <div style="border-radius:8px;overflow:hidden;border:1px solid #565f89;margin-bottom:14px;font-family:var(--font-mono);">
-      <div style="padding:5px 10px;font-size:10px;background:rgba(0,0,0,0.2);opacity:0.6;display:flex;justify-content:space-between;"><span>@@ -12,4 +12,6 @@</span><span>main.ts</span></div>
-      <div class="${hl('palette-diffDelete')}" style="background:${p('diffDelete')};padding:5px 12px;display:flex;"><span style="opacity:0.3;width:16px;">-</span><span style="color:${p('error')}">const oldWay = "manual";</span></div>
-      <div class="${hl('palette-diffAdd')}" style="background:${p('diffAdd')};padding:5px 12px;display:flex;"><span style="opacity:0.3;width:16px;">+</span><span style="color:${p('success')}">const newWay = "automatic";</span></div>
     </div>
 
     <div style="font-size:10px;opacity:0.5;text-transform:uppercase;letter-spacing:0.15em;margin-bottom:8px;font-weight:700;">▸ Markdown Preview</div>
