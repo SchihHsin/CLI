@@ -145,8 +145,16 @@ function scrollToHash(container, hash) {
 function initSnapScroll(stageId) {
   const container = document.querySelector('.snap-container');
   if (!container) return;
+  // Scroll to top on initial load
+  container.scrollTop = 0;
   const hash = window.location.hash;
-  if (hash) requestAnimationFrame(() => scrollToHash(container, hash));
+  // Only scroll to hash if explicitly provided after page load
+  if (hash) {
+    // Use a small delay to ensure the page is fully loaded
+    setTimeout(() => {
+      scrollToHash(container, hash);
+    }, 100);
+  }
   // Handle same-page hash changes (e.g. clicking a stage tab while already on this page)
   window.addEventListener('hashchange', () => scrollToHash(container, window.location.hash));
 }
