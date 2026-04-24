@@ -142,7 +142,7 @@ function render() {
 
   document.getElementById('main-preview').innerHTML = `
     <div style="font-size:10px;opacity:0.5;text-transform:uppercase;letter-spacing:0.15em;margin-bottom:8px;font-weight:700;">▸ Shell Session</div>
-    <div class="preview-block" style="background:#16161e;font-family:var(--font-mono);">
+    <div class="preview-block${hl('palette-neutral')}" style="background:${p('neutral')};font-family:var(--font-mono);">
       <div style="margin-bottom:6px;">
         <span class="${hl('palette-primary')}" style="color:${p('primary')}">user@teminal</span>
         <span class="${hl('palette-accent')}" style="color:${p('accent')}"> [~/projects/theme]</span>
@@ -174,7 +174,7 @@ function render() {
     </div>
 
     <div style="font-size:10px;opacity:0.5;text-transform:uppercase;letter-spacing:0.15em;margin-bottom:8px;font-weight:700;">▸ Markdown Preview</div>
-    <div class="preview-block${hl('palette-neutral')}" style="background:${p('neutral')};border:1px solid #565f89;">
+    <div class="preview-block" style="background:#1a1b26;border:1px solid #565f89;">
       <h2 style="font-size:15px;font-weight:700;margin:0 0 9px;color:${m('heading')}" class="${hl('markdown-heading')}">Theme Architecture</h2>
       <p style="font-size:12px;line-height:1.7;margin:0 0 9px;color:${m('text')}" class="${hl('markdown-text')}">
         This is a <strong style="color:${m('strong')}" class="${hl('markdown-strong')}">strongly typed</strong> config.
