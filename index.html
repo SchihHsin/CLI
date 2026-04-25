@@ -200,19 +200,19 @@
       <div class="trend-col">
         <div class="trend-stats">
           <div class="tstat hl">
-            <div class="ts-lbl">市场验证</div>
-            <div class="ts-val">三大厂跟进</div>
-            <div class="ts-desc">Anthropic Claude Code · Google Gemini CLI · GitHub Copilot CLI 相继于 2025 年发布，主流 AI 厂商用行动证明 CLI 是核心接口</div>
+            <div class="ts-lbl">采用率 · JetBrains 2026.04</div>
+            <div class="ts-val">18% · 6×</div>
+            <div class="ts-desc">Claude Code 工作使用率 18%，较 2025 年 4 月增长 6 倍——CLI 工具渗透速度远超历史上任何 IDE 插件</div>
           </div>
           <div class="tstat">
-            <div class="ts-lbl">MCP 实际痛点</div>
-            <div class="ts-val">4 步门槛</div>
-            <div class="ts-desc">每接入一个 MCP 工具须：安装服务器包 → 编写 JSON 配置 → 启动独立进程 → 持续维护，顶尖开发者主动放弃</div>
+            <div class="ts-lbl">效率对比 · The New Stack 2025</div>
+            <div class="ts-val">10–32×</div>
+            <div class="ts-desc">75 项对比测试：CLI 方案全胜 MCP，Token 成本低 10–32 倍，可靠性 ≈100% vs MCP 的 72%</div>
           </div>
           <div class="tstat">
-            <div class="ts-lbl">社区风向</div>
-            <div class="ts-val">HN · X 共识</div>
-            <div class="ts-desc">Claude Code 发布后，Hacker News 首页连续出现迁移讨论，大量工程师分享从 Cursor / MCP 切换至 CLI 的原因</div>
+            <div class="ts-lbl">行业转向 · Ask 2026 大会</div>
+            <div class="ts-val">Perplexity</div>
+            <div class="ts-desc">Denis Yarats 宣布：Perplexity 放弃 MCP，内部与企业系统全面改用 REST API + CLI（来源：Repello AI, 2026.03）</div>
           </div>
         </div>
         <div class="cmp-tbl-wrap">
@@ -238,41 +238,49 @@
       <div class="trend-col">
         <div class="iq">
           <div style="font-family:'DM Mono',monospace;font-size:9px;color:var(--acc);letter-spacing:.14em;text-transform:uppercase;margin-bottom:10px;">已记录的行业信号</div>
-          <div style="display:flex;flex-direction:column;gap:7px;">
+          <div style="display:flex;flex-direction:column;gap:8px;">
             <div style="display:flex;gap:10px;align-items:baseline;">
               <span style="font-family:'DM Mono',monospace;font-size:9px;color:var(--tx3);flex-shrink:0;width:52px;">2024.11</span>
-              <span style="font-size:11.5px;color:var(--tx2);line-height:1.5;">Anthropic 发布 MCP 协议 → 社区大量反馈服务器配置门槛过高，维护成本不可接受</span>
+              <span style="font-size:11.5px;color:var(--tx2);line-height:1.5;">Anthropic 发布 MCP 协议 → 社区大量反馈：服务器配置门槛过高，维护成本难以接受</span>
             </div>
             <div style="display:flex;gap:10px;align-items:baseline;">
               <span style="font-family:'DM Mono',monospace;font-size:9px;color:var(--tx3);flex-shrink:0;width:52px;">2025.02</span>
-              <span style="font-size:11.5px;color:var(--tx2);line-height:1.5;">Claude Code 公测发布 → Hacker News 首页连续出现，大量知名工程师公开分享迁移至 CLI 的体验</span>
+              <span style="font-size:11.5px;color:var(--tx2);line-height:1.5;">Claude Code 公测发布 → HN 首页连续出现，知名工程师公开分享从 Cursor / MCP 迁移至 CLI 的体验</span>
             </div>
             <div style="display:flex;gap:10px;align-items:baseline;">
               <span style="font-family:'DM Mono',monospace;font-size:9px;color:var(--tx3);flex-shrink:0;width:52px;">2025.06</span>
-              <span style="font-size:11.5px;color:var(--tx2);line-height:1.5;">Google 发布 Gemini CLI → 主流 AI 厂商全面押注 CLI 接口，行业共识形成</span>
+              <span style="font-size:11.5px;color:var(--tx2);line-height:1.5;">Google Gemini CLI 发布 → 主流 AI 厂商全面押注 CLI，The New Stack 将 2025 年定名为「Agentic CLI Era」</span>
             </div>
-            <div style="margin-top:4px;padding-top:8px;border-top:.5px solid var(--acc-b);font-family:'Syne',sans-serif;font-size:12px;font-weight:600;color:var(--tx);line-height:1.6;">「The best interface for AI coding is the one that's already in your terminal.」</div>
-            <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--acc);">— HN 社区高赞评论 · 2025</div>
+            <div style="display:flex;gap:10px;align-items:baseline;">
+              <span style="font-family:'DM Mono',monospace;font-size:9px;color:var(--r);flex-shrink:0;width:52px;font-weight:700;">2026.03</span>
+              <span style="font-size:11.5px;color:var(--tx);line-height:1.5;font-weight:500;">Perplexity Denis Yarats 在 Ask 2026 大会宣布：放弃 MCP，内部系统全面改用 REST API + CLI <span style="font-size:10px;color:var(--tx3);">— Repello AI</span></span>
+            </div>
           </div>
         </div>
         <div class="why-list">
           <div class="why-card">
             <div class="wc-num">01 · 原生集成</div>
-            <div class="wc-title">无需切换上下文</div>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:5px;">
+              <div class="wc-title" style="margin-bottom:0;">无需切换上下文</div>
+              <div class="wc-tags" style="margin-top:0;"><span class="ctag p">零上下文切换</span><span class="ctag p">终端原生</span></div>
+            </div>
             <div class="wc-body">CLI 直接在开发者已有的终端中运行。无需浏览器、无需 GUI 窗口——AI 能力就在代码所在的地方，思维链路不中断。</div>
-            <div class="wc-tags"><span class="ctag p">零上下文切换</span><span class="ctag p">终端原生</span></div>
           </div>
           <div class="why-card">
             <div class="wc-num">02 · 可编排性</div>
-            <div class="wc-title">与工程工作流无缝融合</div>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:5px;">
+              <div class="wc-title" style="margin-bottom:0;">与工程工作流无缝融合</div>
+              <div class="wc-tags" style="margin-top:0;"><span class="ctag g">Shell 原生</span><span class="ctag b">CI/CD 集成</span></div>
+            </div>
             <div class="wc-body">天然支持管道、重定向和脚本化，可嵌入 Makefile、GitHub Actions、pre-commit hooks，真正成为工程流程的一部分。</div>
-            <div class="wc-tags"><span class="ctag g">Shell 原生</span><span class="ctag b">CI/CD 集成</span></div>
           </div>
           <div class="why-card">
             <div class="wc-num">03 · 效率优先</div>
-            <div class="wc-title">键盘驱动，毫秒启动</div>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:5px;">
+              <div class="wc-title" style="margin-bottom:0;">键盘驱动，毫秒启动</div>
+              <div class="wc-tags" style="margin-top:0;"><span class="ctag g">低摩擦</span><span class="ctag p">极速响应</span></div>
+            </div>
             <div class="wc-body">没有 GUI 渲染开销，没有 Electron 启动延迟。追求极致效率的开发者需要的是最短路径——从想法到执行，没有多余摩擦。</div>
-            <div class="wc-tags"><span class="ctag g">低摩擦</span><span class="ctag p">极速响应</span></div>
           </div>
         </div>
       </div>
