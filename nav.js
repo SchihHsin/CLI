@@ -88,8 +88,35 @@ window.NAV_CONFIG = {
         { id: 'design-summary', icon: I.target,  label: '设计总结',   file: 'tp-wrapup.html#design-summary' },
       ]
     },
-  ]
+  ],
+
+  // Linear file order for cross-file scroll/keyboard navigation
+  fileSequence: [
+    'index.html',
+    'tp-startup.html',
+    'tp-intent.html',
+    'tp-execute.html',
+    'tp-review.html',
+    'tp-wrapup.html',
+  ],
 };
+
+/* ── Cross-file navigation helpers ── */
+function _currentFile() {
+  const p = window.location.pathname.split('/').pop();
+  return (p && p.endsWith('.html')) ? p : 'index.html';
+}
+
+function _adjacentFile(dir) {
+  const seq = NAV_CONFIG.fileSequence;
+  const i = seq.indexOf(_currentFile());
+  if (i < 0) return null;
+  return dir === 'next' ? (seq[i + 1] || null) : (seq[i - 1] || null);
+}
+
+function _crossNav(file, toLast) {
+  window.location.href = file + (toLast ? '#_last' : '');
+}
 
 function buildNav(currentFile, activeStageId, activeTpId) {
   const cfg = window.NAV_CONFIG;
@@ -145,35 +172,69 @@ function scrollToHash(container, hash) {
 function initSnapScroll(stageId) {
   const container = document.querySelector('.snap-container');
   if (!container) return;
-  // Scroll to top on initial load
-  container.scrollTop = 0;
   const hash = window.location.hash;
-  // Only scroll to hash if explicitly provided after page load
-  if (hash) {
-    // Use a small delay to ensure the page is fully loaded
-    setTimeout(() => {
-      scrollToHash(container, hash);
-    }, 100);
+  if (hash === '#_last') {
+    // Navigate to last section when coming from the next file
+    requestAnimationFrame(() => {
+      const sections = [...container.querySelectorAll('.section[id]')];
+      scrollToSection(container, sections.length - 1, true);
+    });
+  } else if (hash) {
+    setTimeout(() => scrollToHash(container, hash), 100);
   }
-  // Handle same-page hash changes (e.g. clicking a stage tab while already on this page)
-  window.addEventListener('hashchange', () => scrollToHash(container, window.location.hash));
+  window.addEventListener('hashchange', () => {
+    const h = window.location.hash;
+    if (h === '#_last') {
+      const sections = [...container.querySelectorAll('.section[id]')];
+      scrollToSection(container, sections.length - 1, true);
+    } else {
+      scrollToHash(container, h);
+    }
+  });
 }
 
 function initKeyNav() {
   const container = document.querySelector('.snap-container');
   if (!container) return;
   let busy = false;
+
   document.addEventListener('keydown', e => {
     if (busy) return;
-    if (e.key !== 'ArrowDown' && e.key !== 'ArrowUp' && e.key !== 'PageDown' && e.key !== 'PageUp') return;
+    if (!['ArrowDown','ArrowUp','PageDown','PageUp'].includes(e.key)) return;
     e.preventDefault();
     const sections = [...container.querySelectorAll('.section[id]')];
     const cur = Math.round(container.scrollTop / container.clientHeight);
-    const next = (e.key === 'ArrowDown' || e.key === 'PageDown')
-      ? Math.min(cur + 1, sections.length - 1)
-      : Math.max(cur - 1, 0);
+    const down = e.key === 'ArrowDown' || e.key === 'PageDown';
+
+    // Cross-file: at last section going down → next file
+    if (down && cur >= sections.length - 1) {
+      const f = _adjacentFile('next');
+      if (f) { _crossNav(f, false); return; }
+    }
+    // Cross-file: at first section going up → prev file (last section)
+    if (!down && cur === 0) {
+      const f = _adjacentFile('prev');
+      if (f) { _crossNav(f, true); return; }
+    }
+
+    const next = down ? Math.min(cur + 1, sections.length - 1) : Math.max(cur - 1, 0);
     busy = true;
     scrollToSection(container, next);
     setTimeout(() => { busy = false; }, 600);
   });
+
+  // Wheel-based cross-file navigation (triggers only when already at boundary)
+  let wheelBusy = false;
+  container.addEventListener('wheel', e => {
+    if (wheelBusy) return;
+    const atBottom = container.scrollTop + container.clientHeight >= container.scrollHeight - 8;
+    const atTop    = container.scrollTop <= 8;
+    if (e.deltaY > 20 && atBottom) {
+      const f = _adjacentFile('next');
+      if (f) { wheelBusy = true; _crossNav(f, false); }
+    } else if (e.deltaY < -20 && atTop) {
+      const f = _adjacentFile('prev');
+      if (f) { wheelBusy = true; _crossNav(f, true); }
+    }
+  }, { passive: true });
 }
