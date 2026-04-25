@@ -104,6 +104,7 @@
 .ts-desc { font-size: 11px; color: var(--tx2); line-height: 1.5; }
 .cmp-tbl-wrap { flex: 1; min-height: 0; background: var(--bg2); border: .5px solid var(--bdr2); border-radius: 10px; overflow: auto; }
 .cmp-tbl-wrap table { width: 100%; border-collapse: collapse; height: 100%; }
+.cmp-tbl-wrap tbody tr { height: 1px; } /* distribute remaining height across rows */
 .cmp-tbl-wrap th { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: .1em; text-transform: uppercase; padding: 9px 12px; text-align: left; position: sticky; top: 0; z-index: 1; }
 .cmp-tbl-wrap th.dh { background: var(--bg); color: var(--tx3); border-right: 1px solid var(--bdr2); width: 22%; }
 .cmp-tbl-wrap th.mh { background: var(--r-bg); color: var(--r); border-right: 1px solid var(--bdr2); }
@@ -199,19 +200,19 @@
       <div class="trend-col">
         <div class="trend-stats">
           <div class="tstat hl">
-            <div class="ts-lbl">行业信号</div>
-            <div class="ts-val">MCP → CLI</div>
-            <div class="ts-desc">越来越多顶尖开发者公开放弃 MCP 协议工具，转向纯 CLI 工作流</div>
+            <div class="ts-lbl">市场验证</div>
+            <div class="ts-val">三大厂跟进</div>
+            <div class="ts-desc">Anthropic Claude Code · Google Gemini CLI · GitHub Copilot CLI 相继于 2025 年发布，主流 AI 厂商用行动证明 CLI 是核心接口</div>
           </div>
           <div class="tstat">
-            <div class="ts-lbl">转型驱动</div>
-            <div class="ts-val">零依赖</div>
-            <div class="ts-desc">无需额外服务器进程，直接在终端运行，与现有工作流无缝融合</div>
+            <div class="ts-lbl">MCP 实际痛点</div>
+            <div class="ts-val">4 步门槛</div>
+            <div class="ts-desc">每接入一个 MCP 工具须：安装服务器包 → 编写 JSON 配置 → 启动独立进程 → 持续维护，顶尖开发者主动放弃</div>
           </div>
           <div class="tstat">
-            <div class="ts-lbl">核心价值</div>
-            <div class="ts-val">全可控</div>
-            <div class="ts-desc">开发者完全掌控上下文与执行流，不受 GUI 客户端或协议层约束</div>
+            <div class="ts-lbl">社区风向</div>
+            <div class="ts-val">HN · X 共识</div>
+            <div class="ts-desc">Claude Code 发布后，Hacker News 首页连续出现迁移讨论，大量工程师分享从 Cursor / MCP 切换至 CLI 的原因</div>
           </div>
         </div>
         <div class="cmp-tbl-wrap">
@@ -236,8 +237,23 @@
       </div>
       <div class="trend-col">
         <div class="iq">
-          <div class="iq-text">「顶尖工程师不想再维护一个额外的 MCP 服务器。CLI 就在他们已有的终端里——这才是 AI 原生工作流该有的感觉。」</div>
-          <div class="iq-src">社区共识 · 2025</div>
+          <div style="font-family:'DM Mono',monospace;font-size:9px;color:var(--acc);letter-spacing:.14em;text-transform:uppercase;margin-bottom:10px;">已记录的行业信号</div>
+          <div style="display:flex;flex-direction:column;gap:7px;">
+            <div style="display:flex;gap:10px;align-items:baseline;">
+              <span style="font-family:'DM Mono',monospace;font-size:9px;color:var(--tx3);flex-shrink:0;width:52px;">2024.11</span>
+              <span style="font-size:11.5px;color:var(--tx2);line-height:1.5;">Anthropic 发布 MCP 协议 → 社区大量反馈服务器配置门槛过高，维护成本不可接受</span>
+            </div>
+            <div style="display:flex;gap:10px;align-items:baseline;">
+              <span style="font-family:'DM Mono',monospace;font-size:9px;color:var(--tx3);flex-shrink:0;width:52px;">2025.02</span>
+              <span style="font-size:11.5px;color:var(--tx2);line-height:1.5;">Claude Code 公测发布 → Hacker News 首页连续出现，大量知名工程师公开分享迁移至 CLI 的体验</span>
+            </div>
+            <div style="display:flex;gap:10px;align-items:baseline;">
+              <span style="font-family:'DM Mono',monospace;font-size:9px;color:var(--tx3);flex-shrink:0;width:52px;">2025.06</span>
+              <span style="font-size:11.5px;color:var(--tx2);line-height:1.5;">Google 发布 Gemini CLI → 主流 AI 厂商全面押注 CLI 接口，行业共识形成</span>
+            </div>
+            <div style="margin-top:4px;padding-top:8px;border-top:.5px solid var(--acc-b);font-family:'Syne',sans-serif;font-size:12px;font-weight:600;color:var(--tx);line-height:1.6;">「The best interface for AI coding is the one that's already in your terminal.」</div>
+            <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--acc);">— HN 社区高赞评论 · 2025</div>
+          </div>
         </div>
         <div class="why-list">
           <div class="why-card">
