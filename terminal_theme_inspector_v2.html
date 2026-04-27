@@ -6,39 +6,84 @@
 <title>Terminal Theme Inspector</title>
 <style>
   *, *::before, *::after { box-sizing: border-box; }
-  html, body { margin: 0; padding: 0; height: 100%; background: #0f0f14; }
-  .wrap { display: flex; height: 100vh; font-family: monospace; font-size: 14px; background: #0f0f14; color: #a9b1d6; overflow: hidden; }
-  .sidebar { width: 300px; border-right: 1px solid #565f89; background: #1a1b26; overflow-y: auto; padding: 12px; flex-shrink: 0; }
-  .sidebar::-webkit-scrollbar { width: 4px; }
-  .sidebar::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
-  .main { flex: 1; overflow-y: auto; padding: 24px; background: #1a1b26; }
-  .main::-webkit-scrollbar { width: 4px; }
-  .main::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
-  .section-label { font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; opacity: 0.45; font-weight: 700; margin: 16px 0 6px; display: flex; align-items: center; gap: 5px; }
-  .swatch-row { display: flex; align-items: center; gap: 8px; padding: 7px 8px; border-radius: 6px; cursor: crosshair; border: 1px solid transparent; transition: background 0.1s; }
-  .swatch-row:hover, .swatch-row.active { background: rgba(255,255,255,0.07); border-color: rgba(255,255,255,0.12); }
-  .swatch-dot { width: 30px; height: 30px; border-radius: 4px; flex-shrink: 0; }
-  .swatch-dot-sm { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; margin: 0 9px; }
-  .swatch-info { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
-  .swatch-key { font-size: 13px; font-weight: 700; color: #c0caf5; line-height: 1.3; }
-  .swatch-desc { font-size: 11px; color: #565f89; line-height: 1.4; letter-spacing: 0; white-space: normal; }
-  .preview-block { border-radius: 10px; padding: 16px; margin-bottom: 16px; font-size: 13px; line-height: 1.7; }
-  .topbar { height: 50px; border-bottom: 1px solid #565f89; display: flex; align-items: center; padding: 0 16px; gap: 10px; flex-shrink: 0; background: #1a1b26; }
-  .topbar-icon { padding: 6px; border-radius: 6px; background: #7aa2f7; color: #1a1b26; display: flex; }
-  .highlight { outline: 2px solid rgba(255,255,255,0.65); outline-offset: 1px; border-radius: 3px; }
-</style>
+  html, body { margin: 0; padding: 0; height: 100%; }
+  .wrap { display: flex; flex-direction: column; height: 100vh; font-family: monospace; font-size: 14px; overflow: hidden; }
 
+  .topbar { height: 50px; border-bottom: 1px solid #1e1e2e; display: flex; align-items: center; padding: 0 16px; gap: 10px; flex-shrink: 0; background: #0d0d15; }
+  .topbar-icon { padding: 6px; border-radius: 6px; display: flex; transition: background 0.25s; }
+  .badge { font-size: 11px; border: 1px solid; padding: 3px 10px; border-radius: 20px; letter-spacing: 0.08em; transition: color 0.25s, border-color 0.25s; }
+
+  .theme-bar { height: 44px; border-bottom: 1px solid #1e1e2e; display: flex; align-items: center; padding: 0 12px; gap: 4px; flex-shrink: 0; background: #0a0a0f; overflow-x: auto; }
+  .theme-bar::-webkit-scrollbar { height: 0; }
+  .theme-tab { padding: 5px 13px; border-radius: 20px; border: 1px solid transparent; font-family: monospace; font-size: 12px; cursor: pointer; background: transparent; color: #4a5070; transition: all 0.15s; white-space: nowrap; }
+  .theme-tab:hover { background: rgba(255,255,255,0.06); color: #a9b1d6; }
+  .theme-tab.active { font-weight: 700; color: #0d0d15; }
+  .custom-tab { border-color: #3a3a5a; color: #7070a0; }
+  .custom-tab.active { border-color: transparent; }
+
+  .mode-toggle { margin-left: auto; display: flex; gap: 2px; background: rgba(255,255,255,0.04); border-radius: 20px; padding: 3px; flex-shrink: 0; }
+  .mode-btn { padding: 3px 11px; border-radius: 20px; border: none; font-family: monospace; font-size: 11px; cursor: pointer; background: transparent; color: #4a5070; transition: all 0.15s; }
+  .mode-btn.active { background: #1e1e2e; color: #c0caf5; }
+  .mode-btn:disabled { opacity: 0.3; cursor: default; }
+
+  .content { display: flex; flex: 1; overflow: hidden; }
+  .sidebar { width: 300px; border-right: 1px solid #1e1e2e; background: #0d0d15; overflow-y: auto; padding: 12px; flex-shrink: 0; display: flex; flex-direction: column; }
+  .sidebar::-webkit-scrollbar { width: 4px; }
+  .sidebar::-webkit-scrollbar-thumb { background: #2a2a3a; border-radius: 4px; }
+  .main { flex: 1; overflow-y: auto; padding: 24px; transition: background 0.3s; }
+  .main::-webkit-scrollbar { width: 4px; }
+  .main::-webkit-scrollbar-thumb { background: #2a2a3a; border-radius: 4px; }
+
+  .section-label { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: #3a3a5a; font-weight: 700; margin: 16px 0 5px; }
+  .section-label:first-child { margin-top: 4px; }
+  .swatch-row { display: flex; align-items: center; gap: 8px; padding: 6px 8px; border-radius: 6px; cursor: crosshair; border: 1px solid transparent; transition: background 0.1s; }
+  .swatch-row:hover, .swatch-row.active { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.1); }
+  .swatch-dot { width: 28px; height: 28px; border-radius: 4px; flex-shrink: 0; border: 1px solid rgba(255,255,255,0.08); }
+  .swatch-dot-sm { width: 11px; height: 11px; border-radius: 50%; flex-shrink: 0; margin: 0 8px 0 9px; }
+  .swatch-info { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
+  .swatch-key { font-size: 12px; font-weight: 700; color: #c0caf5; line-height: 1.4; }
+  .swatch-desc { font-size: 10px; color: #3a3a5a; line-height: 1.4; }
+  .swatch-hex { font-size: 10px; color: #4a5070; }
+
+  #custom-panel { display: none; flex-direction: column; flex: 1; gap: 8px; }
+  .custom-textarea { flex: 1; min-height: 280px; background: #07070d; border: 1px solid #1e1e2e; border-radius: 8px; padding: 12px; font-family: monospace; font-size: 11px; color: #a9b1d6; resize: none; outline: none; line-height: 1.7; width: 100%; }
+  .custom-textarea:focus { border-color: #3a3a5a; }
+  .custom-textarea::placeholder { color: #252535; }
+  .btn-apply { padding: 8px 0; border-radius: 6px; border: none; font-family: monospace; font-size: 12px; font-weight: 700; cursor: pointer; flex: 1; }
+  .btn-export { padding: 8px 0; border-radius: 6px; background: transparent; border: 1px solid; font-family: monospace; font-size: 12px; font-weight: 700; cursor: pointer; flex: 1; }
+  .btn-export:disabled { opacity: 0.25; cursor: default; }
+  .err { font-size: 11px; padding: 6px 10px; border-radius: 5px; display: none; color: #f7768e; background: rgba(247,118,142,0.08); }
+  .err.on { display: block; }
+  .custom-hint { font-size: 10px; color: #252535; line-height: 1.7; }
+  .custom-hint code { background: #1a1a2a; padding: 1px 5px; border-radius: 3px; color: #4a5070; }
+
+  .plabel { font-size: 10px; color: #a9b1d6; opacity: 0.35; text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 8px; font-weight: 700; }
+  .pblock { padding: 16px; margin-bottom: 20px; font-size: 13px; line-height: 1.7; }
+  .highlight { outline: 2px solid rgba(255,255,255,0.65); outline-offset: 1px; border-radius: 3px; }
+  .empty-msg { display: flex; align-items: center; justify-content: center; height: 100%; flex-direction: column; gap: 10px; color: #3a3a5a; }
+</style>
+</head>
+<body>
 <div class="wrap">
-  <div style="display:flex;flex-direction:column;flex:1;overflow:hidden;">
-    <div class="topbar">
-      <div class="topbar-icon">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
-      </div>
-      <span style="font-weight:900;letter-spacing:-0.04em;font-size:15px;">TEMINAL <span style="color:#7aa2f7">THEME</span></span>
-      <div style="margin-left:auto;font-size:11px;border:1px solid #bb9af7;color:#bb9af7;padding:3px 10px;border-radius:20px;letter-spacing:0.08em;">HOVER TO INSPECT</div>
+
+  <div class="topbar">
+    <div class="topbar-icon" id="ti">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
     </div>
-    <div style="display:flex;flex:1;overflow:hidden;">
-      <div class="sidebar" id="sidebar">
+    <span style="font-weight:900;letter-spacing:-0.04em;font-size:15px;">TERMINAL <span id="tw">THEME</span></span>
+    <div class="badge" id="hb" style="margin-left:auto;">HOVER TO INSPECT</div>
+  </div>
+
+  <div class="theme-bar" id="theme-bar">
+    <div class="mode-toggle">
+      <button class="mode-btn active" id="btn-dark"  onclick="setMode('dark')">◑ Dark</button>
+      <button class="mode-btn"        id="btn-light" onclick="setMode('light')">◐ Light</button>
+    </div>
+  </div>
+
+  <div class="content">
+    <div class="sidebar">
+      <div id="swatch-panels">
         <div class="section-label">Palette 调色板</div>
         <div id="palette-list"></div>
         <div class="section-label">Syntax 语法着色</div>
@@ -46,165 +91,487 @@
         <div class="section-label">Markdown 文档渲染</div>
         <div id="markdown-list"></div>
       </div>
-      <div class="main" id="main-preview"></div>
+      <div id="custom-panel">
+        <div class="section-label" style="margin-top:4px;">✏ 粘贴 opencode 主题 JSON</div>
+        <textarea class="custom-textarea" id="cj" placeholder='粘贴 opencode 主题 JSON…
+
+{
+  "defs": { "c1": "#7aa2f7" },
+  "theme": {
+    "primary":    { "dark": "c1" },
+    "background": { "dark": "#1a1b26" }
+  }
+}'></textarea>
+        <div class="err" id="cerr"></div>
+        <div style="display:flex;gap:8px;">
+          <button class="btn-apply"  id="btn-apply"  onclick="applyCustom()">▶ Apply</button>
+          <button class="btn-export" id="btn-export" disabled onclick="exportCustom()">↓ Export</button>
+        </div>
+        <div class="custom-hint" style="margin-top:4px;">
+          Export 下载 .json → 拷贝至 <code>~/.config/opencode/themes/</code>
+        </div>
+      </div>
     </div>
+    <div class="main" id="main"></div>
   </div>
 </div>
 
 <script>
-const palette = {
-  neutral:    { color: '#1a1b26', desc: '界面主背景色' },
-  ink:        { color: '#a9b1d6', desc: '默认正文文字色' },
-  primary:    { color: '#7aa2f7', desc: '品牌主色，用于高亮与交互' },
-  accent:     { color: '#bb9af7', desc: '强调色，用于次级高亮' },
-  success:    { color: '#9ece6a', desc: '成功状态提示色' },
-  warning:    { color: '#e0af68', desc: '警告状态提示色' },
-  error:      { color: '#f7768e', desc: '错误状态提示色' },
-  info:       { color: '#7dcfff', desc: '信息状态提示色' },
-  diffAdd:    { color: '#283b4d', desc: 'Git diff 新增行背景' },
-  diffDelete: { color: '#3f2d3d', desc: 'Git diff 删除行背景' },
-};
-const syntax = {
-  comment:     { color: '#565f89', desc: '注释文字' },
-  keyword:     { color: '#bb9af7', desc: '关键字，如 const / export' },
-  string:      { color: '#9ece6a', desc: '字符串字面量' },
-  primitive:   { color: '#ff9e64', desc: '原始值，如 true / false / null' },
-  variable:    { color: '#c0caf5', desc: '变量名标识符' },
-  property:    { color: '#7aa2f7', desc: '对象属性名' },
-  type:        { color: '#2ac3de', desc: 'TypeScript 类型名' },
-  constant:    { color: '#ff9e64', desc: '常量名，如 MAX_RETRIES' },
-  operator:    { color: '#89ddff', desc: '运算符，如 = / => / +' },
-  punctuation: { color: '#89ddff', desc: '标点符号，如 { } ( ) ;' },
-  object:      { color: '#73daca', desc: '内置对象，如 Math / JSON' },
-};
-const markdown = {
-  heading:            { color: '#9d7cd8', desc: '标题 # ## ###' },
-  text:               { color: '#eeeeee', desc: '普通正文段落' },
-  link:               { color: '#fab283', desc: '链接 URL 颜色' },
-  'link-text':        { color: '#56b6c2', desc: '链接文字 [text](url)' },
-  code:               { color: '#7fd88f', desc: '行内代码 `code`' },
-  'block-quote':      { color: '#e5c07b', desc: '引用块 > quote' },
-  emph:               { color: '#e5c07b', desc: '斜体强调 *emph*' },
-  strong:             { color: '#f5a742', desc: '粗体强调 **strong**' },
-  'horizontal-rule':  { color: '#808080', desc: '分隔线 ---' },
-  'list-item':        { color: '#fab283', desc: '无序列表项 • item' },
-  'list-enumeration': { color: '#56b6c2', desc: '有序列表序号 1. 2.' },
-  image:              { color: '#fab283', desc: '图片链接 ![](url)' },
-  'image-text':       { color: '#56b6c2', desc: '图片替代文字 ![text]()' },
-  'code-block':       { color: '#eeeeee', desc: '代码块文字 ```code```' },
-};
-
-let hovered = null;
-
-function buildSwatch(key, val, idPrefix, shape) {
-  const row = document.createElement('div');
-  row.className = 'swatch-row';
-  row.id = `swatch-${idPrefix}-${key}`;
-
-  if (shape === 'circle') {
-    const dot = document.createElement('div');
-    dot.className = 'swatch-dot-sm';
-    dot.style.background = val.color;
-    row.appendChild(dot);
-  } else {
-    const dot = document.createElement('div');
-    dot.className = 'swatch-dot';
-    dot.style.background = val.color;
-    row.appendChild(dot);
+// ── PRE-RESOLVED THEME COLORS (hex only, no runtime def lookup needed) ──────
+const T = {
+  tokyonight: {
+    dark: {
+      bg:'#1a1b26', bgEl:'#16161e', border:'#565f89',
+      primary:'#7aa2f7', accent:'#bb9af7', success:'#9ece6a', warning:'#e0af68', error:'#f7768e', info:'#7dcfff',
+      text:'#a9b1d6', muted:'#565f89',
+      dAdd:'#283b4d', dDel:'#3f2d3d', dAddFg:'#9ece6a', dDelFg:'#f7768e',
+      sComment:'#565f89', sKeyword:'#bb9af7', sString:'#9ece6a', sNumber:'#ff9e64',
+      sVar:'#c0caf5', sFunc:'#7aa2f7', sType:'#2ac3de', sOp:'#89ddff', sPunct:'#89ddff',
+      mHead:'#9d7cd8', mText:'#eeeeee', mLink:'#fab283', mLinkTxt:'#56b6c2',
+      mCode:'#7fd88f', mQuote:'#e5c07b', mEmph:'#e5c07b', mStrong:'#f5a742',
+      mHr:'#808080', mLi:'#fab283', mLiN:'#56b6c2', mImg:'#fab283', mImgTxt:'#56b6c2', mCodeBlk:'#eeeeee',
+    },
+    light: {
+      bg:'#e1e2f0', bgEl:'#c8caf0', border:'#9fa5d5',
+      primary:'#2e7de9', accent:'#9854f1', success:'#587539', warning:'#b15c00', error:'#c64343', info:'#0f4b6e',
+      text:'#3760bf', muted:'#848cb5',
+      dAdd:'#d8f0d8', dDel:'#f0d8d8', dAddFg:'#587539', dDelFg:'#c64343',
+      sComment:'#848cb5', sKeyword:'#9854f1', sString:'#587539', sNumber:'#b15c00',
+      sVar:'#3760bf', sFunc:'#2e7de9', sType:'#007197', sOp:'#007197', sPunct:'#007197',
+      mHead:'#9854f1', mText:'#3760bf', mLink:'#b15c00', mLinkTxt:'#007197',
+      mCode:'#587539', mQuote:'#b15c00', mEmph:'#b15c00', mStrong:'#8f5e15',
+      mHr:'#9fa5d5', mLi:'#b15c00', mLiN:'#007197', mImg:'#b15c00', mImgTxt:'#007197', mCodeBlk:'#3760bf',
+    }
+  },
+  poimandres: {
+    dark: {
+      bg:'#1b1e28', bgEl:'#303340', border:'#506477',
+      primary:'#5DE4c7', accent:'#00CED1', success:'#00CED1', warning:'#fffac2', error:'#d0679d', info:'#5DE4c7',
+      text:'#a6accd', muted:'#767c9d',
+      dAdd:'#303340', dDel:'#303340', dAddFg:'#00CED1', dDelFg:'#d0679d',
+      sComment:'#767c9d', sKeyword:'#7AC6B6', sString:'#00CED1', sNumber:'#f087bd',
+      sVar:'#00CED1', sFunc:'#5DE4c7', sType:'#00CED1', sOp:'#7AC6B6', sPunct:'#a6accd',
+      mHead:'#5DE4c7', mText:'#a6accd', mLink:'#7AC6B6', mLinkTxt:'#00CED1',
+      mCode:'#00CED1', mQuote:'#767c9d', mEmph:'#f087bd', mStrong:'#fffac2',
+      mHr:'#767c9d', mLi:'#5DE4c7', mLiN:'#00CED1', mImg:'#7AC6B6', mImgTxt:'#00CED1', mCodeBlk:'#a6accd',
+    },
+    light: {
+      bg:'#e4f0fb', bgEl:'#a6accd', border:'#767c9d',
+      primary:'#5DE4c7', accent:'#00CED1', success:'#00CED1', warning:'#fffac2', error:'#d0679d', info:'#5DE4c7',
+      text:'#506477', muted:'#506477',
+      dAdd:'#e4f0fb', dDel:'#e4f0fb', dAddFg:'#00CED1', dDelFg:'#d0679d',
+      sComment:'#767c9d', sKeyword:'#7AC6B6', sString:'#00CED1', sNumber:'#f087bd',
+      sVar:'#00CED1', sFunc:'#5DE4c7', sType:'#00CED1', sOp:'#7AC6B6', sPunct:'#506477',
+      mHead:'#5DE4c7', mText:'#506477', mLink:'#7AC6B6', mLinkTxt:'#00CED1',
+      mCode:'#00CED1', mQuote:'#767c9d', mEmph:'#f087bd', mStrong:'#fffac2',
+      mHr:'#767c9d', mLi:'#5DE4c7', mLiN:'#00CED1', mImg:'#7AC6B6', mImgTxt:'#00CED1', mCodeBlk:'#506477',
+    }
+  },
+  'ayu-dark': {
+    dark: {
+      bg:'#0D1017', bgEl:'#10141C', border:'#1B1F29',
+      primary:'#E6B450', accent:'#E6B450', success:'#70BF56', warning:'#FF8F40', error:'#D95757', info:'#39BAE6',
+      text:'#BFBDB6', muted:'#555E73',
+      dAdd:'#1a2618', dDel:'#2a1a1a', dAddFg:'#70BF56', dDelFg:'#F26D78',
+      sComment:'#626d7a', sKeyword:'#FF8F40', sString:'#AAD94C', sNumber:'#D2A6FF',
+      sVar:'#39BAE6', sFunc:'#FFB454', sType:'#59C2FF', sOp:'#F29668', sPunct:'#BFBDB6',
+      mHead:'#FF8F40', mText:'#BFBDB6', mLink:'#59C2FF', mLinkTxt:'#39BAE6',
+      mCode:'#AAD94C', mQuote:'#626d7a', mEmph:'#F07178', mStrong:'#FFB454',
+      mHr:'#1B1F29', mLi:'#E6B450', mLiN:'#E6B450', mImg:'#D2A6FF', mImgTxt:'#AAD94C', mCodeBlk:'#BFBDB6',
+    }
+  },
+  moonlight: {
+    dark: {
+      bg:'#222436', bgEl:'#2f334d', border:'#131421',
+      primary:'#7cafff', accent:'#3ad7c7', success:'#c3e88d', warning:'#ffc777', error:'#ff5370', info:'#78dbff',
+      text:'#c8d3f5', muted:'#828bb8',
+      dAdd:'#1a2a1a', dDel:'#2a1a1e', dAddFg:'#c3e88d', dDelFg:'#ff757f',
+      sComment:'#7a88cf', sKeyword:'#c4a2ff', sString:'#c3e88d', sNumber:'#ff966c',
+      sVar:'#c8d3f5', sFunc:'#7cafff', sType:'#ffc777', sOp:'#78dbff', sPunct:'#a9b8e8',
+      mHead:'#7cafff', mText:'#c8d3f5', mLink:'#60bdff', mLinkTxt:'#3ad7c7',
+      mCode:'#c3e88d', mQuote:'#7a88cf', mEmph:'#c8d3f5', mStrong:'#c8d3f5',
+      mHr:'#444a73', mLi:'#78dbff', mLiN:'#ff966c', mImg:'#7cafff', mImgTxt:'#3ad7c7', mCodeBlk:'#c8d3f5',
+    }
+  },
+  lavi: {
+    dark: {
+      bg:'#25213B', bgEl:'#3B355F', border:'#4C425C',
+      primary:'#AF8EEB', accent:'#EAB9F9', success:'#7CF89B', warning:'#FF9A6B', error:'#F47189', info:'#80BDFF',
+      text:'#EDE7FE', muted:'#A79BCF',
+      dAdd:'#2E3548', dDel:'#3D2D49', dAddFg:'#8BF9A6', dDelFg:'#F58095',
+      sComment:'#7E7490', sKeyword:'#BDA5EE', sString:'#DBFFB3', sNumber:'#FF9A6B',
+      sVar:'#EBEBFF', sFunc:'#9CF2DE', sType:'#8FA9FF', sOp:'#BDA5EE', sPunct:'#AFAFDF',
+      mHead:'#D5C2FF', mText:'#EEE5FF', mLink:'#9EA8FF', mLinkTxt:'#9EA8FF',
+      mCode:'#A79BCF', mQuote:'#9EA8FF', mEmph:'#9EA8FF', mStrong:'#FFD68F',
+      mHr:'#676798', mLi:'#CECEF8', mLiN:'#CECEF8', mImg:'#9EA8FF', mImgTxt:'#9EA8FF', mCodeBlk:'#A79BCF',
+    },
+    light: {
+      bg:'#FFFFFF', bgEl:'#FFFFFF', border:'#8876A7',
+      primary:'#E69570', accent:'#EAB9F9', success:'#7CF89B', warning:'#FF9A6B', error:'#F47189', info:'#7583FF',
+      text:'#EDE7FE', muted:'#A79BCF',
+      dAdd:'#2E3548', dDel:'#3D2D49', dAddFg:'#8BF9A6', dDelFg:'#F58095',
+      sComment:'#7E7490', sKeyword:'#BDA5EE', sString:'#DBFFB3', sNumber:'#FF9A6B',
+      sVar:'#EBEBFF', sFunc:'#9CF2DE', sType:'#8FA9FF', sOp:'#BDA5EE', sPunct:'#AFAFDF',
+      mHead:'#D5C2FF', mText:'#EEE5FF', mLink:'#9EA8FF', mLinkTxt:'#9EA8FF',
+      mCode:'#A79BCF', mQuote:'#9EA8FF', mEmph:'#9EA8FF', mStrong:'#FFD68F',
+      mHr:'#676798', mLi:'#CECEF8', mLiN:'#CECEF8', mImg:'#9EA8FF', mImgTxt:'#9EA8FF', mCodeBlk:'#A79BCF',
+    }
   }
+};
 
-  const info = document.createElement('div');
-  info.className = 'swatch-info';
-  info.innerHTML = `<span class="swatch-key">${key}</span><span class="swatch-desc">${val.desc}</span>`;
-  row.appendChild(info);
+// ── THEME METADATA ────────────────────────────────────────────────
+const META = [
+  { id:'tokyonight', label:'TokyoNight', light:true  },
+  { id:'poimandres', label:'Poimandres', light:true  },
+  { id:'ayu-dark',   label:'Ayu Dark',   light:false },
+  { id:'moonlight',  label:'Moonlight',  light:false },
+  { id:'lavi',       label:'Lavi',       light:true  },
+  { id:'custom',     label:'✏ Custom',   light:false, custom:true },
+];
 
-  row.addEventListener('mouseenter', () => { hovered = `${idPrefix}-${key}`; render(); });
-  row.addEventListener('mouseleave', () => { hovered = null; render(); });
-  return row;
+// ── STATE ─────────────────────────────────────────────────────────
+let tid    = 'tokyonight';
+let mode   = 'dark';
+let hov    = null;
+let c      = null;   // current flat color object
+let cparsed = null;  // parsed custom JSON
+
+// ── SWATCH LABELS ─────────────────────────────────────────────────
+const PLABELS = {
+  neutral:'界面主背景色', ink:'默认正文文字色', primary:'品牌主色·高亮交互',
+  accent:'强调色·次级高亮', success:'成功状态', warning:'警告状态',
+  error:'错误状态', info:'信息状态', diffAdd:'diff 新增行背景', diffDel:'diff 删除行背景',
+};
+const SLABELS = {
+  comment:'注释', keyword:'关键字 const/export', string:'字符串字面量',
+  number:'数字/原始值', variable:'变量标识符', func:'属性名/函数名',
+  type:'TypeScript 类型', operator:'运算符 = / +', punct:'标点 { } ( ) ;', obj:'内置对象 Math/JSON',
+};
+const MLABELS = {
+  heading:'标题 # ## ###', text:'正文段落', link:'链接 URL', linkTxt:'链接文字 [text]()',
+  code:'行内代码', quote:'引用块 > quote', emph:'斜体 *emph*', strong:'粗体 **bold**',
+  hr:'分隔线 ---', li:'无序列表 •', liN:'有序序号 1.', img:'图片链接', imgTxt:'图片替代文字', codeBlk:'代码块文字',
+};
+
+// ── GET FLAT COLOR OBJECT ─────────────────────────────────────────
+function getColors() {
+  if (tid === 'custom') {
+    if (!cparsed) return null;
+    return resolveCustom(cparsed, mode);
+  }
+  const variants = T[tid];
+  if (!variants) return null;
+  return variants[mode] || variants.dark;
 }
 
-const paletteList = document.getElementById('palette-list');
-const syntaxList = document.getElementById('syntax-list');
-const markdownList = document.getElementById('markdown-list');
+// ── RESOLVE CUSTOM JSON (only used for pasted themes) ─────────────
+function resolveCustom(json, m) {
+  const defs = json.defs || {};
+  const theme = json.theme || {};
+  const out = {};
+  const resolve = v => (defs[v] !== undefined ? defs[v] : v);
 
-Object.entries(palette).forEach(([k,v]) => paletteList.appendChild(buildSwatch(k, v, 'palette', 'square')));
-Object.entries(syntax).forEach(([k,v]) => syntaxList.appendChild(buildSwatch(k, v, 'syntax', 'circle')));
-Object.entries(markdown).forEach(([k,v]) => markdownList.appendChild(buildSwatch(k, v, 'markdown', 'circle')));
+  const get = key => {
+    if (!theme[key]) return null;
+    const raw = theme[key][m] !== undefined ? theme[key][m] : (theme[key].dark || '');
+    return resolve(raw) || null;
+  };
+  const fb = (...keys) => { for (const k of keys) { const v = get(k); if (v) return v; } return '#888888'; };
 
-function hl(id) { return hovered === id ? ' highlight' : ''; }
+  out.bg      = fb('background');
+  out.bgEl    = fb('backgroundElement','backgroundPanel','background');
+  out.border  = fb('border');
+  out.primary = fb('primary');
+  out.accent  = fb('accent','secondary');
+  out.success = fb('success');
+  out.warning = fb('warning');
+  out.error   = fb('error');
+  out.info    = fb('info');
+  out.text    = fb('text');
+  out.muted   = fb('textMuted','text');
+  out.dAdd    = fb('diffAddedBg');
+  out.dDel    = fb('diffRemovedBg');
+  out.dAddFg  = fb('diffAdded','success');
+  out.dDelFg  = fb('diffRemoved','error');
+  out.sComment = fb('syntaxComment');
+  out.sKeyword = fb('syntaxKeyword');
+  out.sString  = fb('syntaxString');
+  out.sNumber  = fb('syntaxNumber');
+  out.sVar     = fb('syntaxVariable');
+  out.sFunc    = fb('syntaxFunction');
+  out.sType    = fb('syntaxType');
+  out.sOp      = fb('syntaxOperator');
+  out.sPunct   = fb('syntaxPunctuation');
+  out.mHead    = fb('markdownHeading');
+  out.mText    = fb('markdownText','text');
+  out.mLink    = fb('markdownLink');
+  out.mLinkTxt = fb('markdownLinkText');
+  out.mCode    = fb('markdownCode');
+  out.mQuote   = fb('markdownBlockQuote');
+  out.mEmph    = fb('markdownEmph');
+  out.mStrong  = fb('markdownStrong');
+  out.mHr      = fb('markdownHorizontalRule','border');
+  out.mLi      = fb('markdownListItem');
+  out.mLiN     = fb('markdownListEnumeration');
+  out.mImg     = fb('markdownImage');
+  out.mImgTxt  = fb('markdownImageText');
+  out.mCodeBlk = fb('markdownCodeBlock','markdownText');
+  return out;
+}
 
-function getColor(obj, key) { return obj[key]?.color || obj[key]; }
+// ── APPLY THEME (single entry point) ─────────────────────────────
+function apply() {
+  c = getColors();
+  const mainEl = document.getElementById('main');
 
-function render() {
-  const p = key => palette[key].color;
-  const s = key => syntax[key].color;
-  const m = key => markdown[key].color;
+  if (!c) {
+    mainEl.style.background = '#0a0a0f';
+    mainEl.innerHTML = '<div class="empty-msg"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#3a3a5a" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg><span>粘贴 JSON 并点击 Apply</span></div>';
+    return;
+  }
 
-  document.getElementById('main-preview').innerHTML = `
-    <div style="font-size:10px;opacity:0.5;text-transform:uppercase;letter-spacing:0.15em;margin-bottom:8px;font-weight:700;">▸ Shell Session</div>
-    <div class="preview-block${hl('palette-neutral')}" style="background:#16161e;font-family:var(--font-mono);">
-      <div style="margin-bottom:6px;">
-        <span class="${hl('palette-primary')}" style="color:${p('primary')}">user@teminal</span>
-        <span class="${hl('palette-accent')}" style="color:${p('accent')}"> [~/projects/theme]</span>
-        <span class="${hl('palette-ink')}" style="color:${p('ink')}"> $ npm run build</span>
-      </div>
-      <div style="line-height:1.9;">
-        <div><span class="${hl('palette-info')}" style="color:${p('info')}">[info]</span> <span class="${hl('palette-ink')}" style="color:${p('ink')}">Starting theme compilation...</span></div>
-        <div><span class="${hl('palette-success')}" style="color:${p('success')}">[success]</span> <span class="${hl('palette-ink')}" style="color:${p('ink')}">All assets optimized in 2.4s</span></div>
-        <div><span class="${hl('palette-warning')}" style="color:${p('warning')}">[warn]</span> <span class="${hl('palette-ink')}" style="color:${p('ink')}">Large bundle size detected.</span></div>
-        <div><span class="${hl('palette-error')}" style="color:${p('error')}">[error]</span> <span class="${hl('palette-ink')}" style="color:${p('ink')}">Failed to push to remote.</span></div>
-      </div>
-    </div>
+  // main background = neutral
+  mainEl.style.background = c.bg;
 
-    <div style="font-size:10px;opacity:0.5;text-transform:uppercase;letter-spacing:0.15em;margin-bottom:8px;font-weight:700;">▸ Git Diff</div>
-    <div style="border-radius:8px;overflow:hidden;margin-bottom:14px;font-family:var(--font-mono);">
-      <div style="padding:5px 10px;font-size:10px;background:rgba(0,0,0,0.2);opacity:0.6;display:flex;justify-content:space-between;"><span>@@ -12,4 +12,6 @@</span><span>main.ts</span></div>
-      <div class="${hl('palette-diffDelete')}" style="background:${p('diffDelete')};padding:5px 12px;display:flex;"><span style="opacity:0.3;width:16px;">-</span><span style="color:${p('error')}">const oldWay = "manual";</span></div>
-      <div class="${hl('palette-diffAdd')}" style="background:${p('diffAdd')};padding:5px 12px;display:flex;"><span style="opacity:0.3;width:16px;">+</span><span style="color:${p('success')}">const newWay = "automatic";</span></div>
-    </div>
+  // chrome accents
+  document.getElementById('ti').style.background = c.primary;
+  document.getElementById('ti').style.color = c.bg;
+  document.getElementById('tw').style.color = c.primary;
+  document.getElementById('hb').style.color = c.accent;
+  document.getElementById('hb').style.borderColor = c.accent;
 
-    <div style="font-size:10px;opacity:0.5;text-transform:uppercase;letter-spacing:0.15em;margin-bottom:8px;font-weight:700;">▸ Syntax Highlighting</div>
-    <div class="preview-block" style="background:#16161e;font-family:var(--font-mono);">
-      <div style="display:flex;gap:14px;"><span style="opacity:0.2;width:12px;text-align:right;">1</span><span style="color:${s('comment')}" class="${hl('syntax-comment')}">// Keyword &amp; Variable</span></div>
-      <div style="display:flex;gap:14px;"><span style="opacity:0.2;width:12px;text-align:right;">2</span><span><span style="color:${s('keyword')}" class="${hl('syntax-keyword')}">export</span> <span style="color:${s('keyword')}">const</span> <span style="color:${s('variable')}" class="${hl('syntax-variable')}">appConfig</span> <span style="color:${s('operator')}" class="${hl('syntax-operator')}">=</span> <span style="color:${s('punctuation')}">{</span></span></div>
-      <div style="display:flex;gap:14px;"><span style="opacity:0.2;width:12px;text-align:right;">3</span><span style="padding-left:14px;"><span style="color:${s('property')}" class="${hl('syntax-property')}">isLive</span><span style="color:${s('punctuation')}">:</span> <span style="color:${s('primitive')}" class="${hl('syntax-primitive')}">true</span><span style="color:${s('punctuation')};">,</span></span></div>
-      <div style="display:flex;gap:14px;"><span style="opacity:0.2;width:12px;text-align:right;">4</span><span style="padding-left:14px;"><span style="color:${s('property')}">name</span><span style="color:${s('punctuation')}">:</span> <span style="color:${s('string')}" class="${hl('syntax-string')}">"Teminal Core"</span> <span style="color:${s('keyword')}">as</span> <span style="color:${s('type')}" class="${hl('syntax-type')}">ThemeType</span><span style="color:${s('punctuation')};">,</span></span></div>
-      <div style="display:flex;gap:14px;"><span style="opacity:0.2;width:12px;text-align:right;">5</span><span style="padding-left:14px;"><span style="color:${s('object')}" class="${hl('syntax-object')}">Math</span><span style="color:${s('punctuation')}">.</span><span style="color:${s('property')}">floor</span><span style="color:${s('punctuation')};">(</span><span style="color:${s('constant')}" class="${hl('syntax-constant')}">MAX_RETRIES</span><span style="color:${s('punctuation')};">)</span></span></div>
-      <div style="display:flex;gap:14px;"><span style="opacity:0.2;width:12px;text-align:right;">6</span><span style="color:${s('punctuation')};">};</span></div>
-    </div>
+  // active tab pill
+  document.querySelectorAll('.theme-tab.active').forEach(btn => {
+    btn.style.background = btn.classList.contains('custom-tab') ? c.accent : c.primary;
+  });
 
-    <div style="font-size:10px;opacity:0.5;text-transform:uppercase;letter-spacing:0.15em;margin-bottom:8px;font-weight:700;">▸ Markdown Preview</div>
-    <div class="preview-block" style="background:#1a1b26;border:1px solid #565f89;">
-      <h2 style="font-size:15px;font-weight:700;margin:0 0 9px;color:${m('heading')}" class="${hl('markdown-heading')}">Theme Architecture</h2>
-      <p style="font-size:12px;line-height:1.7;margin:0 0 9px;color:${m('text')}" class="${hl('markdown-text')}">
-        This is a <strong style="color:${m('strong')}" class="${hl('markdown-strong')}">strongly typed</strong> config.
-        See the <a href="#" style="color:${m('link')};text-decoration:underline;" class="${hl('markdown-link')}">docs</a>
-        (<span style="color:${m('link-text')}" class="${hl('markdown-link-text')}">link text</span>) for more.
-      </p>
-      <div style="padding:7px 10px;border-radius:5px;margin:0 0 9px;display:flex;align-items:center;gap:8px;" class="${hl('markdown-block-quote')}">
-        <div style="width:3px;height:30px;border-radius:2px;background:${m('block-quote')}"></div>
-        <em style="color:${m('emph')};font-size:11px;" class="${hl('markdown-emph')}">"Consistency is the key to a great terminal experience."</em>
-      </div>
-      <div style="background:rgba(255,255,255,0.04);border:1px solid #565f89;border-radius:5px;padding:5px 10px;margin:0 0 9px;font-family:var(--font-mono);" class="${hl('markdown-code-block')}">
-        <span style="color:${m('code')}" class="${hl('markdown-code')}">const theme = "teminal";</span>
-      </div>
-      <div style="border-top:1px solid ${m('horizontal-rule')};margin:8px 0;" class="${hl('markdown-horizontal-rule')}"></div>
-      <ul style="margin:0;padding-left:0;list-style:none;">
-        <li style="margin-bottom:4px;font-size:12px;"><span style="color:${m('list-item')};margin-right:6px;" class="${hl('markdown-list-item')}">•</span>Scalable palette</li>
-        <li style="margin-bottom:4px;font-size:12px;"><span style="color:${m('list-enumeration')};margin-right:6px;" class="${hl('markdown-list-enumeration')}">1.</span>Enumerated item</li>
-        <li style="font-size:12px;"><span style="color:${m('image')};margin-right:6px;" class="${hl('markdown-image')}">⬡</span><span style="color:${m('image-text')}" class="${hl('markdown-image-text')}">image alt text</span></li>
-      </ul>
-    </div>
-  `;
+  // custom panel buttons
+  const ba = document.getElementById('btn-apply');
+  const be = document.getElementById('btn-export');
+  ba.style.background = c.primary;
+  ba.style.color = c.bg;
+  be.style.color = c.accent;
+  be.style.borderColor = c.accent;
 
-  document.querySelectorAll('.swatch-row').forEach(el => el.classList.remove('active'));
-  if (hovered) {
-    const active = document.getElementById(`swatch-${hovered}`);
-    if (active) active.classList.add('active');
+  // rebuild swatches if not blank-custom
+  if (tid !== 'custom' || cparsed) {
+    rebuildSwatches();
+    document.getElementById('swatch-panels').style.display = 'block';
+  }
+
+  renderPreview();
+}
+
+// ── BUILD TABS ────────────────────────────────────────────────────
+function buildTabs() {
+  const bar = document.getElementById('theme-bar');
+  const toggle = bar.querySelector('.mode-toggle');
+  META.forEach(m => {
+    const btn = document.createElement('button');
+    btn.className = 'theme-tab' + (m.custom ? ' custom-tab' : '') + (m.id === tid ? ' active' : '');
+    btn.textContent = m.label;
+    btn.dataset.id = m.id;
+    btn.onclick = () => switchTheme(m.id);
+    bar.insertBefore(btn, toggle);
+  });
+}
+
+// ── SWITCH THEME ──────────────────────────────────────────────────
+function switchTheme(id) {
+  tid = id;
+
+  document.querySelectorAll('.theme-tab').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.id === id);
+    btn.style.background = '';
+    btn.style.color = '';
+  });
+
+  const isCustom = id === 'custom';
+  document.getElementById('swatch-panels').style.display = isCustom ? 'none' : 'block';
+  document.getElementById('custom-panel').style.display  = isCustom ? 'flex' : 'none';
+
+  const meta = META.find(m => m.id === id);
+  const canLight = meta && meta.light;
+  const btnLight = document.getElementById('btn-light');
+  btnLight.disabled = !canLight;
+  if (!canLight) mode = 'dark';
+  document.getElementById('btn-dark').classList.toggle('active',  mode === 'dark');
+  document.getElementById('btn-light').classList.toggle('active', mode === 'light');
+
+  apply();
+}
+
+// ── MODE TOGGLE ───────────────────────────────────────────────────
+function setMode(m) {
+  mode = m;
+  document.getElementById('btn-dark').classList.toggle('active',  m === 'dark');
+  document.getElementById('btn-light').classList.toggle('active', m === 'light');
+  apply();
+}
+
+// ── SWATCHES ──────────────────────────────────────────────────────
+function rebuildSwatches() {
+  if (!c) return;
+  const groups = [
+    { id:'palette-list', shape:'sq', items:[
+      ['neutral', c.bg,    PLABELS.neutral],
+      ['ink',     c.text,  PLABELS.ink],
+      ['primary', c.primary, PLABELS.primary],
+      ['accent',  c.accent,  PLABELS.accent],
+      ['success', c.success, PLABELS.success],
+      ['warning', c.warning, PLABELS.warning],
+      ['error',   c.error,   PLABELS.error],
+      ['info',    c.info,    PLABELS.info],
+      ['diffAdd', c.dAdd,    PLABELS.diffAdd],
+      ['diffDel', c.dDel,    PLABELS.diffDel],
+    ]},
+    { id:'syntax-list', shape:'ci', items:[
+      ['comment',  c.sComment, SLABELS.comment],
+      ['keyword',  c.sKeyword, SLABELS.keyword],
+      ['string',   c.sString,  SLABELS.string],
+      ['number',   c.sNumber,  SLABELS.number],
+      ['variable', c.sVar,     SLABELS.variable],
+      ['func',     c.sFunc,    SLABELS.func],
+      ['type',     c.sType,    SLABELS.type],
+      ['operator', c.sOp,      SLABELS.operator],
+      ['punct',    c.sPunct,   SLABELS.punct],
+      ['obj',      c.sVar,     SLABELS.obj],
+    ]},
+    { id:'markdown-list', shape:'ci', items:[
+      ['heading', c.mHead,    MLABELS.heading],
+      ['text',    c.mText,    MLABELS.text],
+      ['link',    c.mLink,    MLABELS.link],
+      ['linkTxt', c.mLinkTxt, MLABELS.linkTxt],
+      ['code',    c.mCode,    MLABELS.code],
+      ['quote',   c.mQuote,   MLABELS.quote],
+      ['emph',    c.mEmph,    MLABELS.emph],
+      ['strong',  c.mStrong,  MLABELS.strong],
+      ['hr',      c.mHr,      MLABELS.hr],
+      ['li',      c.mLi,      MLABELS.li],
+      ['liN',     c.mLiN,     MLABELS.liN],
+      ['img',     c.mImg,     MLABELS.img],
+      ['imgTxt',  c.mImgTxt,  MLABELS.imgTxt],
+      ['codeBlk', c.mCodeBlk, MLABELS.codeBlk],
+    ]},
+  ];
+
+  groups.forEach(g => {
+    const el = document.getElementById(g.id);
+    el.innerHTML = '';
+    g.items.forEach(([key, color, desc]) => {
+      const row = document.createElement('div');
+      row.className = 'swatch-row';
+      row.id = `sw-${g.id}-${key}`;
+      const dot = document.createElement('div');
+      dot.className = g.shape === 'sq' ? 'swatch-dot' : 'swatch-dot-sm';
+      dot.style.background = color;
+      row.appendChild(dot);
+      const info = document.createElement('div');
+      info.className = 'swatch-info';
+      info.innerHTML = `<span class="swatch-key">${key}</span><span class="swatch-desc">${desc}</span><span class="swatch-hex">${color}</span>`;
+      row.appendChild(info);
+      row.addEventListener('mouseenter', () => { hov = `${g.id}-${key}`; renderPreview(); });
+      row.addEventListener('mouseleave', () => { hov = null; renderPreview(); });
+      el.appendChild(row);
+    });
+  });
+}
+
+// ── RENDER PREVIEW ────────────────────────────────────────────────
+function hl(id) { return hov === id ? ' highlight' : ''; }
+
+function renderPreview() {
+  if (!c) return;
+  const el = document.getElementById('main');
+
+  el.innerHTML = `
+<div class="plabel">▸ Shell Session</div>
+<div class="pblock${hl('palette-list-neutral')}" style="font-family:monospace;">
+  <div style="margin-bottom:6px;">
+    <span class="${hl('palette-list-primary')}"   style="color:${c.primary}">user@terminal</span>
+    <span class="${hl('palette-list-accent')}"    style="color:${c.accent}"> [~/projects/theme]</span>
+    <span class="${hl('palette-list-ink')}"       style="color:${c.text}"> $ npm run build</span>
+  </div>
+  <div style="line-height:2.1;">
+    <div><span class="${hl('palette-list-info')}"   style="color:${c.info}">[info]</span>    <span style="color:${c.text}">Starting theme compilation…</span></div>
+    <div><span class="${hl('palette-list-success')}" style="color:${c.success}">[success]</span> <span style="color:${c.text}">All assets optimized in 2.4s</span></div>
+    <div><span class="${hl('palette-list-warning')}" style="color:${c.warning}">[warn]</span>    <span style="color:${c.text}">Large bundle size detected.</span></div>
+    <div><span class="${hl('palette-list-error')}"   style="color:${c.error}">[error]</span>   <span style="color:${c.text}">Failed to push to remote.</span></div>
+  </div>
+</div>
+
+<div class="plabel">▸ Git Diff</div>
+<div class="pblock" style="font-family:monospace;padding:0;overflow:hidden;border-radius:6px;border:1px solid ${c.border}44;margin-bottom:20px;">
+  <div style="padding:5px 12px;font-size:10px;color:${c.muted};opacity:0.6;display:flex;justify-content:space-between;"><span>@@ -12,4 +12,6 @@</span><span>main.ts</span></div>
+  <div class="${hl('palette-list-diffDel')}" style="background:${c.dDel};padding:5px 14px;display:flex;gap:10px;"><span style="color:${c.dDelFg};opacity:0.5;">-</span><span style="color:${c.dDelFg}">const oldWay = "manual";</span></div>
+  <div class="${hl('palette-list-diffAdd')}" style="background:${c.dAdd};padding:5px 14px;display:flex;gap:10px;"><span style="color:${c.dAddFg};opacity:0.5;">+</span><span style="color:${c.dAddFg}">const newWay = "automatic";</span></div>
+</div>
+
+<div class="plabel">▸ Syntax Highlighting</div>
+<div class="pblock" style="font-family:monospace;">
+  <div style="display:flex;gap:14px;"><span style="opacity:0.2;width:14px;text-align:right;">1</span><span style="color:${c.sComment}" class="${hl('syntax-list-comment')}">// Keyword &amp; Variable</span></div>
+  <div style="display:flex;gap:14px;"><span style="opacity:0.2;width:14px;text-align:right;">2</span><span><span class="${hl('syntax-list-keyword')}" style="color:${c.sKeyword}">export</span> <span style="color:${c.sKeyword}">const</span> <span class="${hl('syntax-list-variable')}" style="color:${c.sVar}">appConfig</span> <span class="${hl('syntax-list-operator')}" style="color:${c.sOp}">=</span> <span class="${hl('syntax-list-punct')}" style="color:${c.sPunct}">{</span></span></div>
+  <div style="display:flex;gap:14px;"><span style="opacity:0.2;width:14px;text-align:right;">3</span><span style="padding-left:18px;"><span class="${hl('syntax-list-func')}"   style="color:${c.sFunc}">isLive</span><span style="color:${c.sPunct}">:</span> <span class="${hl('syntax-list-number')}" style="color:${c.sNumber}">true</span><span style="color:${c.sPunct}">,</span></span></div>
+  <div style="display:flex;gap:14px;"><span style="opacity:0.2;width:14px;text-align:right;">4</span><span style="padding-left:18px;"><span style="color:${c.sFunc}">name</span><span style="color:${c.sPunct}">:</span> <span class="${hl('syntax-list-string')}" style="color:${c.sString}">"Terminal Core"</span> <span style="color:${c.sKeyword}">as</span> <span class="${hl('syntax-list-type')}" style="color:${c.sType}">ThemeType</span><span style="color:${c.sPunct}">,</span></span></div>
+  <div style="display:flex;gap:14px;"><span style="opacity:0.2;width:14px;text-align:right;">5</span><span style="padding-left:18px;"><span class="${hl('syntax-list-obj')}" style="color:${c.sVar}">Math</span><span style="color:${c.sPunct}">.</span><span style="color:${c.sFunc}">floor</span><span style="color:${c.sPunct}">(</span><span style="color:${c.sNumber}">MAX_RETRIES</span><span style="color:${c.sPunct}">)</span></span></div>
+  <div style="display:flex;gap:14px;"><span style="opacity:0.2;width:14px;text-align:right;">6</span><span style="color:${c.sPunct}">};</span></div>
+</div>
+
+<div class="plabel">▸ Markdown Preview</div>
+<div class="pblock">
+  <h2 class="${hl('markdown-list-heading')}" style="font-size:15px;font-weight:700;margin:0 0 10px;color:${c.mHead}">Theme Architecture</h2>
+  <p class="${hl('markdown-list-text')}" style="font-size:12px;line-height:1.9;margin:0 0 10px;color:${c.mText}">
+    This is a <strong class="${hl('markdown-list-strong')}" style="color:${c.mStrong}">strongly typed</strong> config.
+    See the <a href="#" class="${hl('markdown-list-link')}" style="color:${c.mLink};text-decoration:underline;">docs</a>
+    (<span class="${hl('markdown-list-linkTxt')}" style="color:${c.mLinkTxt}">link text</span>).
+  </p>
+  <div style="display:flex;align-items:center;gap:10px;margin:0 0 10px;" class="${hl('markdown-list-quote')}">
+    <div style="width:3px;height:32px;border-radius:2px;background:${c.mQuote};flex-shrink:0;"></div>
+    <em class="${hl('markdown-list-emph')}" style="color:${c.mEmph};font-size:12px;">"Consistency is key to a great terminal experience."</em>
+  </div>
+  <div style="border-left:2px solid ${c.mCode};padding:3px 10px;margin:0 0 10px;font-family:monospace;" class="${hl('markdown-list-codeBlk')}">
+    <span class="${hl('markdown-list-code')}" style="color:${c.mCode}">const theme = "terminal";</span>
+  </div>
+  <div style="border-top:1px solid ${c.mHr};margin:10px 0;opacity:0.3;" class="${hl('markdown-list-hr')}"></div>
+  <ul style="margin:0;padding:0;list-style:none;">
+    <li style="margin-bottom:5px;font-size:12px;color:${c.mText}"><span class="${hl('markdown-list-li')}"  style="color:${c.mLi};margin-right:7px;">•</span>Scalable palette</li>
+    <li style="margin-bottom:5px;font-size:12px;color:${c.mText}"><span class="${hl('markdown-list-liN')}" style="color:${c.mLiN};margin-right:7px;">1.</span>Enumerated item</li>
+    <li style="font-size:12px;color:${c.mText}"><span class="${hl('markdown-list-img')}" style="color:${c.mImg};margin-right:7px;">⬡</span><span class="${hl('markdown-list-imgTxt')}" style="color:${c.mImgTxt}">image alt text</span></li>
+  </ul>
+</div>`;
+
+  document.querySelectorAll('.swatch-row').forEach(r => r.classList.remove('active'));
+  if (hov) {
+    const a = document.getElementById('sw-' + hov);
+    if (a) a.classList.add('active');
   }
 }
 
-render();
+// ── CUSTOM JSON ───────────────────────────────────────────────────
+function applyCustom() {
+  const raw = document.getElementById('cj').value.trim();
+  const errEl = document.getElementById('cerr');
+  if (!raw) { errEl.textContent = '⚠ 请粘贴 JSON 内容'; errEl.className = 'err on'; return; }
+  let parsed;
+  try { parsed = JSON.parse(raw); } catch(e) { errEl.textContent = '⚠ JSON 解析错误：' + e.message; errEl.className = 'err on'; return; }
+  if (!parsed.theme) { errEl.textContent = '⚠ 缺少 "theme" 字段'; errEl.className = 'err on'; return; }
+  errEl.className = 'err';
+  cparsed = parsed;
+  document.getElementById('btn-export').disabled = false;
+  apply();
+}
+
+function exportCustom() {
+  if (!cparsed) return;
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([JSON.stringify(cparsed, null, 2)], {type:'application/json'}));
+  a.download = 'my-theme.json';
+  a.click();
+}
+
+// ── INIT ──────────────────────────────────────────────────────────
+buildTabs();
+apply();
 </script>
 </body>
 </html>
