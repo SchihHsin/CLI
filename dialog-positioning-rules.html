@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>浏览器预览 — 对话框定位规则</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #f5f4f0;
+    --surface: #ffffff;
+    --surface2: #f0efe9;
+    --border: #e2e0d8;
+    --border-strong: #b8b6ae;
+    --text: #1a1917;
+    --text2: #6b6963;
+    --text3: #9b9892;
+    --blue: #2563eb;
+    --blue-light: #eff6ff;
+    --blue-border: #bfdbfe;
+  }
+  body {
+    font-family: -apple-system, 'Helvetica Neue', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 14px;
+    line-height: 1.6;
+    padding: 40px 24px 80px;
+  }
+  .page-header { max-width: 980px; margin: 0 auto 48px; }
+  .page-header h1 { font-size: 26px; font-weight: 600; letter-spacing: -0.4px; margin-bottom: 8px; }
+  .page-header p { color: var(--text2); font-size: 13px; max-width: 600px; line-height: 1.65; }
+  .badge { display: inline-block; font-size: 11px; background: var(--surface2); border: 1px solid var(--border); border-radius: 4px; padding: 2px 8px; color: var(--text2); margin-bottom: 14px; font-family: monospace; }
+  .section { max-width: 980px; margin: 0 auto 52px; }
+  .section-label { font-size: 11px; color: var(--text3); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 4px; font-family: monospace; }
+  .section-title { font-size: 18px; font-weight: 600; margin-bottom: 4px; letter-spacing: -0.3px; }
+  .section-desc { color: var(--text2); font-size: 13px; margin-bottom: 22px; max-width: 680px; line-height: 1.7; }
+  hr.divider { border: none; border-top: 1px solid var(--border); max-width: 980px; margin: 0 auto 48px; }
+  .principle { background: var(--blue-light); border: 1px solid var(--blue-border); border-radius: 8px; padding: 14px 18px; margin-bottom: 24px; font-size: 13px; color: var(--blue); line-height: 1.7; }
+  .principle strong { font-weight: 600; }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .rule-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+  .rule-card.hl { border-color: var(--blue-border); box-shadow: 0 0 0 3px var(--blue-light); }
+  .rule-head { padding: 14px 18px 12px; border-bottom: 1px solid var(--border); display: flex; align-items: flex-start; gap: 10px; }
+  .rnum { font-family: monospace; font-size: 11px; font-weight: 600; background: var(--surface2); border: 1px solid var(--border); border-radius: 4px; padding: 2px 7px; color: var(--text2); white-space: nowrap; margin-top: 2px; flex-shrink: 0; }
+  .rnum.bl { background: var(--blue-light); border-color: var(--blue-border); color: var(--blue); }
+  .rtitle { font-size: 13px; font-weight: 600; line-height: 1.4; }
+  .rcond { font-size: 12px; color: var(--text2); margin-top: 3px; line-height: 1.55; }
+  .rule-body { padding: 16px; }
+  .diagram-wrap { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+  .diagram-wrap svg { display: block; width: 100%; height: auto; }
+  .note { background: var(--surface2); border: 1px solid var(--border); border-radius: 7px; padding: 12px 14px; font-size: 12px; color: var(--text2); line-height: 1.7; margin-top: 12px; }
+  .note strong { color: var(--text); font-weight: 600; }
+  .prio-row { display: flex; align-items: center; gap: 8px; margin-bottom: 24px; flex-wrap: wrap; row-gap: 10px; }
+  .prio-box { border: 1px solid var(--border); border-radius: 8px; padding: 10px 14px; background: var(--surface); text-align: center; min-width: 96px; }
+  .prio-box.bl { border-color: var(--blue-border); background: var(--blue-light); }
+  .prio-box .pn { font-family: monospace; font-size: 10px; color: var(--text3); margin-bottom: 2px; }
+  .prio-box.bl .pn { color: var(--blue); }
+  .prio-box .pl { font-size: 12px; font-weight: 600; }
+  .prio-box.bl .pl { color: var(--blue); }
+  .prio-box .pc { font-size: 10px; color: var(--text3); margin-top: 2px; line-height: 1.4; }
+  .prio-sep { font-size: 11px; color: var(--text3); font-family: monospace; white-space: nowrap; }
+  .width-table { width: 100%; border-collapse: collapse; font-size: 13px; background: var(--surface); border-radius: 10px; overflow: hidden; border: 1px solid var(--border); }
+  .width-table th { background: var(--surface2); font-weight: 600; color: var(--text2); font-size: 11px; text-align: left; padding: 10px 16px; border-bottom: 1px solid var(--border); font-family: monospace; }
+  .width-table td { padding: 11px 16px; border-bottom: 1px solid var(--border); }
+  .width-table tr:last-child td { border-bottom: none; }
+  .width-table tr:hover td { background: var(--surface2); }
+  .pill { display: inline-block; font-family: monospace; font-size: 12px; font-weight: 600; padding: 2px 10px; border-radius: 20px; }
+  .pill.lg { background: var(--blue-light); color: var(--blue); border: 1px solid var(--blue-border); }
+  .pill.sm { background: #fffbeb; color: #b45309; border: 1px solid #fcd34d; }
+  .notes-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <div class="badge">IDE · 浏览器预览窗口</div>
+  <h1>元素选中交互 — 定位规则规范</h1>
+  <p>描述用户在浏览器预览中选中任意元素后，A（元素名称卡片）、B（操作按钮组卡片）与对话输入框三者的完整定位逻辑。</p>
+</div>
+
+
+<!-- ══ PART 1 ══ -->
+<div class="section">
+  <div class="section-label">Part 1</div>
+  <div class="section-title">A / B 卡片定位规则</div>
+  <div class="section-desc">用户选中元素后，出现两张浮动卡片：A（元素名称）和 B（操作按钮组）。共四条规则，AB-1 为单排，AB-2/AB-3 为叠排，AB-4 处理上方空间不足的情况。</div>
+
+  <div class="principle">
+    <strong>叠排顺序核心原则：A 永远紧贴选中元素，B 在 A 外侧。</strong><br>
+    上方显示时：A 紧贴元素上边缘，B 在 A 上方 &nbsp;｜&nbsp; 下方显示时：A 紧贴元素下边缘，B 在 A 下方
+  </div>
+
+  <div class="grid2">
+
+    <!-- AB-1 -->
+    <div class="rule-card hl">
+      <div class="rule-head">
+        <div class="rnum bl">AB-1</div>
+        <div>
+          <div class="rtitle">单排 — A 左对齐，B 右对齐</div>
+          <div class="rcond">条件：A + 20px + B ≤ 选中元素宽度<br>A/B 单排显示在元素上方，A 左边界 = 元素左，B 右边界 = 元素右</div>
+        </div>
+      </div>
+      <div class="rule-body">
+        <div class="diagram-wrap">
+          <svg viewBox="0 0 400 148" xmlns="http://www.w3.org/2000/svg">
+            <rect width="400" height="148" fill="#f0efe9"/>
+            <!-- element: x=20 y=64 w=360 h=70 -->
+            <rect x="20" y="64" width="360" height="70" rx="4" fill="white" stroke="#2563eb" stroke-width="1.5" stroke-dasharray="5 3"/>
+            <text x="200" y="104" text-anchor="middle" font-size="12" fill="#9b9892">选中元素（宽度充足）</text>
+            <!-- A: x=20 y=30 w=118 h=28 -->
+            <rect x="20" y="30" width="118" height="28" rx="5" fill="white" stroke="#e2e0d8" stroke-width="1"/>
+            <text x="79" y="49" text-anchor="middle" font-size="11" fill="#6b6963" font-family="monospace">hero-section</text>
+            <!-- B: right=380 w=72 x=308 y=30 h=28 -->
+            <rect x="308" y="30" width="72" height="28" rx="5" fill="white" stroke="#e2e0d8" stroke-width="1"/>
+            <rect x="315" y="37" width="15" height="15" rx="3" fill="#f0efe9" stroke="#e2e0d8" stroke-width="0.5"/>
+            <rect x="333" y="37" width="15" height="15" rx="3" fill="#f0efe9" stroke="#e2e0d8" stroke-width="0.5"/>
+            <rect x="351" y="37" width="15" height="15" rx="3" fill="#eff6ff" stroke="#bfdbfe" stroke-width="0.5"/>
+            <path d="M 354.5 40.0 L 361.5 40.0 Q 363.0 40.0 363.0 41.5 L 363.0 45.5 Q 363.0 47.0 361.5 47.0 L 356.0 47.0 L 354.0 49.5 L 356.0 47.0 L 354.5 47.0 Q 353.0 47.0 353.0 45.5 L 353.0 41.5 Q 353.0 40.0 354.5 40.0 Z" fill="none" stroke="#2563eb" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"/>
+            <line x1="20" y1="60" x2="20" y2="30" stroke="#2563eb" stroke-width="0.8" stroke-dasharray="3 2" opacity="0.6"/>
+            <line x1="380" y1="60" x2="380" y2="30" stroke="#2563eb" stroke-width="0.8" stroke-dasharray="3 2" opacity="0.6"/>
+            <text x="22" y="20" font-size="10" fill="#2563eb" font-family="monospace">A 左边界 = 元素左边界</text>
+            <text x="378" y="20" text-anchor="end" font-size="10" fill="#2563eb" font-family="monospace">B 右边界 = 元素右边界</text>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- AB-2 -->
+    <div class="rule-card">
+      <div class="rule-head">
+        <div class="rnum">AB-2</div>
+        <div>
+          <div class="rtitle">叠排居左 — 元素偏左时</div>
+          <div class="rcond">条件：A + 20px + B > 元素宽度，且元素左端距左边界 ≤ 距右边界<br>叠排居左显示在元素上方，A 紧贴元素，B 在 A 上方</div>
+        </div>
+      </div>
+      <div class="rule-body">
+        <div class="diagram-wrap">
+          <svg viewBox="0 0 400 168" xmlns="http://www.w3.org/2000/svg">
+            <rect width="400" height="168" fill="#f0efe9"/>
+            <rect x="0" y="0" width="4" height="168" fill="#b8b6ae" opacity="0.35"/>
+            <!-- element: x=20 y=94 w=100 h=60 -->
+            <rect x="20" y="94" width="100" height="60" rx="4" fill="white" stroke="#2563eb" stroke-width="1.5" stroke-dasharray="5 3"/>
+            <text x="70" y="129" text-anchor="middle" font-size="11" fill="#9b9892">选中元素</text>
+            <!-- A: bottom=94, so top=94-28=66, x=20, w=118 -->
+            <rect x="20" y="66" width="118" height="28" rx="5" fill="white" stroke="#e2e0d8" stroke-width="1"/>
+            <text x="79" y="84" text-anchor="middle" font-size="11" fill="#6b6963" font-family="monospace">hero-section</text>
+            <!-- B: above A: top=66-4-28=34, x=20, w=72 -->
+            <rect x="20" y="34" width="72" height="28" rx="5" fill="white" stroke="#e2e0d8" stroke-width="1"/>
+            <rect x="27" y="41" width="15" height="15" rx="3" fill="#f0efe9" stroke="#e2e0d8" stroke-width="0.5"/>
+            <rect x="45" y="41" width="15" height="15" rx="3" fill="#f0efe9" stroke="#e2e0d8" stroke-width="0.5"/>
+            <rect x="63" y="41" width="15" height="15" rx="3" fill="#eff6ff" stroke="#bfdbfe" stroke-width="0.5"/>
+            <path d="M 66.5 44.0 L 73.5 44.0 Q 75.0 44.0 75.0 45.5 L 75.0 49.5 Q 75.0 51.0 73.5 51.0 L 68.0 51.0 L 66.0 53.5 L 68.0 51.0 L 66.5 51.0 Q 65.0 51.0 65.0 49.5 L 65.0 45.5 Q 65.0 44.0 66.5 44.0 Z" fill="none" stroke="#2563eb" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"/>
+            <line x1="20" y1="34" x2="20" y2="154" stroke="#6b6963" stroke-width="0.8" stroke-dasharray="3 2" opacity="0.5"/>
+            <!-- bracket: A紧贴 -->
+            <line x1="140" y1="66" x2="150" y2="66" stroke="#6b6963" stroke-width="0.5"/>
+            <line x1="140" y1="94" x2="150" y2="94" stroke="#6b6963" stroke-width="0.5"/>
+            <line x1="150" y1="66" x2="150" y2="94" stroke="#6b6963" stroke-width="0.5"/>
+            <text x="154" y="83" font-size="10" fill="#6b6963">A 紧贴元素</text>
+            <text x="96" y="48" font-size="10" fill="#6b6963">B 在 A 上方</text>
+            <text x="22" y="22" font-size="10" fill="#6b6963" font-family="monospace">同左边界</text>
+            <text x="60" y="156" font-size="9" fill="#9b9892">距左边界小 ←</text>
+            <text x="270" y="156" font-size="9" fill="#9b9892">→ 距右边界大</text>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- AB-3 -->
+    <div class="rule-card">
+      <div class="rule-head">
+        <div class="rnum">AB-3</div>
+        <div>
+          <div class="rtitle">叠排居右 — 元素偏右时</div>
+          <div class="rcond">条件：A + 20px + B > 元素宽度，且元素左端距左边界 > 距右边界<br>叠排居右显示在元素上方，A 紧贴元素，B 在 A 上方</div>
+        </div>
+      </div>
+      <div class="rule-body">
+        <div class="diagram-wrap">
+          <svg viewBox="0 0 400 168" xmlns="http://www.w3.org/2000/svg">
+            <rect width="400" height="168" fill="#f0efe9"/>
+            <rect x="396" y="0" width="4" height="168" fill="#b8b6ae" opacity="0.35"/>
+            <!-- element: x=280 y=94 w=100 h=60 -->
+            <rect x="280" y="94" width="100" height="60" rx="4" fill="white" stroke="#2563eb" stroke-width="1.5" stroke-dasharray="5 3"/>
+            <text x="330" y="129" text-anchor="middle" font-size="11" fill="#9b9892">选中元素</text>
+            <!-- A: bottom=94 top=66, right=380, w=118, x=262 -->
+            <rect x="262" y="66" width="118" height="28" rx="5" fill="white" stroke="#e2e0d8" stroke-width="1"/>
+            <text x="321" y="84" text-anchor="middle" font-size="11" fill="#6b6963" font-family="monospace">hero-section</text>
+            <!-- B: above A top=34, right=380, w=72, x=308 -->
+            <rect x="308" y="34" width="72" height="28" rx="5" fill="white" stroke="#e2e0d8" stroke-width="1"/>
+            <rect x="315" y="41" width="15" height="15" rx="3" fill="#f0efe9" stroke="#e2e0d8" stroke-width="0.5"/>
+            <rect x="333" y="41" width="15" height="15" rx="3" fill="#f0efe9" stroke="#e2e0d8" stroke-width="0.5"/>
+            <rect x="351" y="41" width="15" height="15" rx="3" fill="#eff6ff" stroke="#bfdbfe" stroke-width="0.5"/>
+            <path d="M 354.5 44.0 L 361.5 44.0 Q 363.0 44.0 363.0 45.5 L 363.0 49.5 Q 363.0 51.0 361.5 51.0 L 356.0 51.0 L 354.0 53.5 L 356.0 51.0 L 354.5 51.0 Q 353.0 51.0 353.0 49.5 L 353.0 45.5 Q 353.0 44.0 354.5 44.0 Z" fill="none" stroke="#2563eb" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"/>
+            <line x1="380" y1="34" x2="380" y2="154" stroke="#6b6963" stroke-width="0.8" stroke-dasharray="3 2" opacity="0.5"/>
+            <line x1="240" y1="66" x2="250" y2="66" stroke="#6b6963" stroke-width="0.5"/>
+            <line x1="240" y1="94" x2="250" y2="94" stroke="#6b6963" stroke-width="0.5"/>
+            <line x1="240" y1="66" x2="240" y2="94" stroke="#6b6963" stroke-width="0.5"/>
+            <text x="8" y="83" font-size="10" fill="#6b6963">A 紧贴元素</text>
+            <text x="220" y="48" font-size="10" fill="#6b6963" text-anchor="end">B 在 A 上方</text>
+            <text x="378" y="22" text-anchor="end" font-size="10" fill="#6b6963" font-family="monospace">同右边界</text>
+            <text x="60" y="156" font-size="9" fill="#9b9892">← 距左边界大</text>
+            <text x="340" y="156" font-size="9" fill="#9b9892">距右边界小</text>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- AB-4 -->
+    <div class="rule-card">
+      <div class="rule-head">
+        <div class="rnum">AB-4</div>
+        <div>
+          <div class="rtitle">上方空间不足 — A/B 移至元素下方</div>
+          <div class="rcond">条件：元素上方空间不足放下 A/B<br>整体移至下方；叠排时 A 紧贴元素下边缘，B 在 A 下方；单排时 A 左 B 右不变</div>
+        </div>
+      </div>
+      <div class="rule-body">
+        <div class="diagram-wrap">
+          <svg viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg">
+            <rect width="400" height="220" fill="#f0efe9"/>
+            <rect x="0" y="0" width="400" height="4" fill="#b8b6ae" opacity="0.5"/>
+            <text x="8" y="16" font-size="10" fill="#9b9892">页面顶部边界</text>
+
+            <!-- LEFT: wide element → single row below (AB-1 style) -->
+            <!-- element: x=14 y=14 w=180 h=54 -->
+            <rect x="14" y="14" width="180" height="54" rx="4" fill="white" stroke="#2563eb" stroke-width="1.5" stroke-dasharray="5 3"/>
+            <text x="104" y="46" text-anchor="middle" font-size="10" fill="#9b9892">宽元素（AB-1）</text>
+            <!-- A: top = 14+54=68, x=14, w=100, h=26 -->
+            <rect x="14" y="68" width="100" height="26" rx="5" fill="white" stroke="#e2e0d8" stroke-width="1"/>
+            <text x="64" y="85" text-anchor="middle" font-size="10" fill="#6b6963" font-family="monospace">hero-btn</text>
+            <!-- B: right=194, w=62, x=132, y=68 -->
+            <rect x="132" y="68" width="62" height="26" rx="5" fill="white" stroke="#e2e0d8" stroke-width="1"/>
+            <rect x="138" y="75" width="13" height="13" rx="3" fill="#f0efe9" stroke="#e2e0d8" stroke-width="0.5"/>
+            <rect x="154" y="75" width="13" height="13" rx="3" fill="#f0efe9" stroke="#e2e0d8" stroke-width="0.5"/>
+            <rect x="170" y="75" width="13" height="13" rx="3" fill="#eff6ff" stroke="#bfdbfe" stroke-width="0.5"/>
+            <path d="M 173.5 82.0 L 180.5 82.0 Q 182.0 82.0 182.0 83.5 L 182.0 87.5 Q 182.0 89.0 180.5 89.0 L 175.0 89.0 L 173.0 91.5 L 175.0 89.0 L 173.5 89.0 Q 172.0 89.0 172.0 87.5 L 172.0 83.5 Q 172.0 82.0 173.5 82.0 Z" fill="none" stroke="#2563eb" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"/>
+            <line x1="14" y1="68" x2="14" y2="72" stroke="#2563eb" stroke-width="0.8" stroke-dasharray="3 2" opacity="0.6"/>
+            <line x1="194" y1="68" x2="194" y2="72" stroke="#2563eb" stroke-width="0.8" stroke-dasharray="3 2" opacity="0.6"/>
+            <text x="104" y="116" text-anchor="middle" font-size="10" fill="#6b6963">单排，A 左 B 右</text>
+            <text x="104" y="129" text-anchor="middle" font-size="10" fill="#9b9892">A 紧贴元素下边缘</text>
+
+            <!-- divider -->
+            <line x1="208" y1="14" x2="208" y2="150" stroke="#e2e0d8" stroke-width="1" stroke-dasharray="4 3"/>
+
+            <!-- RIGHT: narrow element → stacked below (AB-2/3 style), right-biased so AB-3 style right-align -->
+            <!-- element: x=280 y=14 w=106 h=54 -->
+            <rect x="280" y="14" width="106" height="54" rx="4" fill="white" stroke="#2563eb" stroke-width="1.5" stroke-dasharray="5 3"/>
+            <text x="333" y="46" text-anchor="middle" font-size="10" fill="#9b9892">窄元素（AB-3）</text>
+            <!-- A: top=68, right=386, w=118, x=268 -->
+            <rect x="268" y="68" width="118" height="26" rx="5" fill="white" stroke="#e2e0d8" stroke-width="1"/>
+            <text x="327" y="85" text-anchor="middle" font-size="10" fill="#6b6963" font-family="monospace">hero-section</text>
+            <!-- B: top=68+26+4=98, right=386, w=62, x=324 -->
+            <rect x="324" y="102" width="62" height="26" rx="5" fill="white" stroke="#e2e0d8" stroke-width="1"/>
+            <rect x="330" y="105" width="13" height="13" rx="3" fill="#f0efe9" stroke="#e2e0d8" stroke-width="0.5"/>
+            <rect x="346" y="105" width="13" height="13" rx="3" fill="#f0efe9" stroke="#e2e0d8" stroke-width="0.5"/>
+            <rect x="362" y="105" width="13" height="13" rx="3" fill="#eff6ff" stroke="#bfdbfe" stroke-width="0.5"/>
+            <path d="M 365.5 112.0 L 372.5 112.0 Q 374.0 112.0 374.0 113.5 L 374.0 117.5 Q 374.0 119.0 372.5 119.0 L 367.0 119.0 L 365.0 121.5 L 367.0 119.0 L 365.5 119.0 Q 364.0 119.0 364.0 117.5 L 364.0 113.5 Q 364.0 112.0 365.5 112.0 Z" fill="none" stroke="#2563eb" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"/>
+            <line x1="386" y1="68" x2="386" y2="128" stroke="#6b6963" stroke-width="0.8" stroke-dasharray="3 2" opacity="0.5"/>
+            <text x="333" y="144" text-anchor="middle" font-size="10" fill="#6b6963">叠排居右</text>
+            <text x="333" y="157" text-anchor="middle" font-size="10" fill="#9b9892">A 紧贴元素，B 在 A 下方</text>
+
+            <rect x="14" y="170" width="372" height="38" rx="5" fill="#eff6ff" stroke="#bfdbfe" stroke-width="0.5"/>
+            <text x="200" y="187" text-anchor="middle" font-size="11" fill="#2563eb">AB-4 仅改变上下方向，单排/叠排由 AB-1/2/3 条件决定</text>
+            <text x="200" y="201" text-anchor="middle" font-size="10" fill="#2563eb" opacity="0.7">叠排时左右对齐方向参考 AB-2（偏左居左）或 AB-3（偏右居右）</text>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<hr class="divider">
+
+
+<!-- ══ PART 2 ══ -->
+<div class="section">
+  <div class="section-label">Part 2</div>
+  <div class="section-title">对话输入框定位规则</div>
+  <div class="section-desc">点击 B 中对话按钮（气泡图标）后弹出对话输入框。以卡片 B 为锚点，<strong>顶边与 B 顶边对齐</strong>，按以下优先级判断展开方向。核心原则：不遮挡选中元素。</div>
+
+  <div class="prio-row">
+    <div class="prio-box bl"><div class="pn">① 首选</div><div class="pl">向右展开</div><div class="pc">B 右侧空间 ≥ 对话框宽度</div></div>
+    <div class="prio-sep">否 →</div>
+    <div class="prio-box bl"><div class="pn">② 次选</div><div class="pl">向左展开</div><div class="pc">B 左侧空间 ≥ 对话框宽度</div></div>
+    <div class="prio-sep">否 →</div>
+    <div class="prio-box bl"><div class="pn">③ 三选</div><div class="pl">向上展开</div><div class="pc">元素上方空间 ≥ 对话框高度</div></div>
+    <div class="prio-sep">否 →</div>
+    <div class="prio-box bl"><div class="pn">④ 四选</div><div class="pl">向下展开</div><div class="pc">元素下方空间 ≥ 对话框高度</div></div>
+    <div class="prio-sep">否 →</div>
+    <div class="prio-box"><div class="pn">⑤ 兜底</div><div class="pl">元素内部</div><div class="pc">四向均不足，显示于元素内</div></div>
+  </div>
+
+  <div class="grid2">
+
+    <!-- D-1 -->
+    <div class="rule-card hl">
+      <div class="rule-head">
+        <div class="rnum bl">D-1</div>
+        <div>
+          <div class="rtitle">向右展开（默认首选）</div>
+          <div class="rcond">对话框顶边 = B 顶边；左边界紧贴元素右边界；向右展开，不遮挡元素</div>
+        </div>
+      </div>
+      <div class="rule-body">
+        <div class="diagram-wrap">
+          <!-- AB-1 scenario: element wide enough for single row
+               Element: x=20 y=66 w=190 h=120
+               A: x=20 y=34 w=100 h=28 (AB-1 left)
+               B: right=210 w=72 x=138 y=34
+               Dialog: top=34(=B top), left=210+8=218, w=180, h=120 -->
+          <svg viewBox="0 0 420 210" xmlns="http://www.w3.org/2000/svg">
+            <rect width="420" height="210" fill="#f0efe9"/>
+            <!-- element -->
+            <rect x="20" y="66" width="190" height="120" rx="4" fill="white" stroke="#2563eb" stroke-width="1.5" stroke-dasharray="5 3"/>
+            <text x="115" y="132" text-anchor="middle" font-size="11" fill="#9b9892">选中元素</text>
+            <!-- A -->
+            <rect x="20" y="38" width="100" height="28" rx="5" fill="white" stroke="#e2e0d8" stroke-width="1"/>
+            <text x="70" y="56" text-anchor="middle" font-size="11" fill="#6b6963" font-family="monospace">hero-btn</text>
+            <!-- B: right=210 w=72 x=138 -->
+            <rect x="138" y="38" width="72" height="28" rx="5" fill="white" stroke="#e2e0d8" stroke-width="1"/>
+            <rect x="145" y="45" width="15" height="15" rx="3" fill="#f0efe9" stroke="#e2e0d8" stroke-width="0.5"/>
+            <rect x="163" y="45" width="15" height="15" rx="3" fill="#f0efe9" stroke="#e2e0d8" stroke-width="0.5"/>
+            <rect x="181" y="45" width="15" height="15" rx="3" fill="#eff6ff" stroke="#bfdbfe" stroke-width="0.5"/>
+            <path d="M 184.5 44.0 L 191.5 44.0 Q 193.0 44.0 193.0 45.5 L 193.0 49.5 Q 193.0 51.0 191.5 51.0 L 186.0 51.0 L 184.0 53.5 L 186.0 51.0 L 184.5 51.0 Q 183.0 51.0 183.0 49.5 L 183.0 45.5 Q 183.0 44.0 184.5 44.0 Z" fill="none" stroke="#2563eb" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"/>
+            <!-- dialog: top=34 left=218 w=180 h=120 -->
+            <rect x="218" y="34" width="180" height="120" rx="6" fill="white" stroke="#2563eb" stroke-width="1.5"/>
+            <text x="308" y="56" text-anchor="middle" font-size="11" fill="#6b6963">对话输入框</text>
+            <rect x="230" y="64" width="156" height="24" rx="4" fill="#f0efe9" stroke="#e2e0d8" stroke-width="0.8"/>
+            <text x="308" y="80" text-anchor="middle" font-size="10" fill="#9b9892">输入内容…</text>
+            <rect x="276" y="100" width="66" height="22" rx="4" fill="#eff6ff" stroke="#bfdbfe" stroke-width="0.5"/>
+            <text x="309" y="115" text-anchor="middle" font-size="10" fill="#2563eb">发 送</text>
+            <!-- top align guide -->
+            <line x1="138" y1="38" x2="398" y2="38" stroke="#2563eb" stroke-width="0.8" stroke-dasharray="3 2" opacity="0.55"/>
+            <text x="220" y="172" font-size="10" fill="#2563eb" font-family="monospace">顶边 = B 顶边（A 紧贴元素）</text>
+            <text x="220" y="186" font-size="10" fill="#9b9892">在选中元素右侧，不遮挡</text>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- D-2 -->
+    <div class="rule-card hl">
+      <div class="rule-head">
+        <div class="rnum bl">D-2</div>
+        <div>
+          <div class="rtitle">向左展开</div>
+          <div class="rcond">B 右侧不足；对话框顶边 = B 顶边；右边界紧贴元素左边界；向左展开，不遮挡元素</div>
+        </div>
+      </div>
+      <div class="rule-body">
+        <div class="diagram-wrap">
+          <!-- Element right-biased, narrow → AB-3+AB-4: A/B stacked right-aligned, BELOW element.
+               Element flush to right: x=296 y=14 w=110 h=80. right=406(clipped to 400).
+               A: top=98, right=400, w=118, x=282, h=28
+               B: top=130, right=400, w=72, x=328, h=28
+               Dialog: top=130 (=B top), right=292 (=element left-4), w=172, x=120
+               This shows dialog on left of element with top-align to B clearly marked -->
+          <svg viewBox="0 0 420 215" xmlns="http://www.w3.org/2000/svg">
+            <rect width="420" height="215" fill="#f0efe9"/>
+            <!-- page right edge -->
+            <rect x="400" y="0" width="4" height="215" fill="#b8b6ae" opacity="0.4"/>
+            <text x="397" y="11" text-anchor="end" font-size="9" fill="#9b9892">右侧边界</text>
+            <!-- element: x=290 y=14 w=110 h=80 -->
+            <rect x="290" y="14" width="110" height="80" rx="4" fill="white" stroke="#2563eb" stroke-width="1.5" stroke-dasharray="5 3"/>
+            <text x="345" y="54" text-anchor="middle" font-size="11" fill="#9b9892">选中元素</text>
+            <text x="345" y="68" text-anchor="middle" font-size="10" fill="#b8b6ae">（靠右）</text>
+            <!-- A below element: top=94, right=400, w=118, x=282 -->
+            <rect x="282" y="94" width="118" height="28" rx="5" fill="white" stroke="#e2e0d8" stroke-width="1"/>
+            <text x="341" y="112" text-anchor="middle" font-size="11" fill="#6b6963" font-family="monospace">hero-section</text>
+            <!-- B below A: top=126, right=400, w=72, x=328 -->
+            <rect x="328" y="130" width="72" height="28" rx="5" fill="white" stroke="#e2e0d8" stroke-width="1"/>
+            <rect x="335" y="133" width="15" height="15" rx="3" fill="#f0efe9" stroke="#e2e0d8" stroke-width="0.5"/>
+            <rect x="353" y="133" width="15" height="15" rx="3" fill="#f0efe9" stroke="#e2e0d8" stroke-width="0.5"/>
+            <rect x="371" y="133" width="15" height="15" rx="3" fill="#eff6ff" stroke="#bfdbfe" stroke-width="0.5"/>
+            <path d="M 374.5 136.0 L 381.5 136.0 Q 383.0 136.0 383.0 137.5 L 383.0 141.5 Q 383.0 143.0 381.5 143.0 L 376.0 143.0 L 374.0 145.5 L 376.0 143.0 L 374.5 143.0 Q 373.0 143.0 373.0 141.5 L 373.0 137.5 Q 373.0 136.0 374.5 136.0 Z" fill="none" stroke="#2563eb" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"/>
+            <!-- right-align guide for A/B -->
+            <line x1="400" y1="94" x2="400" y2="162" stroke="#6b6963" stroke-width="0.8" stroke-dasharray="3 2" opacity="0.4"/>
+            <!-- dialog: top=126 (=B top), left=B left-4-w=328-4-166=158, w=166 -->
+            <rect x="158" y="126" width="166" height="70" rx="6" fill="white" stroke="#2563eb" stroke-width="1.5"/>
+            <text x="241" y="148" text-anchor="middle" font-size="11" fill="#6b6963">对话输入框</text>
+            <rect x="170" y="156" width="142" height="20" rx="4" fill="#f0efe9" stroke="#e2e0d8" stroke-width="0.8"/>
+            <text x="241" y="170" text-anchor="middle" font-size="10" fill="#9b9892">输入内容…</text>
+            <!-- top align guide: y=126 from dialog to B -->
+            <line x1="158" y1="126" x2="404" y2="126" stroke="#2563eb" stroke-width="0.8" stroke-dasharray="3 2" opacity="0.65"/>
+            <!-- element left edge marker: x=290 -->
+            <line x1="290" y1="94" x2="290" y2="204" stroke="#6b6963" stroke-width="0.8" stroke-dasharray="3 2" opacity="0.35"/>
+            <!-- label: dialog right = element left -->
+            <text x="160" y="118" font-size="10" fill="#2563eb" font-family="monospace">顶边 = B 顶边，距 B 左边界 4px</text>
+            <text x="160" y="208" font-size="10" fill="#9b9892">右侧空间不足 → 对话框在 B 左侧 4px 处向左展开</text>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- D-3 -->
+    <div class="rule-card">
+      <div class="rule-head">
+        <div class="rnum">D-3</div>
+        <div>
+          <div class="rtitle">向上展开</div>
+          <div class="rcond">左右均不足；对话框底边 = B 上边界 − 4px；水平方向右对齐 B 右边界</div>
+        </div>
+      </div>
+      <div class="rule-body">
+        <div class="diagram-wrap">
+          <!-- Wide element → stacked AB-2 (left-biased): B left=20, A left=20.
+               From bottom to top: element → A (紧贴元素) → B → dialog
+               Element: x=20 y=152 w=380 h=68
+               A: top=124 (=152-28), x=20, w=118, h=28
+               B: top=92  (=124-4-28), x=20, w=72, h=28
+               Dialog above B: bottom=88 (=92-4), h=70, top=18.
+               Left-align to B left = 20, w=176, x=20 -->
+          <svg viewBox="0 0 420 238" xmlns="http://www.w3.org/2000/svg">
+            <rect width="420" height="238" fill="#f0efe9"/>
+            <!-- element: x=20 y=152 w=380 h=68 -->
+            <rect x="20" y="152" width="380" height="68" rx="4" fill="white" stroke="#2563eb" stroke-width="1.5" stroke-dasharray="5 3"/>
+            <text x="210" y="191" text-anchor="middle" font-size="11" fill="#9b9892">选中元素（较宽，左右均无空间）</text>
+            <!-- A: top=124, x=20, w=118, h=28 — 紧贴元素上边缘 -->
+            <rect x="20" y="124" width="118" height="28" rx="5" fill="white" stroke="#e2e0d8" stroke-width="1"/>
+            <text x="79" y="142" text-anchor="middle" font-size="11" fill="#6b6963" font-family="monospace">hero-section</text>
+            <!-- B: top=92, x=20, w=72, h=28 — 在A上方 -->
+            <rect x="20" y="92" width="72" height="28" rx="5" fill="white" stroke="#e2e0d8" stroke-width="1"/>
+            <rect x="27" y="99" width="15" height="15" rx="3" fill="#f0efe9" stroke="#e2e0d8" stroke-width="0.5"/>
+            <rect x="45" y="99" width="15" height="15" rx="3" fill="#f0efe9" stroke="#e2e0d8" stroke-width="0.5"/>
+            <rect x="63" y="99" width="15" height="15" rx="3" fill="#eff6ff" stroke="#bfdbfe" stroke-width="0.5"/>
+            <path d="M 66.5 102.0 L 73.5 102.0 Q 75.0 102.0 75.0 103.5 L 75.0 107.5 Q 75.0 109.0 73.5 109.0 L 68.0 109.0 L 66.0 111.5 L 68.0 109.0 L 66.5 109.0 Q 65.0 109.0 65.0 107.5 L 65.0 103.5 Q 65.0 102.0 66.5 102.0 Z" fill="none" stroke="#2563eb" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"/>
+            <!-- dialog above B: top=18, bottom=88, h=70, left-align to B left=20, w=176 -->
+            <rect x="20" y="18" width="176" height="70" rx="6" fill="white" stroke="#6b6963" stroke-width="1.5"/>
+            <text x="108" y="40" text-anchor="middle" font-size="11" fill="#6b6963">对话输入框</text>
+            <rect x="32" y="48" width="152" height="22" rx="4" fill="#f0efe9" stroke="#e2e0d8" stroke-width="0.8"/>
+            <text x="108" y="63" text-anchor="middle" font-size="10" fill="#9b9892">输入内容…</text>
+            <!-- left-align guide: x=20 runs through dialog, B, A -->
+            <line x1="20" y1="18" x2="20" y2="152" stroke="#2563eb" stroke-width="0.8" stroke-dasharray="3 2" opacity="0.5"/>
+            <!-- guide: dialog bottom = B top - 4 = 88 -->
+            <line x1="14" y1="88" x2="210" y2="88" stroke="#6b6963" stroke-width="0.8" stroke-dasharray="3 2" opacity="0.55"/>
+            <!-- bracket: A紧贴element -->
+            <line x1="142" y1="124" x2="152" y2="124" stroke="#6b6963" stroke-width="0.5"/>
+            <line x1="142" y1="152" x2="152" y2="152" stroke="#6b6963" stroke-width="0.5"/>
+            <line x1="152" y1="124" x2="152" y2="152" stroke="#6b6963" stroke-width="0.5"/>
+            <text x="156" y="141" font-size="10" fill="#6b6963">A 紧贴元素</text>
+            <!-- labels -->
+            <text x="200" y="32" font-size="10" fill="#6b6963">对话框</text>
+            <text x="96" y="85" font-size="10" fill="#6b6963">B</text>
+            <text x="200" y="85" font-size="10" fill="#6b6963" font-family="monospace">底边 = B 顶边 − 4px</text>
+            <text x="200" y="110" font-size="10" fill="#9b9892">左边界 = B 左边界</text>
+            <!-- order indicator -->
+            <text x="405" y="55" font-size="9" fill="#9b9892" text-anchor="end">对话框</text>
+            <text x="405" y="109" font-size="9" fill="#9b9892" text-anchor="end">B</text>
+            <text x="405" y="141" font-size="9" fill="#9b9892" text-anchor="end">A</text>
+            <text x="405" y="191" font-size="9" fill="#9b9892" text-anchor="end">元素</text>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- D-4 -->
+    <div class="rule-card">
+      <div class="rule-head">
+        <div class="rnum">D-4</div>
+        <div>
+          <div class="rtitle">向下展开</div>
+          <div class="rcond">AB-4 场景（A/B 已在元素下方）且左右不足；对话框顶边 = B 底边 + 4px</div>
+        </div>
+      </div>
+      <div class="rule-body">
+        <div class="diagram-wrap">
+          <!-- Element near top, wide. AB-4: A/B below.
+               Element: x=20 y=14 w=380 h=72
+               AB-4+AB-1: A below, top=90, x=20, w=118; B: top=90, right=400, w=72, x=328
+               Dialog below B: top=90+28+4=122, right=400, w=168, x=232 -->
+          <svg viewBox="0 0 420 230" xmlns="http://www.w3.org/2000/svg">
+            <rect width="420" height="230" fill="#f0efe9"/>
+            <rect x="0" y="0" width="420" height="4" fill="#b8b6ae" opacity="0.4"/>
+            <text x="8" y="16" font-size="10" fill="#9b9892">页面顶部边界</text>
+            <!-- element -->
+            <rect x="20" y="14" width="380" height="72" rx="4" fill="white" stroke="#2563eb" stroke-width="1.5" stroke-dasharray="5 3"/>
+            <text x="210" y="55" text-anchor="middle" font-size="11" fill="#9b9892">选中元素（靠近顶部，较宽）</text>
+            <!-- A: top=86, x=20, w=118 -->
+            <rect x="20" y="86" width="118" height="28" rx="5" fill="white" stroke="#e2e0d8" stroke-width="1"/>
+            <text x="79" y="104" text-anchor="middle" font-size="11" fill="#6b6963" font-family="monospace">hero-section</text>
+            <!-- B: top=86+28+4=118, right=400, w=72, x=328 -->
+            <rect x="328" y="90" width="72" height="28" rx="5" fill="white" stroke="#e2e0d8" stroke-width="1"/>
+            <rect x="335" y="125" width="15" height="15" rx="3" fill="#f0efe9" stroke="#e2e0d8" stroke-width="0.5"/>
+            <rect x="353" y="125" width="15" height="15" rx="3" fill="#f0efe9" stroke="#e2e0d8" stroke-width="0.5"/>
+            <rect x="371" y="125" width="15" height="15" rx="3" fill="#eff6ff" stroke="#bfdbfe" stroke-width="0.5"/>
+            <path d="M 374.5 100.0 L 381.5 100.0 Q 383.0 100.0 383.0 101.5 L 383.0 105.5 Q 383.0 107.0 381.5 107.0 L 376.0 107.0 L 374.0 109.5 L 376.0 107.0 L 374.5 107.0 Q 373.0 107.0 373.0 105.5 L 373.0 101.5 Q 373.0 100.0 374.5 100.0 Z" fill="none" stroke="#2563eb" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"/>
+            <!-- dialog below B: top=150, right=400, w=176, x=224 -->
+            <rect x="224" y="150" width="176" height="80" rx="6" fill="white" stroke="#6b6963" stroke-width="1.5"/>
+            <text x="312" y="170" text-anchor="middle" font-size="11" fill="#6b6963">对话输入框</text>
+            <rect x="236" y="178" width="152" height="22" rx="4" fill="#f0efe9" stroke="#e2e0d8" stroke-width="0.8"/>
+            <text x="312" y="193" text-anchor="middle" font-size="10" fill="#9b9892">输入内容…</text>
+            <rect x="278" y="204" width="66" height="20" rx="4" fill="#eff6ff" stroke="#bfdbfe" stroke-width="0.5"/>
+            <text x="311" y="218" text-anchor="middle" font-size="10" fill="#2563eb">发 送</text>
+            <!-- guide: top=150 -->
+            <line x1="180" y1="150" x2="410" y2="150" stroke="#6b6963" stroke-width="0.8" stroke-dasharray="3 2" opacity="0.55"/>
+            <line x1="400" y1="118" x2="400" y2="228" stroke="#6b6963" stroke-width="0.8" stroke-dasharray="3 2" opacity="0.55"/>
+            <text x="22" y="164" font-size="10" fill="#6b6963" font-family="monospace">顶边 = B 底边 + 4px</text>
+            <text x="22" y="178" font-size="10" fill="#9b9892">在选中元素下方展开，不遮挡</text>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- D-5 -->
+  <div style="margin-top:16px">
+    <div class="rule-card">
+      <div class="rule-head">
+        <div class="rnum">D-5</div>
+        <div>
+          <div class="rtitle">兜底：A / B / 对话框均显示于元素内部</div>
+          <div class="rcond">四向均无足够空间时；元素很宽，A/B 单排显示（AB-1），A 左 B 右；对话框在 B 下方展开；全部位于元素内部</div>
+        </div>
+      </div>
+      <div class="rule-body">
+        <div class="diagram-wrap">
+          <!-- Element fills entire canvas — it's wide, so AB-1 applies: A left, B right, single row.
+               Dialog below B, all inside element.
+               Element: x=8 y=8 w=404 h=232
+               A inside, top-left: x=18, y=18, w=118, h=26
+               B inside, top-right: right=404, w=72, x=322, y=18, h=26
+               Dialog below B: top=18+26+4=48, right=404-8=396, w=180, x=216, h=106 -->
+          <svg viewBox="0 0 420 256" xmlns="http://www.w3.org/2000/svg">
+            <rect width="420" height="256" fill="#f0efe9"/>
+            <!-- element fills everything -->
+            <rect x="8" y="8" width="404" height="240" rx="4" fill="white" stroke="#2563eb" stroke-width="1.5" stroke-dasharray="5 3"/>
+            <text x="130" y="200" text-anchor="middle" font-size="11" fill="#9b9892">选中元素</text>
+            <text x="130" y="216" text-anchor="middle" font-size="10" fill="#b8b6ae">（几乎占满视口，元素很宽）</text>
+            <!-- A inside, top-left: x=18, y=18, w=118, h=26 -->
+            <rect x="18" y="18" width="118" height="26" rx="5" fill="white" stroke="#e2e0d8" stroke-width="1"/>
+            <text x="77" y="35" text-anchor="middle" font-size="11" fill="#6b6963" font-family="monospace">hero-section</text>
+            <!-- B inside, top-right: x=322, y=18, w=72, h=26 -->
+            <rect x="322" y="18" width="72" height="26" rx="5" fill="white" stroke="#e2e0d8" stroke-width="1"/>
+            <rect x="329" y="25" width="14" height="14" rx="3" fill="#f0efe9" stroke="#e2e0d8" stroke-width="0.5"/>
+            <rect x="346" y="25" width="14" height="14" rx="3" fill="#f0efe9" stroke="#e2e0d8" stroke-width="0.5"/>
+            <rect x="363" y="25" width="14" height="14" rx="3" fill="#eff6ff" stroke="#bfdbfe" stroke-width="0.5"/>
+            <path d="M 366.5 28.0 L 373.5 28.0 Q 375.0 28.0 375.0 29.5 L 375.0 33.5 Q 375.0 35.0 373.5 35.0 L 368.0 35.0 L 366.0 37.5 L 368.0 35.0 L 366.5 35.0 Q 365.0 35.0 365.0 33.5 L 365.0 29.5 Q 365.0 28.0 366.5 28.0 Z" fill="none" stroke="#2563eb" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"/>
+            <!-- alignment guides: A left = element left, B right = element right -->
+            <line x1="18" y1="8" x2="18" y2="44" stroke="#2563eb" stroke-width="0.8" stroke-dasharray="3 2" opacity="0.5"/>
+            <line x1="394" y1="8" x2="394" y2="44" stroke="#2563eb" stroke-width="0.8" stroke-dasharray="3 2" opacity="0.5"/>
+            <!-- Dialog below B: top=48, right=394, w=180, x=214 -->
+            <rect x="214" y="48" width="180" height="106" rx="6" fill="white" stroke="#2563eb" stroke-width="1.5"/>
+            <text x="304" y="70" text-anchor="middle" font-size="11" fill="#6b6963">对话输入框</text>
+            <rect x="226" y="78" width="156" height="22" rx="4" fill="#f0efe9" stroke="#e2e0d8" stroke-width="0.8"/>
+            <text x="304" y="93" text-anchor="middle" font-size="10" fill="#9b9892">输入内容…</text>
+            <rect x="272" y="112" width="66" height="22" rx="4" fill="#eff6ff" stroke="#bfdbfe" stroke-width="0.5"/>
+            <text x="305" y="127" text-anchor="middle" font-size="10" fill="#2563eb">发 送</text>
+            <!-- dialog top align guide -->
+            <line x1="214" y1="48" x2="400" y2="48" stroke="#6b6963" stroke-width="0.8" stroke-dasharray="3 2" opacity="0.5"/>
+            <!-- annotations -->
+            <text x="18" y="10" font-size="10" fill="#2563eb" font-family="monospace">A 左边界 = 元素左边界</text>
+            <text x="394" y="10" text-anchor="end" font-size="10" fill="#2563eb" font-family="monospace">B 右边界 = 元素右边界</text>
+            <text x="216" y="170" font-size="10" fill="#6b6963">对话框顶边 = B 顶边，向下展开</text>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<hr class="divider">
+
+
+<!-- ══ PART 3 ══ -->
+<div class="section">
+  <div class="section-label">Part 3</div>
+  <div class="section-title">对话框自适应宽度</div>
+  <div class="section-desc">根据 IDE 产品框架宽度，对话框宽度按以下档位自动切换。</div>
+  <table class="width-table">
+    <thead>
+      <tr><th>IDE 框架宽度</th><th>主代码区宽度</th><th>对话框宽度</th><th>备注</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>1920px</td><td>1376px</td><td><span class="pill lg">520px</span></td><td>最大档</td></tr>
+      <tr><td>1440px – 1920px</td><td>756px – 1376px</td><td><span class="pill lg">312px</span></td><td>中等档</td></tr>
+      <tr><td>1280px – 1440px</td><td>676px – 756px</td><td><span class="pill lg">312px</span></td><td>中等档</td></tr>
+      <tr><td>1024px – 1280px</td><td>420px – 676px</td><td><span class="pill sm">138px</span></td><td>最小档</td></tr>
+    </tbody>
+  </table>
+  <div class="note" style="margin-top:12px">若实际可用空间小于当前档位宽度，以实际可用空间为准，最小不得低于 138px。</div>
+</div>
+
+<hr class="divider">
+
+
+<!-- ══ PART 4 ══ -->
+<div class="section">
+  <div class="section-label">Part 4</div>
+  <div class="section-title">其他交互说明</div>
+  <div class="notes-grid">
+    <div class="note"><strong>用户拖拽</strong><br>用户可自由拖拽对话框至任意位置。拖拽后脱离自动定位逻辑，由用户手动控制。下次重新选中任何元素时，恢复自动定位。</div>
+    <div class="note"><strong>不遮挡原则</strong><br>D-1 至 D-4 的优先级顺序本身已确保对话框不覆盖选中元素。仅在 D-5 兜底时对话框显示于元素内部。</div>
+    <div class="note"><strong>AB-4 与对话框联动</strong><br>AB-4 场景下 A/B 在元素下方。对话框向左右展开时顶边仍对齐 B 顶边；左右均不足时执行 D-4 向下展开。</div>
+    <div class="note"><strong>定位计算时机</strong><br>每次点击 B 中对话按钮时重新计算定位。窗口尺寸变化或滚动不会自动触发重新定位，需再次点击按钮。</div>
+  </div>
+</div>
+
+</body>
+</html>

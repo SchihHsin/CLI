@@ -4,7 +4,17 @@
       "Bash(start *)",
       "Bash(git add *)",
       "Bash(git commit *)",
-      "Bash(git push *)"
+      "Bash(git push *)",
+      "WebSearch",
+      "Bash(gh api *)",
+      "Bash(python3 -c \"import json,sys; data=json.load\\(sys.stdin\\); [print\\(i['path']\\) for i in data.get\\('tree',[]\\) if 'theme' in i['path'].lower\\(\\)]\")",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:opencode.ai)",
+      "Bash(curl -fsSL \"https://raw.githubusercontent.com/ajaxdude/opencode-ai-poimandres-theme/main/.opencode/themes/poimandres.json\" -o poimandres.json)",
+      "Bash(curl -fsSL \"https://raw.githubusercontent.com/ajaxdude/opencode-ai-poimandres-theme/main/.opencode/themes/poimandres-accessible.json\" -o poimandres-accessible.json)",
+      "Bash(curl -fsSL \"https://raw.githubusercontent.com/postrednik/opencode-ayu-theme/main/.opencode/themes/ayu-dark.json\" -o ayu-dark.json)",
+      "Bash(curl -fsSL \"https://raw.githubusercontent.com/brunogabriel/opencode-moonlight-theme/main/.opencode/themes/moonlight.json\" -o moonlight.json)",
+      "Bash(curl -fsSL \"https://raw.githubusercontent.com/b0o/lavi/main/contrib/opencode/lavi.json\" -o lavi.json)"
     ]
   }
 }
