@@ -109,17 +109,17 @@
             <!-- element: x=20 y=64 w=360 h=70 -->
             <rect x="20" y="64" width="360" height="70" rx="4" fill="white" stroke="#2563eb" stroke-width="1.5" stroke-dasharray="5 3"/>
             <text x="200" y="104" text-anchor="middle" font-size="12" fill="#9b9892">选中元素（宽度充足）</text>
-            <!-- A: x=20 y=30 w=118 h=28 -->
-            <rect x="20" y="30" width="118" height="28" rx="5" fill="white" stroke="#e2e0d8" stroke-width="1"/>
-            <text x="79" y="49" text-anchor="middle" font-size="11" fill="#6b6963" font-family="monospace">hero-section</text>
-            <!-- B: right=380 w=72 x=308 y=30 h=28 -->
-            <rect x="308" y="30" width="72" height="28" rx="5" fill="white" stroke="#e2e0d8" stroke-width="1"/>
-            <rect x="315" y="37" width="15" height="15" rx="3" fill="#f0efe9" stroke="#e2e0d8" stroke-width="0.5"/>
-            <rect x="333" y="37" width="15" height="15" rx="3" fill="#f0efe9" stroke="#e2e0d8" stroke-width="0.5"/>
-            <rect x="351" y="37" width="15" height="15" rx="3" fill="#eff6ff" stroke="#bfdbfe" stroke-width="0.5"/>
-            <path d="M 354.5 40.0 L 361.5 40.0 Q 363.0 40.0 363.0 41.5 L 363.0 45.5 Q 363.0 47.0 361.5 47.0 L 356.0 47.0 L 354.0 49.5 L 356.0 47.0 L 354.5 47.0 Q 353.0 47.0 353.0 45.5 L 353.0 41.5 Q 353.0 40.0 354.5 40.0 Z" fill="none" stroke="#2563eb" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"/>
-            <line x1="20" y1="60" x2="20" y2="30" stroke="#2563eb" stroke-width="0.8" stroke-dasharray="3 2" opacity="0.6"/>
-            <line x1="380" y1="60" x2="380" y2="30" stroke="#2563eb" stroke-width="0.8" stroke-dasharray="3 2" opacity="0.6"/>
+            <!-- A: x=20 y=36 w=118 h=28, bottom=64=element top → 紧贴 -->
+            <rect x="20" y="36" width="118" height="28" rx="5" fill="white" stroke="#e2e0d8" stroke-width="1"/>
+            <text x="79" y="54" text-anchor="middle" font-size="11" fill="#6b6963" font-family="monospace">hero-section</text>
+            <!-- B: right=380 w=72 x=308 y=36 h=24 top-aligned with A, bottom 4px from element -->
+            <rect x="308" y="36" width="72" height="24" rx="5" fill="white" stroke="#e2e0d8" stroke-width="1"/>
+            <rect x="315" y="41" width="15" height="14" rx="3" fill="#f0efe9" stroke="#e2e0d8" stroke-width="0.5"/>
+            <rect x="333" y="41" width="15" height="14" rx="3" fill="#f0efe9" stroke="#e2e0d8" stroke-width="0.5"/>
+            <rect x="351" y="41" width="15" height="14" rx="3" fill="#eff6ff" stroke="#bfdbfe" stroke-width="0.5"/>
+            <path d="M 355.0 44.0 L 362.0 44.0 Q 363.5 44.0 363.5 45.5 L 363.5 49.5 Q 363.5 51.0 362.0 51.0 L 356.5 51.0 L 354.5 53.5 L 356.5 51.0 L 355.0 51.0 Q 353.5 51.0 353.5 49.5 L 353.5 45.5 Q 353.5 44.0 355.0 44.0 Z" fill="none" stroke="#2563eb" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"/>
+            <line x1="20" y1="64" x2="20" y2="36" stroke="#2563eb" stroke-width="0.8" stroke-dasharray="3 2" opacity="0.6"/>
+            <line x1="380" y1="64" x2="380" y2="36" stroke="#2563eb" stroke-width="0.8" stroke-dasharray="3 2" opacity="0.6"/>
             <text x="22" y="20" font-size="10" fill="#2563eb" font-family="monospace">A 左边界 = 元素左边界</text>
             <text x="378" y="20" text-anchor="end" font-size="10" fill="#2563eb" font-family="monospace">B 右边界 = 元素右边界</text>
           </svg>
@@ -147,12 +147,12 @@
             <!-- A: bottom=94, so top=94-28=66, x=20, w=118 -->
             <rect x="20" y="66" width="118" height="28" rx="5" fill="white" stroke="#e2e0d8" stroke-width="1"/>
             <text x="79" y="84" text-anchor="middle" font-size="11" fill="#6b6963" font-family="monospace">hero-section</text>
-            <!-- B: above A: top=66-4-28=34, x=20, w=72 -->
-            <rect x="20" y="34" width="72" height="28" rx="5" fill="white" stroke="#e2e0d8" stroke-width="1"/>
-            <rect x="27" y="41" width="15" height="15" rx="3" fill="#f0efe9" stroke="#e2e0d8" stroke-width="0.5"/>
-            <rect x="45" y="41" width="15" height="15" rx="3" fill="#f0efe9" stroke="#e2e0d8" stroke-width="0.5"/>
-            <rect x="63" y="41" width="15" height="15" rx="3" fill="#eff6ff" stroke="#bfdbfe" stroke-width="0.5"/>
-            <path d="M 66.5 44.0 L 73.5 44.0 Q 75.0 44.0 75.0 45.5 L 75.0 49.5 Q 75.0 51.0 73.5 51.0 L 68.0 51.0 L 66.0 53.5 L 68.0 51.0 L 66.5 51.0 Q 65.0 51.0 65.0 49.5 L 65.0 45.5 Q 65.0 44.0 66.5 44.0 Z" fill="none" stroke="#2563eb" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"/>
+            <!-- B: top=38 (A top 66 - gap 4 - B h 24), x=20, w=72 -->
+            <rect x="20" y="38" width="72" height="24" rx="5" fill="white" stroke="#e2e0d8" stroke-width="1"/>
+            <rect x="27" y="43" width="15" height="14" rx="3" fill="#f0efe9" stroke="#e2e0d8" stroke-width="0.5"/>
+            <rect x="45" y="43" width="15" height="14" rx="3" fill="#f0efe9" stroke="#e2e0d8" stroke-width="0.5"/>
+            <rect x="63" y="43" width="15" height="14" rx="3" fill="#eff6ff" stroke="#bfdbfe" stroke-width="0.5"/>
+            <path d="M 67.0 46.0 L 74.0 46.0 Q 75.5 46.0 75.5 47.5 L 75.5 51.5 Q 75.5 53.0 74.0 53.0 L 68.5 53.0 L 66.5 55.5 L 68.5 53.0 L 67.0 53.0 Q 65.5 53.0 65.5 51.5 L 65.5 47.5 Q 65.5 46.0 67.0 46.0 Z" fill="none" stroke="#2563eb" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"/>
             <line x1="20" y1="34" x2="20" y2="154" stroke="#6b6963" stroke-width="0.8" stroke-dasharray="3 2" opacity="0.5"/>
             <!-- bracket: A紧贴 -->
             <line x1="140" y1="66" x2="150" y2="66" stroke="#6b6963" stroke-width="0.5"/>
@@ -188,12 +188,12 @@
             <!-- A: bottom=94 top=66, right=380, w=118, x=262 -->
             <rect x="262" y="66" width="118" height="28" rx="5" fill="white" stroke="#e2e0d8" stroke-width="1"/>
             <text x="321" y="84" text-anchor="middle" font-size="11" fill="#6b6963" font-family="monospace">hero-section</text>
-            <!-- B: above A top=34, right=380, w=72, x=308 -->
-            <rect x="308" y="34" width="72" height="28" rx="5" fill="white" stroke="#e2e0d8" stroke-width="1"/>
-            <rect x="315" y="41" width="15" height="15" rx="3" fill="#f0efe9" stroke="#e2e0d8" stroke-width="0.5"/>
-            <rect x="333" y="41" width="15" height="15" rx="3" fill="#f0efe9" stroke="#e2e0d8" stroke-width="0.5"/>
-            <rect x="351" y="41" width="15" height="15" rx="3" fill="#eff6ff" stroke="#bfdbfe" stroke-width="0.5"/>
-            <path d="M 354.5 44.0 L 361.5 44.0 Q 363.0 44.0 363.0 45.5 L 363.0 49.5 Q 363.0 51.0 361.5 51.0 L 356.0 51.0 L 354.0 53.5 L 356.0 51.0 L 354.5 51.0 Q 353.0 51.0 353.0 49.5 L 353.0 45.5 Q 353.0 44.0 354.5 44.0 Z" fill="none" stroke="#2563eb" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"/>
+            <!-- B: top=38 (A top 66 - gap 4 - B h 24), right=380, w=72, x=308 -->
+            <rect x="308" y="38" width="72" height="24" rx="5" fill="white" stroke="#e2e0d8" stroke-width="1"/>
+            <rect x="315" y="43" width="15" height="14" rx="3" fill="#f0efe9" stroke="#e2e0d8" stroke-width="0.5"/>
+            <rect x="333" y="43" width="15" height="14" rx="3" fill="#f0efe9" stroke="#e2e0d8" stroke-width="0.5"/>
+            <rect x="351" y="43" width="15" height="14" rx="3" fill="#eff6ff" stroke="#bfdbfe" stroke-width="0.5"/>
+            <path d="M 355.0 46.0 L 362.0 46.0 Q 363.5 46.0 363.5 47.5 L 363.5 51.5 Q 363.5 53.0 362.0 53.0 L 356.5 53.0 L 354.5 55.5 L 356.5 53.0 L 355.0 53.0 Q 353.5 53.0 353.5 51.5 L 353.5 47.5 Q 353.5 46.0 355.0 46.0 Z" fill="none" stroke="#2563eb" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"/>
             <line x1="380" y1="34" x2="380" y2="154" stroke="#6b6963" stroke-width="0.8" stroke-dasharray="3 2" opacity="0.5"/>
             <line x1="240" y1="66" x2="250" y2="66" stroke="#6b6963" stroke-width="0.5"/>
             <line x1="240" y1="94" x2="250" y2="94" stroke="#6b6963" stroke-width="0.5"/>
@@ -228,39 +228,37 @@
             <!-- element: x=14 y=14 w=180 h=54 -->
             <rect x="14" y="14" width="180" height="54" rx="4" fill="white" stroke="#2563eb" stroke-width="1.5" stroke-dasharray="5 3"/>
             <text x="104" y="46" text-anchor="middle" font-size="10" fill="#9b9892">宽元素（AB-1）</text>
-            <!-- A: top = 14+54=68, x=14, w=100, h=26 -->
-            <rect x="14" y="68" width="100" height="26" rx="5" fill="white" stroke="#e2e0d8" stroke-width="1"/>
-            <text x="64" y="85" text-anchor="middle" font-size="10" fill="#6b6963" font-family="monospace">hero-btn</text>
-            <!-- B: right=194, w=62, x=132, y=68 -->
-            <rect x="132" y="68" width="62" height="26" rx="5" fill="white" stroke="#e2e0d8" stroke-width="1"/>
-            <rect x="138" y="75" width="13" height="13" rx="3" fill="#f0efe9" stroke="#e2e0d8" stroke-width="0.5"/>
-            <rect x="154" y="75" width="13" height="13" rx="3" fill="#f0efe9" stroke="#e2e0d8" stroke-width="0.5"/>
-            <rect x="170" y="75" width="13" height="13" rx="3" fill="#eff6ff" stroke="#bfdbfe" stroke-width="0.5"/>
-            <path d="M 173.5 82.0 L 180.5 82.0 Q 182.0 82.0 182.0 83.5 L 182.0 87.5 Q 182.0 89.0 180.5 89.0 L 175.0 89.0 L 173.0 91.5 L 175.0 89.0 L 173.5 89.0 Q 172.0 89.0 172.0 87.5 L 172.0 83.5 Q 172.0 82.0 173.5 82.0 Z" fill="none" stroke="#2563eb" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"/>
-            <line x1="14" y1="68" x2="14" y2="72" stroke="#2563eb" stroke-width="0.8" stroke-dasharray="3 2" opacity="0.6"/>
-            <line x1="194" y1="68" x2="194" y2="72" stroke="#2563eb" stroke-width="0.8" stroke-dasharray="3 2" opacity="0.6"/>
-            <text x="104" y="116" text-anchor="middle" font-size="10" fill="#6b6963">单排，A 左 B 右</text>
-            <text x="104" y="129" text-anchor="middle" font-size="10" fill="#9b9892">A 紧贴元素下边缘</text>
+            <!-- A: top=68 h=28 紧贴元素下边缘 (element bottom=68) -->
+            <rect x="14" y="68" width="100" height="28" rx="5" fill="white" stroke="#e2e0d8" stroke-width="1"/>
+            <text x="64" y="86" text-anchor="middle" font-size="10" fill="#6b6963" font-family="monospace">hero-btn</text>
+            <!-- B: top=72 (element bottom+4=68+4), h=24, B距元素4px -->
+            <rect x="132" y="72" width="62" height="24" rx="5" fill="white" stroke="#e2e0d8" stroke-width="1"/>
+            <rect x="139" y="77" width="15" height="14" rx="3" fill="#f0efe9" stroke="#e2e0d8" stroke-width="0.5"/>
+            <rect x="157" y="77" width="15" height="14" rx="3" fill="#f0efe9" stroke="#e2e0d8" stroke-width="0.5"/>
+            <rect x="175" y="77" width="15" height="14" rx="3" fill="#eff6ff" stroke="#bfdbfe" stroke-width="0.5"/>
+            <path d="M 178.5 80.0 L 185.5 80.0 Q 187.0 80.0 187.0 81.5 L 187.0 85.5 Q 187.0 87.0 185.5 87.0 L 180.0 87.0 L 178.0 89.5 L 180.0 87.0 L 178.5 87.0 Q 177.0 87.0 177.0 85.5 L 177.0 81.5 Q 177.0 80.0 178.5 80.0 Z" fill="none" stroke="#2563eb" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"/>
+            <text x="104" y="112" text-anchor="middle" font-size="10" fill="#6b6963">单排，A 左 B 右</text>
+            <text x="104" y="125" text-anchor="middle" font-size="10" fill="#9b9892">A 紧贴元素，B 距元素 4px</text>
 
             <!-- divider -->
-            <line x1="208" y1="14" x2="208" y2="150" stroke="#e2e0d8" stroke-width="1" stroke-dasharray="4 3"/>
+            <line x1="208" y1="14" x2="208" y2="165" stroke="#e2e0d8" stroke-width="1" stroke-dasharray="4 3"/>
 
-            <!-- RIGHT: narrow element → stacked below (AB-2/3 style), right-biased so AB-3 style right-align -->
+            <!-- RIGHT: narrow element → stacked below, right-biased (AB-3 style) -->
             <!-- element: x=280 y=14 w=106 h=54 -->
             <rect x="280" y="14" width="106" height="54" rx="4" fill="white" stroke="#2563eb" stroke-width="1.5" stroke-dasharray="5 3"/>
             <text x="333" y="46" text-anchor="middle" font-size="10" fill="#9b9892">窄元素（AB-3）</text>
-            <!-- A: top=68, right=386, w=118, x=268 -->
-            <rect x="268" y="68" width="118" height="26" rx="5" fill="white" stroke="#e2e0d8" stroke-width="1"/>
-            <text x="327" y="85" text-anchor="middle" font-size="10" fill="#6b6963" font-family="monospace">hero-section</text>
-            <!-- B: top=68+26+4=98, right=386, w=62, x=324 -->
-            <rect x="324" y="102" width="62" height="26" rx="5" fill="white" stroke="#e2e0d8" stroke-width="1"/>
-            <rect x="330" y="105" width="13" height="13" rx="3" fill="#f0efe9" stroke="#e2e0d8" stroke-width="0.5"/>
-            <rect x="346" y="105" width="13" height="13" rx="3" fill="#f0efe9" stroke="#e2e0d8" stroke-width="0.5"/>
-            <rect x="362" y="105" width="13" height="13" rx="3" fill="#eff6ff" stroke="#bfdbfe" stroke-width="0.5"/>
-            <path d="M 365.5 112.0 L 372.5 112.0 Q 374.0 112.0 374.0 113.5 L 374.0 117.5 Q 374.0 119.0 372.5 119.0 L 367.0 119.0 L 365.0 121.5 L 367.0 119.0 L 365.5 119.0 Q 364.0 119.0 364.0 117.5 L 364.0 113.5 Q 364.0 112.0 365.5 112.0 Z" fill="none" stroke="#2563eb" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"/>
+            <!-- A: top=68 h=28 紧贴元素下边缘, right=386, x=268 -->
+            <rect x="268" y="68" width="118" height="28" rx="5" fill="white" stroke="#e2e0d8" stroke-width="1"/>
+            <text x="327" y="86" text-anchor="middle" font-size="10" fill="#6b6963" font-family="monospace">hero-section</text>
+            <!-- B: top=100 (A bottom 96 + 4px), right=386, w=62, x=324, h=24 -->
+            <rect x="324" y="100" width="62" height="24" rx="5" fill="white" stroke="#e2e0d8" stroke-width="1"/>
+            <rect x="331" y="105" width="15" height="14" rx="3" fill="#f0efe9" stroke="#e2e0d8" stroke-width="0.5"/>
+            <rect x="349" y="105" width="15" height="14" rx="3" fill="#f0efe9" stroke="#e2e0d8" stroke-width="0.5"/>
+            <rect x="367" y="105" width="15" height="14" rx="3" fill="#eff6ff" stroke="#bfdbfe" stroke-width="0.5"/>
+            <path d="M 370.5 108.0 L 377.5 108.0 Q 379.0 108.0 379.0 109.5 L 379.0 113.5 Q 379.0 115.0 377.5 115.0 L 372.0 115.0 L 370.0 117.5 L 372.0 115.0 L 370.5 115.0 Q 369.0 115.0 369.0 113.5 L 369.0 109.5 Q 369.0 108.0 370.5 108.0 Z" fill="none" stroke="#2563eb" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"/>
             <line x1="386" y1="68" x2="386" y2="128" stroke="#6b6963" stroke-width="0.8" stroke-dasharray="3 2" opacity="0.5"/>
-            <text x="333" y="144" text-anchor="middle" font-size="10" fill="#6b6963">叠排居右</text>
-            <text x="333" y="157" text-anchor="middle" font-size="10" fill="#9b9892">A 紧贴元素，B 在 A 下方</text>
+            <text x="333" y="140" text-anchor="middle" font-size="10" fill="#6b6963">叠排居右</text>
+            <text x="333" y="153" text-anchor="middle" font-size="10" fill="#9b9892">B 在 A 下方 4px</text>
 
             <rect x="14" y="170" width="372" height="38" rx="5" fill="#eff6ff" stroke="#bfdbfe" stroke-width="0.5"/>
             <text x="200" y="187" text-anchor="middle" font-size="11" fill="#2563eb">AB-4 仅改变上下方向，单排/叠排由 AB-1/2/3 条件决定</text>
@@ -317,17 +315,17 @@
             <!-- element -->
             <rect x="20" y="66" width="190" height="120" rx="4" fill="white" stroke="#2563eb" stroke-width="1.5" stroke-dasharray="5 3"/>
             <text x="115" y="132" text-anchor="middle" font-size="11" fill="#9b9892">选中元素</text>
-            <!-- A -->
+            <!-- A: y=38 h=28 bottom=66=element top, 紧贴 -->
             <rect x="20" y="38" width="100" height="28" rx="5" fill="white" stroke="#e2e0d8" stroke-width="1"/>
             <text x="70" y="56" text-anchor="middle" font-size="11" fill="#6b6963" font-family="monospace">hero-btn</text>
-            <!-- B: right=210 w=72 x=138 -->
-            <rect x="138" y="38" width="72" height="28" rx="5" fill="white" stroke="#e2e0d8" stroke-width="1"/>
-            <rect x="145" y="45" width="15" height="15" rx="3" fill="#f0efe9" stroke="#e2e0d8" stroke-width="0.5"/>
-            <rect x="163" y="45" width="15" height="15" rx="3" fill="#f0efe9" stroke="#e2e0d8" stroke-width="0.5"/>
-            <rect x="181" y="45" width="15" height="15" rx="3" fill="#eff6ff" stroke="#bfdbfe" stroke-width="0.5"/>
-            <path d="M 184.5 44.0 L 191.5 44.0 Q 193.0 44.0 193.0 45.5 L 193.0 49.5 Q 193.0 51.0 191.5 51.0 L 186.0 51.0 L 184.0 53.5 L 186.0 51.0 L 184.5 51.0 Q 183.0 51.0 183.0 49.5 L 183.0 45.5 Q 183.0 44.0 184.5 44.0 Z" fill="none" stroke="#2563eb" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"/>
-            <!-- dialog: top=34 left=218 w=180 h=120 -->
-            <rect x="218" y="34" width="180" height="120" rx="6" fill="white" stroke="#2563eb" stroke-width="1.5"/>
+            <!-- B: top-align with A y=38, h=24, bottom=62 (4px from element) -->
+            <rect x="138" y="38" width="72" height="24" rx="5" fill="white" stroke="#e2e0d8" stroke-width="1"/>
+            <rect x="145" y="43" width="15" height="14" rx="3" fill="#f0efe9" stroke="#e2e0d8" stroke-width="0.5"/>
+            <rect x="163" y="43" width="15" height="14" rx="3" fill="#f0efe9" stroke="#e2e0d8" stroke-width="0.5"/>
+            <rect x="181" y="43" width="15" height="14" rx="3" fill="#eff6ff" stroke="#bfdbfe" stroke-width="0.5"/>
+            <path d="M 185.0 46.0 L 192.0 46.0 Q 193.5 46.0 193.5 47.5 L 193.5 51.5 Q 193.5 53.0 192.0 53.0 L 186.5 53.0 L 184.5 55.5 L 186.5 53.0 L 185.0 53.0 Q 183.5 53.0 183.5 51.5 L 183.5 47.5 Q 183.5 46.0 185.0 46.0 Z" fill="none" stroke="#2563eb" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"/>
+            <!-- dialog: top=38=B top, left=218 w=180 h=120 -->
+            <rect x="218" y="38" width="180" height="120" rx="6" fill="white" stroke="#2563eb" stroke-width="1.5"/>
             <text x="308" y="56" text-anchor="middle" font-size="11" fill="#6b6963">对话输入框</text>
             <rect x="230" y="64" width="156" height="24" rx="4" fill="#f0efe9" stroke="#e2e0d8" stroke-width="0.8"/>
             <text x="308" y="80" text-anchor="middle" font-size="10" fill="#9b9892">输入内容…</text>
@@ -371,15 +369,15 @@
             <!-- A below element: top=94, right=400, w=118, x=282 -->
             <rect x="282" y="94" width="118" height="28" rx="5" fill="white" stroke="#e2e0d8" stroke-width="1"/>
             <text x="341" y="112" text-anchor="middle" font-size="11" fill="#6b6963" font-family="monospace">hero-section</text>
-            <!-- B below A: top=126, right=400, w=72, x=328 -->
-            <rect x="328" y="130" width="72" height="28" rx="5" fill="white" stroke="#e2e0d8" stroke-width="1"/>
-            <rect x="335" y="133" width="15" height="15" rx="3" fill="#f0efe9" stroke="#e2e0d8" stroke-width="0.5"/>
-            <rect x="353" y="133" width="15" height="15" rx="3" fill="#f0efe9" stroke="#e2e0d8" stroke-width="0.5"/>
-            <rect x="371" y="133" width="15" height="15" rx="3" fill="#eff6ff" stroke="#bfdbfe" stroke-width="0.5"/>
-            <path d="M 374.5 136.0 L 381.5 136.0 Q 383.0 136.0 383.0 137.5 L 383.0 141.5 Q 383.0 143.0 381.5 143.0 L 376.0 143.0 L 374.0 145.5 L 376.0 143.0 L 374.5 143.0 Q 373.0 143.0 373.0 141.5 L 373.0 137.5 Q 373.0 136.0 374.5 136.0 Z" fill="none" stroke="#2563eb" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"/>
+            <!-- B: top=126 (A bottom 122 + 4), right=400, w=72, x=328, h=24 -->
+            <rect x="328" y="126" width="72" height="24" rx="5" fill="white" stroke="#e2e0d8" stroke-width="1"/>
+            <rect x="335" y="131" width="15" height="14" rx="3" fill="#f0efe9" stroke="#e2e0d8" stroke-width="0.5"/>
+            <rect x="353" y="131" width="15" height="14" rx="3" fill="#f0efe9" stroke="#e2e0d8" stroke-width="0.5"/>
+            <rect x="371" y="131" width="15" height="14" rx="3" fill="#eff6ff" stroke="#bfdbfe" stroke-width="0.5"/>
+            <path d="M 375.0 134.0 L 382.0 134.0 Q 383.5 134.0 383.5 135.5 L 383.5 139.5 Q 383.5 141.0 382.0 141.0 L 376.5 141.0 L 374.5 143.5 L 376.5 141.0 L 375.0 141.0 Q 373.5 141.0 373.5 139.5 L 373.5 135.5 Q 373.5 134.0 375.0 134.0 Z" fill="none" stroke="#2563eb" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"/>
             <!-- right-align guide for A/B -->
             <line x1="400" y1="94" x2="400" y2="162" stroke="#6b6963" stroke-width="0.8" stroke-dasharray="3 2" opacity="0.4"/>
-            <!-- dialog: top=126 (=B top), left=B left-4-w=328-4-166=158, w=166 -->
+            <!-- dialog: top=126 (=B top), left=158, w=166 -->
             <rect x="158" y="126" width="166" height="70" rx="6" fill="white" stroke="#2563eb" stroke-width="1.5"/>
             <text x="241" y="148" text-anchor="middle" font-size="11" fill="#6b6963">对话输入框</text>
             <rect x="170" y="156" width="142" height="20" rx="4" fill="#f0efe9" stroke="#e2e0d8" stroke-width="0.8"/>
@@ -422,21 +420,21 @@
             <!-- A: top=124, x=20, w=118, h=28 — 紧贴元素上边缘 -->
             <rect x="20" y="124" width="118" height="28" rx="5" fill="white" stroke="#e2e0d8" stroke-width="1"/>
             <text x="79" y="142" text-anchor="middle" font-size="11" fill="#6b6963" font-family="monospace">hero-section</text>
-            <!-- B: top=92, x=20, w=72, h=28 — 在A上方 -->
-            <rect x="20" y="92" width="72" height="28" rx="5" fill="white" stroke="#e2e0d8" stroke-width="1"/>
-            <rect x="27" y="99" width="15" height="15" rx="3" fill="#f0efe9" stroke="#e2e0d8" stroke-width="0.5"/>
-            <rect x="45" y="99" width="15" height="15" rx="3" fill="#f0efe9" stroke="#e2e0d8" stroke-width="0.5"/>
-            <rect x="63" y="99" width="15" height="15" rx="3" fill="#eff6ff" stroke="#bfdbfe" stroke-width="0.5"/>
-            <path d="M 66.5 102.0 L 73.5 102.0 Q 75.0 102.0 75.0 103.5 L 75.0 107.5 Q 75.0 109.0 73.5 109.0 L 68.0 109.0 L 66.0 111.5 L 68.0 109.0 L 66.5 109.0 Q 65.0 109.0 65.0 107.5 L 65.0 103.5 Q 65.0 102.0 66.5 102.0 Z" fill="none" stroke="#2563eb" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"/>
-            <!-- dialog above B: top=18, bottom=88, h=70, left-align to B left=20, w=176 -->
-            <rect x="20" y="18" width="176" height="70" rx="6" fill="white" stroke="#6b6963" stroke-width="1.5"/>
-            <text x="108" y="40" text-anchor="middle" font-size="11" fill="#6b6963">对话输入框</text>
-            <rect x="32" y="48" width="152" height="22" rx="4" fill="#f0efe9" stroke="#e2e0d8" stroke-width="0.8"/>
-            <text x="108" y="63" text-anchor="middle" font-size="10" fill="#9b9892">输入内容…</text>
+            <!-- B: top=96 (A top 124 - gap 4 - B h 24), x=20, w=72, h=24 — 在A上方 -->
+            <rect x="20" y="96" width="72" height="24" rx="5" fill="white" stroke="#e2e0d8" stroke-width="1"/>
+            <rect x="27" y="101" width="15" height="14" rx="3" fill="#f0efe9" stroke="#e2e0d8" stroke-width="0.5"/>
+            <rect x="45" y="101" width="15" height="14" rx="3" fill="#f0efe9" stroke="#e2e0d8" stroke-width="0.5"/>
+            <rect x="63" y="101" width="15" height="14" rx="3" fill="#eff6ff" stroke="#bfdbfe" stroke-width="0.5"/>
+            <path d="M 67.0 104.0 L 74.0 104.0 Q 75.5 104.0 75.5 105.5 L 75.5 109.5 Q 75.5 111.0 74.0 111.0 L 68.5 111.0 L 66.5 113.5 L 68.5 111.0 L 67.0 111.0 Q 65.5 111.0 65.5 109.5 L 65.5 105.5 Q 65.5 104.0 67.0 104.0 Z" fill="none" stroke="#2563eb" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"/>
+            <!-- dialog above B: bottom=92, h=70, top=22. left-align to B left=20 -->
+            <rect x="20" y="22" width="176" height="70" rx="6" fill="white" stroke="#6b6963" stroke-width="1.5"/>
+            <text x="108" y="44" text-anchor="middle" font-size="11" fill="#6b6963">对话输入框</text>
+            <rect x="32" y="52" width="152" height="22" rx="4" fill="#f0efe9" stroke="#e2e0d8" stroke-width="0.8"/>
+            <text x="108" y="67" text-anchor="middle" font-size="10" fill="#9b9892">输入内容…</text>
             <!-- left-align guide: x=20 runs through dialog, B, A -->
             <line x1="20" y1="18" x2="20" y2="152" stroke="#2563eb" stroke-width="0.8" stroke-dasharray="3 2" opacity="0.5"/>
-            <!-- guide: dialog bottom = B top - 4 = 88 -->
-            <line x1="14" y1="88" x2="210" y2="88" stroke="#6b6963" stroke-width="0.8" stroke-dasharray="3 2" opacity="0.55"/>
+            <!-- guide: dialog bottom = B top - 4 = 92 -->
+            <line x1="14" y1="92" x2="210" y2="92" stroke="#6b6963" stroke-width="0.8" stroke-dasharray="3 2" opacity="0.55"/>
             <!-- bracket: A紧贴element -->
             <line x1="142" y1="124" x2="152" y2="124" stroke="#6b6963" stroke-width="0.5"/>
             <line x1="142" y1="152" x2="152" y2="152" stroke="#6b6963" stroke-width="0.5"/>
@@ -468,38 +466,42 @@
       </div>
       <div class="rule-body">
         <div class="diagram-wrap">
-          <!-- Element near top, wide. AB-4: A/B below.
-               Element: x=20 y=14 w=380 h=72
-               AB-4+AB-1: A below, top=90, x=20, w=118; B: top=90, right=400, w=72, x=328
-               Dialog below B: top=90+28+4=122, right=400, w=168, x=232 -->
-          <svg viewBox="0 0 420 230" xmlns="http://www.w3.org/2000/svg">
-            <rect width="420" height="230" fill="#f0efe9"/>
+          <!-- Element near top, wide. AB-4+AB-1: single row below element.
+               Element: x=20 y=14 w=380 h=72. bottom=86.
+               A: top=86 h=28 紧贴元素下边缘, x=20, w=118
+               B: top=86 h=24 顶部对齐A, right=400, w=72, x=328. B bottom=110 (4px from element)
+               Dialog: top=B top=86, left=element right+4=404? No room → D-4 means left/right no room.
+               Dialog below B bottom+4: top=110+4=114, right=400, w=176, x=224 -->
+          <svg viewBox="0 0 420 218" xmlns="http://www.w3.org/2000/svg">
+            <rect width="420" height="218" fill="#f0efe9"/>
             <rect x="0" y="0" width="420" height="4" fill="#b8b6ae" opacity="0.4"/>
             <text x="8" y="16" font-size="10" fill="#9b9892">页面顶部边界</text>
-            <!-- element -->
+            <!-- element: x=20 y=14 w=380 h=72 bottom=86 -->
             <rect x="20" y="14" width="380" height="72" rx="4" fill="white" stroke="#2563eb" stroke-width="1.5" stroke-dasharray="5 3"/>
             <text x="210" y="55" text-anchor="middle" font-size="11" fill="#9b9892">选中元素（靠近顶部，较宽）</text>
-            <!-- A: top=86, x=20, w=118 -->
+            <!-- A: top=86 h=28 紧贴元素, x=20, w=118 -->
             <rect x="20" y="86" width="118" height="28" rx="5" fill="white" stroke="#e2e0d8" stroke-width="1"/>
             <text x="79" y="104" text-anchor="middle" font-size="11" fill="#6b6963" font-family="monospace">hero-section</text>
-            <!-- B: top=86+28+4=118, right=400, w=72, x=328 -->
-            <rect x="328" y="90" width="72" height="28" rx="5" fill="white" stroke="#e2e0d8" stroke-width="1"/>
-            <rect x="335" y="125" width="15" height="15" rx="3" fill="#f0efe9" stroke="#e2e0d8" stroke-width="0.5"/>
-            <rect x="353" y="125" width="15" height="15" rx="3" fill="#f0efe9" stroke="#e2e0d8" stroke-width="0.5"/>
-            <rect x="371" y="125" width="15" height="15" rx="3" fill="#eff6ff" stroke="#bfdbfe" stroke-width="0.5"/>
-            <path d="M 374.5 100.0 L 381.5 100.0 Q 383.0 100.0 383.0 101.5 L 383.0 105.5 Q 383.0 107.0 381.5 107.0 L 376.0 107.0 L 374.0 109.5 L 376.0 107.0 L 374.5 107.0 Q 373.0 107.0 373.0 105.5 L 373.0 101.5 Q 373.0 100.0 374.5 100.0 Z" fill="none" stroke="#2563eb" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"/>
-            <!-- dialog below B: top=150, right=400, w=176, x=224 -->
-            <rect x="224" y="150" width="176" height="80" rx="6" fill="white" stroke="#6b6963" stroke-width="1.5"/>
-            <text x="312" y="170" text-anchor="middle" font-size="11" fill="#6b6963">对话输入框</text>
-            <rect x="236" y="178" width="152" height="22" rx="4" fill="#f0efe9" stroke="#e2e0d8" stroke-width="0.8"/>
-            <text x="312" y="193" text-anchor="middle" font-size="10" fill="#9b9892">输入内容…</text>
-            <rect x="278" y="204" width="66" height="20" rx="4" fill="#eff6ff" stroke="#bfdbfe" stroke-width="0.5"/>
-            <text x="311" y="218" text-anchor="middle" font-size="10" fill="#2563eb">发 送</text>
-            <!-- guide: top=150 -->
-            <line x1="180" y1="150" x2="410" y2="150" stroke="#6b6963" stroke-width="0.8" stroke-dasharray="3 2" opacity="0.55"/>
-            <line x1="400" y1="118" x2="400" y2="228" stroke="#6b6963" stroke-width="0.8" stroke-dasharray="3 2" opacity="0.55"/>
-            <text x="22" y="164" font-size="10" fill="#6b6963" font-family="monospace">顶边 = B 底边 + 4px</text>
-            <text x="22" y="178" font-size="10" fill="#9b9892">在选中元素下方展开，不遮挡</text>
+            <!-- B: top=86 h=24 顶部对齐A, right=400, w=72, x=328. bottom=110 -->
+            <rect x="328" y="86" width="72" height="24" rx="5" fill="white" stroke="#e2e0d8" stroke-width="1"/>
+            <rect x="335" y="91" width="15" height="14" rx="3" fill="#f0efe9" stroke="#e2e0d8" stroke-width="0.5"/>
+            <rect x="353" y="91" width="15" height="14" rx="3" fill="#f0efe9" stroke="#e2e0d8" stroke-width="0.5"/>
+            <rect x="371" y="91" width="15" height="14" rx="3" fill="#eff6ff" stroke="#bfdbfe" stroke-width="0.5"/>
+            <path d="M 374.5 94.0 L 381.5 94.0 Q 383.0 94.0 383.0 95.5 L 383.0 99.5 Q 383.0 101.0 381.5 101.0 L 376.0 101.0 L 374.0 103.5 L 376.0 101.0 L 374.5 101.0 Q 373.0 101.0 373.0 99.5 L 373.0 95.5 Q 373.0 94.0 374.5 94.0 Z" fill="none" stroke="#2563eb" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"/>
+            <!-- dialog: top=B top=86, right=400, w=176, x=224 →向下展开: top=B bottom+4=114 -->
+            <rect x="224" y="114" width="176" height="80" rx="6" fill="white" stroke="#6b6963" stroke-width="1.5"/>
+            <text x="312" y="134" text-anchor="middle" font-size="11" fill="#6b6963">对话输入框</text>
+            <rect x="236" y="142" width="152" height="22" rx="4" fill="#f0efe9" stroke="#e2e0d8" stroke-width="0.8"/>
+            <text x="312" y="157" text-anchor="middle" font-size="10" fill="#9b9892">输入内容…</text>
+            <rect x="278" y="170" width="66" height="20" rx="4" fill="#eff6ff" stroke="#bfdbfe" stroke-width="0.5"/>
+            <text x="311" y="184" text-anchor="middle" font-size="10" fill="#2563eb">发 送</text>
+            <!-- guide: dialog top=114 = B bottom+4 -->
+            <line x1="180" y1="114" x2="410" y2="114" stroke="#6b6963" stroke-width="0.8" stroke-dasharray="3 2" opacity="0.55"/>
+            <line x1="400" y1="86" x2="400" y2="196" stroke="#6b6963" stroke-width="0.8" stroke-dasharray="3 2" opacity="0.55"/>
+            <!-- A紧贴元素 bracket -->
+            <line x1="14" y1="86" x2="14" y2="86" stroke="#2563eb" stroke-width="0.8" stroke-dasharray="3 2" opacity="0.5"/>
+            <text x="22" y="128" font-size="10" fill="#6b6963" font-family="monospace">顶边 = B 底边 + 4px</text>
+            <text x="22" y="142" font-size="10" fill="#9b9892">在选中元素下方展开，不遮挡</text>
           </svg>
         </div>
       </div>
@@ -531,27 +533,26 @@
             <rect x="8" y="8" width="404" height="240" rx="4" fill="white" stroke="#2563eb" stroke-width="1.5" stroke-dasharray="5 3"/>
             <text x="130" y="200" text-anchor="middle" font-size="11" fill="#9b9892">选中元素</text>
             <text x="130" y="216" text-anchor="middle" font-size="10" fill="#b8b6ae">（几乎占满视口，元素很宽）</text>
-            <!-- A inside, top-left: x=18, y=18, w=118, h=26 -->
-            <rect x="18" y="18" width="118" height="26" rx="5" fill="white" stroke="#e2e0d8" stroke-width="1"/>
-            <text x="77" y="35" text-anchor="middle" font-size="11" fill="#6b6963" font-family="monospace">hero-section</text>
-            <!-- B inside, top-right: x=322, y=18, w=72, h=26 -->
-            <rect x="322" y="18" width="72" height="26" rx="5" fill="white" stroke="#e2e0d8" stroke-width="1"/>
-            <rect x="329" y="25" width="14" height="14" rx="3" fill="#f0efe9" stroke="#e2e0d8" stroke-width="0.5"/>
-            <rect x="346" y="25" width="14" height="14" rx="3" fill="#f0efe9" stroke="#e2e0d8" stroke-width="0.5"/>
-            <rect x="363" y="25" width="14" height="14" rx="3" fill="#eff6ff" stroke="#bfdbfe" stroke-width="0.5"/>
-            <path d="M 366.5 28.0 L 373.5 28.0 Q 375.0 28.0 375.0 29.5 L 375.0 33.5 Q 375.0 35.0 373.5 35.0 L 368.0 35.0 L 366.0 37.5 L 368.0 35.0 L 366.5 35.0 Q 365.0 35.0 365.0 33.5 L 365.0 29.5 Q 365.0 28.0 366.5 28.0 Z" fill="none" stroke="#2563eb" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"/>
+            <!-- A: x=18 y=18 h=28 紧贴元素上边; B: top=18 h=24 顶部对齐A -->
+            <rect x="18" y="18" width="118" height="28" rx="5" fill="white" stroke="#e2e0d8" stroke-width="1"/>
+            <text x="77" y="36" text-anchor="middle" font-size="11" fill="#6b6963" font-family="monospace">hero-section</text>
+            <rect x="322" y="18" width="72" height="24" rx="5" fill="white" stroke="#e2e0d8" stroke-width="1"/>
+            <rect x="329" y="23" width="15" height="14" rx="3" fill="#f0efe9" stroke="#e2e0d8" stroke-width="0.5"/>
+            <rect x="347" y="23" width="15" height="14" rx="3" fill="#f0efe9" stroke="#e2e0d8" stroke-width="0.5"/>
+            <rect x="365" y="23" width="15" height="14" rx="3" fill="#eff6ff" stroke="#bfdbfe" stroke-width="0.5"/>
+            <path d="M 369.0 26.0 L 376.0 26.0 Q 377.5 26.0 377.5 27.5 L 377.5 31.5 Q 377.5 33.0 376.0 33.0 L 370.5 33.0 L 368.5 35.5 L 370.5 33.0 L 369.0 33.0 Q 367.5 33.0 367.5 31.5 L 367.5 27.5 Q 367.5 26.0 369.0 26.0 Z" fill="none" stroke="#2563eb" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"/>
             <!-- alignment guides: A left = element left, B right = element right -->
             <line x1="18" y1="8" x2="18" y2="44" stroke="#2563eb" stroke-width="0.8" stroke-dasharray="3 2" opacity="0.5"/>
             <line x1="394" y1="8" x2="394" y2="44" stroke="#2563eb" stroke-width="0.8" stroke-dasharray="3 2" opacity="0.5"/>
-            <!-- Dialog below B: top=48, right=394, w=180, x=214 -->
-            <rect x="214" y="48" width="180" height="106" rx="6" fill="white" stroke="#2563eb" stroke-width="1.5"/>
-            <text x="304" y="70" text-anchor="middle" font-size="11" fill="#6b6963">对话输入框</text>
-            <rect x="226" y="78" width="156" height="22" rx="4" fill="#f0efe9" stroke="#e2e0d8" stroke-width="0.8"/>
-            <text x="304" y="93" text-anchor="middle" font-size="10" fill="#9b9892">输入内容…</text>
+            <!-- Dialog below B: top=46 (B bottom 42 + 4), right=394, w=180, x=214 -->
+            <rect x="214" y="46" width="180" height="106" rx="6" fill="white" stroke="#2563eb" stroke-width="1.5"/>
+            <text x="304" y="68" text-anchor="middle" font-size="11" fill="#6b6963">对话输入框</text>
+            <rect x="226" y="76" width="156" height="22" rx="4" fill="#f0efe9" stroke="#e2e0d8" stroke-width="0.8"/>
+            <text x="304" y="91" text-anchor="middle" font-size="10" fill="#9b9892">输入内容…</text>
             <rect x="272" y="112" width="66" height="22" rx="4" fill="#eff6ff" stroke="#bfdbfe" stroke-width="0.5"/>
             <text x="305" y="127" text-anchor="middle" font-size="10" fill="#2563eb">发 送</text>
             <!-- dialog top align guide -->
-            <line x1="214" y1="48" x2="400" y2="48" stroke="#6b6963" stroke-width="0.8" stroke-dasharray="3 2" opacity="0.5"/>
+            <line x1="214" y1="46" x2="400" y2="46" stroke="#6b6963" stroke-width="0.8" stroke-dasharray="3 2" opacity="0.5"/>
             <!-- annotations -->
             <text x="18" y="10" font-size="10" fill="#2563eb" font-family="monospace">A 左边界 = 元素左边界</text>
             <text x="394" y="10" text-anchor="end" font-size="10" fill="#2563eb" font-family="monospace">B 右边界 = 元素右边界</text>
