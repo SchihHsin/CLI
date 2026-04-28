@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>用 AI 做竞品分析 · 协作经验分享</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --acc:#834DF0; --acc2:#6B38D4; --acc-dim:rgba(131,77,240,.07); --acc-b:rgba(131,77,240,.2);
+  --bg:#F7F7FA; --bg2:#EEEEF3; --sur:#FFFFFF;
+  --tx:#1A1A2E; --tx2:#4A4A6A; --tx3:#8888A0;
+  --bdr:rgba(0,0,0,.07); --bdr2:rgba(0,0,0,.12);
+  --g:#059669; --g-bg:rgba(5,150,105,.08); --g-b:rgba(5,150,105,.2);
+  --r:#DC2626; --r-bg:rgba(220,38,38,.07); --r-b:rgba(220,38,38,.2);
+  --y:#D97706; --y-bg:rgba(217,119,6,.08); --y-b:rgba(217,119,6,.2);
+  --bl:#2563EB; --bl-bg:rgba(37,99,235,.07); --bl-b:rgba(37,99,235,.2);
+  --tb:#0C0C11; --tbar:#15151C; --tbdr:#242430;
+  --tg:#34D399; --tb2:#60A5FA; --tp:#A78BFA; --ty:#FBBF24; --tr:#F87171; --tw:#CECEE0; --td:#4E4E5E;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--tx);font-family:'Noto Sans SC',sans-serif;font-weight:300;font-size:14px;overflow:hidden}
+
+.snap{height:100vh;overflow-y:scroll;scroll-snap-type:y mandatory}
+.snap::-webkit-scrollbar{display:none}
+.s{width:100vw;height:100vh;scroll-snap-align:start;scroll-snap-stop:always;position:relative;overflow:hidden;display:flex;flex-direction:column;background:var(--sur);border-bottom:1px solid var(--bdr2)}
+
+#prog{position:fixed;top:0;left:0;height:3px;background:var(--acc);z-index:200;transition:width .3s ease;border-radius:0 2px 2px 0}
+
+.dots{position:fixed;right:16px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:6px;z-index:100}
+.dot{width:5px;height:5px;border-radius:50%;background:var(--bdr2);cursor:pointer;transition:all .2s}
+.dot.on,.dot:hover{background:var(--acc);transform:scale(1.5)}
+
+/* Header bar */
+.bar{position:absolute;top:0;left:0;right:0;height:48px;display:flex;align-items:center;padding:0 56px;background:rgba(255,255,255,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--bdr2);z-index:10;gap:10px}
+.bar-cat{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--acc)}
+.bar-sep{color:var(--bdr2)}
+.bar-title{font-family:'Syne',sans-serif;font-size:16px;font-weight:700;color:var(--tx)}
+.bar-num{font-family:'DM Mono',monospace;font-size:10px;color:var(--tx3);margin-left:auto}
+
+.inner{flex:1;padding:60px 56px 28px;display:flex;flex-direction:column;overflow:hidden}
+
+/* Typography */
+h1{font-family:'Syne',sans-serif;font-size:58px;font-weight:800;line-height:1}
+h2{font-family:'Syne',sans-serif;font-size:36px;font-weight:700;line-height:1.1}
+h3{font-family:'Syne',sans-serif;font-size:20px;font-weight:700}
+.eyebrow{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--acc);display:block;margin-bottom:8px}
+.lead{font-size:15px;color:var(--tx2);line-height:1.75}
+.body{font-size:13px;color:var(--tx2);line-height:1.68}
+.small{font-size:11px;color:var(--tx3);line-height:1.6}
+.rule{width:32px;height:3px;background:var(--acc);border-radius:2px;margin-bottom:12px}
+.acc{color:var(--acc)}
+
+/* Grids */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:36px;flex:1;overflow:hidden}
+.cols-40{grid-template-columns:2fr 3fr}
+.col{display:flex;flex-direction:column;overflow:hidden}
+
+/* Cards */
+.card{background:var(--sur);border:.5px solid var(--bdr2);border-radius:10px;padding:14px 18px}
+.card.acc-c{background:var(--acc-dim);border-color:var(--acc-b)}
+.card.g{background:var(--g-bg);border-color:var(--g-b)}
+.card.r{background:var(--r-bg);border-color:var(--r-b)}
+.card.y{background:var(--y-bg);border-color:var(--y-b)}
+.card.bl{background:var(--bl-bg);border-color:var(--bl-b)}
+.card-lbl{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.13em;text-transform:uppercase;color:var(--tx3);margin-bottom:6px;display:block}
+
+/* Pills */
+.pill{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:20px;font-family:'DM Mono',monospace;font-size:9px;border:.5px solid;letter-spacing:.05em}
+.pill-g{background:var(--g-bg);color:var(--g);border-color:var(--g-b)}
+.pill-a{background:var(--acc-dim);color:var(--acc2);border-color:var(--acc-b)}
+.pill-b{background:var(--bl-bg);color:var(--bl);border-color:var(--bl-b)}
+.pill-y{background:var(--y-bg);color:var(--y);border-color:var(--y-b)}
+
+/* Stat */
+.stat{text-align:center}
+.stat-n{font-family:'Syne',sans-serif;font-size:46px;font-weight:800;color:var(--acc);line-height:1}
+.stat-l{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.13em;text-transform:uppercase;color:var(--tx3);margin-top:4px}
+
+/* Divider */
+.hr{height:1px;background:var(--bdr2);margin:12px 0}
+
+/* Info row (no nesting) */
+.info{padding:10px 0;border-top:.5px solid var(--bdr)}
+.info:last-child{border-bottom:.5px solid var(--bdr)}
+.info-lbl{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.13em;text-transform:uppercase;color:var(--tx3);margin-bottom:4px}
+.info-body{font-size:12.5px;color:var(--tx2);line-height:1.65}
+
+/* Chat bubbles */
+.chat{margin-bottom:8px}
+.chat-who{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--tx3);margin-bottom:3px}
+.chat-msg{font-size:12.5px;color:var(--tx2);line-height:1.58;padding:8px 12px;background:var(--bg2);border:.5px solid var(--bdr2);border-radius:6px}
+.chat-msg.ai{background:var(--acc-dim);border-color:var(--acc-b)}
+
+/* Workflow */
+.wf{display:flex;gap:12px;padding:9px 0;border-top:.5px solid var(--bdr)}
+.wf:last-child{border-bottom:.5px solid var(--bdr)}
+.wf-n{font-family:'DM Mono',monospace;font-size:10px;font-weight:500;width:20px;flex-shrink:0;padding-top:1px}
+.wf-n.h{color:var(--g)}
+.wf-n.a{color:var(--acc)}
+.wf-n.b{color:var(--bl)}
+.wf-t{font-size:12.5px;font-weight:500;color:var(--tx);margin-bottom:2px;font-family:'Syne',sans-serif}
+.wf-d{font-size:11px;color:var(--tx3);line-height:1.55}
+
+/* Terminal */
+.mt{background:var(--tb);border-radius:7px;overflow:hidden;font-family:'DM Mono',monospace;font-size:11px;line-height:1.75;border:.5px solid var(--tbdr)}
+.mtbar{display:flex;align-items:center;gap:4px;padding:5px 9px;background:var(--tbar);border-bottom:.5px solid var(--tbdr)}
+.mdt{width:7px;height:7px;border-radius:50%}
+.mdt.r{background:#FF5F57}.mdt.y{background:#FEBC2E}.mdt.g{background:#28C840}
+.mtt{font-size:9px;color:var(--td);flex:1;text-align:center}
+.mb{padding:9px 11px}
+.tg{color:var(--tg)}.tb{color:var(--tb2)}.tp{color:var(--tp)}.ty{color:var(--ty)}.tr{color:var(--tr)}.tw{color:var(--tw)}.td{color:var(--td)}
+.tag2{display:inline-block;font-size:9px;padding:1px 5px;border-radius:3px;vertical-align:middle;margin:0 1px}
+.tg2{background:rgba(52,211,153,.15);color:#34D399;border:.5px solid rgba(52,211,153,.3)}
+.tb3{background:rgba(96,165,250,.15);color:#60A5FA;border:.5px solid rgba(96,165,250,.3)}
+.tp3{background:rgba(167,139,250,.15);color:#A78BFA;border:.5px solid rgba(167,139,250,.3)}
+.cur{display:inline-block;width:2px;height:11px;background:#834DF0;vertical-align:middle;animation:bl 1s step-end infinite}
+@keyframes bl{50%{opacity:0}}
+
+/* Numbered item */
+.ni{display:flex;gap:14px;padding:10px 0;border-top:.5px solid var(--bdr)}
+.ni:last-child{border-bottom:.5px solid var(--bdr)}
+.ni-n{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:var(--bdr2);flex-shrink:0;line-height:1.1;width:26px}
+.ni-t{font-size:13px;font-weight:500;color:var(--tx);margin-bottom:2px;font-family:'Syne',sans-serif}
+.ni-b{font-size:11px;color:var(--tx3);line-height:1.58}
+</style>
+</head>
+<body>
+<div id="prog"></div>
+<nav class="dots" id="dots"></nav>
+<div class="snap" id="snap">
+
+<!-- S00 COVER -->
+<div class="s" id="s00" data-label="封面">
+  <div style="position:absolute;left:0;top:0;bottom:0;width:5px;background:var(--acc)"></div>
+  <div style="flex:1;display:flex;padding:0 72px 0 77px;align-items:center;gap:56px">
+    <div style="flex:1">
+      <span class="eyebrow" style="margin-bottom:12px">Design Team · Internal Sharing · 2026</span>
+      <h1 style="margin-bottom:14px">用 AI 做<br><span class="acc">竞品分析</span><br>的协作经验</h1>
+      <p class="lead" style="max-width:420px;margin-bottom:26px">从一句模糊的需求到一套完整的设计报告，还原人和 AI 在竞品研究中的真实协作过程。</p>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <span class="pill pill-g">👤 人的判断力</span>
+        <span class="pill pill-a">✦ AI 的执行力</span>
+        <span class="pill pill-b">⚡ 协同放大</span>
+      </div>
+    </div>
+    <div style="width:268px">
+      <div style="display:grid;grid-template-columns:1fr 1fr;border:.5px solid var(--bdr2);border-radius:12px;overflow:hidden">
+        <div style="padding:22px 16px;border-right:.5px solid var(--bdr);border-bottom:.5px solid var(--bdr)" class="stat"><div class="stat-n">5</div><div class="stat-l">分析产品</div></div>
+        <div style="padding:22px 16px;border-bottom:.5px solid var(--bdr)" class="stat"><div class="stat-n">20</div><div class="stat-l">交互触点</div></div>
+        <div style="padding:22px 16px;border-right:.5px solid var(--bdr)" class="stat"><div class="stat-n">7</div><div class="stat-l">HTML 文件</div></div>
+        <div style="padding:22px 16px" class="stat"><div class="stat-n" style="font-size:36px">~7d</div><div class="stat-l">完成时间</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- S01 起点 -->
+<div class="s" id="s01" data-label="起点">
+  <div class="bar"><span class="bar-cat">01</span><span class="bar-sep">|</span><span class="bar-title">从一个完全陌生的领域开始</span><span class="bar-num">01 / 12</span></div>
+  <div class="inner">
+    <div class="cols">
+      <div class="col">
+        <span class="eyebrow">The starting point</span>
+        <div class="rule"></div>
+        <h3 style="margin-bottom:16px">我只做过 GUI，<br>TUI 是什么都不知道</h3>
+        <div class="chat"><div class="chat-who">用户</div><div class="chat-msg">"给我做一下目前 AI CLI 的业界洞察……把他们的 CLI 界面给我展示出来。"</div></div>
+        <p class="small" style="margin:6px 0 10px;font-style:italic">首先面临的问题：不知道 TUI 是什么，CLI 工具的界面是怎么构建的</p>
+        <div class="chat"><div class="chat-who">Claude</div><div class="chat-msg ai">解释 TUI（Terminal User Interface）的概念，介绍 Ink/React、Rich、Bubble Tea 等渲染框架，以及为什么 AI CLI 工具可以在 terminal 里做真正的"UI"……</div></div>
+        <div class="card acc-c" style="margin-top:10px">
+          <span class="card-lbl">AI 作为领域入门向导</span>
+          <div class="body">不懂的领域，AI 是最高效的第一课老师。<strong style="color:var(--tx)">边做边问</strong>，遇到不懂的概念立刻追问，AI 会在上下文中解释清楚。</div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="mt" style="flex:1">
+          <div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g"></div><span class="mtt">理解 TUI 的过程</span></div>
+          <div class="mb">
+            <div class="td" style="font-size:9px;margin-bottom:8px"># 关键的认知翻转</div>
+            <div style="margin-bottom:9px"><div style="font-size:10px;color:#F87171;margin-bottom:2px">我以为：CLI 工具没有 UI，就是文字输出</div><div style="font-size:10px;color:#34D399">实际上：有 TUI 框架，可以做固定布局、颜色、动画</div></div>
+            <div style="margin-bottom:9px"><div style="font-size:10px;color:#F87171;margin-bottom:2px">我以为：terminal 界面只能从上到下刷新</div><div style="font-size:10px;color:#34D399">实际上：React/Ink 可以做状态驱动 UI，snap scroll 可以做楼层感</div></div>
+            <div><div style="font-size:10px;color:#F87171;margin-bottom:2px">我以为：CLI mockup 只能截图</div><div style="font-size:10px;color:#34D399">实际上：HTML + CSS 可以渲染出等效的终端视觉效果</div></div>
+          </div>
+        </div>
+        <div class="card g" style="margin-top:10px">
+          <span class="card-lbl">学到的关键洞察</span>
+          <div class="body">AI CLI 的界面框架是真实的设计维度——固定底部 vs 内联跟随、Block 体系 vs 纯线性，这些框架决策决定了能做什么 UX，而不只是长什么样。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- S02 分工模型 -->
+<div class="s" id="s02" data-label="分工模型">
+  <div class="bar"><span class="bar-cat">02</span><span class="bar-sep">|</span><span class="bar-title">判断力 + 执行力的组合</span><span class="bar-num">02 / 12</span></div>
+  <div class="inner">
+    <span class="eyebrow">Division of labor</span>
+    <h2 style="margin-bottom:20px">不是"AI 帮我做事"</h2>
+    <div class="cols">
+      <div class="col">
+        <div style="font-family:'Syne',sans-serif;font-size:16px;font-weight:700;color:var(--g);margin-bottom:10px">👤 人负责</div>
+        <div class="info"><div class="info-lbl">战略判断</div><div class="info-body">决定研究什么、分析哪些维度、目标受众是谁。这些是 AI 无法凭空确定的。</div></div>
+        <div class="info"><div class="info-lbl">质量把关</div><div class="info-body">判断分析深度、逻辑是否成立、哪个维度拆得太粗或太细。</div></div>
+        <div class="info"><div class="info-lbl">设计审美</div><div class="info-body">字体大不大、emoji 是否 low、表格列名要统一成产品名——只有人能判断。</div></div>
+        <div class="info"><div class="info-lbl">结构设计</div><div class="info-body">报告拆几个文件、每楼层放什么、100vh snap scroll 的体验框架决策。</div></div>
+      </div>
+      <div class="col">
+        <div style="font-family:'Syne',sans-serif;font-size:16px;font-weight:700;color:var(--acc2);margin-bottom:10px">✦ AI 负责</div>
+        <div class="info"><div class="info-lbl">信息搜集</div><div class="info-body">搜索 5 个产品的所有公开信息，整理每个触点的实现方式，找出关键数据点。</div></div>
+        <div class="info"><div class="info-lbl">规模化生产</div><div class="info-body">20 触点 × 5 产品 = 100 个分析单元，全部写完、格式统一、terminal mockup 可视化。</div></div>
+        <div class="info"><div class="info-lbl">代码实现</div><div class="info-body">HTML/CSS/JS 全部 AI 生成。snap scroll、SVG 图标系统、跨文件导航——直接产出可用代码。</div></div>
+        <div class="info"><div class="info-lbl">批量修改</div><div class="info-body">127 处 emoji 替换、转置 20 张表格、补充 Codex CLI 列——Python 脚本批量处理。</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- S03 工作载体 -->
+<div class="s" id="s03" data-label="工作载体">
+  <div class="bar"><span class="bar-cat">03</span><span class="bar-sep">|</span><span class="bar-title">工作载体：Web → CLI 的切换</span><span class="bar-num">03 / 12</span></div>
+  <div class="inner">
+    <div class="cols cols-40">
+      <div class="col" style="gap:12px;justify-content:center">
+        <div>
+          <span class="eyebrow">Phase 1 · 0 → 1</span>
+          <div style="font-family:'Syne',sans-serif;font-size:18px;font-weight:700;margin-bottom:8px">Web 界面</div>
+          <p class="body" style="margin-bottom:8px">0 到 1 阶段在 claude.ai Web 界面工作。<strong style="color:var(--tx)">即时预览</strong>是核心优势：AI 生成 HTML，浏览器马上渲染，设计反馈循环极快。</p>
+          <div class="card"><span class="card-lbl">适合的场景</span><div class="body">第一版结构探索 · 快速验证视觉方向 · 单文件修改</div></div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;color:var(--tx3);font-family:'DM Mono',monospace;font-size:10px">
+          <div style="flex:1;height:1px;background:var(--bdr2)"></div>当文件变多时切换<div style="flex:1;height:1px;background:var(--bdr2)"></div>
+        </div>
+        <div>
+          <span class="eyebrow">Phase 2 · 迭代优化</span>
+          <div style="font-family:'Syne',sans-serif;font-size:18px;font-weight:700;margin-bottom:8px">Claude Code CLI</div>
+          <p class="body" style="margin-bottom:8px">多文件时 CLI 能清晰获取完整文件树上下文，改完之后直接让 CLI 执行 <code style="font-family:'DM Mono',monospace;font-size:11px;background:var(--bg2);padding:1px 5px;border-radius:3px">git commit + push</code>，自动更新到线上地址。</p>
+          <div class="card g"><span class="card-lbl">CLI 的核心优势</span><div class="body">完整文件树上下文，跨文件修改一致 · 一条指令完成修改→commit→push · 在线地址自动更新</div></div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="mt" style="flex:1">
+          <div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g"></div><span class="mtt">CLI 工作流示例</span></div>
+          <div class="mb">
+            <div class="td" style="font-size:9px;margin-bottom:8px"># 一次完整迭代</div>
+            <div style="margin-bottom:7px"><div class="td" style="font-size:9px">1. 提出修改需求</div><div class="tw" style="font-size:10px;padding-left:10px">❯ 把所有表格的列名统一为产品名</div></div>
+            <div style="margin-bottom:7px"><div class="td" style="font-size:9px">2. AI 读取所有相关文件</div><div class="tg" style="font-size:10px;padding-left:10px">✔ Reading: tp-intent.html tp-execute.html...</div><div class="tg" style="font-size:10px;padding-left:10px">✔ Python script: 转置 20 张表格完成</div></div>
+            <div style="margin-bottom:10px"><div class="td" style="font-size:9px">3. 修改完成后一键 commit push</div><div class="tw" style="font-size:10px;padding-left:10px;word-break:break-all">❯ git add . && git commit -m "fix: unify column headers" && git push</div><div class="tg" style="font-size:10px;padding-left:10px">✔ main → origin/main · 在线已更新</div></div>
+            <div style="background:rgba(131,77,240,.1);border:.5px solid rgba(131,77,240,.2);border-radius:5px;padding:7px 10px">
+              <div class="td" style="font-size:9px;margin-bottom:3px">Web vs CLI 的关键区别</div>
+              <div class="tw" style="font-size:10px">Web：即时预览，单轮改单文件</div>
+              <div class="tw" style="font-size:10px">CLI：多文件上下文 + 自动化流水线</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- S04 Workflow -->
+<div class="s" id="s04" data-label="Workflow">
+  <div class="bar"><span class="bar-cat">04</span><span class="bar-sep">|</span><span class="bar-title">完整协作 Workflow</span><span class="bar-num">04 / 12</span></div>
+  <div class="inner">
+    <h3 style="margin-bottom:16px">10 步 <span class="acc">协作流程</span></h3>
+    <div class="cols" style="gap:24px">
+      <div class="col" style="gap:0">
+        <div class="wf"><div class="wf-n h">01</div><div><div class="wf-t">提出模糊需求 + 维度直觉</div><div class="wf-d">"做 AI CLI 业界洞察…不要只有文字，展示 CLI 界面"</div></div></div>
+        <div class="wf"><div class="wf-n a">02</div><div><div class="wf-t">搜索 + 确定产品范围 + 第一版</div><div class="wf-d">自主确定 5 个产品，terminal mockup 可视化，生成初版 HTML。</div></div></div>
+        <div class="wf"><div class="wf-n h">03</div><div><div class="wf-t">审查 → 结构性反馈</div><div class="wf-d">"列应该是产品名" / "旅程地图太少" / "加情绪曲线"</div></div></div>
+        <div class="wf"><div class="wf-n a">04</div><div><div class="wf-t">批量重构 + 补充内容</div><div class="wf-d">Python 脚本转置所有表格，补充完整旅程地图，拆分文件。</div></div></div>
+        <div class="wf"><div class="wf-n h">05</div><div><div class="wf-t">审查 → 体验层反馈</div><div class="wf-d">"emoji 太 low" / "楼层要 100vh snap" / "触点分析少了"</div></div></div>
+      </div>
+      <div class="col" style="gap:0">
+        <div class="wf"><div class="wf-n a">06</div><div><div class="wf-t">系统性视觉升级</div><div class="wf-d">127 处 emoji → SVG 线性图标，100vh snap scroll，字体放大。</div></div></div>
+        <div class="wf"><div class="wf-n h">07</div><div><div class="wf-t">补充缺失内容</div><div class="wf-d">"Codex CLI 也要加" / "/fork、Esc、摘要卡触点缺失"</div></div></div>
+        <div class="wf"><div class="wf-n a">08</div><div><div class="wf-t">全量补充 + 修复遗漏</div><div class="wf-d">20 个表格全部补充 Codex CLI 列，新增 3 个缺失触点分析页。</div></div></div>
+        <div class="wf"><div class="wf-n b">09</div><div><div class="wf-t">合成设计方案 + 开发规格</div><div class="wf-d">AI 综合 20 个触点结论 → 8 个亮点 + TypeScript 规格，17 页。</div></div></div>
+        <div class="wf"><div class="wf-n h">10</div><div><div class="wf-t">提炼经验 → 这个分享</div><div class="wf-d">梳理协作模型，沉淀为 Skill 文档，形成内部分享。</div></div></div>
+      </div>
+    </div>
+    <p class="small" style="margin-top:10px">绿色 = Human 决策 &nbsp;·&nbsp; 紫色 = AI 执行 &nbsp;·&nbsp; 蓝色 = 协同</p>
+  </div>
+</div>
+
+<!-- S05 对话模式 -->
+<div class="s" id="s05" data-label="对话模式">
+  <div class="bar"><span class="bar-cat">05</span><span class="bar-sep">|</span><span class="bar-title">4 种高效对话模式</span><span class="bar-num">05 / 12</span></div>
+  <div class="inner">
+    <div class="g2" style="flex:1;gap:14px;align-content:start">
+      <div class="card g">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><span class="card-lbl" style="margin:0">A · 维度拆解</span><span class="pill pill-g" style="font-size:8px">Human 主导</span></div>
+        <div class="chat"><div class="chat-who">用户</div><div class="chat-msg">"输入框的位置/形态 和 编辑能力不是同一维度，分两页"</div></div>
+        <div class="chat"><div class="chat-who">Claude</div><div class="chat-msg ai">理解原则，找出所有同类问题，一起拆分为 TP02A / TP02B / TP03</div></div>
+        <p class="small" style="margin-top:4px">人感知到维度混用 → AI 举一反三处理</p>
+      </div>
+      <div class="card acc-c">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><span class="card-lbl" style="margin:0">B · 批量修正</span><span class="pill pill-a" style="font-size:8px">AI 主导</span></div>
+        <div class="chat"><div class="chat-who">用户</div><div class="chat-msg">"所有图标改成 SVG 线性图标，不要 emoji"</div></div>
+        <div class="chat"><div class="chat-who">Claude</div><div class="chat-msg ai">审计 → 建 SVG 图标库 → Python 批量替换 127 处 → 验证</div></div>
+        <p class="small" style="margin-top:4px">人说方向 → AI 处理规模</p>
+      </div>
+      <div class="card bl">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><span class="card-lbl" style="margin:0">C · 内容填补</span><span class="pill pill-b" style="font-size:8px">协同</span></div>
+        <div class="chat"><div class="chat-who">用户</div><div class="chat-msg">"对应用户旅程里的触点，把缺失的补全"</div></div>
+        <div class="chat"><div class="chat-who">Claude</div><div class="chat-msg ai">自主 audit：19 个旅程触点 vs 已分析 → 发现 3 缺失 → 自动补充</div></div>
+        <p class="small" style="margin-top:4px">人给标准 → AI 自我 audit + 填补</p>
+      </div>
+      <div class="card y">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><span class="card-lbl" style="margin:0">D · 合成升华</span><span class="pill pill-a" style="font-size:8px">AI 主导</span></div>
+        <div class="chat"><div class="chat-who">用户</div><div class="chat-msg">"基于所有分析，输出结合了正确方向的设计方案"</div></div>
+        <div class="chat"><div class="chat-who">Claude</div><div class="chat-msg ai">跨触点综合 → 8 个设计亮点 + TypeScript 规格 → 17 页设计提案</div></div>
+        <p class="small" style="margin-top:4px">基于已建立知识库做跨触点综合</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- S06 遇到的问题 -->
+<div class="s" id="s06" data-label="遇到的问题">
+  <div class="bar"><span class="bar-cat">06</span><span class="bar-sep">|</span><span class="bar-title">过程中浮现的问题 &amp; 解决方法</span><span class="bar-num">06 / 12</span></div>
+  <div class="inner">
+    <h3 style="margin-bottom:18px">真实踩过的 <span class="acc">3 个坑</span></h3>
+    <div style="flex:1;overflow:hidden">
+      <div class="ni">
+        <div class="ni-n">1</div>
+        <div style="flex:1">
+          <div class="ni-t">文件越来越大，改动耗费 tokens 极多</div>
+          <div class="ni-b" style="margin-bottom:5px">单个 HTML 文件超过 600 行后，每次修改都需要 AI 读完整文件。600 行文件改一处细节，消耗 tokens 和写一个新文件差不多。</div>
+          <span style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--g)">→ 解法：</span>
+          <span class="ni-b"> 提前拆分文件，每个保持 400 行以内。修改时 AI 只需读相关文件，token 消耗下降 70%+。</span>
+        </div>
+      </div>
+      <div class="ni">
+        <div class="ni-n">2</div>
+        <div style="flex:1">
+          <div class="ni-t">AI 容易输出整个文件，而非 diff</div>
+          <div class="ni-b" style="margin-bottom:5px">让 AI "改一下这个地方"，有时会直接输出整个修改后的文件。在 CLI 里这意味着覆盖整个文件，容易丢失其他修改。</div>
+          <span style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--g)">→ 解法：</span>
+          <span class="ni-b"> 明确指令："只用 str_replace 修改这一处，不要输出整个文件"。</span>
+        </div>
+      </div>
+      <div class="ni">
+        <div class="ni-n">3</div>
+        <div style="flex:1">
+          <div class="ni-t">长对话后 AI 开始"忘事"</div>
+          <div class="ni-b" style="margin-bottom:5px">会话很长之后，AI 有时会重复已经解决过的问题，或者对前面定好的规范产生偏差。</div>
+          <span style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--g)">→ 解法：</span>
+          <span class="ni-b"> 把关键决定写进 SKILL.md，不要依赖会话上下文记住规范，要把规范外化为文件。</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- S07 典型案例 -->
+<div class="s" id="s07" data-label="典型案例">
+  <div class="bar"><span class="bar-cat">07</span><span class="bar-sep">|</span><span class="bar-title">一次高效对话的解剖</span><span class="bar-num">07 / 12</span></div>
+  <div class="inner">
+    <div class="cols" style="gap:44px">
+      <div class="col">
+        <span class="eyebrow">High-efficiency conversation</span>
+        <div class="rule"></div>
+        <h3 style="margin-bottom:16px">给"为什么"<br>比给"怎么做"<br><span class="acc">更有价值</span></h3>
+        <div class="chat"><div class="chat-who">用户</div><div class="chat-msg">"输入框的 A、纯 stdin 跟随 和 B、固定底部编辑器就不是一个维度的，一个是交互形式，一个是位置/形态。不是一个维度的可以分两个表格、分两页，会更清楚些。"</div></div>
+        <div class="chat" style="margin-top:6px"><div class="chat-who">Claude</div><div class="chat-msg ai">明白了，TP02A（位置/形态）、TP02B（编辑能力）、TP03（模式指示符）各一页，同时更新导航系统和旅程地图所有链接。</div></div>
+      </div>
+      <div class="col">
+        <div class="info"><div class="info-lbl" style="color:var(--g)">✔ 说清楚了"为什么"</div><div class="info-body">"交互形式" vs "位置/形态"是两个不同维度——AI 理解了判断原则，会举一反三找到所有同类问题一起解决。</div></div>
+        <div class="info"><div class="info-lbl" style="color:var(--g)">✔ 给了方向，不是方案</div><div class="info-body">"分两个表格分两页，会更清楚"是方向。AI 自主决定拆成 3 个触点各一页——比人指定的方案更优。</div></div>
+        <div class="info"><div class="info-lbl" style="color:var(--g)">✔ 结果可以被快速验证</div><div class="info-body">拆分后的表格是否合理，人可以直接判断对错。任务有清晰的"好/坏"标准，AI 执行结果可以被快速审查。</div></div>
+        <div class="info"><div class="info-lbl" style="color:var(--r)">✗ 效率低的反馈</div><div class="info-body">"感觉不太好" / "整体改一下"——没有判断标准，AI 只能猜测，改的很可能不是真正的问题。</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- S08 指令质量 -->
+<div class="s" id="s08" data-label="指令质量">
+  <div class="bar"><span class="bar-cat">08</span><span class="bar-sep">|</span><span class="bar-title">指令颗粒度决定迭代效率</span><span class="bar-num">08 / 12</span></div>
+  <div class="inner">
+    <span class="eyebrow">Key pattern</span>
+    <h2 style="margin-bottom:22px">意图 + <span class="acc">判断标准</span></h2>
+    <div class="cols" style="gap:36px">
+      <div class="col">
+        <div class="card" style="padding:18px 20px;margin-bottom:12px">
+          <div style="display:flex;align-items:center;margin-bottom:12px">
+            <div style="flex:1"><div style="font-family:'DM Mono',monospace;font-size:9px;color:var(--r);margin-bottom:3px">太粗 ✗</div><div style="font-size:11px;color:var(--tx3)">"做个好看的报告"</div></div>
+            <div style="flex:2;height:3px;background:linear-gradient(90deg,rgba(220,38,38,.3),var(--acc),rgba(5,150,105,.4));border-radius:2px;position:relative;margin:0 8px">
+              <div style="position:absolute;top:-4px;left:60%;width:2px;height:11px;background:var(--acc);border-radius:1px"></div>
+            </div>
+            <div style="flex:1;text-align:right"><div style="font-family:'DM Mono',monospace;font-size:9px;color:var(--r);margin-bottom:3px">太细 ✗</div><div style="font-size:11px;color:var(--tx3)">"第3行第2列改成XX"</div></div>
+          </div>
+          <div style="background:var(--acc-dim);border:.5px solid var(--acc-b);padding:9px 12px;border-radius:6px;text-align:center">
+            <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--acc);margin-bottom:3px">甜点区间</div>
+            <div style="font-size:12px;color:var(--tx2)">"这两个不是同一维度，原因是… → 分两页会更清楚"</div>
+          </div>
+        </div>
+        <div class="card acc-c">
+          <span class="card-lbl">核心规律</span>
+          <div class="body">给"为什么"比给"怎么做"更有价值。当 AI 理解了你的判断原则，它会把所有符合该原则的问题一起解决，而不只是处理你指出的那一个。</div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="ni"><div class="ni-n">①</div><div><div class="ni-t">意图驱动</div><div class="ni-b">说"我要让对比更清晰"，不说"把第2列移到第3列"。AI 会找到最好的实现方式。</div></div></div>
+        <div class="ni"><div class="ni-n">②</div><div><div class="ni-t">给判断原则</div><div class="ni-b">"不是同一维度"是可复用的判断标准，AI 会用它处理所有类似情况，不只是眼前这一个。</div></div></div>
+        <div class="ni"><div class="ni-n">③</div><div><div class="ni-t">可验证的结果</div><div class="ni-b">让 AI 的输出有清晰的对错标准，人可以快速审查和确认是否符合预期。</div></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- S09 6条原则 -->
+<div class="s" id="s09" data-label="协作原则">
+  <div class="bar"><span class="bar-cat">09</span><span class="bar-sep">|</span><span class="bar-title">6 条可复用的协作原则</span><span class="bar-num">09 / 12</span></div>
+  <div class="inner">
+    <div class="g2" style="flex:1;gap:0;align-content:start">
+      <div class="ni"><div class="ni-n">1</div><div><div class="ni-t">先跑起来，再迭代收敛</div><div class="ni-b">模糊需求 → AI 第一版 → 人反馈，比一开始就规划周全效率高得多。</div></div></div>
+      <div class="ni"><div class="ni-n">2</div><div><div class="ni-t">给"为什么"比"怎么做"更有价值</div><div class="ni-b">"这两个不是同一维度"比"改成两张表"效果好。AI 理解原则，举一反三。</div></div></div>
+      <div class="ni"><div class="ni-n">3</div><div><div class="ni-t">让 AI 做 audit，不要自己检查</div><div class="ni-b">"对应旅程补全触点" → AI 自主对比发现 3 缺失 → 自动填补。人只看结果。</div></div></div>
+      <div class="ni"><div class="ni-n">4</div><div><div class="ni-t">批量操作是 AI 的核心优势</div><div class="ni-b">127 处替换、20 张表格补充新列——繁琐重复的工作全部交给 AI，人不介入。</div></div></div>
+      <div class="ni"><div class="ni-n">5</div><div><div class="ni-t">结构决策留给人，实现留给 AI</div><div class="ni-b">"拆成 7 个文件、用 snap scroll"是人的决策。"怎么实现 nav.js"是 AI 的决策。</div></div></div>
+      <div class="ni"><div class="ni-n">6</div><div><div class="ni-t">把关键决定外化为文件</div><div class="ni-b">不要依赖会话上下文记住规范。把列名规范、表格格式写进 SKILL.md，每次会话让 AI 先读。</div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- S10 Skill 展示 -->
+<div class="s" id="s10" data-label="Skill 沉淀">
+  <div class="bar"><span class="bar-cat">10</span><span class="bar-sep">|</span><span class="bar-title">沉淀成可复用的 Skill</span><span class="bar-num">10 / 12</span></div>
+  <div class="inner">
+    <div class="cols cols-40">
+      <div class="col">
+        <span class="eyebrow">What we built</span>
+        <div class="rule"></div>
+        <h3 style="margin-bottom:12px">competitive-analysis<br><span class="acc">Skill</span></h3>
+        <p class="body" style="margin-bottom:12px">加载这个 Skill 后，只需说"帮我做 XX 竞品分析"，Claude 会自动按照这套经过验证的方法论工作——从搜集到可交付 HTML 报告。</p>
+        <div class="card acc-c" style="margin-bottom:8px">
+          <span class="card-lbl">Skill 关键规范</span>
+          <div class="body" style="line-height:1.8">
+            → 列 = 产品名（主）+ 做法（副），不是维度名<br>
+            → 维度拆分：一个触点只分析一个维度<br>
+            → 界面形态行必须有 terminal mockup<br>
+            → 旅程 4 行：行为 / 触点 / 情绪曲线 / 摩擦<br>
+            → 每个触点必须有推荐方向（含判断标准）
+          </div>
+        </div>
+        <div class="card g">
+          <span class="card-lbl">复用价值</span>
+          <div class="body">不只是 AI CLI 分析的记录，而是任何领域竞品分析的通用方法论。下次做电商、设计工具、SaaS 产品对比 → 直接用。</div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="mt" style="flex:1;font-size:10.5px;line-height:1.72">
+          <div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g"></div><span class="mtt">SKILL-competitive-analysis.md</span></div>
+          <div class="mb">
+            <div class="td">---</div>
+            <div><span class="tp">name:</span> <span class="tw">competitive-analysis</span></div>
+            <div><span class="tp">description:</span> <span class="tw">生成完整竞品分析报告，</span></div>
+            <div class="tw" style="padding-left:14px">适用于任何数字产品领域…</div>
+            <div class="td">---</div>
+            <div style="height:6px"></div>
+            <div class="td" style="font-size:9px">## 工作流程 · 5 个阶段</div>
+            <div style="height:3px"></div>
+            <div><span class="tg">PHASE 1</span> <span class="tw">产品搜集与信息建立</span></div>
+            <div class="td" style="padding-left:14px;font-size:9px">web_search × 3 → 知识库建立</div>
+            <div><span class="tg">PHASE 2</span> <span class="tw">用户旅程地图</span></div>
+            <div class="td" style="padding-left:14px;font-size:9px">阶段→触点→情绪曲线→摩擦/机会</div>
+            <div><span class="tg">PHASE 3</span> <span class="tw">触点对比分析</span></div>
+            <div class="td" style="padding-left:14px;font-size:9px">N×M 表（产品为列）+ mockup</div>
+            <div><span class="tg">PHASE 4</span> <span class="tw">设计亮点提炼</span></div>
+            <div class="td" style="padding-left:14px;font-size:9px">跨触点综合 → 6-10 个亮点</div>
+            <div><span class="tg">PHASE 5</span> <span class="tw">开发规格文档</span></div>
+            <div class="td" style="padding-left:14px;font-size:9px">TypeScript interface + 状态机</div>
+            <div style="height:6px"></div>
+            <div class="td" style="font-size:9px">## 核心表格规范</div>
+            <div><span class="ty">→</span> <span class="tw">列 = 产品名 + 做法副标题</span></div>
+            <div><span class="ty">→</span> <span class="tw">维度拆分：一触点一维度</span></div>
+            <div><span class="ty">→</span> <span class="tw">界面形态行必须有 mockup</span></div>
+            <div><span class="ty">→</span> <span class="tw">旅程 4 行 / 不放用户想法行</span></div>
+            <div style="height:6px"></div>
+            <div class="td" style="font-size:9px">## 输出规格</div>
+            <div><span class="tb">report/</span></div>
+            <div class="td" style="padding-left:12px">├── index.html</div>
+            <div class="td" style="padding-left:12px">├── shared.css + nav.js</div>
+            <div class="td" style="padding-left:12px">├── tp-[阶段].html</div>
+            <div class="td" style="padding-left:12px">└── design-proposal.html</div>
+            <div style="height:6px"></div>
+            <div><span style="color:#834DF0">❯</span> <span class="tw">输出可交付 HTML 报告</span><div class="cur" style="display:inline-block"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- S11 Skill 细节 -->
+<div class="s" id="s11" data-label="Skill 内容">
+  <div class="bar"><span class="bar-cat">11</span><span class="bar-sep">|</span><span class="bar-title">Skill 的关键设计决定</span><span class="bar-num">11 / 12</span></div>
+  <div class="inner">
+    <div class="cols" style="gap:36px">
+      <div class="col">
+        <h3 style="margin-bottom:12px">写进 Skill 的：<br><span class="acc">判断原则</span>，不是执行细节</h3>
+        <p class="body" style="margin-bottom:12px">原则可以迁移，步骤会过时。不写"第一步搜索，第二步……"，而是写"如果需求很模糊，先开始工作生成第一版，不要等问题想清楚了再动"。</p>
+        <div class="mt" style="font-size:10px;line-height:1.65">
+          <div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g"></div><span class="mtt">SKILL.md 片段 · 维度拆分原则</span></div>
+          <div class="mb">
+            <div class="td" style="font-size:9px;margin-bottom:4px">## 维度拆分原则（重要）</div>
+            <div class="td">如果一个触点涉及多个不同维度，</div>
+            <div class="td">拆分为多个触点：</div>
+            <div style="height:4px"></div>
+            <div><span class="tr">✗</span> <span class="td">输入框（位置 + 编辑能力混在一起）</span></div>
+            <div><span class="tg">✓</span> <span class="tw">输入框-位置/形态</span></div>
+            <div class="td" style="padding-left:14px">输入框-编辑能力 — 分两个触点</div>
+            <div style="height:4px"></div>
+            <div class="td" style="font-size:9px">判断标准：不同产品在这个维度上</div>
+            <div class="td" style="font-size:9px">是否做了不同的设计决策？</div>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div style="font-family:'Syne',sans-serif;font-size:15px;font-weight:700;margin-bottom:10px">Skill 里最有价值的部分</div>
+        <div class="info"><div class="info-lbl">协作模式参考表</div><div class="info-body">5 种模式，每种写明 Human 做什么 / AI 做什么，清晰分工。</div></div>
+        <div class="info"><div class="info-lbl">质量检查清单</div><div class="info-body">结构 / 内容 / 视觉 / 一致性 4 个维度，可直接对照自查，不依赖感觉判断。</div></div>
+        <div class="info"><div class="info-lbl">常见问题处理</div><div class="info-body">产品信息搜不到 / 某产品没有该功能 / 触点维度不确定 → 各给出具体处理方法。</div></div>
+        <div class="info"><div class="info-lbl">技术规格</div><div class="info-body">文件结构、snap scroll CSS、SVG 图标规范、配色系统——可直接复制到新项目。</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- S12 结尾 -->
+<div class="s" id="s12" data-label="结尾" style="background:var(--sur)">
+  <div style="position:absolute;left:0;top:0;bottom:0;width:5px;background:var(--acc)"></div>
+  <div style="flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:0 80px">
+    <span class="eyebrow" style="margin-bottom:16px">结论</span>
+    <h1 style="margin-bottom:14px">AI 是<span class="acc">执行力的杠杆</span></h1>
+    <h1 style="color:var(--tx3);margin-bottom:28px;font-size:40px">不是决策的替代</h1>
+    <div style="height:3px;width:60px;background:var(--acc);border-radius:2px;margin-bottom:24px"></div>
+    <p class="lead" style="max-width:520px;margin-bottom:36px">人把 80% 的时间花在<strong style="color:var(--tx)">"判断和审查"</strong>上，不再花在"搜集和生产"上。判断力提升了，AI 才能把执行力真正放大。</p>
+    <div style="display:flex;gap:0;border:.5px solid var(--bdr2);border-radius:12px;overflow:hidden">
+      <div style="padding:20px 32px;border-right:.5px solid var(--bdr)" class="stat"><div class="stat-n">20</div><div class="stat-l">触点分析</div></div>
+      <div style="padding:20px 32px;border-right:.5px solid var(--bdr)" class="stat"><div class="stat-n">7</div><div class="stat-l">HTML 文件</div></div>
+      <div style="padding:20px 32px;border-right:.5px solid var(--bdr)" class="stat"><div class="stat-n" style="font-size:36px">~7d</div><div class="stat-l">完成时间</div></div>
+      <div style="padding:20px 32px" class="stat"><div class="stat-n">1</div><div class="stat-l">可复用 Skill</div></div>
+    </div>
+  </div>
+</div>
+
+</div>
+<script>
+const snap=document.getElementById('snap');
+const secs=[...document.querySelectorAll('.s[id]')];
+const dots=document.getElementById('dots');
+const prog=document.getElementById('prog');
+secs.forEach((s,i)=>{
+  const d=document.createElement('div');d.className='dot';d.title=s.dataset.label||'';
+  d.onclick=()=>s.scrollIntoView({behavior:'smooth'});dots.appendChild(d);
+});
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      const i=secs.indexOf(e.target);
+      dots.querySelectorAll('.dot').forEach((d,j)=>d.classList.toggle('on',i===j));
+      prog.style.width=`${((i+1)/secs.length)*100}%`;
+    }
+  });
+},{threshold:.5});
+secs.forEach(s=>obs.observe(s));
+document.addEventListener('keydown',e=>{
+  let cur=0;secs.forEach((s,i)=>{if(snap.scrollTop>=s.offsetTop-10)cur=i;});
+  if(e.key==='ArrowDown'||e.key==='PageDown'){e.preventDefault();const n=secs[cur+1];if(n)snap.scrollTo({top:n.offsetTop,behavior:'smooth'});}
+  else if(e.key==='ArrowUp'||e.key==='PageUp'){e.preventDefault();const p=secs[Math.max(0,cur-1)];if(p)snap.scrollTo({top:p.offsetTop,behavior:'smooth'});}
+});
+</script>
+</body>
+</html>

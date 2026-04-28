@@ -11,10 +11,11 @@
   --bg:#F2F2F7; --bg2:#E8E8EF; --sur:#FFFFFF;
   --tx:#1A1A2E; --tx2:#28284A; --tx3:#5E5E7A;
   --bdr:rgba(0,0,0,.07); --bdr2:rgba(0,0,0,.13);
-  --g:#059669; --g-bg:rgba(5,150,105,.09); --g-b:rgba(5,150,105,.22);
+  --g:#059669; --g-bg:rgba(5,150,105,.04); --g-b:rgba(5,150,105,.22);
   --r:#DC2626; --r-bg:rgba(220,38,38,.08); --r-b:rgba(220,38,38,.22);
   --y:#D97706; --y-bg:rgba(217,119,6,.09); --y-b:rgba(217,119,6,.22);
   --bl:#2563EB; --bl-bg:rgba(37,99,235,.08); --bl-b:rgba(37,99,235,.22);
+  --p:#7C3AED; --p-bg:rgba(124,58,237,.08); --p-b:rgba(124,58,237,.2);
   --tb:#0C0C11; --tbar:#15151C; --tbdr:#242430;
   --tg:#34D399; --tb2:#60A5FA; --tp:#93C5FD; --ty:#FBBF24; --tr:#F87171; --tw:#CECEE0; --td:#4E4E5E;
 }
@@ -93,8 +94,8 @@ h3{font-family:'Syne',sans-serif;font-size:20px;font-weight:700}
 .chat{margin-bottom:8px;display:flex;flex-direction:column;align-items:flex-end}
 .chat:has(.chat-msg.ai){align-items:flex-start}
 .chat-who{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--tx3);margin-bottom:3px}
-.chat-msg{font-size:13px;color:var(--tx2);line-height:1.55;padding:8px 12px;border-radius:14px;border-bottom-right-radius:3px;max-width:90%;background:var(--bg2);border:.5px solid var(--bdr2)}
-.chat-msg.ai{background:var(--acc-dim);border-color:var(--acc-b);border-bottom-right-radius:14px;border-bottom-left-radius:3px}
+.chat-msg{font-size:13px;color:var(--sur);line-height:1.55;padding:8px 12px;border-radius:14px;border-bottom-right-radius:3px;max-width:90%;background:var(--tx3);border:.5px solid var(--bdr2)}
+.chat-msg.ai{color:var(--tx);background:var(--y-bg);border:.5px solid var(--ty);border-bottom-right-radius:14px;border-bottom-left-radius:3px}
 
 /* Workflow (legacy) */
 .wf{display:flex;gap:12px;padding:9px 0;border-top:.5px solid var(--bdr)}
@@ -161,7 +162,7 @@ h3{font-family:'Syne',sans-serif;font-size:20px;font-weight:700}
         <span class="pill pill-a">协同放大</span>
       </div>
     </div>
-    <div style="width:50%;padding-right:65px;display:flex;justify-content:flex-end;align-items:center">
+    <div style="width:50%;padding-right:65px;display:flex;justify-content:center;align-items:center">
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;width:268px">
         <div style="padding:22px 16px;background:var(--bg);border:.5px solid var(--bdr2);border-radius:10px" class="stat"><div class="stat-n">5</div><div class="stat-l">分析产品</div></div>
         <div style="padding:22px 16px;background:var(--bg);border:.5px solid var(--bdr2);border-radius:10px" class="stat"><div class="stat-n">20</div><div class="stat-l">交互触点</div></div>
@@ -219,22 +220,22 @@ h3{font-family:'Syne',sans-serif;font-size:20px;font-weight:700}
     <div class="cols">
       <div class="col" style="gap:6px">
         <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--g);margin-bottom:4px">● Human</div>
-        <div style="background:var(--sur);border:.5px solid var(--bdr2);border-radius:10px;padding:12px 16px;display:flex;gap:14px;align-items:flex-start;flex:1;min-height:0;position:relative;overflow:hidden">
+        <div style="background:var(--g-bg);border:.5px solid var(--g-b);border-radius:10px;padding:12px 16px;display:flex;gap:14px;align-items:flex-start;flex:1;min-height:0;position:relative;overflow:hidden">
           <svg style="position:absolute;top:8px;right:10px;opacity:.15;color:var(--g)" width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/><line x1="22" y1="12" x2="19" y2="12"/><line x1="5" y1="12" x2="2" y2="12"/><line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/></svg>
           <div style="font-family:'Syne',sans-serif;font-size:26px;font-weight:800;color:var(--g);flex-shrink:0;line-height:1;width:26px">1</div>
           <div style="flex:1"><div class="ni-t">战略判断</div><div class="ni-b">决定研究什么、分析哪些维度、目标受众是谁。这些是 AI 无法凭空确定的。</div></div>
         </div>
-        <div style="background:var(--sur);border:.5px solid var(--bdr2);border-radius:10px;padding:12px 16px;display:flex;gap:14px;align-items:flex-start;flex:1;min-height:0;position:relative;overflow:hidden">
+        <div style="background:var(--g-bg);border:.5px solid var(--g-b);border-radius:10px;padding:12px 16px;display:flex;gap:14px;align-items:flex-start;flex:1;min-height:0;position:relative;overflow:hidden">
           <svg style="position:absolute;top:8px;right:10px;opacity:.15;color:var(--g)" width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
           <div style="font-family:'Syne',sans-serif;font-size:26px;font-weight:800;color:var(--g);flex-shrink:0;line-height:1;width:26px">2</div>
           <div style="flex:1"><div class="ni-t">质量把关</div><div class="ni-b">判断分析深度、逻辑是否成立、哪个维度拆得太粗或太细。</div></div>
         </div>
-        <div style="background:var(--sur);border:.5px solid var(--bdr2);border-radius:10px;padding:12px 16px;display:flex;gap:14px;align-items:flex-start;flex:1;min-height:0;position:relative;overflow:hidden">
+        <div style="background:var(--g-bg);border:.5px solid var(--g-b);border-radius:10px;padding:12px 16px;display:flex;gap:14px;align-items:flex-start;flex:1;min-height:0;position:relative;overflow:hidden">
           <svg style="position:absolute;top:8px;right:10px;opacity:.15;color:var(--g)" width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg>
           <div style="font-family:'Syne',sans-serif;font-size:26px;font-weight:800;color:var(--g);flex-shrink:0;line-height:1;width:26px">3</div>
           <div style="flex:1"><div class="ni-t">视觉标准</div><div class="ni-b">层级是否清晰、图标体系是否统一、表格结构是否规范——审美标准由人设定。</div></div>
         </div>
-        <div style="background:var(--sur);border:.5px solid var(--bdr2);border-radius:10px;padding:12px 16px;display:flex;gap:14px;align-items:flex-start;flex:1;min-height:0;position:relative;overflow:hidden">
+        <div style="background:var(--g-bg);border:.5px solid var(--g-b);border-radius:10px;padding:12px 16px;display:flex;gap:14px;align-items:flex-start;flex:1;min-height:0;position:relative;overflow:hidden">
           <svg style="position:absolute;top:8px;right:10px;opacity:.15;color:var(--g)" width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
           <div style="font-family:'Syne',sans-serif;font-size:26px;font-weight:800;color:var(--g);flex-shrink:0;line-height:1;width:26px">4</div>
           <div style="flex:1"><div class="ni-t">结构设计</div><div class="ni-b">报告拆几个文件、每楼层放什么、100vh snap scroll 的体验框架决策。</div></div>
@@ -242,22 +243,22 @@ h3{font-family:'Syne',sans-serif;font-size:20px;font-weight:700}
       </div>
       <div class="col" style="gap:6px">
         <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--acc);margin-bottom:4px">● AI</div>
-        <div style="background:var(--sur);border:.5px solid var(--bdr2);border-radius:10px;padding:12px 16px;display:flex;gap:14px;align-items:flex-start;flex:1;min-height:0;position:relative;overflow:hidden">
+        <div style="background:var(--acc-dim);border:.5px solid var(--acc-b);border-radius:10px;padding:12px 16px;display:flex;gap:14px;align-items:flex-start;flex:1;min-height:0;position:relative;overflow:hidden">
           <svg style="position:absolute;top:8px;right:10px;opacity:.15;color:var(--acc)" width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
           <div style="font-family:'Syne',sans-serif;font-size:26px;font-weight:800;color:var(--acc);flex-shrink:0;line-height:1;width:26px">1</div>
           <div style="flex:1"><div class="ni-t">信息搜集</div><div class="ni-b">搜索 5 个产品的所有公开信息，整理每个触点的实现方式，找出关键数据点。</div></div>
         </div>
-        <div style="background:var(--sur);border:.5px solid var(--bdr2);border-radius:10px;padding:12px 16px;display:flex;gap:14px;align-items:flex-start;flex:1;min-height:0;position:relative;overflow:hidden">
+        <div style="background:var(--acc-dim);border:.5px solid var(--acc-b);border-radius:10px;padding:12px 16px;display:flex;gap:14px;align-items:flex-start;flex:1;min-height:0;position:relative;overflow:hidden">
           <svg style="position:absolute;top:8px;right:10px;opacity:.15;color:var(--acc)" width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
           <div style="font-family:'Syne',sans-serif;font-size:26px;font-weight:800;color:var(--acc);flex-shrink:0;line-height:1;width:26px">2</div>
           <div style="flex:1"><div class="ni-t">规模化生产</div><div class="ni-b">20 触点 × 5 产品 = 100 个分析单元，全部写完、格式统一、terminal mockup 可视化。</div></div>
         </div>
-        <div style="background:var(--sur);border:.5px solid var(--bdr2);border-radius:10px;padding:12px 16px;display:flex;gap:14px;align-items:flex-start;flex:1;min-height:0;position:relative;overflow:hidden">
+        <div style="background:var(--acc-dim);border:.5px solid var(--acc-b);border-radius:10px;padding:12px 16px;display:flex;gap:14px;align-items:flex-start;flex:1;min-height:0;position:relative;overflow:hidden">
           <svg style="position:absolute;top:8px;right:10px;opacity:.15;color:var(--acc)" width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
           <div style="font-family:'Syne',sans-serif;font-size:26px;font-weight:800;color:var(--acc);flex-shrink:0;line-height:1;width:26px">3</div>
           <div style="flex:1"><div class="ni-t">代码实现</div><div class="ni-b">HTML/CSS/JS 全部 AI 生成。snap scroll、SVG 图标系统、跨文件导航——直接产出可用代码。</div></div>
         </div>
-        <div style="background:var(--sur);border:.5px solid var(--bdr2);border-radius:10px;padding:12px 16px;display:flex;gap:14px;align-items:flex-start;flex:1;min-height:0;position:relative;overflow:hidden">
+        <div style="background:var(--acc-dim);border:.5px solid var(--acc-b);border-radius:10px;padding:12px 16px;display:flex;gap:14px;align-items:flex-start;flex:1;min-height:0;position:relative;overflow:hidden">
           <svg style="position:absolute;top:8px;right:10px;opacity:.15;color:var(--acc)" width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
           <div style="font-family:'Syne',sans-serif;font-size:26px;font-weight:800;color:var(--acc);flex-shrink:0;line-height:1;width:26px">4</div>
           <div style="flex:1"><div class="ni-t">批量修改</div><div class="ni-b">127 处 emoji 替换、转置 20 张表格、补充 Codex CLI 列——Python 脚本批量处理。</div></div>
@@ -319,7 +320,7 @@ h3{font-family:'Syne',sans-serif;font-size:20px;font-weight:700}
       <div style="display:flex;gap:14px;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.05em">
         <span style="color:var(--g)">● Human</span>
         <span style="color:var(--acc)">● AI</span>
-        <span style="color:var(--tx3)">● 协同</span>
+        <span style="color:var(--p)">● 协同</span>
       </div>
     </div>
     <div style="flex:1;display:grid;grid-template-columns:minmax(0,400px) minmax(0,400px);gap:28px;min-height:0;overflow:hidden;justify-content:center">
@@ -409,8 +410,8 @@ h3{font-family:'Syne',sans-serif;font-size:20px;font-weight:700}
         </div>
 
         <div style="background:var(--sur);border:.5px solid var(--bdr2);border-radius:8px;padding:11px 12px;display:flex;gap:10px;align-items:center">
-          <div style="text-align:center;flex-shrink:0;width:28px"><div style="font-family:'DM Mono',monospace;font-size:14px;font-weight:700;color:var(--tx3);line-height:1">09</div><span class="fn-badge" style="background:var(--tx3);margin-top:2px;font-size:7px">AB</span></div>
-          <div style="flex-shrink:0;width:30px;height:30px;border-radius:7px;background:var(--bg2);border:.5px solid var(--bdr2);display:flex;align-items:center;justify-content:center;color:var(--tx3)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg></div>
+          <div style="text-align:center;flex-shrink:0;width:28px"><div style="font-family:'DM Mono',monospace;font-size:14px;font-weight:700;color:var(--p);line-height:1">09</div><span class="fn-badge" style="background:var(--p);margin-top:2px;font-size:7px">AB</span></div>
+          <div style="flex-shrink:0;width:30px;height:30px;border-radius:7px;background:var(--p-bg);border:.5px solid var(--p-b);display:flex;align-items:center;justify-content:center;color:var(--p)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg></div>
           <div style="flex:1"><div style="font-family:'Syne',sans-serif;font-size:12px;font-weight:700;color:var(--tx);margin-bottom:1px">合成设计方案 + 规格</div><div style="font-size:11px;color:var(--tx2);line-height:1.4">8 个设计亮点 + TypeScript 规格文档 · 共 17 页</div></div>
         </div>
         <div style="margin-left:13px;flex:1;min-height:6px;display:flex;flex-direction:column;align-items:center">
@@ -438,46 +439,58 @@ h3{font-family:'Syne',sans-serif;font-size:20px;font-weight:700}
 
       <div style="background:var(--sur);border:.5px solid var(--bdr2);border-radius:10px;padding:14px 18px;position:relative;overflow:hidden">
         <svg style="position:absolute;top:8px;right:10px;opacity:.15;color:var(--g)" width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="3" x2="6" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>
-        <div style="display:flex;gap:14px;align-items:baseline;margin-bottom:10px">
+        <div style="display:flex;gap:14px;align-items:center;margin-bottom:10px">
           <div style="font-family:'Syne',sans-serif;font-size:26px;font-weight:800;color:var(--g);flex-shrink:0;line-height:1;width:26px">1</div>
-          <div><div class="ni-t" style="margin-bottom:3px">维度拆解</div><span class="pill" style="background:var(--bg);border-color:var(--bdr2);color:var(--tx3);font-size:8px">Human 主导</span></div>
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+            <div class="ni-t">维度拆解</div>
+            <span class="pill" style="background:var(--g-bg);border-color:var(--g-b);color:var(--g);font-size:8px">Human 主导</span>
+          </div>
         </div>
         <div class="chat"><div class="chat-who">用户</div><div class="chat-msg">"输入框的位置/形态 和 编辑能力不是同一维度，分两页"</div></div>
         <div class="chat"><div class="chat-who">Claude</div><div class="chat-msg ai">理解原则，找出所有同类问题，一起拆分为 TP02A / TP02B / TP03</div></div>
-        <div style="margin-top:8px;background:var(--acc-dim);border-left:2.5px solid var(--acc);border-radius:0 5px 5px 0;padding:5px 10px;font-family:'Syne',sans-serif;font-size:11px;font-weight:700;color:var(--acc)">人感知到维度混用 → AI 举一反三处理</div>
+        <div style="margin-top:32px;background:var(--g-bg);border-left:2.5px solid var(--g);border-radius:0 5px 5px 0;padding:5px 10px;font-family:'Syne',sans-serif;font-size:11px;font-weight:700;color:var(--g)">人感知到维度混用 → AI 举一反三处理</div>
       </div>
 
       <div style="background:var(--sur);border:.5px solid var(--bdr2);border-radius:10px;padding:14px 18px;position:relative;overflow:hidden">
         <svg style="position:absolute;top:8px;right:10px;opacity:.15;color:var(--acc)" width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
-        <div style="display:flex;gap:14px;align-items:baseline;margin-bottom:10px">
+        <div style="display:flex;gap:14px;align-items:center;margin-bottom:10px">
           <div style="font-family:'Syne',sans-serif;font-size:26px;font-weight:800;color:var(--acc);flex-shrink:0;line-height:1;width:26px">2</div>
-          <div><div class="ni-t" style="margin-bottom:3px">批量修正</div><span class="pill" style="background:var(--bg);border-color:var(--bdr2);color:var(--tx3);font-size:8px">AI 主导</span></div>
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+            <div class="ni-t">批量修正</div>
+            <span class="pill" style="background:var(--acc-dim);border-color:var(--acc-b);color:var(--acc2);font-size:8px">AI 主导</span>
+          </div>
         </div>
         <div class="chat"><div class="chat-who">用户</div><div class="chat-msg">"所有图标改成 SVG 线性图标，不要 emoji"</div></div>
         <div class="chat"><div class="chat-who">Claude</div><div class="chat-msg ai">审计 → 建 SVG 图标库 → Python 批量替换 127 处 → 验证</div></div>
-        <div style="margin-top:8px;background:var(--acc-dim);border-left:2.5px solid var(--acc);border-radius:0 5px 5px 0;padding:5px 10px;font-family:'Syne',sans-serif;font-size:11px;font-weight:700;color:var(--acc)">人说方向 → AI 处理规模</div>
+        <div style="margin-top:32px;background:var(--acc-dim);border-left:2.5px solid var(--acc);border-radius:0 5px 5px 0;padding:5px 10px;font-family:'Syne',sans-serif;font-size:11px;font-weight:700;color:var(--acc)">人说方向 → AI 处理规模</div>
       </div>
 
       <div style="background:var(--sur);border:.5px solid var(--bdr2);border-radius:10px;padding:14px 18px;position:relative;overflow:hidden">
-        <svg style="position:absolute;top:8px;right:10px;opacity:.15;color:var(--acc)" width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
-        <div style="display:flex;gap:14px;align-items:baseline;margin-bottom:10px">
-          <div style="font-family:'Syne',sans-serif;font-size:26px;font-weight:800;color:var(--acc);flex-shrink:0;line-height:1;width:26px">3</div>
-          <div><div class="ni-t" style="margin-bottom:3px">内容填补</div><span class="pill" style="background:var(--bg);border-color:var(--bdr2);color:var(--tx3);font-size:8px">协同</span></div>
+        <svg style="position:absolute;top:8px;right:10px;opacity:.15;color:var(--p)" width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+        <div style="display:flex;gap:14px;align-items:center;margin-bottom:10px">
+          <div style="font-family:'Syne',sans-serif;font-size:26px;font-weight:800;color:var(--p);flex-shrink:0;line-height:1;width:26px">3</div>
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+            <div class="ni-t">内容填补</div>
+            <span class="pill" style="background:var(--p-bg);border-color:var(--p-b);color:var(--p);font-size:8px">协同</span>
+          </div>
         </div>
         <div class="chat"><div class="chat-who">用户</div><div class="chat-msg">"对应用户旅程里的触点，把缺失的补全"</div></div>
         <div class="chat"><div class="chat-who">Claude</div><div class="chat-msg ai">自主 audit：19 个旅程触点 vs 已分析 → 发现 3 缺失 → 自动补充</div></div>
-        <div style="margin-top:8px;background:var(--acc-dim);border-left:2.5px solid var(--acc);border-radius:0 5px 5px 0;padding:5px 10px;font-family:'Syne',sans-serif;font-size:11px;font-weight:700;color:var(--acc)">人给标准 → AI 自我 audit + 填补</div>
+        <div style="margin-top:32px;background:var(--p-bg);border-left:2.5px solid var(--p);border-radius:0 5px 5px 0;padding:5px 10px;font-family:'Syne',sans-serif;font-size:11px;font-weight:700;color:var(--p)">人给标准 → AI 自我 audit + 填补</div>
       </div>
 
       <div style="background:var(--sur);border:.5px solid var(--bdr2);border-radius:10px;padding:14px 18px;position:relative;overflow:hidden">
         <svg style="position:absolute;top:8px;right:10px;opacity:.15;color:var(--acc)" width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-        <div style="display:flex;gap:14px;align-items:baseline;margin-bottom:10px">
+        <div style="display:flex;gap:14px;align-items:center;margin-bottom:10px">
           <div style="font-family:'Syne',sans-serif;font-size:26px;font-weight:800;color:var(--acc);flex-shrink:0;line-height:1;width:26px">4</div>
-          <div><div class="ni-t" style="margin-bottom:3px">合成升华</div><span class="pill" style="background:var(--bg);border-color:var(--bdr2);color:var(--tx3);font-size:8px">AI 主导</span></div>
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+            <div class="ni-t">合成升华</div>
+            <span class="pill" style="background:var(--acc-dim);border-color:var(--acc-b);color:var(--acc2);font-size:8px">AI 主导</span>
+          </div>
         </div>
         <div class="chat"><div class="chat-who">用户</div><div class="chat-msg">"基于所有分析，输出结合了正确方向的设计方案"</div></div>
         <div class="chat"><div class="chat-who">Claude</div><div class="chat-msg ai">跨触点综合 → 8 个设计亮点 + TypeScript 规格 → 17 页设计提案</div></div>
-        <div style="margin-top:8px;background:var(--acc-dim);border-left:2.5px solid var(--acc);border-radius:0 5px 5px 0;padding:5px 10px;font-family:'Syne',sans-serif;font-size:11px;font-weight:700;color:var(--acc)">基于已建立知识库做跨触点综合</div>
+        <div style="margin-top:32px;background:var(--acc-dim);border-left:2.5px solid var(--acc);border-radius:0 5px 5px 0;padding:5px 10px;font-family:'Syne',sans-serif;font-size:11px;font-weight:700;color:var(--acc)">基于已建立知识库做跨触点综合</div>
       </div>
 
     </div>
@@ -497,8 +510,8 @@ h3{font-family:'Syne',sans-serif;font-size:20px;font-weight:700}
         <div style="flex:1">
           <div class="ni-t">文件越来越大</div>
           <div class="ni-b" style="margin-bottom:6px">单文件超 600 行后，每次修改需读取完整上下文。单处细节改动的 token 消耗与新建文件相当，边际成本极高。</div>
-          <div style="background:var(--g-bg);border:.5px solid var(--g-b);border-radius:6px;padding:8px 12px">
-            <span style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--g);margin-right:6px">→ 解法</span>
+          <div style="background:var(--acc-dim);border:.5px solid var(--acc-b);border-radius:6px;padding:8px 12px">
+            <span style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--acc);margin-right:6px">→ 解法</span>
             <span class="body">提前拆分文件，每个保持 400 行以内。修改时 AI 只需读相关文件，token 消耗下降 70%+。</span>
           </div>
         </div>
@@ -510,8 +523,8 @@ h3{font-family:'Syne',sans-serif;font-size:20px;font-weight:700}
         <div style="flex:1">
           <div class="ni-t">AI 一改就整个文件输出</div>
           <div class="ni-b" style="margin-bottom:6px">模糊的修改指令会触发全量文件输出，在 CLI 环境下等同于整体覆盖，导致并发修改内容丢失。</div>
-          <div style="background:var(--g-bg);border:.5px solid var(--g-b);border-radius:6px;padding:8px 12px">
-            <span style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--g);margin-right:6px">→ 解法</span>
+          <div style="background:var(--acc-dim);border:.5px solid var(--acc-b);border-radius:6px;padding:8px 12px">
+            <span style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--acc);margin-right:6px">→ 解法</span>
             <span class="body">明确指令："只用 str_replace 修改这一处，不要输出整个文件"。</span>
           </div>
         </div>
@@ -523,8 +536,8 @@ h3{font-family:'Syne',sans-serif;font-size:20px;font-weight:700}
         <div style="flex:1">
           <div class="ni-t">AI 容易忘事</div>
           <div class="ni-b" style="margin-bottom:6px">随会话长度增加，AI 对早期约定的规范出现偏移，已解决的问题被重复引入，一致性下降。</div>
-          <div style="background:var(--g-bg);border:.5px solid var(--g-b);border-radius:6px;padding:8px 12px">
-            <span style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--g);margin-right:6px">→ 解法</span>
+          <div style="background:var(--acc-dim);border:.5px solid var(--acc-b);border-radius:6px;padding:8px 12px">
+            <span style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--acc);margin-right:6px">→ 解法</span>
             <span class="body">把关键决定写进 SKILL.md，不要依赖会话上下文记住规范，要把规范外化为文件。</span>
           </div>
         </div>
@@ -536,8 +549,8 @@ h3{font-family:'Syne',sans-serif;font-size:20px;font-weight:700}
         <div style="flex:1">
           <div class="ni-t">在 Web 端改了没法后退</div>
           <div class="ni-b" style="margin-bottom:6px">在浏览器环境中迭代时，AI 每次生成会直接覆盖旧内容；修改方向出错时无法恢复，越改越烂。</div>
-          <div style="background:var(--g-bg);border:.5px solid var(--g-b);border-radius:6px;padding:8px 12px">
-            <span style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--g);margin-right:6px">→ 解法</span>
+          <div style="background:var(--acc-dim);border:.5px solid var(--acc-b);border-radius:6px;padding:8px 12px">
+            <span style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--acc);margin-right:6px">→ 解法</span>
             <span class="body">迁移到本地，用 git 管理版本。每个稳定节点提交一次，随时可回滚至任意历史状态。</span>
           </div>
         </div>
@@ -556,23 +569,23 @@ h3{font-family:'Syne',sans-serif;font-size:20px;font-weight:700}
         <span class="eyebrow">High-efficiency conversation</span>
         <div class="rule"></div>
         <h3 style="margin-bottom:16px">给 <span class="acc">"为什么"</span><br>比给<br>"怎么做"更有价值</h3>
-        <div style="background:var(--bg);border-radius:10px;padding:14px 16px;border:.5px solid var(--bdr2)">
+        <div style="background:var(--sur);border-radius:10px;padding:14px 16px;border:.5px solid var(--sur)">
           <div class="chat"><div class="chat-who">用户</div><div class="chat-msg">"输入框的 A、纯 stdin 跟随 和 B、固定底部编辑器就不是一个维度的，一个是交互形式，一个是位置/形态。不是一个维度的可以分两个表格、分两页，会更清楚些。"</div></div>
           <div class="chat" style="margin-top:6px"><div class="chat-who">Claude</div><div class="chat-msg ai">明白了，TP02A（位置/形态）、TP02B（编辑能力）、TP03（模式指示符）各一页，同时更新导航系统和旅程地图所有链接。</div></div>
         </div>
       </div>
       <div class="col" style="gap:8px;display:flex;flex-direction:column">
-        <div style="background:var(--sur);border:.5px solid var(--bdr2);border-radius:10px;padding:12px 14px;display:flex;gap:14px;align-items:flex-start;flex:1;min-height:0;position:relative;overflow:hidden">
+        <div style="background:var(--g-bg);border:.5px solid var(--bdr2);border-radius:10px;padding:12px 14px;display:flex;gap:14px;align-items:flex-start;flex:1;min-height:0;position:relative;overflow:hidden">
           <svg style="position:absolute;top:8px;right:10px;opacity:.15;color:var(--g)" width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
           <div style="font-family:'Syne',sans-serif;font-size:26px;font-weight:800;color:var(--g);flex-shrink:0;line-height:1;width:26px">1</div>
           <div style="flex:1"><div class="ni-t">传递了判断原则</div><div class="ni-b">"交互形式"与"位置形态"属于不同维度——AI 理解原则后，自动识别所有同类问题并统一处理。</div></div>
         </div>
-        <div style="background:var(--sur);border:.5px solid var(--bdr2);border-radius:10px;padding:12px 14px;display:flex;gap:14px;align-items:flex-start;flex:1;min-height:0;position:relative;overflow:hidden">
+        <div style="background:var(--g-bg);border:.5px solid var(--bdr2);border-radius:10px;padding:12px 14px;display:flex;gap:14px;align-items:flex-start;flex:1;min-height:0;position:relative;overflow:hidden">
           <svg style="position:absolute;top:8px;right:10px;opacity:.15;color:var(--g)" width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
           <div style="font-family:'Syne',sans-serif;font-size:26px;font-weight:800;color:var(--g);flex-shrink:0;line-height:1;width:26px">2</div>
           <div style="flex:1"><div class="ni-t">定义方向而非方案</div><div class="ni-b">"分两页会更清楚"是方向约束。AI 自主推演出拆为 3 个触点的方案——优于人工预设的具体方案。</div></div>
         </div>
-        <div style="background:var(--sur);border:.5px solid var(--bdr2);border-radius:10px;padding:12px 14px;display:flex;gap:14px;align-items:flex-start;flex:1;min-height:0;position:relative;overflow:hidden">
+        <div style="background:var(--g-bg);border:.5px solid var(--bdr2);border-radius:10px;padding:12px 14px;display:flex;gap:14px;align-items:flex-start;flex:1;min-height:0;position:relative;overflow:hidden">
           <svg style="position:absolute;top:8px;right:10px;opacity:.15;color:var(--g)" width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
           <div style="font-family:'Syne',sans-serif;font-size:26px;font-weight:800;color:var(--g);flex-shrink:0;line-height:1;width:26px">3</div>
           <div style="flex:1"><div class="ni-t">输出具有可验证的判断标准</div><div class="ni-b">结构合理性可即时评估，任务边界清晰时，执行结果的质量审查成本最低。</div></div>
@@ -619,18 +632,18 @@ h3{font-family:'Syne',sans-serif;font-size:20px;font-weight:700}
       </div>
       <div class="col" style="gap:8px;display:flex;flex-direction:column">
         <div style="background:var(--sur);border:.5px solid var(--bdr2);border-radius:10px;padding:14px 16px;display:flex;gap:14px;align-items:flex-start;flex:1;min-height:0;position:relative;overflow:hidden">
-          <svg style="position:absolute;top:8px;right:10px;opacity:.15;color:var(--g)" width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
-          <div style="font-family:'Syne',sans-serif;font-size:26px;font-weight:800;color:var(--g);flex-shrink:0;line-height:1;width:26px">1</div>
+          <svg style="position:absolute;top:8px;right:10px;opacity:.15;color:var(--acc)" width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+          <div style="font-family:'Syne',sans-serif;font-size:26px;font-weight:800;color:var(--acc);flex-shrink:0;line-height:1;width:26px">1</div>
           <div style="flex:1"><div class="ni-t">意图驱动</div><div class="ni-b">说"我要让对比更清晰"，不说"把第2列移到第3列"。AI 会找到最好的实现方式。</div></div>
         </div>
         <div style="background:var(--sur);border:.5px solid var(--bdr2);border-radius:10px;padding:14px 16px;display:flex;gap:14px;align-items:flex-start;flex:1;min-height:0;position:relative;overflow:hidden">
-          <svg style="position:absolute;top:8px;right:10px;opacity:.15;color:var(--g)" width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-          <div style="font-family:'Syne',sans-serif;font-size:26px;font-weight:800;color:var(--g);flex-shrink:0;line-height:1;width:26px">2</div>
+          <svg style="position:absolute;top:8px;right:10px;opacity:.15;color:var(--acc)" width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          <div style="font-family:'Syne',sans-serif;font-size:26px;font-weight:800;color:var(--acc);flex-shrink:0;line-height:1;width:26px">2</div>
           <div style="flex:1"><div class="ni-t">给判断原则</div><div class="ni-b">"不是同一维度"是可复用的判断标准，AI 会用它处理所有类似情况，不只是眼前这一个。</div></div>
         </div>
         <div style="background:var(--sur);border:.5px solid var(--bdr2);border-radius:10px;padding:14px 16px;display:flex;gap:14px;align-items:flex-start;flex:1;min-height:0;position:relative;overflow:hidden">
-          <svg style="position:absolute;top:8px;right:10px;opacity:.15;color:var(--g)" width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
-          <div style="font-family:'Syne',sans-serif;font-size:26px;font-weight:800;color:var(--g);flex-shrink:0;line-height:1;width:26px">3</div>
+          <svg style="position:absolute;top:8px;right:10px;opacity:.15;color:var(--acc)" width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+          <div style="font-family:'Syne',sans-serif;font-size:26px;font-weight:800;color:var(--acc);flex-shrink:0;line-height:1;width:26px">3</div>
           <div style="flex:1"><div class="ni-t">可验证的结果</div><div class="ni-b">让 AI 的输出有清晰的对错标准，人可以快速审查和确认是否符合预期。</div></div>
         </div>
       </div>
@@ -729,7 +742,7 @@ h3{font-family:'Syne',sans-serif;font-size:20px;font-weight:700}
       </div>
     </div>
     <!-- 底部：Skill 细节 4 项 -->
-    <div style="flex-shrink:0;border-top:.5px solid var(--bdr2);padding-top:10px;display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr;gap:8px;align-items:start">
+    <!-- <div style="flex-shrink:0;border-top:.5px solid var(--bdr2);padding-top:10px;display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr;gap:8px;align-items:start">
       <div style="padding:8px 12px;background:var(--acc-dim);border:.5px solid var(--acc-b);border-radius:6px">
         <div style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:var(--acc);margin-bottom:4px">判断原则，不是执行细节</div>
         <div style="font-size:11px;color:var(--tx2);line-height:1.5">原则可以迁移，步骤会过时。写"如果需求模糊，先开始生成第一版"，不写"第一步搜索，第二步……"</div>
@@ -750,7 +763,7 @@ h3{font-family:'Syne',sans-serif;font-size:20px;font-weight:700}
         <div style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:var(--tx3);margin-bottom:4px">技术规格</div>
         <div style="font-size:11px;color:var(--tx2);line-height:1.5">CSS / SVG / 配色系统可直接复制。</div>
       </div>
-    </div>
+    </div> -->
   </div>
 </div>
 
