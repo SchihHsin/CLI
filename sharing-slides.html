@@ -147,7 +147,6 @@ h3{font-family:'Syne',sans-serif;font-size:20px;font-weight:700}
 <!-- S00 COVER -->
 <div class="s" id="s00" data-label="封面">
   <div style="position:absolute;left:0;top:0;bottom:0;width:5px;background:var(--acc)"></div>
-  <div style="position:absolute;right:0;top:0;bottom:0;width:40%;background:linear-gradient(135deg,var(--acc-dim) 0%,rgba(131,77,240,.04) 100%);pointer-events:none"></div>
   <div style="flex:1;display:flex;padding:0 72px 0 77px;align-items:center;gap:56px">
     <div style="flex:1">
       <span class="eyebrow" style="margin-bottom:12px">Design Team · Internal Sharing · 2026</span>
@@ -159,12 +158,12 @@ h3{font-family:'Syne',sans-serif;font-size:20px;font-weight:700}
         <span class="pill pill-b">⚡ 协同放大</span>
       </div>
     </div>
-    <div style="width:268px;position:relative;z-index:1">
-      <div style="display:grid;grid-template-columns:1fr 1fr;border:.5px solid var(--bdr2);border-radius:12px;overflow:hidden;background:var(--sur)">
-        <div style="padding:22px 16px;border-right:.5px solid var(--bdr);border-bottom:.5px solid var(--bdr)" class="stat"><div class="stat-n">5</div><div class="stat-l">分析产品</div></div>
-        <div style="padding:22px 16px;border-bottom:.5px solid var(--bdr)" class="stat"><div class="stat-n">20</div><div class="stat-l">交互触点</div></div>
-        <div style="padding:22px 16px;border-right:.5px solid var(--bdr)" class="stat"><div class="stat-n">7</div><div class="stat-l">HTML 文件</div></div>
-        <div style="padding:22px 16px" class="stat"><div class="stat-n" style="font-size:36px">~7d</div><div class="stat-l">完成时间</div></div>
+    <div style="width:268px">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <div style="padding:22px 16px;background:var(--g-bg);border:.5px solid var(--g-b);border-radius:10px" class="stat"><div class="stat-n" style="color:var(--g)">5</div><div class="stat-l">分析产品</div></div>
+        <div style="padding:22px 16px;background:var(--acc-dim);border:.5px solid var(--acc-b);border-radius:10px" class="stat"><div class="stat-n">20</div><div class="stat-l">交互触点</div></div>
+        <div style="padding:22px 16px;background:var(--bl-bg);border:.5px solid var(--bl-b);border-radius:10px" class="stat"><div class="stat-n" style="color:var(--bl)">7</div><div class="stat-l">HTML 文件</div></div>
+        <div style="padding:22px 16px;background:var(--y-bg);border:.5px solid var(--y-b);border-radius:10px" class="stat"><div class="stat-n" style="color:var(--y);font-size:36px">~7d</div><div class="stat-l">完成时间</div></div>
       </div>
     </div>
   </div>
@@ -215,22 +214,42 @@ h3{font-family:'Syne',sans-serif;font-size:20px;font-weight:700}
     <span class="eyebrow">Division of labor</span>
     <h2 style="margin-bottom:20px">人机协作的<span class="acc">本质分工</span></h2>
     <div class="cols">
-      <div class="col">
-        <div style="background:var(--g-bg);border:.5px solid var(--g-b);border-radius:10px;padding:16px 20px;flex:1;overflow:hidden;display:flex;flex-direction:column">
-          <div style="font-family:'Syne',sans-serif;font-size:16px;font-weight:700;color:var(--g);margin-bottom:12px">👤 人负责</div>
-          <div class="info"><div class="info-lbl">战略判断</div><div class="info-body">决定研究什么、分析哪些维度、目标受众是谁。这些是 AI 无法凭空确定的。</div></div>
-          <div class="info"><div class="info-lbl">质量把关</div><div class="info-body">判断分析深度、逻辑是否成立、哪个维度拆得太粗或太细。</div></div>
-          <div class="info"><div class="info-lbl">视觉标准</div><div class="info-body">层级是否清晰、图标体系是否统一、表格结构是否规范——审美标准由人设定。</div></div>
-          <div class="info"><div class="info-lbl">结构设计</div><div class="info-body">报告拆几个文件、每楼层放什么、100vh snap scroll 的体验框架决策。</div></div>
+      <div class="col" style="gap:7px">
+        <div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--g);margin-bottom:2px">👤 人负责</div>
+        <div style="background:var(--g-bg);border:.5px solid var(--g-b);border-radius:8px;padding:11px 14px;flex:1;min-height:0">
+          <div style="font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:var(--tx);margin-bottom:4px">战略判断</div>
+          <div class="body">决定研究什么、分析哪些维度、目标受众是谁。这些是 AI 无法凭空确定的。</div>
+        </div>
+        <div style="background:var(--g-bg);border:.5px solid var(--g-b);border-radius:8px;padding:11px 14px;flex:1;min-height:0">
+          <div style="font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:var(--tx);margin-bottom:4px">质量把关</div>
+          <div class="body">判断分析深度、逻辑是否成立、哪个维度拆得太粗或太细。</div>
+        </div>
+        <div style="background:var(--g-bg);border:.5px solid var(--g-b);border-radius:8px;padding:11px 14px;flex:1;min-height:0">
+          <div style="font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:var(--tx);margin-bottom:4px">视觉标准</div>
+          <div class="body">层级是否清晰、图标体系是否统一、表格结构是否规范——审美标准由人设定。</div>
+        </div>
+        <div style="background:var(--g-bg);border:.5px solid var(--g-b);border-radius:8px;padding:11px 14px;flex:1;min-height:0">
+          <div style="font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:var(--tx);margin-bottom:4px">结构设计</div>
+          <div class="body">报告拆几个文件、每楼层放什么、100vh snap scroll 的体验框架决策。</div>
         </div>
       </div>
-      <div class="col">
-        <div style="background:var(--acc-dim);border:.5px solid var(--acc-b);border-radius:10px;padding:16px 20px;flex:1;overflow:hidden;display:flex;flex-direction:column">
-          <div style="font-family:'Syne',sans-serif;font-size:16px;font-weight:700;color:var(--acc2);margin-bottom:12px">✦ AI 负责</div>
-          <div class="info"><div class="info-lbl">信息搜集</div><div class="info-body">搜索 5 个产品的所有公开信息，整理每个触点的实现方式，找出关键数据点。</div></div>
-          <div class="info"><div class="info-lbl">规模化生产</div><div class="info-body">20 触点 × 5 产品 = 100 个分析单元，全部写完、格式统一、terminal mockup 可视化。</div></div>
-          <div class="info"><div class="info-lbl">代码实现</div><div class="info-body">HTML/CSS/JS 全部 AI 生成。snap scroll、SVG 图标系统、跨文件导航——直接产出可用代码。</div></div>
-          <div class="info"><div class="info-lbl">批量修改</div><div class="info-body">127 处 emoji 替换、转置 20 张表格、补充 Codex CLI 列——Python 脚本批量处理。</div></div>
+      <div class="col" style="gap:7px">
+        <div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--acc2);margin-bottom:2px">✦ AI 负责</div>
+        <div style="background:var(--acc-dim);border:.5px solid var(--acc-b);border-radius:8px;padding:11px 14px;flex:1;min-height:0">
+          <div style="font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:var(--tx);margin-bottom:4px">信息搜集</div>
+          <div class="body">搜索 5 个产品的所有公开信息，整理每个触点的实现方式，找出关键数据点。</div>
+        </div>
+        <div style="background:var(--acc-dim);border:.5px solid var(--acc-b);border-radius:8px;padding:11px 14px;flex:1;min-height:0">
+          <div style="font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:var(--tx);margin-bottom:4px">规模化生产</div>
+          <div class="body">20 触点 × 5 产品 = 100 个分析单元，全部写完、格式统一、terminal mockup 可视化。</div>
+        </div>
+        <div style="background:var(--acc-dim);border:.5px solid var(--acc-b);border-radius:8px;padding:11px 14px;flex:1;min-height:0">
+          <div style="font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:var(--tx);margin-bottom:4px">代码实现</div>
+          <div class="body">HTML/CSS/JS 全部 AI 生成。snap scroll、SVG 图标系统、跨文件导航——直接产出可用代码。</div>
+        </div>
+        <div style="background:var(--acc-dim);border:.5px solid var(--acc-b);border-radius:8px;padding:11px 14px;flex:1;min-height:0">
+          <div style="font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:var(--tx);margin-bottom:4px">批量修改</div>
+          <div class="body">127 处 emoji 替换、转置 20 张表格、补充 Codex CLI 列——Python 脚本批量处理。</div>
         </div>
       </div>
     </div>
@@ -249,8 +268,9 @@ h3{font-family:'Syne',sans-serif;font-size:20px;font-weight:700}
           <p class="body" style="margin-bottom:8px">0 到 1 阶段在 claude.ai Web 界面工作。<strong style="color:var(--tx)">即时预览</strong>是核心优势：AI 生成 HTML，浏览器马上渲染，设计反馈循环极快。</p>
           <div class="card"><span class="card-lbl">适合的场景</span><div class="body">第一版结构探索 · 快速验证视觉方向 · 单文件修改</div></div>
         </div>
-        <div style="display:flex;align-items:center;gap:10px;color:var(--tx3);font-family:'DM Mono',monospace;font-size:10px">
-          <div style="flex:1;height:1px;background:var(--bdr2)"></div>当文件变多时切换<div style="flex:1;height:1px;background:var(--bdr2)"></div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:4px;padding:2px 0">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--acc)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
+          <span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--tx3);letter-spacing:.06em">当文件变多时切换</span>
         </div>
         <div style="background:var(--sur);border-radius:10px;padding:16px 18px;border:.5px solid var(--bdr2)">
           <span class="eyebrow">Phase 2 · 迭代优化</span>
@@ -671,18 +691,17 @@ h3{font-family:'Syne',sans-serif;font-size:20px;font-weight:700}
 <!-- S12 结尾 -->
 <div class="s" id="s12" data-label="结尾">
   <div style="position:absolute;left:0;top:0;bottom:0;width:5px;background:var(--acc)"></div>
-  <div style="position:absolute;right:0;top:0;bottom:0;width:45%;background:linear-gradient(135deg,var(--acc-dim) 0%,rgba(131,77,240,.03) 100%);pointer-events:none"></div>
   <div style="flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:0 80px">
     <span class="eyebrow" style="margin-bottom:16px">结论</span>
     <h1 style="margin-bottom:14px">AI 是<span class="acc">执行力的杠杆</span></h1>
     <h1 style="color:var(--tx3);margin-bottom:28px;font-size:40px">不是决策的替代</h1>
     <div style="height:3px;width:60px;background:var(--acc);border-radius:2px;margin-bottom:24px"></div>
     <p class="lead" style="max-width:520px;margin-bottom:36px">将 80% 时间聚焦于<strong style="color:var(--tx)">判断与审查</strong>，而非搜集与生产。判断力的提升，是 AI 执行力得以真正放大的前提。</p>
-    <div style="display:flex;gap:0;border:.5px solid var(--bdr2);border-radius:12px;overflow:hidden;background:var(--sur)">
-      <div style="padding:20px 32px;border-right:.5px solid var(--bdr)" class="stat"><div class="stat-n">20</div><div class="stat-l">触点分析</div></div>
-      <div style="padding:20px 32px;border-right:.5px solid var(--bdr)" class="stat"><div class="stat-n">7</div><div class="stat-l">HTML 文件</div></div>
-      <div style="padding:20px 32px;border-right:.5px solid var(--bdr)" class="stat"><div class="stat-n" style="font-size:36px">~7d</div><div class="stat-l">完成时间</div></div>
-      <div style="padding:20px 32px" class="stat"><div class="stat-n">1</div><div class="stat-l">可复用 Skill</div></div>
+    <div style="display:flex;gap:10px">
+      <div style="padding:20px 32px;background:var(--acc-dim);border:.5px solid var(--acc-b);border-radius:10px" class="stat"><div class="stat-n">20</div><div class="stat-l">触点分析</div></div>
+      <div style="padding:20px 32px;background:var(--bl-bg);border:.5px solid var(--bl-b);border-radius:10px" class="stat"><div class="stat-n" style="color:var(--bl)">7</div><div class="stat-l">HTML 文件</div></div>
+      <div style="padding:20px 32px;background:var(--y-bg);border:.5px solid var(--y-b);border-radius:10px" class="stat"><div class="stat-n" style="color:var(--y);font-size:36px">~7d</div><div class="stat-l">完成时间</div></div>
+      <div style="padding:20px 32px;background:var(--g-bg);border:.5px solid var(--g-b);border-radius:10px" class="stat"><div class="stat-n" style="color:var(--g)">1</div><div class="stat-l">可复用 Skill</div></div>
     </div>
   </div>
 </div>
