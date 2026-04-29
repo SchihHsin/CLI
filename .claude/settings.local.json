@@ -14,7 +14,10 @@
       "Bash(curl -fsSL \"https://raw.githubusercontent.com/ajaxdude/opencode-ai-poimandres-theme/main/.opencode/themes/poimandres-accessible.json\" -o poimandres-accessible.json)",
       "Bash(curl -fsSL \"https://raw.githubusercontent.com/postrednik/opencode-ayu-theme/main/.opencode/themes/ayu-dark.json\" -o ayu-dark.json)",
       "Bash(curl -fsSL \"https://raw.githubusercontent.com/brunogabriel/opencode-moonlight-theme/main/.opencode/themes/moonlight.json\" -o moonlight.json)",
-      "Bash(curl -fsSL \"https://raw.githubusercontent.com/b0o/lavi/main/contrib/opencode/lavi.json\" -o lavi.json)"
+      "Bash(curl -fsSL \"https://raw.githubusercontent.com/b0o/lavi/main/contrib/opencode/lavi.json\" -o lavi.json)",
+      "Bash(git -C \"D:/HW/AICLI/ai-cli-report \\(1\\)/report\" add sharing-slides.html)",
+      "Bash(git -C 'D:/HW/AICLI/ai-cli-report \\(1\\)/report' commit -m ' *)",
+      "Bash(git *)"
     ]
   }
 }
