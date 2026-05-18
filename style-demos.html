@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>视觉样式方案 · 4 选 1</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Mono:wght@300;400;500&family=Noto+Sans+SC:wght@300;400;500;700&family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:#111;font-family:sans-serif;overflow-x:hidden;}
+
+/* ── LAYOUT ── */
+.page{width:100vw;min-height:100vh;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:3px;background:#111;}
+.panel{position:relative;padding:40px 44px;display:flex;flex-direction:column;gap:20px;overflow:hidden;cursor:pointer;transition:filter .2s;}
+.panel:hover{filter:brightness(1.04);}
+.style-badge{position:absolute;top:18px;right:22px;font-size:11px;font-weight:600;padding:4px 12px;border-radius:20px;letter-spacing:.06em;}
+.pick-btn{margin-top:auto;align-self:flex-start;padding:9px 22px;border:none;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;letter-spacing:.05em;transition:transform .15s,box-shadow .15s;}
+.pick-btn:hover{transform:translateY(-1px);}
+.pick-btn:active{transform:translateY(0);}
+.chosen-overlay{display:none;position:absolute;inset:0;background:rgba(255,255,255,.06);border:3px solid currentColor;pointer-events:none;border-radius:0;align-items:center;justify-content:center;}
+.chosen-overlay.show{display:flex;}
+.chosen-label{font-size:18px;font-weight:700;padding:8px 24px;border-radius:8px;}
+
+@keyframes blink{50%{opacity:0;}}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.4;}}
+@keyframes gradshift{0%{background-position:0% 50%;}50%{background-position:100% 50%;}100%{background-position:0% 50%}}
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- ══ A: Dark Pro (Linear / Vercel feel) ══ -->
+<div class="panel" id="pa" style="background:#0E0E12;" onclick="pick('A')">
+  <div class="style-badge" style="background:rgba(139,92,246,.2);color:#A78BFA;border:1px solid rgba(139,92,246,.3);">A · Dark Pro</div>
+
+  <!-- eyebrow -->
+  <div style="font-family:'DM Mono',monospace;font-size:10px;color:#4B5563;letter-spacing:.18em;text-transform:uppercase;">Design Proposal · 2026</div>
+
+  <!-- title -->
+  <div>
+    <div style="font-family:'Syne',sans-serif;font-size:38px;font-weight:800;color:#F5F5FF;line-height:1.05;margin-bottom:6px;">AI 时代的<br><span style="background:linear-gradient(135deg,#A78BFA,#60A5FA);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">开发者工具</span></div>
+    <div style="font-size:12px;color:#6B7280;line-height:1.65;max-width:340px;">从 Vibe Coding 走向 Intuition Coding，开发者与 AI 的协作正在发生根本性跃迁。</div>
+  </div>
+
+  <!-- stat cards -->
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;">
+    <div style="background:#17171E;border:1px solid #1F1F2E;border-radius:10px;padding:12px 14px;">
+      <div style="font-family:'DM Mono',monospace;font-size:8px;color:#4B5563;letter-spacing:.1em;margin-bottom:4px;">DESIGN AREAS</div>
+      <div style="font-family:'Syne',sans-serif;font-size:24px;font-weight:800;background:linear-gradient(135deg,#A78BFA,#60A5FA);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">6</div>
+    </div>
+    <div style="background:#17171E;border:1px solid #1F1F2E;border-radius:10px;padding:12px 14px;">
+      <div style="font-family:'DM Mono',monospace;font-size:8px;color:#4B5563;letter-spacing:.1em;margin-bottom:4px;">MOCKUPS</div>
+      <div style="font-family:'Syne',sans-serif;font-size:24px;font-weight:800;background:linear-gradient(135deg,#A78BFA,#60A5FA);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">11</div>
+    </div>
+    <div style="background:#17171E;border:1px solid #1F1F2E;border-radius:10px;padding:12px 14px;">
+      <div style="font-family:'DM Mono',monospace;font-size:8px;color:#4B5563;letter-spacing:.1em;margin-bottom:4px;">STAGES</div>
+      <div style="font-family:'Syne',sans-serif;font-size:24px;font-weight:800;background:linear-gradient(135deg,#A78BFA,#60A5FA);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">7</div>
+    </div>
+  </div>
+
+  <!-- mini terminal -->
+  <div style="background:#0A0A0E;border:1px solid #1F1F2E;border-radius:8px;padding:10px 14px;font-family:'DM Mono',monospace;font-size:10px;line-height:1.8;">
+    <div style="color:#4B5563;margin-bottom:2px;">● 启动阶段 · 记忆加载</div>
+    <div><span style="color:#A78BFA;">◆</span> <span style="color:#9CA3AF;">已恢复上下文</span> <span style="color:#34D399;">· 12 条记忆</span></div>
+    <div><span style="color:#60A5FA;">→</span> <span style="color:#9CA3AF;">上次任务：Button 组件重构</span></div>
+    <div style="color:#4B5563;">$ <span style="display:inline-block;width:6px;height:10px;background:#A78BFA;animation:blink 1s step-end infinite;vertical-align:middle;"></span></div>
+  </div>
+
+  <!-- palette -->
+  <div style="display:flex;gap:6px;align-items:center;">
+    <div style="width:20px;height:20px;border-radius:4px;background:#0E0E12;border:1px solid #333;"></div>
+    <div style="width:20px;height:20px;border-radius:4px;background:#17171E;"></div>
+    <div style="width:20px;height:20px;border-radius:4px;background:#A78BFA;"></div>
+    <div style="width:20px;height:20px;border-radius:4px;background:#60A5FA;"></div>
+    <div style="width:20px;height:20px;border-radius:4px;background:#34D399;"></div>
+    <div style="margin-left:6px;font-family:'DM Mono',monospace;font-size:9px;color:#4B5563;">Syne + DM Mono · 暗色专业系</div>
+  </div>
+
+  <button class="pick-btn" style="background:linear-gradient(135deg,#7C3AED,#2563EB);color:white;box-shadow:0 4px 16px rgba(124,58,237,.3);">选择方案 A</button>
+  <div class="chosen-overlay" id="cho-A" style="color:#A78BFA;border-color:#A78BFA;"><div class="chosen-label" style="background:rgba(167,139,250,.15);color:#A78BFA;">✓ 已选择</div></div>
+</div>
+
+<!-- ══ B: Editorial Bold (Magazine / Stripe feel) ══ -->
+<div class="panel" id="pb" style="background:#FAFAF7;" onclick="pick('B')">
+  <div class="style-badge" style="background:#FEF2F2;color:#EF4444;border:1px solid #FCA5A5;">B · Editorial Bold</div>
+
+  <!-- eyebrow -->
+  <div style="font-family:'DM Mono',monospace;font-size:10px;color:#9CA3AF;letter-spacing:.18em;text-transform:uppercase;">Design Proposal · 2026</div>
+
+  <!-- title -->
+  <div style="border-left:4px solid #111;padding-left:18px;">
+    <div style="font-family:'Syne',sans-serif;font-size:38px;font-weight:800;color:#111;line-height:1.05;margin-bottom:6px;">AI 时代的<br><span style="color:#E8311A;">开发者工具</span></div>
+    <div style="font-size:12px;color:#6B7280;line-height:1.65;max-width:340px;">从 Vibe Coding 走向 Intuition Coding，开发者与 AI 的协作正在发生根本性跃迁。</div>
+  </div>
+
+  <!-- stat row — editorial style -->
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:2px solid #111;border-bottom:2px solid #111;padding:14px 0;">
+    <div style="padding:0 16px 0 0;border-right:1px solid #E5E5E5;">
+      <div style="font-family:'DM Mono',monospace;font-size:8px;color:#9CA3AF;letter-spacing:.12em;margin-bottom:2px;">DESIGN AREAS</div>
+      <div style="font-family:'Syne',sans-serif;font-size:32px;font-weight:800;color:#E8311A;">6</div>
+    </div>
+    <div style="padding:0 16px;border-right:1px solid #E5E5E5;">
+      <div style="font-family:'DM Mono',monospace;font-size:8px;color:#9CA3AF;letter-spacing:.12em;margin-bottom:2px;">MOCKUPS</div>
+      <div style="font-family:'Syne',sans-serif;font-size:32px;font-weight:800;color:#111;">11</div>
+    </div>
+    <div style="padding:0 0 0 16px;">
+      <div style="font-family:'DM Mono',monospace;font-size:8px;color:#9CA3AF;letter-spacing:.12em;margin-bottom:2px;">STAGES</div>
+      <div style="font-family:'Syne',sans-serif;font-size:32px;font-weight:800;color:#111;">7</div>
+    </div>
+  </div>
+
+  <!-- insight block — editorial quote style -->
+  <div style="background:#111;padding:16px 18px;border-radius:4px;">
+    <div style="font-family:'DM Mono',monospace;font-size:8px;color:#9CA3AF;letter-spacing:.12em;margin-bottom:6px;">KEY SIGNAL</div>
+    <div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:white;line-height:1.55;">"thefuck 积累 10 万+ Star，<span style="color:#FCA5A5;">11 年需求长期存在</span>——出错恢复是开发者工作流的永久痛点。"</div>
+  </div>
+
+  <!-- mini card -->
+  <div style="display:flex;gap:10px;">
+    <div style="flex:1;border:1.5px solid #111;border-radius:4px;padding:10px 12px;">
+      <div style="font-family:'DM Mono',monospace;font-size:8px;color:#9CA3AF;letter-spacing:.1em;margin-bottom:3px;">启动阶段</div>
+      <div style="font-family:'Syne',sans-serif;font-size:12px;font-weight:700;color:#111;margin-bottom:4px;">启动即加载记忆</div>
+      <div style="font-size:11px;color:#6B7280;line-height:1.5;">AI 记得你们上次做到哪里</div>
+    </div>
+    <div style="flex:1;border:1.5px solid #E8311A;border-radius:4px;padding:10px 12px;background:#FFF5F5;">
+      <div style="font-family:'DM Mono',monospace;font-size:8px;color:#E8311A;letter-spacing:.1em;margin-bottom:3px;">表达意图</div>
+      <div style="font-family:'Syne',sans-serif;font-size:12px;font-weight:700;color:#111;margin-bottom:4px;">语音 × 光标</div>
+      <div style="font-size:11px;color:#6B7280;line-height:1.5;">指着说话，就是 Prompt</div>
+    </div>
+  </div>
+
+  <!-- palette -->
+  <div style="display:flex;gap:6px;align-items:center;">
+    <div style="width:20px;height:20px;border-radius:4px;background:#FAFAF7;border:1px solid #E5E5E5;"></div>
+    <div style="width:20px;height:20px;border-radius:4px;background:#111;"></div>
+    <div style="width:20px;height:20px;border-radius:4px;background:#E8311A;"></div>
+    <div style="margin-left:6px;font-family:'DM Mono',monospace;font-size:9px;color:#9CA3AF;">Syne + DM Mono · 杂志编辑系</div>
+  </div>
+
+  <button class="pick-btn" style="background:#111;color:white;">选择方案 B</button>
+  <div class="chosen-overlay" id="cho-B" style="color:#E8311A;border-color:#E8311A;"><div class="chosen-label" style="background:rgba(232,49,26,.1);color:#E8311A;">✓ 已选择</div></div>
+</div>
+
+<!-- ══ C: Frosted Dark (Apple / Figma feel) ══ -->
+<div class="panel" id="pc" style="background:linear-gradient(135deg,#0F0A1E 0%,#0A1628 50%,#0D1A2E 100%);" onclick="pick('C')">
+  <div class="style-badge" style="background:rgba(6,182,212,.12);color:#67E8F9;border:1px solid rgba(6,182,212,.25);">C · Frosted Dark</div>
+
+  <!-- eyebrow -->
+  <div style="font-family:'Space Grotesk',sans-serif;font-size:10px;color:rgba(255,255,255,.35);letter-spacing:.18em;text-transform:uppercase;">Design Proposal · 2026</div>
+
+  <!-- title -->
+  <div>
+    <div style="font-family:'Space Grotesk',sans-serif;font-size:36px;font-weight:700;color:#F0F4FF;line-height:1.05;margin-bottom:8px;">AI 时代的<br><span style="background:linear-gradient(90deg,#06B6D4,#818CF8,#C084FC);background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:gradshift 4s linear infinite;">开发者工具</span></div>
+    <div style="font-size:12px;color:rgba(255,255,255,.45);line-height:1.65;max-width:340px;">从 Vibe Coding 走向 Intuition Coding，开发者与 AI 的协作正在发生根本性跃迁。</div>
+  </div>
+
+  <!-- frosted cards -->
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;">
+    <div style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:12px 14px;backdrop-filter:blur(12px);">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:8px;color:rgba(255,255,255,.3);letter-spacing:.1em;margin-bottom:4px;">AREAS</div>
+      <div style="font-family:'Space Grotesk',sans-serif;font-size:26px;font-weight:700;color:#06B6D4;">6</div>
+    </div>
+    <div style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:12px 14px;backdrop-filter:blur(12px);">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:8px;color:rgba(255,255,255,.3);letter-spacing:.1em;margin-bottom:4px;">MOCKUPS</div>
+      <div style="font-family:'Space Grotesk',sans-serif;font-size:26px;font-weight:700;color:#818CF8;">11</div>
+    </div>
+    <div style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:12px 14px;backdrop-filter:blur(12px);">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:8px;color:rgba(255,255,255,.3);letter-spacing:.1em;margin-bottom:4px;">STAGES</div>
+      <div style="font-family:'Space Grotesk',sans-serif;font-size:26px;font-weight:700;color:#C084FC;">7</div>
+    </div>
+  </div>
+
+  <!-- frosted section card -->
+  <div style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:14px 18px;backdrop-filter:blur(16px);">
+    <div style="font-family:'IBM Plex Mono',monospace;font-size:8px;color:rgba(6,182,212,.7);letter-spacing:.12em;margin-bottom:6px;">启动阶段 · STAGE 01</div>
+    <div style="font-family:'Space Grotesk',sans-serif;font-size:16px;font-weight:700;color:#F0F4FF;margin-bottom:4px;">启动即加载记忆</div>
+    <div style="font-size:11px;color:rgba(255,255,255,.4);line-height:1.55;">AI 记得你们上次做到哪里，8–12 分钟上下文重建时间归零。</div>
+    <div style="margin-top:10px;height:4px;background:rgba(255,255,255,.08);border-radius:2px;overflow:hidden;">
+      <div style="width:68%;height:100%;background:linear-gradient(90deg,#06B6D4,#818CF8);border-radius:2px;"></div>
+    </div>
+  </div>
+
+  <!-- palette -->
+  <div style="display:flex;gap:6px;align-items:center;">
+    <div style="width:20px;height:20px;border-radius:4px;background:#0F0A1E;border:1px solid rgba(255,255,255,.1);"></div>
+    <div style="width:20px;height:20px;border-radius:4px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);"></div>
+    <div style="width:20px;height:20px;border-radius:4px;background:#06B6D4;"></div>
+    <div style="width:20px;height:20px;border-radius:4px;background:#818CF8;"></div>
+    <div style="width:20px;height:20px;border-radius:4px;background:#C084FC;"></div>
+    <div style="margin-left:6px;font-family:'IBM Plex Mono',monospace;font-size:9px;color:rgba(255,255,255,.3);">Space Grotesk + IBM Plex Mono · 磨砂深色系</div>
+  </div>
+
+  <button class="pick-btn" style="background:linear-gradient(90deg,#06B6D4,#818CF8);color:white;box-shadow:0 4px 20px rgba(6,182,212,.25);">选择方案 C</button>
+  <div class="chosen-overlay" id="cho-C" style="color:#06B6D4;border-color:#06B6D4;"><div class="chosen-label" style="background:rgba(6,182,212,.1);color:#67E8F9;">✓ 已选择</div></div>
+</div>
+
+<!-- ══ D: Warm Minimal (Notion / Arc feel) ══ -->
+<div class="panel" id="pd" style="background:#F4F0E8;" onclick="pick('D')">
+  <div class="style-badge" style="background:#FEF3C7;color:#92400E;border:1px solid #FDE68A;">D · Warm Minimal</div>
+
+  <!-- eyebrow -->
+  <div style="font-family:'Space Grotesk',sans-serif;font-size:10px;color:#A8A29E;letter-spacing:.18em;text-transform:uppercase;">Design Proposal · 2026</div>
+
+  <!-- title -->
+  <div>
+    <div style="font-family:'Space Grotesk',sans-serif;font-size:38px;font-weight:700;color:#1C1917;line-height:1.05;margin-bottom:6px;">AI 时代的<br><span style="color:#B45309;">开发者工具</span></div>
+    <div style="font-size:12px;color:#78716C;line-height:1.65;max-width:340px;">从 Vibe Coding 走向 Intuition Coding，开发者与 AI 的协作正在发生根本性跃迁。</div>
+  </div>
+
+  <!-- warm stat cards -->
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;">
+    <div style="background:#EDE8DC;border-radius:10px;padding:12px 14px;border:1px solid #D6CFC4;">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:8px;color:#A8A29E;letter-spacing:.1em;margin-bottom:4px;">DESIGN AREAS</div>
+      <div style="font-family:'Space Grotesk',sans-serif;font-size:26px;font-weight:700;color:#B45309;">6</div>
+    </div>
+    <div style="background:#EDE8DC;border-radius:10px;padding:12px 14px;border:1px solid #D6CFC4;">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:8px;color:#A8A29E;letter-spacing:.1em;margin-bottom:4px;">MOCKUPS</div>
+      <div style="font-family:'Space Grotesk',sans-serif;font-size:26px;font-weight:700;color:#1C1917;">11</div>
+    </div>
+    <div style="background:#EDE8DC;border-radius:10px;padding:12px 14px;border:1px solid #D6CFC4;">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:8px;color:#A8A29E;letter-spacing:.1em;margin-bottom:4px;">STAGES</div>
+      <div style="font-family:'Space Grotesk',sans-serif;font-size:26px;font-weight:700;color:#1C1917;">7</div>
+    </div>
+  </div>
+
+  <!-- warm section card -->
+  <div style="background:#EDE8DC;border-radius:12px;padding:14px 18px;border:1px solid #D6CFC4;">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+      <div style="width:8px;height:8px;border-radius:50%;background:#B45309;"></div>
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:8px;color:#A8A29E;letter-spacing:.1em;">启动阶段 · STAGE 01</div>
+    </div>
+    <div style="font-family:'Space Grotesk',sans-serif;font-size:16px;font-weight:700;color:#1C1917;margin-bottom:5px;">启动即加载记忆</div>
+    <div style="font-size:11px;color:#78716C;line-height:1.6;">AI 记得你们上次做到哪里。CLAUDE.md、.cursorrules 证明厂商已意识到这个痛点，但目前还是手动的。</div>
+    <div style="display:flex;gap:6px;margin-top:8px;">
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:9px;padding:2px 8px;border-radius:4px;background:#F4F0E8;color:#B45309;border:1px solid #D6CFC4;">跨会话</span>
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:9px;padding:2px 8px;border-radius:4px;background:#F4F0E8;color:#78716C;border:1px solid #D6CFC4;">团队共享</span>
+    </div>
+  </div>
+
+  <!-- palette -->
+  <div style="display:flex;gap:6px;align-items:center;">
+    <div style="width:20px;height:20px;border-radius:4px;background:#F4F0E8;border:1px solid #D6CFC4;"></div>
+    <div style="width:20px;height:20px;border-radius:4px;background:#EDE8DC;border:1px solid #D6CFC4;"></div>
+    <div style="width:20px;height:20px;border-radius:4px;background:#B45309;"></div>
+    <div style="width:20px;height:20px;border-radius:4px;background:#1C1917;"></div>
+    <div style="margin-left:6px;font-family:'IBM Plex Mono',monospace;font-size:9px;color:#A8A29E;">Space Grotesk + IBM Plex Mono · 暖色极简系</div>
+  </div>
+
+  <button class="pick-btn" style="background:#1C1917;color:#F4F0E8;">选择方案 D</button>
+  <div class="chosen-overlay" id="cho-D" style="color:#B45309;border-color:#B45309;"><div class="chosen-oval" style="background:rgba(180,83,9,.1);color:#B45309;font-size:18px;font-weight:700;padding:8px 24px;border-radius:8px;">✓ 已选择</div></div>
+</div>
+
+</div><!-- end .page -->
+
+<!-- ── SELECTION TOAST ── -->
+<div id="toast" style="display:none;position:fixed;bottom:32px;left:50%;transform:translateX(-50%);background:#111;color:white;font-family:'DM Mono',monospace;font-size:12px;padding:12px 24px;border-radius:10px;z-index:999;box-shadow:0 8px 32px rgba(0,0,0,.5);letter-spacing:.04em;"></div>
+
+<script>
+let selected = null;
+function pick(id) {
+  if (selected) {
+    document.getElementById('cho-' + selected).classList.remove('show');
+    document.getElementById('p' + selected.toLowerCase()).style.outline = 'none';
+  }
+  selected = id;
+  document.getElementById('cho-' + id).classList.add('show');
+
+  const names = {A:'Dark Pro（暗色专业系）',B:'Editorial Bold（杂志编辑系）',C:'Frosted Dark（磨砂深色系）',D:'Warm Minimal（暖色极简系）'};
+  const toast = document.getElementById('toast');
+  toast.textContent = '已选择方案 ' + id + ' · ' + names[id] + '　→　告知 Claude 即可应用';
+  toast.style.display = 'block';
+  setTimeout(() => toast.style.display = 'none', 4000);
+}
+</script>
+</body>
+</html>

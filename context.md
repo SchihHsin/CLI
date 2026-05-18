@@ -1,0 +1,121 @@
+# 项目上下文 — AI Era Dev Tools Design Proposal
+> 下次新会话启动时读此文件，可立即接续工作。
+
+## 项目概述
+一份 AI 时代开发者工具设计方案，以 **snap-scroll HTML 演示文稿**的形式呈现。
+主文件：`/Users/hsin/Documents/Coding/CLI/ai-dev-tools-design.html`（约 2763 行）
+
+---
+
+## 技术架构
+
+| 维度 | 说明 |
+|------|------|
+| 布局 | `scroll-snap-type: y mandatory`，每屏 `100vh` |
+| 字体 | Syne（标题）/ DM Mono（代码/数据）/ Space Grotesk（正文）/ Noto Sans SC（中文） |
+| 配色 | 紫色主题：`--acc:#834DF0`，`--acc2:#6B38D4`，`--acc-l:#A87FF5` |
+| 动画 | `@keyframes bl`（光标）/ `fadeIn` / `slideIn` / `pulse` / `spin` / `glow` |
+| 交互 | JS DOM 动态渲染 mockup（Agent View、Cursor Demo、Dashboard 等） |
+
+### CSS 自定义变量（完整）
+```css
+:root {
+  --acc:#834DF0; --acc2:#6B38D4; --acc-l:#A87FF5;
+  --acc-dim:rgba(131,77,240,.08); --acc-b:rgba(131,77,240,.22);
+  --bg:#F7F7FA; --bg2:#EEEEF3; --sur:#FFFFFF;
+  --tx:#1A1A2E; --tx2:#4A4A6A; --tx3:#8888A0;
+  --bdr:rgba(0,0,0,.07); --bdr2:rgba(0,0,0,.13);
+  --g:#059669; --r:#DC2626; --y:#D97706; --bl:#2563EB; --tl:#0D9488;
+  --tb:#0C0C11; --tbar:#15151C; --tbdr:#242430;
+  --tw:#CECEE0; --td:#4E4E5E;
+  --tg:#34D399; --tb2:#60A5FA; --tp:#A78BFA; --ty:#FBBF24; --tr:#F87171; --tc:#2DD4BF;
+}
+```
+
+---
+
+## 演示文稿结构（14 个 Section）
+
+| # | ID | 标题 | 行号 |
+|---|----|----|------|
+| 1 | `s-cover` | 封面 | 304 |
+| 2 | `s-bg` | 背景：信号扫描 | 339 |
+| 3 | `s-bg2` | 背景：范式演进时间轴 | 431 |
+| 4 | `s-j-overview` | **用户旅程全景地图（7阶段×6维度）** | 527 |
+| 5 | `s-m1a` | **Agent View** — 多会话统一管理 | 539 |
+| 6 | `s-m1b` | **并行看板** — 所有 Agent 一屏总览 | 628 |
+| 7 | `s-m2a` | **光标即上下文** — 停顿触发 AI | 681 |
+| 8 | `s-m2b` | **手势 Prompt** — Flow 不中断 | 748 |
+| 9 | `s-m2c` | **语音×光标** — 自然空间交互 | 818 |
+| 10 | `s-m3a` | **智能 Fix** — 一键上下文修复 | 908 |
+| 11 | `s-m3b` | **Goal 命令** — 开发者定义完成 | 967 |
+| 12 | `s-m4a` | **记忆启动** — 跨会话上下文 | 1046 |
+| 13 | `s-m4b` | **团队记忆库** — 隐性知识共享 | 1104 |
+| 14 | `s-m5a` | **结果审核** — 多维可视化 | 1184 |
+| 15 | `s-m5b` | **意图对齐** — AI 决策透明化 | 1240 |
+| 16 | `s-sum` | 总结 | 1321 |
+
+---
+
+## 关键组件与实现方式
+
+### 用户旅程地图（`s-j-overview`）
+- JS 函数 `buildJourneyOverview()` 动态生成（在 script 块内）
+- 7 个阶段 × 6 个维度：阶段、触点、行为、情绪、痛点、机会点
+- 情绪曲线用 SVG cubic bezier 绘制，`requestAnimationFrame` 获取真实宽度
+- 悬浮高亮：鼠标移动时按列渲染 `rect` highlight
+
+### Agent View（`s-m1a`）— 已重构为 v2
+- CSS 类前缀：`.agv-*`（已完全替换旧的 `.av-*`）
+- 布局：分组会话列表（`.agv-list`）+ 速览面板（`.agv-peek`）+ 底栏 Dispatch
+- 3 个分组：需要确认（黄色）/ 运行中（紫色）/ 已完成（灰色）
+- 每行显示：状态图标（✻/✽/✢/∙）+ 名称 + 摘要 + 时间 + PR 点 + **上下文健康条**
+- ctx > 75% 触发 `⚠` 红色预警
+- 速览面板（Peek）：选中 Session 后右侧展示输出 + 阻塞时显示数字快捷回复选项
+- JS 函数：`initAgentView()` IIFE，内含 `renderList()` + `renderPeek()` + Dashboard 逻辑
+
+### Before/After 对比面板（11 个设计 Section 均已完成）
+- CSS 类：`.ba-grid` / `.ba-before` / `.ba-after` / `.ba-label` / `.ba-text`
+- "过去的做法"（左红）：**全部已替换为视觉 Mockup**（非纯文字）
+- "新的设计"（右紫）：保留 `.ba-text` 文字描述
+- 各 mockup 风格：
+  - 终端操作类 → 深色 `#0f0f16` 背景 + DM Mono 字体
+  - 对话类 → 浅色 `var(--bg2)` + 聊天气泡
+  - 孤岛知识类 → 图标卡片散布
+
+### `.slabel` 布局
+已改为 `flex-direction:column`（sub 在上，main 在下，避免长标题溢出）
+
+---
+
+## 已完成的主要工作
+
+### Session 1（上一轮）
+1. 从 Editorial B 绿色方案完整还原为紫色主题（删除 editorial CSS override 块）
+2. 用户旅程地图从空白重建为 7×6 完整矩阵（含 SVG 情绪曲线）
+3. JS 动态注入旅程地图 DOM
+
+### Session 2（本轮）
+1. **slabel 标题双行化**：`flex-direction:column` 避免长标题与导航重叠
+2. **Before/After 面板**：在全部 11 个设计 Section 中添加双列对比面板，替换旧 insight 块
+3. **Before Mockup 化**：将所有 11 个"过去的做法"从纯文字替换为视觉 mockup
+4. **Agent View v2 重构**：
+   - CSS 全部替换为 `.agv-*` 体系
+   - 布局对标 Claude Code 实际 Agent View（分组会话列表 + Peek + Dispatch）
+   - 新增上下文健康条、⚠ 预警、Peek 数字快捷回复、inject 输入栏
+   - Dashboard（s-m1b）卡片新增 ctx 条
+
+---
+
+## 参考文件
+- `cli-analysis-report.html`：原始设计分析报告，包含 CSS 变量参考值
+- `style-demos.html`：样式演示，含 Editorial A/B 方案对比
+
+---
+
+## 待办 / 可改进方向
+- [ ] Agent View 动画：可考虑给 ✽ 图标加更流畅的 SVG spinner 替代 CSS spin
+- [ ] 旅程地图情绪曲线：窗口 resize 后 SVG 宽度未更新（需监听 ResizeObserver）
+- [ ] s-m1b 并行看板：当前 Dashboard 卡片没有按优先级排序逻辑（error > wait > run > done）
+- [ ] 总结页（s-sum）：可考虑加一张设计系统全览对比图
+- [ ] 演示时全屏适配：部分小屏幕下内容可能被截断（未专门测试）

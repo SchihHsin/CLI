@@ -1,0 +1,155 @@
+# 工作过程记录 — AI Era Dev Tools Design
+> 记录每次会话的操作步骤与决策依据，供后续提炼 skills 使用。
+
+---
+
+## Session 1（上一轮，已从 context summary 还原）
+
+### 任务：Editorial B 方案 → 还原紫色主题
+
+**背景**：用户最初要求应用 Editorial B 样式（黑色重边框、报纸风）。实现过程中先做了绿色 → 紫色的颜色迁移，但用户对结果不满意，最终决定全部还原为原始紫色方案。
+
+**操作过程**：
+1. 用 `grep -c` 统计所有绿色 rgba 残留值，逐一用 `sed -i ''` 批量替换
+2. 发现 `rgba(167,139,250,` 首次 sed 未清零，单独重跑
+3. 手动修正 `:root` 中 `--acc-l` 的值（`#2EBD75` 被错误替换为 `#A78BFA`，正确值应为 `#A87FF5`）
+4. 定位 editorial CSS override 块范围（grep 找到起止行号 213-453），用 `sed '213,453d'` 删除
+5. 还原 button mockup 中被错改为蓝色的 box-shadow
+
+**教训**：sed 批量替换时需按正确顺序操作，避免链式覆盖；每步后用 `grep -c` 验证归零。
+
+---
+
+### 任务：用户旅程地图重建（7阶段 × 6维度）
+
+**背景**：用户说旅程图内容太少，要求按「阶段、触点、行为、情绪曲线、痛点、机会点」六维度展开。
+
+**操作过程**：
+1. 替换 `s-j-overview` section 的 HTML，改用 `jmap-container` + JS 注入
+2. 编写 `buildJourneyOverview()` 函数：
+   - 用 `mkRow()` / `mkCell()` / `mkDimLabel()` 工厂函数生成表格行
+   - 情绪数据存在 `stages[i].emotion`（0-100），通过 cubic bezier 绘制 SVG 曲线
+   - `requestAnimationFrame` 在 DOM paint 后获取真实 offsetWidth
+   - SVG 使用 linearGradient 渐变填充曲线下方区域
+3. 添加列 hover 高亮：mousemove 计算 relX / colW 定位列索引，动态改 rect opacity
+
+**关键实现细节**：
+- `writing-mode:vertical-rl; transform:rotate(180deg)` 实现维度标签竖排
+- 情绪曲线控制点公式：`cp1x = prev.x + (curr.x - prev.x) * 0.4`（40% 张力）
+- 痛点行用红色 tint，机会点行用紫色 tint 区分语义
+
+---
+
+## Session 2（本轮）
+
+### 任务 1：slabel 标题双行化
+
+**问题**：用户反映某些 slabel 标题太长，会跟 Tab 重叠（在一行里放不下）。
+
+**分析**：`.slabel` 原为 `display:flex; align-items:baseline; gap:24px`，sub 和 main 同行展示。
+
+**解决方案**：
+- 改为 `flex-direction:column; align-items:flex-start; gap:5px`
+- main 字号从 24px 降到 22px（单独一行后视觉更平衡）
+- padding-top 从 20px 降到 16px（节省垂直空间）
+
+**影响范围**：所有 14+ 个 section 的标题区域，全局生效。
+
+---
+
+### 任务 2：Before/After 对比面板（全 11 个设计 Section）
+
+**背景**：用户希望设计页面有"过去怎么做 vs 新设计怎么做"的对比，让观众有直观感知。
+
+**操作过程**：
+1. 先在 CSS 中添加 `.ba-grid` / `.ba-before` / `.ba-after` / `.ba-label` / `.ba-text` 类
+   - before 用红色 tint（`rgba(220,38,38,.06)` + 红色边框）
+   - after 用紫色 tint（`rgba(131,77,240,.06)` + 紫色边框）
+2. 逐一将原有的 `.insight` 块替换为 `.ba-grid` 双列面板，共 11 处
+
+**验证**：用 `grep -n "ba-grid"` 确认 11 处全部替换，用 `grep -n "insight"` 确认旧块已清零。
+
+---
+
+### 任务 3：Before Mockup 化（将纯文字替换为视觉 Mockup）
+
+**背景**：用户说"过去的做法不要只以文字呈现，用 Mockup 形式"。
+
+**决策**：
+- "过去的做法"（左红面板）→ 视觉 mockup
+- "新的设计"（右紫面板）→ 保持文字（真实 mockup 已在 dp-right 展示）
+
+**各 Section 对应 mockup 风格**：
+
+| Section | Before Mockup 设计 |
+|---------|-------------------|
+| s-m1a Agent View | 3 个小终端窗口并排，"↔ 手动切换" |
+| s-m1b Dashboard | 混乱日志流 + "← 哪个 Agent 卡住了？" |
+| s-m2a Cursor | 代码块 → 切换对话框（上下叠加） |
+| s-m2b Gesture | 代码编辑器 + 底部手动 Prompt 输入框 |
+| s-m2c Voice | 语音气泡 + AI 回问"哪个函数？" |
+| s-m3a Fix | 终端报错 → 4步流程箭头 → 对话框粘贴 |
+| s-m3b Goal | 终端显示"✓ Task completed" → 开发者困惑气泡 |
+| s-m4a Memory | 两个 Session 都在重复解释项目背景 |
+| s-m4b Team | 知识孤岛图标散布（Slack/Notion/脑/邮件）|
+| s-m5a Review | 原始 code diff 彩色行 + "需脑补" |
+| s-m5b Intent | 黑箱 Agent 输出 + 只有 Accept/Reject 按钮 |
+
+**关键样式**：
+- 终端类：`background:#0f0f16; font-family:'DM Mono'; font-size:7.5px`
+- 对话气泡：`background:rgba(220,38,38,.07); border-radius:4px`
+- 知识孤岛：flex-wrap chip 布局
+
+---
+
+### 任务 4：Agent View v2 重构（对标并超越 Claude Code Agent View）
+
+**背景**：用户认为原有 Agent View mockup 比 Claude 官方的差，要求研究并超越。
+
+**调研过程**（通过 claude-code-guide subagent 研究）：
+- Claude Code Agent View 于 2026-05-11 作为 Research Preview 发布（v2.1.139+）
+- 实际设计：**分组会话列表**（非多窗口），按"需要确认 / 运行中 / 已完成"分组
+- 状态图标体系：`✽/✻`（进程存活）/ `∙`（进程退出）/ `✢`（loop 睡眠中）
+- 每行数据：icon + name + 一行摘要（Haiku 生成，15s 刷新）+ 时间戳 + PR dot
+- 底栏：Dispatch 输入框 + 过滤语法（`a:name s:working #142`）
+- Peek 面板：Space 打开，显示最近输出，可内联回复阻塞 Session
+- 快捷键：`↑↓` 导航 / `Enter` 进入 / `←` 返回 / `Ctrl+R` 重命名 / `Ctrl+X` 停止
+
+**CSS 重构**：
+- 完全删除旧 `.av-*` 类（16 条规则，lines 116-133）
+- 新建 `.agv-*` 类体系（33 条规则）
+- 关键结构：`.agv-wrap → .agv-hd + .agv-body(.agv-list + .agv-peek) + .agv-footer`
+
+**JS 重构**：
+- 删除旧 `agentData[]` + `selectAgent()` + `renderAVOutput()` + `initAVTabs()` 全套（约 100 行）
+- 新建 `initAgentView()` IIFE，内含：
+  - `sessions[]` 数据（5 条，含 output / replyOptions）
+  - `groups[]` 分组配置（accent 颜色 / CSS class）
+  - `renderList()` — 渲染分组会话行，含 ctx bar 动画（先设 width:0，60ms 后设真实值触发 transition）
+  - `renderPeek()` — 渲染速览面板，needs-input 显示数字选项，其他显示 inject 输入框
+  - Dashboard 逻辑（为 s-m1b 服务）也移入此 IIFE
+
+**超越 Claude 的设计点**：
+1. **Context 健康条**：每行右侧 32px 填充条，绿/黄/红随使用率变色（Claude 无此功能）
+2. **⚠ 预警 glyph**：ctx > 75% 自动在条左侧显示红色 ⚠ 符号
+3. **Peek 数字快捷回复**：阻塞 Session 的选项按 `[1][2][3]` 排列，更显眼
+4. **Inject 输入栏**：非阻塞 Session 的 Peek 底部显示 inject 输入框（不用进入 Session）
+5. **Dashboard ctx 条**：s-m1b 看板卡片也展示 ctx 使用率条（更多维度）
+6. **左边框颜色编码**：需确认=黄色边框 / 运行=紫色边框 / 完成=灰色边框
+
+**遇到的问题**：
+- `Edit` 工具匹配失败（旧 JS 块中存在特殊字符，字符串不完全匹配）
+- **解决方案**：先用 `grep -n` 找到精确行号范围（1711-1868），用 `sed -i '' '1711,1868d'` 直接删除，再用 `Edit` 在 Cursor Demo 注释前插入新代码
+
+---
+
+## 提炼 Skills 方向
+
+基于本次工作，以下模式值得固化为可复用 skill：
+
+1. **sed 颜色批量替换**：`sed -i '' 's/old/new/g'` + `grep -c` 验证 + 按顺序替换避免链式错误
+2. **CSS 类全局替换**：先删除旧类块（`sed 'N,Md'`），再插入新类块（`Edit` 或 append）
+3. **JS IIFE 模块化**：将复杂 mockup 逻辑封装为 IIFE，避免全局变量污染
+4. **Edit 失败时的降级方案**：`grep -n` 定位行号 → `sed -i ''` 删除 → `Edit` 在锚点处插入
+5. **动画技巧**：CSS transition + `setTimeout(()=>{ el.style.width = '100%' }, 60)` 触发入场动画
+6. **Mockup 组件语言**：终端深色 `#0f0f16` + DM Mono 7.5px + `border:.5px solid #252530` 为标准终端 mockup 样式
