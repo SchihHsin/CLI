@@ -53,7 +53,8 @@
 | 13 | `s-m4b` | **团队记忆库** — 隐性知识共享 | 1104 |
 | 14 | `s-m5a` | **结果审核** — 多维可视化 | 1184 |
 | 15 | `s-m5b` | **意图对齐** — AI 决策透明化 | 1240 |
-| 16 | `s-sum` | 总结 | 1321 |
+| 16 | `s-m6a` | **光标伴侣** — 贴身 AI 操作引导 | 1343 |
+| 17 | `s-sum` | 总结 | 1496 |
 
 ---
 
@@ -64,6 +65,20 @@
 - 7 个阶段 × 6 个维度：阶段、触点、行为、情绪、痛点、机会点
 - 情绪曲线用 SVG cubic bezier 绘制，`requestAnimationFrame` 获取真实宽度
 - 悬浮高亮：鼠标移动时按列渲染 `rect` highlight
+
+### 光标伴侣（`s-m6a`）— Session 3 新增
+- Sub-label: "延伸设计 · 光标引导 AI"
+- Main: "光标伴侣 — 贴身 AI 操作引导"（原名 Clicky，已去除品牌名，独立设计点）
+- 核心 mockup：DataViz Pro 应用界面内浮动 SVG 三角指针
+- 动画：quadratic bezier 飞行（贝塞尔弧线，midY = min(from,to)-28），cubic ease-in-out
+- 旋转：`Math.atan2(dy, dx)` 朝飞行方向，中点缩放 1.4x（sin 曲线）
+- 脉冲环：landing 时扩散 SVG circle，透明度衰减
+- 高亮框：getBoundingClientRect 精确定位目标元素，absolute div 覆盖
+- 语音气泡：pre-line 白-space，自动 clamp 到 app 边界内
+- 三步循环：Export 按钮 → Settings 侧栏 → 图表中心 → 循环
+- IntersectionObserver (threshold:0.4) 控制 start/stop
+- JS：`initClicky()` IIFE，已完全重写（不再用静态 bubble）
+- 关键 ID：`ck-companion-g`（SVG group）/ `ck-ring-el`（脉冲圆）/ `ck-speech`（语音泡）/ `ck-highlight`（高亮框）/ `ck-export-btn` / `ck-settings-btn`
 
 ### Agent View（`s-m1a`）— 已重构为 v2
 - CSS 类前缀：`.agv-*`（已完全替换旧的 `.av-*`）
@@ -89,6 +104,15 @@
 ---
 
 ## 已完成的主要工作
+
+### Session 3（本轮）
+1. **光标伴侣 s-m6a 全面重构**：
+   - 品牌名从 "Clicky" 改为 "光标伴侣"，作为独立设计点保留（不合并入 Module 2）
+   - 删除静态 `.clicky-bubble` div，改为动态 SVG overlay（`#ck-companion-svg`）
+   - 三角指针 `<polygon points="9,0 -6,-6 -6,6">` + `filter:url(#ck-glow-f)` 紫色辉光
+   - 完全重写 `initClicky()` IIFE：quadratic bezier 飞行 + rotation + scale + pulse ring
+   - IntersectionObserver 控制动画 start/stop（离开页面停止，再进入重启）
+2. **技术亮点**：Python splice 替换大块 HTML/JS（避免 Edit 工具匹配失败）
 
 ### Session 1（上一轮）
 1. 从 Editorial B 绿色方案完整还原为紫色主题（删除 editorial CSS override 块）
@@ -119,3 +143,4 @@
 - [ ] s-m1b 并行看板：当前 Dashboard 卡片没有按优先级排序逻辑（error > wait > run > done）
 - [ ] 总结页（s-sum）：可考虑加一张设计系统全览对比图
 - [ ] 演示时全屏适配：部分小屏幕下内容可能被截断（未专门测试）
+- [ ] 光标伴侣 s-m6a：可考虑在语音 waveform 和指针飞行之间加时序联动（语音说话时指针在飞）

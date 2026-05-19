@@ -143,6 +143,45 @@
 
 ---
 
+## Session 3（本轮）
+
+### 任务：光标伴侣 s-m6a 完全重构
+
+**背景**：
+- 用户先要求新增 "Clicky" 设计点，最初做了静态 mockup（clicky-bubble div + 无动画三角）
+- 用户反馈：mockup 画错了，Clicky 应该是跟随光标、贝塞尔飞行的三角指针
+- 用户最终确认：把光标伴侣当成**独立新增**设计点，不覆盖原有 s-m2c（语音×光标），改名去除 Clicky 品牌
+
+**关键调研**（Explore subagent 研究 farzaa/clicky GitHub）：
+- 蓝色发光三角形，跟随鼠标光标
+- quadratic bezier 动画：`x = mt²·from + 2mt·t·mid + t²·to`，midY 向上弧
+- 旋转方向：`Math.atan2(dy, dx)` 朝飞行切线方向
+- 中点缩放放大：`scale = 1 + sin(t·π) * 0.4`
+- 全屏透明覆盖层，pointer-events:none
+- 语音通过 push-to-talk + 截图发给 Claude
+
+**实现过程**：
+1. Write tool 写新 HTML 到 `/tmp/ck_new_html.txt`，新 JS 到 `/tmp/ck_new_js.txt`
+2. Python splice：`content.index()` 精确定位 HTML section 边界（Clicky 注释 → SUMMARY 注释），替换
+3. Python splice：`content.index(js_start)` + `content.index(js_end, idx)` 替换 JS block
+4. `content.replace()` 更新 nav label 和注释（两处 Clicky → 光标伴侣）
+
+**关键技术决策**：
+- SVG overlay `position:absolute;inset:0;pointer-events:none;z-index:20` 浮在 app 上
+- 三角形 polygon `points="9,0 -6,-6 -6,6"`（尖端朝 +x，`rotate(atan2)` 朝飞行方向）
+- `feGaussianBlur` filter 实现紫色辉光效果
+- 脉冲环：SVG circle radius 从 0 扩展到 20，opacity 同步衰减
+- 高亮框：`getBoundingClientRect()` 精确映射目标元素位置到 absolute div
+- 语音气泡：`white-space:pre-line` 支持 `\n` 换行，clamp 边界避免溢出 overflow:hidden 的 app 容器
+- IntersectionObserver threshold:0.4，离开页面停止 RAF 循环节省性能
+
+**学到的降级方案升级**：
+- 旧方案：`grep -n` → `sed -i '' '行号,行号d'` → Edit 插入
+- 新方案（更优）：Write 新内容到 /tmp/ → Python 用 `str.index()` 精确边界替换 → 一次写入
+- 优势：避免行号漂移问题，避免 sed 特殊字符转义问题，一次执行不需要多步操作
+
+---
+
 ## 提炼 Skills 方向
 
 基于本次工作，以下模式值得固化为可复用 skill：
@@ -151,5 +190,7 @@
 2. **CSS 类全局替换**：先删除旧类块（`sed 'N,Md'`），再插入新类块（`Edit` 或 append）
 3. **JS IIFE 模块化**：将复杂 mockup 逻辑封装为 IIFE，避免全局变量污染
 4. **Edit 失败时的降级方案**：`grep -n` 定位行号 → `sed -i ''` 删除 → `Edit` 在锚点处插入
-5. **动画技巧**：CSS transition + `setTimeout(()=>{ el.style.width = '100%' }, 60)` 触发入场动画
-6. **Mockup 组件语言**：终端深色 `#0f0f16` + DM Mono 7.5px + `border:.5px solid #252530` 为标准终端 mockup 样式
+5. **大块替换最优方案**：Write 内容到 /tmp/ → Python `str.index()` 定位边界 → 一次 write 写回（比 sed 行号法更可靠）
+6. **动画技巧**：CSS transition + `setTimeout(()=>{ el.style.width = '100%' }, 60)` 触发入场动画
+7. **Mockup 组件语言**：终端深色 `#0f0f16` + DM Mono 7.5px + `border:.5px solid #252530` 为标准终端 mockup 样式
+8. **SVG 指针动画**：quadratic bezier + `atan2` 旋转 + `sin(t·π)` 缩放 + `feGaussianBlur` 辉光 = 完整的飞行指针效果

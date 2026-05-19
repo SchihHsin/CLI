@@ -73,6 +73,29 @@ body{background:var(--bg);color:var(--tx);font-family:'Space Grotesk','Noto Sans
 .ty3{background:rgba(251,191,36,.15);color:#FBBF24;border:.5px solid rgba(251,191,36,.3);}
 .tr3{background:rgba(248,113,113,.15);color:#F87171;border:.5px solid rgba(248,113,113,.3);}
 
+/* CLICKY */
+.clicky-wrap{display:flex;flex-direction:column;flex:1;gap:7px;overflow:hidden;}
+.clicky-voice-bar{display:flex;align-items:center;gap:8px;padding:6px 11px;background:rgba(131,77,240,.06);border:.5px solid var(--acc-b);border-radius:7px;flex-shrink:0;}
+.clicky-app{flex:1;background:#F6F6FA;border:1px solid var(--bdr2);border-radius:10px;overflow:hidden;position:relative;display:flex;flex-direction:column;min-height:0;}
+.clicky-titlebar{background:#EBEBF2;border-bottom:.5px solid var(--bdr2);padding:6px 12px;display:flex;align-items:center;gap:8px;flex-shrink:0;}
+.clicky-wdot{width:9px;height:9px;border-radius:50%;flex-shrink:0;}
+.clicky-menubar{background:#F0F0F8;border-bottom:.5px solid var(--bdr2);padding:3px 14px;display:flex;gap:16px;font-size:9px;color:var(--tx2);flex-shrink:0;}
+.clicky-body{flex:1;display:flex;overflow:hidden;min-height:0;}
+.clicky-sb{width:70px;border-right:.5px solid var(--bdr2);padding:8px 6px;background:#F9F9FD;flex-shrink:0;display:flex;flex-direction:column;gap:3px;}
+.clicky-sb-item{font-size:8px;padding:3px 5px;border-radius:4px;color:var(--tx3);display:flex;align-items:center;gap:4px;cursor:pointer;}
+.clicky-sb-item.active{background:rgba(131,77,240,.1);color:var(--acc);}
+.clicky-main{flex:1;padding:8px;display:flex;flex-direction:column;gap:6px;overflow:hidden;}
+.clicky-tbar{display:flex;gap:4px;align-items:center;flex-shrink:0;}
+.clicky-tbtn{font-family:'DM Mono',monospace;font-size:8px;padding:3px 9px;border-radius:4px;border:.5px solid var(--bdr2);background:var(--sur);color:var(--tx2);cursor:pointer;white-space:nowrap;}
+.clicky-tbtn.ck-hl{background:var(--acc);color:white;border-color:var(--acc2);position:relative;box-shadow:0 0 0 3px rgba(131,77,240,.2);}
+@keyframes ck-ring{0%,100%{box-shadow:0 0 0 2px rgba(131,77,240,.5),0 0 0 5px rgba(131,77,240,.2);}50%{box-shadow:0 0 0 3px rgba(131,77,240,.8),0 0 0 8px rgba(131,77,240,.08);}}
+.clicky-tbtn.ck-hl{animation:ck-ring 1.4s ease-in-out infinite;}
+.clicky-chart{flex:1;background:var(--bg2);border-radius:6px;display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative;}
+.clicky-bubble{position:absolute;bottom:12px;right:12px;background:#11111A;border-radius:10px 10px 2px 10px;padding:8px 11px;min-width:140px;box-shadow:0 4px 18px rgba(131,77,240,.35);border:.5px solid rgba(131,77,240,.45);z-index:10;}
+.clicky-step-card{background:rgba(131,77,240,.05);border:.5px solid var(--acc-b);border-radius:8px;padding:8px 11px;flex-shrink:0;}
+@keyframes ck-wave{0%,100%{transform:scaleY(.4);}50%{transform:scaleY(1);}}
+.cwb{display:inline-block;width:2.5px;background:var(--acc);border-radius:2px;transform-origin:bottom;opacity:.8;}
+
 /* COVER */
 .cover-stripe{position:absolute;left:0;top:0;bottom:0;width:6px;background:var(--acc);}
 .cover-rule{position:absolute;left:0;right:0;bottom:0;height:2px;background:var(--bdr2);}
@@ -1317,6 +1340,149 @@ body{background:var(--bg);color:var(--tx);font-family:'Space Grotesk','Noto Sans
   <div class="snav" id="nav-m5b"></div>
 </div>
 
+<!-- ══ MODULE 6A: 光标伴侣 ══ -->
+<div class="sec" id="s-m6a" style="background:var(--sur);">
+  <div class="slabel">
+    <span class="sub">延伸设计 · 光标引导 AI</span>
+    <span class="main">光标伴侣 — 贴身 AI 操作引导</span>
+  </div>
+  <div class="inner">
+    <div class="dp-layout">
+      <div class="dp-left">
+        <div class="dp-desc">
+          <div class="dp-label">设计说明</div>
+          <div class="dp-title">光标追踪 × 语音触发 × 可视化引导</div>
+          <div class="dp-body">AI 以轻量三角指针的形式常驻软件界面，始终感知鼠标悬停的 UI 元素。遇到操作疑问直接语音提问——AI 实时在真实界面上叠加可视化引导，指针贝塞尔飞行至目标位置，高亮目标按钮、展示步骤卡片。让「边用边学」成为常态，彻底消除软件上手的认知门槛。</div>
+        </div>
+        <div class="dp-desc">
+          <div class="dp-label">核心设计点</div>
+          <div class="dp-points">
+            <div class="dpp">光标追踪感知：AI 指针实时跟随，自动识别悬停 UI 元素的语义与功能</div>
+            <div class="dpp">语音触发 × 飞行引导：「如何导出 CSV？」→ 指针贝塞尔飞行至目标，高亮 + 脉冲环</div>
+            <div class="dpp">步骤卡片引导：序号 + 进度状态，完成即自动跳下一步，如真人演示</div>
+            <div class="dpp">零打扰常驻：不遮挡界面，仅在需要时浮现引导，操作完成后静默待命</div>
+          </div>
+        </div>
+        <div class="ba-grid">
+          <div class="ba-before">
+            <div class="ba-label"><span>✕</span> 过去的做法</div>
+            <div style="margin-top:4px;display:flex;flex-direction:column;gap:3px;">
+              <div style="background:var(--bg2);border-radius:4px 4px 0 0;padding:4px 8px;border:.5px solid var(--bdr2);border-bottom:none;">
+                <div style="display:flex;gap:3px;margin-bottom:4px;">
+                  <div style="background:rgba(220,38,38,.15);border-radius:3px;padding:1px 5px;font-size:7px;color:#DC2626;font-family:'DM Mono',monospace;">B站搜索</div>
+                  <div style="background:rgba(0,0,0,.06);border-radius:3px;padding:1px 5px;font-size:7px;color:var(--tx3);font-family:'DM Mono',monospace;">知乎教程</div>
+                  <div style="background:rgba(0,0,0,.06);border-radius:3px;padding:1px 5px;font-size:7px;color:var(--tx3);font-family:'DM Mono',monospace;">CSDN+</div>
+                </div>
+                <div style="background:var(--sur);border-radius:3px;padding:2px 7px;font-size:8px;color:var(--tx3);border:.5px solid var(--bdr2);">🔍 如何导出CSV文件教程</div>
+              </div>
+              <div style="background:var(--sur);border:.5px solid var(--bdr2);border-radius:0 0 4px 4px;padding:5px 8px;">
+                <div style="font-size:8px;color:var(--tx2);margin-bottom:3px;">搜索结果 · 约 12,400,000 条</div>
+                <div style="font-size:7.5px;color:var(--tx3);line-height:1.6;">▶ 手把手教你导出CSV：30分钟...<br>▶ 软件操作教程全集（2024）...<br>▶ 零基础学会使用 DataViz...</div>
+              </div>
+              <div style="text-align:center;font-size:7.5px;color:var(--tx3);font-family:'DM Mono',monospace;">切出软件 · 搜了 15 分钟</div>
+            </div>
+          </div>
+          <div class="ba-after">
+            <div class="ba-label"><span>◆</span> 新的设计</div>
+            <div class="ba-text">AI 指针飞向目标按钮，语音回答同时在界面内高亮操作路径，全程不需要切出软件。</div>
+          </div>
+        </div>
+      </div>
+      <div class="dp-right">
+        <div class="mockup-label">动态 Mockup — AI 指针实时操作引导</div>
+        <div class="clicky-wrap" id="clicky-wrap">
+          <div class="clicky-voice-bar">
+            <span style="font-size:13px;">🎙</span>
+            <span style="font-family:'DM Mono',monospace;font-size:9px;color:var(--tx);">「如何把图表导出为 CSV 格式？」</span>
+            <div style="flex:1;"></div>
+            <div style="display:flex;gap:2px;align-items:center;" id="clicky-waveform"></div>
+          </div>
+          <div class="clicky-app">
+            <div class="clicky-titlebar">
+              <div style="display:flex;gap:4px;">
+                <div class="clicky-wdot" style="background:#FF5F57;"></div>
+                <div class="clicky-wdot" style="background:#FFBD2E;"></div>
+                <div class="clicky-wdot" style="background:#28CA42;"></div>
+              </div>
+              <div style="flex:1;text-align:center;font-family:'DM Mono',monospace;font-size:9px;color:var(--tx3);">DataViz Pro — Q1 销售数据.csv</div>
+            </div>
+            <div class="clicky-menubar">
+              <span>文件</span><span>编辑</span><span>视图</span><span>导出</span><span>帮助</span>
+            </div>
+            <div class="clicky-body">
+              <div class="clicky-sb">
+                <div style="font-size:7px;color:var(--tx3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px;">视图</div>
+                <div class="clicky-sb-item active"><span>📊</span><span>图表</span></div>
+                <div class="clicky-sb-item"><span>📋</span><span>数据</span></div>
+                <div class="clicky-sb-item"><span>📁</span><span>文件</span></div>
+                <div class="clicky-sb-item" id="ck-settings-btn"><span>⚙️</span><span>设置</span></div>
+              </div>
+              <div class="clicky-main">
+                <div class="clicky-tbar">
+                  <div class="clicky-tbtn">新建</div>
+                  <div class="clicky-tbtn">导入</div>
+                  <div class="clicky-tbtn" id="ck-export-btn">导出 ↗</div>
+                  <div class="clicky-tbtn">分享</div>
+                  <div class="clicky-tbtn" style="margin-left:auto;font-size:8px;color:var(--tx3);">Q1销售数据</div>
+                </div>
+                <div class="clicky-chart" id="clicky-chart">
+                  <svg width="100%" height="100%" viewBox="0 0 260 80" preserveAspectRatio="none" style="position:absolute;inset:0;">
+                    <rect x="20" y="40" width="28" height="35" rx="2" fill="rgba(131,77,240,.35)"/>
+                    <rect x="56" y="25" width="28" height="50" rx="2" fill="rgba(131,77,240,.5)"/>
+                    <rect x="92" y="50" width="28" height="25" rx="2" fill="rgba(131,77,240,.3)"/>
+                    <rect x="128" y="15" width="28" height="60" rx="2" fill="rgba(131,77,240,.65)"/>
+                    <rect x="164" y="30" width="28" height="45" rx="2" fill="rgba(131,77,240,.45)"/>
+                    <rect x="200" y="20" width="28" height="55" rx="2" fill="rgba(131,77,240,.55)"/>
+                    <text x="10" y="78" font-family="DM Mono" font-size="7" fill="#8888A0">1月</text>
+                    <text x="46" y="78" font-family="DM Mono" font-size="7" fill="#8888A0">2月</text>
+                    <text x="82" y="78" font-family="DM Mono" font-size="7" fill="#8888A0">3月</text>
+                    <text x="118" y="78" font-family="DM Mono" font-size="7" fill="#8888A0">4月</text>
+                    <text x="154" y="78" font-family="DM Mono" font-size="7" fill="#8888A0">5月</text>
+                    <text x="190" y="78" font-family="DM Mono" font-size="7" fill="#8888A0">6月</text>
+                  </svg>
+                </div>
+              </div>
+            </div>
+            <!-- AI companion overlay -->
+            <svg id="ck-companion-svg" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:20;overflow:visible;">
+              <defs>
+                <filter id="ck-glow-f" x="-60%" y="-60%" width="220%" height="220%">
+                  <feGaussianBlur stdDeviation="2.5" result="blur"/>
+                  <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+                </filter>
+              </defs>
+              <circle id="ck-ring-el" cx="-100" cy="-100" r="0" fill="none" stroke="rgba(131,77,240,0.6)" stroke-width="1.5"/>
+              <g id="ck-companion-g" transform="translate(-100,-100)">
+                <polygon points="9,0 -6,-6 -6,6" fill="rgba(131,77,240,0.92)" filter="url(#ck-glow-f)"/>
+              </g>
+            </svg>
+            <div id="ck-speech" style="position:absolute;z-index:25;background:#11111A;border:.5px solid rgba(131,77,240,.5);border-radius:8px 8px 2px 8px;padding:5px 9px;font-family:'DM Mono',monospace;font-size:8px;color:#CECEE0;white-space:pre-line;line-height:1.55;opacity:0;transition:opacity .3s;pointer-events:none;box-shadow:0 3px 14px rgba(131,77,240,.28);max-width:120px;left:0;top:0;"></div>
+            <div id="ck-highlight" style="position:absolute;z-index:22;border-radius:4px;border:1.5px solid rgba(131,77,240,.8);box-shadow:0 0 0 3px rgba(131,77,240,.18),0 0 8px rgba(131,77,240,.3);pointer-events:none;opacity:0;transition:opacity .25s;"></div>
+          </div>
+          <div class="clicky-step-card">
+            <div style="font-family:'DM Mono',monospace;font-size:7.5px;color:var(--tx3);margin-bottom:6px;letter-spacing:.05em;">导出 CSV 文件 · 操作引导</div>
+            <div style="display:flex;flex-direction:column;gap:4px;">
+              <div style="display:flex;gap:6px;align-items:flex-start;opacity:.5;">
+                <div style="width:15px;height:15px;border-radius:50%;background:#34D399;display:flex;align-items:center;justify-content:center;font-size:7px;color:white;flex-shrink:0;margin-top:1px;">✓</div>
+                <div style="font-size:9px;color:var(--tx2);">打开需要导出的图表或数据文件</div>
+              </div>
+              <div style="display:flex;gap:6px;align-items:flex-start;">
+                <div style="width:15px;height:15px;border-radius:50%;background:var(--acc);display:flex;align-items:center;justify-content:center;font-size:7.5px;color:white;flex-shrink:0;margin-top:1px;animation:glow 1.5s ease-in-out infinite;">2</div>
+                <div style="font-size:9px;color:var(--tx);font-weight:600;">点击工具栏「导出 ↗」按钮 ← 当前位置</div>
+              </div>
+              <div style="display:flex;gap:6px;align-items:flex-start;opacity:.35;">
+                <div style="width:15px;height:15px;border-radius:50%;background:var(--bg2);border:.5px solid var(--bdr2);display:flex;align-items:center;justify-content:center;font-size:7.5px;color:var(--tx3);flex-shrink:0;margin-top:1px;">3</div>
+                <div style="font-size:9px;color:var(--tx2);">在弹窗中选择 CSV 格式，确认保存路径</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="snav" id="nav-m6a"></div>
+</div>
+
 <!-- ══ SUMMARY ══ -->
 <div class="sec" id="s-sum" style="background:var(--bg);">
   <div class="slabel">
@@ -1381,11 +1547,11 @@ body{background:var(--bg);color:var(--tx);font-family:'Space Grotesk','Noto Sans
 
 <script>
 // ── NAV SYSTEM ──
-// Journey order: cover → bg × 2 → overview → 启动 → 表达意图×3 → 委托执行 → 监控进度×2 → 出错恢复 → 审核结果×2 → 结束沉淀 → 总结
+// Journey order: cover → bg × 2 → overview → 启动 → 表达意图×4 → 委托执行 → 监控进度×2 → 出错恢复 → 审核结果×2 → 结束沉淀 → 总结
 const journeyOrder = [
   's-cover','s-bg','s-bg2','s-j-overview',
   's-m4a',                          // 启动
-  's-m2c','s-m2b','s-m2a',          // 表达意图
+  's-m2c','s-m6a','s-m2b','s-m2a', // 表达意图
   's-m3b',                          // 委托执行
   's-m1a','s-m1b',                  // 监控进度
   's-m3a',                          // 出错恢复
@@ -1410,6 +1576,7 @@ const sections = [
   {id:'s-j-overview', nav:'nav-j-overview', label:'旅程总览'},
   {id:'s-m4a',        nav:'nav-m4a',        label:'01·启动'},
   {id:'s-m2c',        nav:'nav-m2c',        label:'02·语音'},
+  {id:'s-m6a',        nav:'nav-m6a',        label:'02·光标伴侣'},
   {id:'s-m2b',        nav:'nav-m2b',        label:'02·手势'},
   {id:'s-m2a',        nav:'nav-m2a',        label:'02·光标'},
   {id:'s-m3b',        nav:'nav-m3b',        label:'03·Goal'},
@@ -1425,12 +1592,12 @@ const sections = [
 const moduleGroups = [
   {label:'背景',     indices:[0,1,2,3]},
   {label:'启动',     indices:[4]},
-  {label:'表达意图', indices:[5,6,7]},
-  {label:'委托执行', indices:[8]},
-  {label:'监控进度', indices:[9,10]},
-  {label:'出错恢复', indices:[11]},
-  {label:'审核结果', indices:[12,13,14]},
-  {label:'总结',     indices:[15]},
+  {label:'表达意图', indices:[5,6,7,8]},
+  {label:'委托执行', indices:[9]},
+  {label:'监控进度', indices:[10,11]},
+  {label:'出错恢复', indices:[12]},
+  {label:'审核结果', indices:[13,14,15]},
+  {label:'总结',     indices:[16]},
 ];
 
 function buildNavs() {
@@ -1931,6 +2098,140 @@ buildNavs();
     }, 2000);
   }
   setTimeout(tickDashboard, 800);
+})();
+
+// ── CLICKY ──
+(function initClicky() {
+  const wf = document.getElementById('clicky-waveform');
+  if (wf) {
+    [6,10,14,9,16,11,7,13,10,6,14,9].forEach((h, i) => {
+      const b = document.createElement('span');
+      b.className = 'cwb';
+      b.style.cssText = `height:${h}px;animation:ck-wave ${0.5+(i%4)*0.15}s ease-in-out ${i*0.06}s infinite;`;
+      wf.appendChild(b);
+    });
+  }
+
+  const section = document.getElementById('s-m6a');
+  const app = document.querySelector('#s-m6a .clicky-app');
+  if (!section || !app) return;
+
+  const cg = document.getElementById('ck-companion-g');
+  const ringEl = document.getElementById('ck-ring-el');
+  const speech = document.getElementById('ck-speech');
+  const hl = document.getElementById('ck-highlight');
+  if (!cg || !ringEl || !speech || !hl) return;
+
+  let running = false, pos = null, step = 0;
+
+  function elCenter(id) {
+    const el = document.getElementById(id);
+    if (!el) return null;
+    const ar = app.getBoundingClientRect(), er = el.getBoundingClientRect();
+    return { x: er.left - ar.left + er.width / 2, y: er.top - ar.top + er.height / 2 };
+  }
+
+  function setHL(id) {
+    if (!id) { hl.style.opacity = '0'; return; }
+    const el = document.getElementById(id);
+    if (!el) return;
+    const ar = app.getBoundingClientRect(), er = el.getBoundingClientRect();
+    Object.assign(hl.style, {
+      left: (er.left - ar.left - 3) + 'px', top: (er.top - ar.top - 3) + 'px',
+      width: (er.width + 6) + 'px', height: (er.height + 6) + 'px', opacity: '1'
+    });
+  }
+
+  function showSpeech(x, y, text) {
+    speech.textContent = text;
+    const w = app.clientWidth, bw = 124;
+    speech.style.left = Math.max(4, Math.min(x - bw / 2, w - bw - 4)) + 'px';
+    speech.style.top = Math.max(4, y - 52) + 'px';
+    speech.style.opacity = '1';
+  }
+
+  function pulseRing(cx, cy) {
+    ringEl.setAttribute('cx', cx); ringEl.setAttribute('cy', cy);
+    let r = 0;
+    (function grow() {
+      r += 0.8; ringEl.setAttribute('r', r);
+      ringEl.style.opacity = String(Math.max(0, 0.65 * (1 - r / 20)));
+      if (r < 20) requestAnimationFrame(grow); else ringEl.style.opacity = '0';
+    })();
+  }
+
+  function flyTo(to, ms, cb) {
+    const from = pos;
+    const arcX = (from.x + to.x) / 2;
+    const arcY = Math.max(6, Math.min(from.y, to.y) - 28);
+    const t0 = performance.now();
+    function tick(now) {
+      if (!running) return;
+      let t = Math.min((now - t0) / ms, 1);
+      t = t < 0.5 ? 4*t*t*t : (t-1)*(2*t-2)*(2*t-2)+1;
+      const mt = 1 - t;
+      const x = mt*mt*from.x + 2*mt*t*arcX + t*t*to.x;
+      const y = mt*mt*from.y + 2*mt*t*arcY + t*t*to.y;
+      const dx = 2*mt*(arcX - from.x) + 2*t*(to.x - arcX);
+      const dy = 2*mt*(arcY - from.y) + 2*t*(to.y - arcY);
+      const angle = Math.atan2(dy, dx) * 180 / Math.PI;
+      const scale = 1 + Math.sin(t * Math.PI) * 0.4;
+      cg.setAttribute('transform',
+        `translate(${x.toFixed(1)},${y.toFixed(1)}) rotate(${angle.toFixed(1)}) scale(${scale.toFixed(2)})`);
+      if (t < 1) requestAnimationFrame(tick);
+      else { pos = to; cb && cb(); }
+    }
+    requestAnimationFrame(tick);
+  }
+
+  const steps = [
+    { id: 'ck-export-btn',   text: '点击「导出 ↗」\n导出为 CSV 格式' },
+    { id: 'ck-settings-btn', text: '设置中可配置\n默认导出格式' },
+    { id: null,              text: '感知当前图表\n随时待命' },
+  ];
+
+  function runLoop() {
+    if (!running) return;
+    const s = steps[step % steps.length];
+    const target = s.id
+      ? elCenter(s.id)
+      : { x: app.clientWidth * 0.62, y: app.clientHeight * 0.65 };
+    if (!target) { step++; setTimeout(runLoop, 100); return; }
+
+    flyTo(target, 850, function() {
+      if (!running) return;
+      pulseRing(target.x, target.y);
+      if (s.id) setHL(s.id);
+      showSpeech(target.x, target.y, s.text);
+      setTimeout(function() {
+        if (!running) return;
+        speech.style.opacity = '0';
+        hl.style.opacity = '0';
+        step++;
+        setTimeout(runLoop, 500);
+      }, 2600);
+    });
+  }
+
+  function start() {
+    if (running) return;
+    running = true;
+    const w = app.clientWidth, h = app.clientHeight;
+    pos = { x: w * 0.62, y: h * 0.65 };
+    cg.setAttribute('transform', `translate(${pos.x},${pos.y}) rotate(0) scale(1)`);
+    setTimeout(runLoop, 1000);
+  }
+
+  function stop() {
+    running = false;
+    speech.style.opacity = '0';
+    hl.style.opacity = '0';
+    cg.setAttribute('transform', 'translate(-100,-100)');
+  }
+
+  new IntersectionObserver(function(entries) {
+    if (entries[0].isIntersecting) start(); else stop();
+  }, { threshold: 0.4 }).observe(section);
 })();
 
 // ── CURSOR DEMO ──
