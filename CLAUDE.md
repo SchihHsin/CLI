@@ -259,6 +259,39 @@ grep -n "id=\"s-m" file.html | head    # 快速列出所有 section
 
 ---
 
+## Step 步骤指示条系统（2026-05-20 新增）
+
+### 组件概览
+所有 12 个设计幻灯片（s-m1a / s-m1b / s-m2a / s-m2b / s-m2c / s-m3a / s-m3b / s-m4a / s-m4b / s-m5a / s-m5b / s-m6a）的 dp-right 区域 mockup-label 下方，均新增了一条用户流程步骤指示条。
+
+### HTML 结构
+```html
+<div class="stp-strip" id="stp-mXX">
+  <div class="stp-bar"><div class="stp-fill"></div></div>
+  <div class="stp-steps">
+    <div class="stp-step"><div class="stp-num">1</div><span class="stp-lbl">…</span></div>
+    <!-- × 3 steps -->
+  </div>
+</div>
+```
+
+### CSS 类
+| 类 | 用途 |
+|---|---|
+| `.stp-strip` | 整体容器（flex column） |
+| `.stp-bar` / `.stp-fill` | 进度条 + 紫色填充（CSS transition） |
+| `.stp-step` | 单个步骤（编号圆 + 文字） |
+| `.stp-step.stp-active` | 当前步骤（紫色） |
+| `.stp-step.stp-done` | 已完成步骤（绿色 `--tg`） |
+
+### JS：`initStepper(secId, stripId, ms, onStep)`
+- `ms`：每步停留时长（最后一步停留 `ms × 2.5`）
+- `onStep`：目前全部传 `null`（视觉与动画独立推进）
+- IntersectionObserver `threshold:0.4` 控制自动启停
+- 12 幻灯片中 s-m6a 用 `3400ms`（与 initClicky 飞行节奏对齐），其余 `2300ms`
+
+---
+
 ## 待办
 
 - [ ] 旅程地图情绪曲线缺 `ResizeObserver`（窗口 resize 后 SVG 宽度不更新）
@@ -266,3 +299,4 @@ grep -n "id=\"s-m" file.html | head    # 快速列出所有 section
 - [ ] s-m1b 看板卡片无优先级排序逻辑（error > wait > run > done）
 - [ ] 总结页可考虑加设计系统全览对比图
 - [ ] 光标伴侣：语音 waveform 和三角飞行可考虑时序联动
+- [ ] 步骤指示条 onStep 可考虑与各幻灯片现有动画联动（如 s-m5a 跟随 tab 切换）
