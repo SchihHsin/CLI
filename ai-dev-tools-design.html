@@ -37,7 +37,7 @@ body{background:var(--bg);color:var(--tx);font-family:'Space Grotesk','Noto Sans
 .inner{flex:1;padding:16px 52px 24px;display:flex;flex-direction:column;overflow:hidden;}
 
 /* NAV */
-.snav{position:absolute;top:16px;right:36px;z-index:200;display:flex;flex-direction:column;align-items:flex-end;gap:4px;}
+.snav{position:absolute;top:16px;right:36px;z-index:200;display:none;flex-direction:column;align-items:flex-end;gap:4px;}
 .snav-row{display:flex;align-items:center;gap:3px;}
 .nbtn{display:flex;align-items:center;gap:5px;padding:4px 11px;border:none;border-radius:3px;cursor:pointer;background:var(--bg2);transition:background .13s;border:.5px solid var(--bdr2);}
 .nbtn .nn{font-family:'DM Mono',monospace;font-size:8px;color:var(--tx3);letter-spacing:.08em;}
@@ -214,7 +214,7 @@ body{background:var(--bg);color:var(--tx);font-family:'Space Grotesk','Noto Sans
 .cd-code{padding:16px;font-family:'DM Mono',monospace;font-size:11px;line-height:1.8;color:#abb2bf;}
 .cd-line{position:relative;}
 .cd-line.hl{background:rgba(131,77,240,.12);border-left:2px solid var(--acc);}
-.cd-cursor{position:absolute;width:16px;height:16px;border-radius:50%;border:2px solid var(--acc);background:rgba(131,77,240,.25);pointer-events:none;transform:translate(-50%,-50%);transition:all .4s ease;}
+.cd-cursor{position:absolute;width:14px;height:18px;pointer-events:none;transform:translate(-2px,-2px);transition:left .4s ease,top .4s ease;filter:drop-shadow(0 0 5px rgba(131,77,240,.65));}
 .cd-popup{position:absolute;background:var(--tbar);border:.5px solid var(--acc-b);border-radius:8px;padding:10px 14px;font-family:'DM Mono',monospace;font-size:10px;color:var(--tw);max-width:220px;box-shadow:0 8px 24px rgba(0,0,0,.4);animation:fadeIn .25s ease;}
 .cd-popup-label{font-size:8px;color:var(--acc);letter-spacing:.1em;text-transform:uppercase;margin-bottom:5px;}
 .cd-popup-text{font-size:10px;color:var(--tw);line-height:1.55;}
@@ -948,7 +948,7 @@ body{background:var(--bg);color:var(--tx);font-family:'Space Grotesk','Noto Sans
               </div>
             </div>
           </div>
-          <div class="cd-cursor" id="cd-cursor" style="left:28%;top:38%;"></div>
+          <div class="cd-cursor" id="cd-cursor" style="left:28%;top:38%;"><svg width="14" height="18" viewBox="0 0 12 16" fill="none"><path d="M2 1L2 13L5.2 10.3L7.5 15L9.2 14.2L6.9 9.5H11.5Z" fill="#834DF0" stroke="#0D0D14" stroke-width=".8" stroke-linejoin="round"/></svg></div>
           <div class="cd-popup" id="cd-popup" style="display:none;left:30%;top:18%;z-index:10;">
             <div class="cd-popup-label" id="cd-popup-label">AI 洞察</div>
             <div class="cd-popup-text" id="cd-popup-text"></div>
@@ -1144,7 +1144,7 @@ body{background:var(--bg);color:var(--tx);font-family:'Space Grotesk','Noto Sans
                 </tbody>
               </table>
               <!-- 光标点 -->
-              <div id="voice-cursor" style="position:absolute;width:14px;height:14px;border-radius:50%;border:2px solid #834DF0;background:rgba(131,77,240,.25);pointer-events:none;transform:translate(-50%,-50%);transition:all .5s ease;top:20%;left:20%;"></div>
+              <div id="voice-cursor" style="position:absolute;width:14px;height:18px;pointer-events:none;transform:translate(-2px,-2px);transition:left .5s ease,top .5s ease;filter:drop-shadow(0 0 5px rgba(131,77,240,.65));top:20%;left:20%;"><svg width="14" height="18" viewBox="0 0 12 16" fill="none"><path d="M2 1L2 13L5.2 10.3L7.5 15L9.2 14.2L6.9 9.5H11.5Z" fill="#834DF0" stroke="#1a1a2e" stroke-width=".8" stroke-linejoin="round"/></svg></div>
               <!-- 语音浮层 -->
               <div id="voice-popup" style="display:none;position:absolute;z-index:10;"></div>
             </div>
@@ -1661,12 +1661,7 @@ body{background:var(--bg);color:var(--tx);font-family:'Space Grotesk','Noto Sans
         <div class="mockup-label">动态 Mockup — AI 指针实时操作引导</div>
         <div class="stp-strip" id="stp-m6a"><div class="stp-bar"><div class="stp-fill"></div></div><div class="stp-steps"><div class="stp-step"><div class="stp-num">1</div><span class="stp-lbl">语音提问操作</span></div><div class="stp-step"><div class="stp-num">2</div><span class="stp-lbl">AI 指针飞向目标</span></div><div class="stp-step"><div class="stp-num">3</div><span class="stp-lbl">步骤引导完成</span></div></div></div>
         <div class="clicky-wrap" id="clicky-wrap">
-          <div class="clicky-voice-bar">
-            <span style="font-size:13px;">🎙</span>
-            <span style="font-family:'DM Mono',monospace;font-size:9px;color:var(--tx);">「如何把图表导出为 CSV 格式？」</span>
-            <div style="flex:1;"></div>
-            <div style="display:flex;gap:2px;align-items:center;" id="clicky-waveform"></div>
-          </div>
+
           <div class="clicky-app">
             <div class="clicky-titlebar">
               <div style="display:flex;gap:4px;">
@@ -1728,24 +1723,26 @@ body{background:var(--bg);color:var(--tx);font-family:'Space Grotesk','Noto Sans
             </svg>
             <div id="ck-speech" style="position:absolute;z-index:25;background:#11111A;border:.5px solid rgba(131,77,240,.5);border-radius:8px 8px 2px 8px;padding:5px 9px;font-family:'DM Mono',monospace;font-size:8px;color:#CECEE0;white-space:pre-line;line-height:1.55;opacity:0;transition:opacity .3s;pointer-events:none;box-shadow:0 3px 14px rgba(131,77,240,.28);max-width:120px;left:0;top:0;"></div>
             <div id="ck-highlight" style="position:absolute;z-index:22;border-radius:4px;border:1.5px solid rgba(131,77,240,.8);box-shadow:0 0 0 3px rgba(131,77,240,.18),0 0 8px rgba(131,77,240,.3);pointer-events:none;opacity:0;transition:opacity .25s;"></div>
-          </div>
-          <div class="clicky-step-card">
-            <div style="font-family:'DM Mono',monospace;font-size:7.5px;color:var(--tx3);margin-bottom:6px;letter-spacing:.05em;">导出 CSV 文件 · 操作引导</div>
-            <div style="display:flex;flex-direction:column;gap:4px;">
-              <div style="display:flex;gap:6px;align-items:flex-start;opacity:.5;">
-                <div style="width:15px;height:15px;border-radius:50%;background:#34D399;display:flex;align-items:center;justify-content:center;font-size:7px;color:white;flex-shrink:0;margin-top:1px;">✓</div>
-                <div style="font-size:9px;color:var(--tx2);">打开需要导出的图表或数据文件</div>
-              </div>
-              <div style="display:flex;gap:6px;align-items:flex-start;">
-                <div style="width:15px;height:15px;border-radius:50%;background:var(--acc);display:flex;align-items:center;justify-content:center;font-size:7.5px;color:white;flex-shrink:0;margin-top:1px;animation:glow 1.5s ease-in-out infinite;">2</div>
-                <div style="font-size:9px;color:var(--tx);font-weight:600;">点击工具栏「导出 ↗」按钮 ← 当前位置</div>
-              </div>
-              <div style="display:flex;gap:6px;align-items:flex-start;opacity:.35;">
-                <div style="width:15px;height:15px;border-radius:50%;background:var(--bg2);border:.5px solid var(--bdr2);display:flex;align-items:center;justify-content:center;font-size:7.5px;color:var(--tx3);flex-shrink:0;margin-top:1px;">3</div>
-                <div style="font-size:9px;color:var(--tx2);">在弹窗中选择 CSV 格式，确认保存路径</div>
+            <!-- Step guidance panel — inside app as AI overlay -->
+            <div id="ck-step-card" style="position:absolute;bottom:0;left:0;right:0;background:rgba(131,77,240,.07);border-top:.5px solid rgba(131,77,240,.22);padding:7px 11px;z-index:21;backdrop-filter:blur(2px);">
+              <div style="font-family:'DM Mono',monospace;font-size:7px;color:var(--acc);letter-spacing:.08em;margin-bottom:5px;">AI 操作引导</div>
+              <div style="display:flex;flex-direction:column;gap:3px;" id="ck-step-list">
+                <div style="display:flex;gap:5px;align-items:flex-start;opacity:.5;">
+                  <div style="width:13px;height:13px;border-radius:50%;background:#34D399;display:flex;align-items:center;justify-content:center;font-size:7px;color:white;flex-shrink:0;">✓</div>
+                  <div style="font-size:8.5px;color:var(--tx2);">打开需要导出的图表或数据文件</div>
+                </div>
+                <div style="display:flex;gap:5px;align-items:flex-start;" id="ck-step-current">
+                  <div style="width:13px;height:13px;border-radius:50%;background:var(--acc);display:flex;align-items:center;justify-content:center;font-size:7px;color:white;flex-shrink:0;animation:glow 1.5s ease-in-out infinite;">2</div>
+                  <div style="font-size:8.5px;color:var(--tx);font-weight:600;">点击工具栏「导出 ↗」按钮</div>
+                </div>
+                <div style="display:flex;gap:5px;align-items:flex-start;opacity:.35;">
+                  <div style="width:13px;height:13px;border-radius:50%;background:var(--bg2);border:.5px solid var(--bdr2);display:flex;align-items:center;justify-content:center;font-size:7px;color:var(--tx3);flex-shrink:0;">3</div>
+                  <div style="font-size:8.5px;color:var(--tx2);">在弹窗中选择 CSV 格式并确认</div>
+                </div>
               </div>
             </div>
           </div>
+
         </div>
       </div>
     </div>
@@ -2319,15 +2316,23 @@ function setupSlideSteps(secId, stripId, defs) {
   ];
 
   let selId = 0;
+  let visibleIds = [1, 4]; // phase 1: orchestrator + lint (2 sessions at start)
 
   function ctxColor(p) { return p>80?'#F87171':p>60?'#FBBF24':'#34D399'; }
+
+  window.agvSetPhase = function(phase) {
+    if (phase === 1) { visibleIds = [1, 4]; selId = 1; }
+    else if (phase === 2) { visibleIds = [0, 1, 2, 4]; selId = 2; }
+    else { visibleIds = [0, 1, 2, 3, 4]; selId = 0; }
+    renderList(); renderPeek();
+  };
 
   function renderList() {
     const list = document.getElementById('agv-list');
     if (!list) return;
     list.innerHTML = '';
     groups.forEach(g => {
-      const gs = sessions.filter(s => s.group === g.key);
+      const gs = sessions.filter(s => s.group === g.key && visibleIds.includes(s.id));
       if (!gs.length) return;
       const gh = document.createElement('div');
       gh.className = 'agv-grp-hd';
@@ -3460,9 +3465,9 @@ setupSlideSteps('s-bg3','stp-bg3',[
    }}
 ]);
 setupSlideSteps('s-m1a','stp-m1a',[
-  {c:[.25,.38],                       ms:2400},
-  {c:[.30,.55], click:true,           ms:2400},
-  {c:[.72,.75], click:true, key:'⌘ ↵',ms:2400}
+  {c:[.25,.38],                       ms:2400, act:function(){ if(window.agvSetPhase) window.agvSetPhase(1); }},
+  {c:[.30,.55], click:true,           ms:2400, act:function(){ if(window.agvSetPhase) window.agvSetPhase(2); }},
+  {c:[.72,.75], click:true, key:'⌘ ↵',ms:2400, act:function(){ if(window.agvSetPhase) window.agvSetPhase(3); }}
 ]);
 setupSlideSteps('s-m1b','stp-m1b',[
   {c:[.28,.32],                       ms:2400},
@@ -3470,9 +3475,9 @@ setupSlideSteps('s-m1b','stp-m1b',[
   {c:[.50,.80], click:true, key:'⌘ K',ms:2400}
 ]);
 setupSlideSteps('s-m2a','stp-m2a',[
-  {c:[.42,.48], click:true,           ms:2500},
-  {c:[.44,.48],                       ms:2500},
-  {c:[.44,.32],                       ms:2500}
+  {ms:2500},
+  {ms:2500},
+  {ms:2500}
 ]);
 setupSlideSteps('s-m2b','stp-m2b',[
   {c:[.32,.44], click:true,           ms:2400},
@@ -3480,9 +3485,9 @@ setupSlideSteps('s-m2b','stp-m2b',[
   {c:[.76,.68], click:true, key:'↵',  ms:2400}
 ]);
 setupSlideSteps('s-m2c','stp-m2c',[
-  {c:[.32,.44], click:true,           ms:2400},
-  {c:[.68,.78], click:true,           ms:2400},
-  {c:[.50,.55],                       ms:2400}
+  {ms:2800},
+  {ms:2800},
+  {ms:3200}
 ]);
 setupSlideSteps('s-m3a','stp-m3a',[
   {c:[.42,.52],                       ms:2400},
@@ -3490,7 +3495,7 @@ setupSlideSteps('s-m3a','stp-m3a',[
   {c:[.50,.70],                       ms:2400}
 ]);
 setupSlideSteps('s-m3b','stp-m3b',[
-  {c:[.50,.25], click:true, key:'/goal',ms:2400},
+  {c:[.50,.25], click:true,             ms:2400},
   {c:[.50,.52],                        ms:2400},
   {c:[.50,.76],                        ms:2400}
 ]);
@@ -3515,9 +3520,9 @@ setupSlideSteps('s-m5b','stp-m5b',[
   {c:[.62,.72], click:true,            ms:2400}
 ]);
 setupSlideSteps('s-m6a','stp-m6a',[
-  {c:[.22,.82], click:true,            ms:3400},
-  {c:[.22,.82],                        ms:3400},
-  {c:[.68,.44],                        ms:3400}
+  {ms:3400},
+  {ms:3400},
+  {ms:3400}
 ]);
 </script>
 </body>
