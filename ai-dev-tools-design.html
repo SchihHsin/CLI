@@ -759,14 +759,17 @@ body{background:var(--bg);color:var(--tx);font-family:'Space Grotesk','Noto Sans
           <div class="ba-before">
             <div class="ba-label"><span>✕</span> 过去的做法</div>
             <div style="display:flex;flex-direction:column;gap:3px;margin-top:4px;">
-              <div style="background:#0f0f16;border-radius:4px 4px 0 0;padding:5px 8px;font-family:'DM Mono',monospace;font-size:7.5px;border:.5px solid #252530;border-bottom:none;opacity:.55;">
-                <span style="color:#c678dd;">async</span> <span style="color:#61afef;">fetchUser</span><span style="color:#abb2bf;">(id) {</span><br>
-                <span style="color:#4E4E5E;padding-left:10px;">// 🤔 停在这里，不理解...</span>
+              <div style="background:white;border:.5px solid var(--bdr2);border-radius:4px;padding:7px 9px;position:relative;">
+                <div style="font-size:7px;color:var(--tx3);font-family:'DM Mono',monospace;letter-spacing:.06em;margin-bottom:2px;">转化率</div>
+                <div style="font-size:14px;font-family:'Syne',sans-serif;font-weight:800;color:var(--tx);line-height:1.1;">3.7%</div>
+                <div style="font-size:7.5px;color:var(--r);margin-top:2px;">↓ −1.2% · <span style="color:var(--tx3);">光标悬停中…</span></div>
+                <div style="position:absolute;bottom:5px;right:7px;font-size:9px;opacity:.5;">🖱</div>
               </div>
-              <div style="border:.5px solid var(--bdr2);border-radius:0 0 4px 4px;padding:5px 8px;background:var(--sur);">
-                <div style="color:var(--tx3);font-family:'DM Mono',monospace;font-size:7px;margin-bottom:3px;">↗ 切换到 AI Chat</div>
-                <div style="background:var(--bg2);border-radius:3px;padding:3px 6px;font-size:8px;color:var(--tx2);">这个函数的 error handling 正确吗？</div>
+              <div style="border:.5px solid var(--bdr2);border-radius:4px;padding:5px 8px;background:var(--bg);">
+                <div style="color:var(--tx3);font-family:'DM Mono',monospace;font-size:7px;margin-bottom:3px;">↗ 手动打开 AI Chat</div>
+                <div style="background:var(--sur);border-radius:3px;padding:3px 6px;font-size:8px;color:var(--tx2);">这个转化率下降是什么原因？<span style="animation:bl 1s step-end infinite;display:inline-block;width:1px;height:9px;background:var(--tx2);vertical-align:middle;margin-left:1px;"></span></div>
               </div>
+              <div style="text-align:center;font-size:7.5px;color:var(--tx3);font-family:'DM Mono',monospace;">停顿无反应 → 手动切换 → 重新描述</div>
             </div>
           </div>
           <div class="ba-after">
@@ -860,14 +863,28 @@ body{background:var(--bg);color:var(--tx);font-family:'Space Grotesk','Noto Sans
           <div class="ba-before">
             <div class="ba-label"><span>✕</span> 过去的做法</div>
             <div style="display:flex;flex-direction:column;gap:3px;margin-top:4px;">
-              <div style="background:#0f0f16;border-radius:4px 4px 0 0;padding:5px 8px;font-family:'DM Mono',monospace;font-size:7.5px;border:.5px solid #252530;border-bottom:none;opacity:.45;">
-                <span style="color:#c678dd;">const</span> <span style="color:#e06c75;">result</span> <span style="color:#56b6c2;">=</span> <span style="color:#61afef;">transform</span><span style="color:#abb2bf;">(data)</span>
+              <div style="background:white;border:.5px solid var(--bdr2);border-radius:4px 4px 0 0;overflow:hidden;">
+                <div style="display:grid;grid-template-columns:28px 1fr 38px;background:var(--bg2);border-bottom:.5px solid var(--bdr2);">
+                  <div style="padding:3px 6px;font-size:7px;color:var(--tx3);font-family:'DM Mono',monospace;">Q</div>
+                  <div style="padding:3px 6px;font-size:7px;color:var(--tx3);font-family:'DM Mono',monospace;">营收</div>
+                  <div style="padding:3px 6px;font-size:7px;color:var(--tx3);font-family:'DM Mono',monospace;">环比</div>
+                </div>
+                <div style="display:grid;grid-template-columns:28px 1fr 38px;border-bottom:.5px solid var(--bdr2);">
+                  <div style="padding:3px 6px;font-size:7.5px;color:var(--tx2);">Q2</div>
+                  <div style="padding:3px 6px;font-size:7.5px;font-weight:600;color:var(--tx);">$1.8M</div>
+                  <div style="padding:3px 6px;font-size:7px;color:var(--g);">+50%</div>
+                </div>
+                <div style="display:grid;grid-template-columns:28px 1fr 38px;background:rgba(217,119,6,.04);">
+                  <div style="padding:3px 6px;font-size:7.5px;color:var(--tx2);">Q3</div>
+                  <div style="padding:3px 6px;font-size:7.5px;font-weight:600;color:var(--tx);">$2.4M</div>
+                  <div style="padding:3px 6px;font-size:7px;color:var(--y);">+33%</div>
+                </div>
               </div>
               <div style="background:var(--bg);border:.5px solid var(--bdr2);border-radius:0 0 4px 4px;padding:5px 8px;display:flex;align-items:center;gap:5px;">
                 <span style="font-size:7.5px;color:var(--tx3);font-family:'DM Mono',monospace;flex-shrink:0;">Prompt:</span>
-                <span style="flex:1;background:var(--sur);border-radius:2px;padding:2px 5px;font-size:7.5px;color:var(--tx2);font-family:'DM Mono',monospace;">帮我重构这段逻辑<span style="animation:bl 1s step-end infinite;display:inline-block;width:1px;height:9px;background:var(--tx2);vertical-align:middle;"></span></span>
+                <span style="flex:1;background:var(--sur);border-radius:2px;padding:2px 5px;font-size:7.5px;color:var(--tx2);font-family:'DM Mono',monospace;">Q3 增速为什么放缓？<span style="animation:bl 1s step-end infinite;display:inline-block;width:1px;height:9px;background:var(--tx2);vertical-align:middle;"></span></span>
               </div>
-              <div style="text-align:center;font-size:7.5px;color:var(--tx3);font-family:'DM Mono',monospace;">停止编码 → 思考 Prompt → 切换输入</div>
+              <div style="text-align:center;font-size:7.5px;color:var(--tx3);font-family:'DM Mono',monospace;">停下来 → 思考措辞 → 手动输入</div>
             </div>
           </div>
           <div class="ba-after">
@@ -1347,13 +1364,19 @@ body{background:var(--bg);color:var(--tx);font-family:'Space Grotesk','Noto Sans
         <div class="ba-grid">
           <div class="ba-before">
             <div class="ba-label"><span>✕</span> 过去的做法</div>
-            <div style="background:#0f0f16;border-radius:5px;padding:6px 8px;font-family:'DM Mono',monospace;font-size:7.5px;border:.5px solid #252530;margin-top:4px;overflow:hidden;">
-              <div style="color:#4E4E5E;margin-bottom:2px;">diff --git a/UserCard.jsx</div>
-              <div style="color:#F87171;">- const user = props.data.user;</div>
-              <div style="color:#34D399;">+ const { user, meta } = props.data;</div>
-              <div style="color:#F87171;">- return &lt;Card title={user.name}&gt;</div>
-              <div style="color:#34D399;">+ return &lt;Card title={user.name} meta={meta}&gt;</div>
-              <div style="color:#FBBF24;margin-top:4px;font-size:7.5px;">? 视觉变化？性能影响？需脑补</div>
+            <div style="display:flex;flex-direction:column;gap:3px;margin-top:4px;">
+              <div style="background:var(--bg2);border:.5px solid var(--bdr2);border-radius:4px;padding:6px 8px;font-family:'DM Mono',monospace;font-size:8px;color:var(--tx2);">✓ Agent finished · 47 files changed</div>
+              <div style="display:flex;gap:4px;align-items:stretch;">
+                <div style="flex:1;background:rgba(220,38,38,.05);border:.5px solid rgba(220,38,38,.2);border-radius:4px;padding:5px 7px;">
+                  <div style="font-size:7px;color:var(--r);font-family:'DM Mono',monospace;margin-bottom:3px;">修改前</div>
+                  <div style="width:100%;height:22px;background:rgba(220,38,38,.1);border-radius:3px;"></div>
+                </div>
+                <div style="flex:1;background:rgba(5,150,105,.05);border:.5px solid rgba(5,150,105,.2);border-radius:4px;padding:5px 7px;">
+                  <div style="font-size:7px;color:var(--g);font-family:'DM Mono',monospace;margin-bottom:3px;">修改后</div>
+                  <div style="width:100%;height:22px;background:rgba(5,150,105,.1);border-radius:3px;"></div>
+                </div>
+              </div>
+              <div style="text-align:center;font-size:7.5px;color:var(--tx3);font-family:'DM Mono',monospace;">视觉变化？性能影响？全靠脑补</div>
             </div>
           </div>
           <div class="ba-after">
