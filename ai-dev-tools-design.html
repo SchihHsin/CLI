@@ -1300,7 +1300,7 @@ body{background:var(--bg);color:var(--tx);font-family:'Space Grotesk','Noto Sans
               <div><span class="tcc">◆</span> <span class="twc">开始执行任务序列...</span></div>
             </div>
           </div>
-          <div class="goal-box">
+          <div class="goal-box" id="goal-box" style="display:none;">
             <div class="mb">
               <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--td);margin-bottom:8px;">GOAL PROGRESS</div>
               <div class="gp-bar" style="margin-bottom:8px;">
@@ -1313,7 +1313,7 @@ body{background:var(--bg);color:var(--tx);font-family:'Space Grotesk','Noto Sans
               </div>
             </div>
           </div>
-          <div id="goal-log" class="mt" style="flex:1;">
+          <div id="goal-log" class="mt" style="flex:1;display:none;">
             <div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">agent log</span></div>
             <div class="mb" id="goal-log-body"></div>
           </div>
@@ -2790,6 +2790,22 @@ function runGoalDemo() {
   }
   runStep();
 }
+window.goalShowPanel = function(phase) {
+  var box = document.getElementById('goal-box');
+  var log = document.getElementById('goal-log');
+  if (phase === 1) {
+    if (box) box.style.display = 'none';
+    if (log) log.style.display = 'none';
+    clearTimeout(window._goalTimer);
+    window._goalTimer = setTimeout(runGoalDemo, 200);
+  } else if (phase === 2) {
+    if (box) box.style.display = '';
+    if (log) log.style.display = 'none';
+  } else {
+    if (box) box.style.display = '';
+    if (log) log.style.display = '';
+  }
+};
 setTimeout(runGoalDemo, 500);
 
 // ── MEMORY SESSIONS ──
@@ -3517,9 +3533,9 @@ setupSlideSteps('s-m3a','stp-m3a',[
   {c:[.50,.70],                       ms:2400}
 ]);
 setupSlideSteps('s-m3b','stp-m3b',[
-  {c:[.50,.25], click:true,             ms:2400},
-  {c:[.50,.52],                        ms:2400},
-  {c:[.50,.76],                        ms:2400}
+  {c:[.50,.28], click:true,             ms:2600, act:function(){ if(window.goalShowPanel) window.goalShowPanel(1); }},
+  {c:[.50,.45],                        ms:2600, act:function(){ if(window.goalShowPanel) window.goalShowPanel(2); }},
+  {c:[.50,.72],                        ms:3400, act:function(){ if(window.goalShowPanel) window.goalShowPanel(3); }}
 ]);
 setupSlideSteps('s-m4a','stp-m4a',[
   {c:[.50,.22], click:true,            ms:2400, act:function(){ if(window.memSetPhase) window.memSetPhase(1); }},
