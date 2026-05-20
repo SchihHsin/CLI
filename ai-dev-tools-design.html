@@ -1748,7 +1748,7 @@ buildNavs();
   function mkDimLabel(text) {
     const d = document.createElement('div');
     d.style.cssText = `width:${DIM_W};flex-shrink:0;display:flex;align-items:center;justify-content:center;border-right:.5px solid var(--bdr2);`;
-    d.innerHTML = `<span style="font-family:'DM Mono',monospace;font-size:8px;color:var(--tx3);letter-spacing:.08em;writing-mode:vertical-rl;transform:rotate(180deg);white-space:nowrap;">${text}</span>`;
+    d.innerHTML = `<span style="font-family:'DM Mono',monospace;font-size:8px;color:var(--tx3);letter-spacing:.08em;writing-mode:vertical-rl;white-space:nowrap;">${text}</span>`;
     return d;
   }
 
