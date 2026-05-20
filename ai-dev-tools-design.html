@@ -214,7 +214,7 @@ body{background:var(--bg);color:var(--tx);font-family:'Space Grotesk','Noto Sans
 .cd-code{padding:16px;font-family:'DM Mono',monospace;font-size:11px;line-height:1.8;color:#abb2bf;}
 .cd-line{position:relative;}
 .cd-line.hl{background:rgba(131,77,240,.12);border-left:2px solid var(--acc);}
-.cd-cursor{position:absolute;width:14px;height:18px;pointer-events:none;transform:translate(-2px,-2px);transition:left .4s ease,top .4s ease;filter:drop-shadow(0 0 5px rgba(131,77,240,.65));}
+.cd-cursor{position:absolute;width:14px;height:18px;pointer-events:none;transform:translate(-2px,-2px);transition:left .4s ease,top .4s ease;filter:drop-shadow(0 1px 3px rgba(0,0,0,.6));}
 .cd-popup{position:absolute;background:var(--tbar);border:.5px solid var(--acc-b);border-radius:8px;padding:10px 14px;font-family:'DM Mono',monospace;font-size:10px;color:var(--tw);max-width:220px;box-shadow:0 8px 24px rgba(0,0,0,.4);animation:fadeIn .25s ease;}
 .cd-popup-label{font-size:8px;color:var(--acc);letter-spacing:.1em;text-transform:uppercase;margin-bottom:5px;}
 .cd-popup-text{font-size:10px;color:var(--tw);line-height:1.55;}
@@ -948,7 +948,7 @@ body{background:var(--bg);color:var(--tx);font-family:'Space Grotesk','Noto Sans
               </div>
             </div>
           </div>
-          <div class="cd-cursor" id="cd-cursor" style="left:28%;top:38%;"><svg width="14" height="18" viewBox="0 0 12 16" fill="none"><path d="M2 1L2 13L5.2 10.3L7.5 15L9.2 14.2L6.9 9.5H11.5Z" fill="#834DF0" stroke="#0D0D14" stroke-width=".8" stroke-linejoin="round"/></svg></div>
+          <div class="cd-cursor" id="cd-cursor" style="left:28%;top:38%;"><svg width="14" height="18" viewBox="0 0 12 16" fill="none"><path d="M2 1L2 13L5.2 10.3L7.5 15L9.2 14.2L6.9 9.5H11.5Z" fill="white" stroke="#1A1A2E" stroke-width=".8" stroke-linejoin="round"/></svg></div>
           <div class="cd-popup" id="cd-popup" style="display:none;left:30%;top:18%;z-index:10;">
             <div class="cd-popup-label" id="cd-popup-label">AI 洞察</div>
             <div class="cd-popup-text" id="cd-popup-text"></div>
@@ -1144,7 +1144,7 @@ body{background:var(--bg);color:var(--tx);font-family:'Space Grotesk','Noto Sans
                 </tbody>
               </table>
               <!-- 光标点 -->
-              <div id="voice-cursor" style="position:absolute;width:14px;height:18px;pointer-events:none;transform:translate(-2px,-2px);transition:left .5s ease,top .5s ease;filter:drop-shadow(0 0 5px rgba(131,77,240,.65));top:20%;left:20%;"><svg width="14" height="18" viewBox="0 0 12 16" fill="none"><path d="M2 1L2 13L5.2 10.3L7.5 15L9.2 14.2L6.9 9.5H11.5Z" fill="#834DF0" stroke="#1a1a2e" stroke-width=".8" stroke-linejoin="round"/></svg></div>
+              <div id="voice-cursor" style="position:absolute;width:14px;height:18px;pointer-events:none;transform:translate(-2px,-2px);transition:left .5s ease,top .5s ease;filter:drop-shadow(0 1px 3px rgba(0,0,0,.6));top:20%;left:20%;"><svg width="14" height="18" viewBox="0 0 12 16" fill="none"><path d="M2 1L2 13L5.2 10.3L7.5 15L9.2 14.2L6.9 9.5H11.5Z" fill="white" stroke="#1A1A2E" stroke-width=".8" stroke-linejoin="round"/></svg></div>
               <!-- 语音浮层 -->
               <div id="voice-popup" style="display:none;position:absolute;z-index:10;"></div>
             </div>
@@ -2823,25 +2823,47 @@ const memSessionData = [
   }
 ];
 
-function buildMemSessions() {
+function buildMemSessions(count, dimFirst) {
   const container = document.getElementById('mem-sessions');
   if (!container) return;
   container.innerHTML = '';
-  memSessionData.forEach(s => {
+  const n = count || memSessionData.length;
+  // adjust grid columns to match visible count
+  container.style.gridTemplateColumns = n === 1 ? '1fr' : n === 2 ? '1fr 1fr' : '1fr 1fr 1fr';
+  memSessionData.slice(0, n).forEach((s, i) => {
     const card = document.createElement('div');
     card.className = 'mem-session';
-    card.innerHTML = `
-      <div class="ms-header">
-        <div class="ms-dot"></div>
-        <div class="ms-title">${s.title}</div>
-      </div>
-      <div class="ms-body">
-        ${s.entries.map(e => `<div class="mem-entry ${e.type}"><div class="mem-icon">${e.icon}</div><div class="mem-text">${e.text}</div></div>`).join('')}
-      </div>`;
+    card.style.opacity = (dimFirst && i < n-1) ? '0.45' : '1';
+    if (dimFirst && i < n-1) {
+      card.innerHTML = `
+        <div class="ms-header">
+          <div class="ms-dot" style="background:#4E4E5E;"></div>
+          <div class="ms-title" style="color:var(--td);">${s.title}</div>
+        </div>
+        <div class="ms-body">
+          <div class="mem-entry load"><div class="mem-icon">📥</div><div class="mem-text" style="color:var(--td);">加载中...</div></div>
+        </div>`;
+    } else {
+      card.innerHTML = `
+        <div class="ms-header">
+          <div class="ms-dot"></div>
+          <div class="ms-title">${s.title}</div>
+        </div>
+        <div class="ms-body">
+          ${s.entries.map(e => `<div class="mem-entry ${e.type}"><div class="mem-icon">${e.icon}</div><div class="mem-text">${e.text}</div></div>`).join('')}
+        </div>`;
+    }
     container.appendChild(card);
   });
 }
-buildMemSessions();
+
+window.memSetPhase = function(phase) {
+  if (phase === 1) buildMemSessions(1, false);        // 1 session: current session starting
+  else if (phase === 2) buildMemSessions(3, true);    // 3 sessions visible, past 2 loading
+  else buildMemSessions(3, false);                    // all 3 fully loaded
+};
+
+buildMemSessions(1, false);
 
 const memLoadLines = [
   {delay:0, color:'#4E4E5E', text:'$ claude'},
@@ -3500,9 +3522,9 @@ setupSlideSteps('s-m3b','stp-m3b',[
   {c:[.50,.76],                        ms:2400}
 ]);
 setupSlideSteps('s-m4a','stp-m4a',[
-  {c:[.50,.22], click:true,            ms:2400},
-  {c:[.35,.52],                        ms:2400},
-  {c:[.50,.82], click:true, key:'⌘ ↵', ms:2400}
+  {c:[.50,.22], click:true,            ms:2400, act:function(){ if(window.memSetPhase) window.memSetPhase(1); }},
+  {c:[.35,.52],                        ms:2400, act:function(){ if(window.memSetPhase) window.memSetPhase(2); }},
+  {c:[.50,.82], click:true, key:'⌘ ↵', ms:2400, act:function(){ if(window.memSetPhase) window.memSetPhase(3); }}
 ]);
 setupSlideSteps('s-m4b','stp-m4b',[
   {c:[.50,.40], click:true,            ms:2400},
