@@ -303,17 +303,16 @@ grep -n "id=\"s-m" file.html | head    # 快速列出所有 section
 | `a463d0b` | 修复：光标全白、导航遮挡、Agent View 分阶段、s-m6a 简化、Goal key 去掉 |
 | `fcb7cdc` | 修复 Stage 01 (s-m4a)：记忆窗口数量 1→3 分阶段显示 |
 | `818e7b7` | 修复 Stage 03 (s-m3b)：Goal 三个面板顺序出现（cmd→进度→log） |
+| `c1e12e9` | 修复 s-m1b 看板：phase-based（正常→异常高亮→注入指令） |
+| `d26df5a` | 修复 Stage 02（Space badge、手势结果Q4行、s-m6a鼠标光标跟随三角形） |
 
 ---
 
 ## 待办（按优先级）
 
-### 紧急 — 用户明确指出的 Bug
-- [ ] **s-m1b 看板**：mockup 看不出设计价值，需要 phase-based 动画（正常→异常高亮→注入指令）
-- [ ] **s-m2c (Stage 02 1/3)**：Space 唤醒语音的快捷键未显示
-- [ ] **s-m2b (Stage 02 2/3)**：AI 修改建议后，结果未展示（表格数据应更新）
-- [ ] **s-m2a (Stage 02 3/3)**：sim-cursor 点击位置错误
-- [ ] **s-m6a 光标伴侣**：白色鼠标光标应跟随紫色三角形飞行，目前没有
+### 低优先级 — 锦上添花
+- [ ] **s-m2a (Stage 02 3/3)**：cd-cursor 已自动移动到正确位置，sim-cursor 无坐标（OK）
+- [x] **s-m6a 光标伴侣**：已添加 #ck-mouse-cursor，随三角形目标位置移动
 
 ### 低优先级 — 锦上添花
 - [ ] 旅程地图情绪曲线缺 `ResizeObserver`（窗口 resize 后 SVG 宽度不更新）
