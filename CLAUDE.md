@@ -16,6 +16,16 @@
 | 受众 | 设计/产品评审，需视觉冲击力 |
 | 语言 | 中文界面，英文技术术语混用 |
 
+### 第二份材料（CANN 昇腾算子开发场景）
+
+| 项 | 值 |
+|---|---|
+| 文件 | `/Users/hsin/Documents/Coding/CLI/hai-operator-design.html` |
+| 当前行数 | 2241 行 |
+| 场景 | CANN 昇腾算子开发（TBE DSL、EZ9999错误、910B/310P适配） |
+| 技术栈 | `tik.Tensor`、`tik.data_move`、msprof profiler、FRACTAL_NZ格式 |
+| 状态 | 初版完成，尚未逐页验证 |
+
 ---
 
 ## 每次修改完成后必须做的两件事
@@ -305,6 +315,7 @@ grep -n "id=\"s-m" file.html | head    # 快速列出所有 section
 | `818e7b7` | 修复 Stage 03 (s-m3b)：Goal 三个面板顺序出现（cmd→进度→log） |
 | `c1e12e9` | 修复 s-m1b 看板：phase-based（正常→异常高亮→注入指令） |
 | `d26df5a` | 修复 Stage 02（Space badge、手势结果Q4行、s-m6a鼠标光标跟随三角形） |
+| `1eab472` | 新增 `hai-operator-design.html`：HAI × CANN 昇腾算子开发场景全新演示文稿（18个section，2241行） |
 
 ---
 
