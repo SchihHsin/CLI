@@ -2405,61 +2405,87 @@ function setupSlideSteps(secId, stripId, defs) {
   renderList();
   renderPeek();
 
-  // Dashboard cards (s-m1b slide)
+  // Dashboard cards (s-m1b slide) — phase-based
   const dashAgents = [
-    {name:'agent-auth', task:'认证模块', step:'等待确认', pct:45, time:'1m',  tokens:'6.2k',  status:'wait', ctx:45},
-    {name:'agent-ui',   task:'UI 重构',  step:'类型修复', pct:68, time:'3m',  tokens:'14.8k', status:'run',  ctx:62},
-    {name:'agent-e2e',  task:'E2E 测试', step:'run 3',   pct:72, time:'5m',  tokens:'9.3k',  status:'run',  ctx:31},
-    {name:'agent-lint', task:'代码检查', step:'已完成',   pct:100,time:'8m', tokens:'3.2k',  status:'done', ctx:18},
+    {name:'agent-auth', task:'认证模块', step:'等待确认',           pct:45,  time:'1m', tokens:'6.2k',  status:'wait', ctx:45},
+    {name:'agent-ui',   task:'UI 重构',  step:'类型修复',           pct:68,  time:'3m', tokens:'14.8k', status:'run',  ctx:62},
+    {name:'agent-e2e',  task:'E2E 测试', step:'run 3',             pct:72,  time:'5m', tokens:'9.3k',  status:'run',  ctx:31},
+    {name:'agent-lint', task:'代码检查', step:'已完成',             pct:100, time:'8m', tokens:'3.2k',  status:'done', ctx:18},
   ];
+  let dashPhase = 1;
 
   function buildDashboard() {
     const grid = document.getElementById('dashboard-grid');
     if (!grid) return;
     grid.innerHTML = '';
-    dashAgents.forEach(a => {
+    let agents = dashAgents.map(a => Object.assign({}, a));
+    if (dashPhase >= 2) {
+      agents[0] = Object.assign({}, dashAgents[0], {status:'err', step:'TypeError: Cannot read props', time:'2m', ctx:87});
+    }
+    agents.forEach(a => {
       const sc = {run:'#34D399',wait:'#FBBF24',done:'#4E4E5E',err:'#F87171'}[a.status];
-      const bc = a.status==='err'?'rgba(248,113,113,.3)':'var(--tbdr)';
+      const isErr = a.status === 'err';
+      const bc = isErr ? 'rgba(248,113,113,.5)' : 'var(--tbdr)';
+      const dimmed = dashPhase >= 2 && !isErr;
+      const dotAnim = isErr ? 'animation:pulse 1s ease-in-out infinite' : (a.status === 'run' ? 'animation:pulse 1.5s ease-in-out infinite' : '');
       const card = document.createElement('div');
-      card.style.cssText = `background:var(--tb);border-radius:8px;border:.5px solid ${bc};overflow:hidden;display:flex;flex-direction:column;`;
-      card.innerHTML = `
-        <div style="background:var(--tbar);padding:7px 11px;border-bottom:.5px solid var(--tbdr);display:flex;align-items:center;gap:6px;">
-          <div style="width:7px;height:7px;border-radius:50%;background:${sc};flex-shrink:0;${a.status==='run'?'animation:pulse 1.5s ease-in-out infinite':''}"></div>
-          <div style="font-family:'DM Mono',monospace;font-size:9.5px;color:var(--tw);flex:1;">${a.name}</div>
-          <div style="font-family:'DM Mono',monospace;font-size:8.5px;color:var(--td);">${a.time}</div>
-        </div>
-        <div style="padding:8px 11px;flex:1;">
-          <div style="font-family:'DM Mono',monospace;font-size:8.5px;color:var(--td);margin-bottom:4px;">${a.task} · ${a.step}</div>
-          <div style="height:4px;background:rgba(255,255,255,.08);border-radius:2px;overflow:hidden;margin-bottom:5px;">
-            <div style="height:100%;border-radius:2px;background:${sc};width:${a.pct}%;transition:width 1s ease;"></div>
-          </div>
-          <div style="display:flex;justify-content:space-between;font-family:'DM Mono',monospace;font-size:8px;color:var(--td);margin-bottom:5px;">
-            <span>${a.pct}%</span><span>${a.tokens} tokens</span>
-          </div>
-          <div style="display:flex;align-items:center;gap:4px;">
-            <div style="font-size:7.5px;color:${ctxColor(a.ctx)};font-family:'DM Mono',monospace;">ctx</div>
-            <div style="flex:1;height:3px;background:rgba(255,255,255,.08);border-radius:2px;overflow:hidden;">
-              <div style="height:100%;width:${a.ctx}%;background:${ctxColor(a.ctx)};border-radius:2px;"></div>
-            </div>
-            <div style="font-size:7.5px;color:${ctxColor(a.ctx)};font-family:'DM Mono',monospace;">${a.ctx}%</div>
-          </div>
-        </div>
-        <div style="padding:5px 11px;border-top:.5px solid var(--tbdr);display:flex;gap:5px;">
-          ${a.status!=='done'?`<button style="font-family:'DM Mono',monospace;font-size:8.5px;padding:2px 7px;border:none;border-radius:3px;background:rgba(255,255,255,.06);color:var(--td);cursor:pointer;">pause</button>`:''}
-          <button style="font-family:'DM Mono',monospace;font-size:8.5px;padding:2px 7px;border:none;border-radius:3px;background:rgba(248,113,113,.1);color:#F87171;cursor:pointer;">cancel</button>
-          <button style="font-family:'DM Mono',monospace;font-size:8.5px;padding:2px 7px;border:none;border-radius:3px;background:rgba(131,77,240,.1);color:#A78BFA;cursor:pointer;margin-left:auto;">view →</button>
-        </div>`;
+      card.style.cssText = 'background:var(--tb);border-radius:8px;border:.5px solid ' + bc + ';overflow:hidden;display:flex;flex-direction:column;transition:all .4s ease;opacity:' + (dimmed ? '.45' : '1') + ';' + (isErr ? 'box-shadow:0 0 14px rgba(248,113,113,.25);' : '');
+      const errBadge = isErr ? '<div style="font-size:7.5px;padding:1px 5px;border-radius:3px;background:rgba(248,113,113,.18);color:#F87171;font-family:'DM Mono',monospace;margin-right:2px;">⚠ 异常</div>' : '';
+      const footerRow = (dashPhase >= 3 && isErr)
+        ? '<div style="padding:5px 11px;border-top:.5px solid rgba(248,113,113,.3);background:rgba(131,77,240,.06);">'
+          + '<div style="display:flex;align-items:center;gap:5px;background:rgba(131,77,240,.12);border:.5px solid rgba(131,77,240,.3);border-radius:4px;padding:4px 8px;">'
+          + '<span style="font-size:8px;color:var(--acc-l);font-family:'DM Mono',monospace;flex-shrink:0;">⌘ K</span>'
+          + '<div style="font-family:'DM Mono',monospace;font-size:7.5px;color:var(--tw);flex:1;">fix: add null check before reading props</div>'
+          + '<div style="font-size:9px;color:var(--acc);flex-shrink:0;">↵</div>'
+          + '</div></div>'
+        : '<div style="padding:5px 11px;border-top:.5px solid var(--tbdr);display:flex;gap:5px;">'
+          + (a.status !== 'done' ? '<button style="font-family:'DM Mono',monospace;font-size:8.5px;padding:2px 7px;border:none;border-radius:3px;background:rgba(255,255,255,.06);color:var(--td);cursor:pointer;">pause</button>' : '')
+          + '<button style="font-family:'DM Mono',monospace;font-size:8.5px;padding:2px 7px;border:none;border-radius:3px;background:rgba(248,113,113,.1);color:#F87171;cursor:pointer;">cancel</button>'
+          + '<button style="font-family:'DM Mono',monospace;font-size:8.5px;padding:2px 7px;border:none;border-radius:3px;background:rgba(131,77,240,.1);color:#A78BFA;cursor:pointer;margin-left:auto;">view →</button>'
+          + '</div>';
+      card.innerHTML =
+        '<div style="background:' + (isErr ? 'rgba(248,113,113,.08)' : 'var(--tbar)') + ';padding:7px 11px;border-bottom:.5px solid ' + bc + ';display:flex;align-items:center;gap:6px;">'
+          + '<div style="width:7px;height:7px;border-radius:50%;background:' + sc + ';flex-shrink:0;' + dotAnim + '"></div>'
+          + '<div style="font-family:'DM Mono',monospace;font-size:9.5px;color:' + (isErr ? '#F87171' : 'var(--tw)') + ';flex:1;">' + a.name + '</div>'
+          + errBadge
+          + '<div style="font-family:'DM Mono',monospace;font-size:8.5px;color:var(--td);">' + a.time + '</div>'
+        + '</div>'
+        + '<div style="padding:8px 11px;flex:1;">'
+          + '<div style="font-family:'DM Mono',monospace;font-size:8.5px;color:' + (isErr ? '#F87171' : 'var(--td)') + ';margin-bottom:4px;">' + a.task + ' · ' + a.step + '</div>'
+          + '<div style="height:4px;background:rgba(255,255,255,.08);border-radius:2px;overflow:hidden;margin-bottom:5px;">'
+            + '<div style="height:100%;border-radius:2px;background:' + sc + ';width:' + a.pct + '%;transition:width 1s ease;"></div>'
+          + '</div>'
+          + '<div style="display:flex;justify-content:space-between;font-family:'DM Mono',monospace;font-size:8px;color:var(--td);margin-bottom:5px;">'
+            + '<span>' + a.pct + '%</span><span>' + a.tokens + ' tokens</span>'
+          + '</div>'
+          + '<div style="display:flex;align-items:center;gap:4px;">'
+            + '<div style="font-size:7.5px;color:' + ctxColor(a.ctx) + ';font-family:'DM Mono',monospace;">ctx</div>'
+            + '<div style="flex:1;height:3px;background:rgba(255,255,255,.08);border-radius:2px;overflow:hidden;">'
+              + '<div style="height:100%;width:' + a.ctx + '%;background:' + ctxColor(a.ctx) + ';border-radius:2px;"></div>'
+            + '</div>'
+            + '<div style="font-size:7.5px;color:' + ctxColor(a.ctx) + ';font-family:'DM Mono',monospace;">' + a.ctx + '%</div>'
+          + '</div>'
+        + '</div>'
+        + footerRow;
       grid.appendChild(card);
     });
   }
+
+  window.dashSetPhase = function(phase) {
+    dashPhase = phase;
+    buildDashboard();
+  };
+
   buildDashboard();
 
   let dashTick = false;
   function tickDashboard() {
     if (dashTick) return; dashTick = true;
     setInterval(() => {
-      dashAgents.forEach(a => { if (a.status==='run' && a.pct<99) a.pct = Math.min(99, a.pct + Math.random()*1.5); });
-      buildDashboard();
+      if (dashPhase === 1) {
+        dashAgents.forEach(a => { if (a.status==='run' && a.pct<99) a.pct = Math.min(99, a.pct + Math.random()*1.5); });
+        buildDashboard();
+      }
     }, 2000);
   }
   setTimeout(tickDashboard, 800);
@@ -3508,9 +3534,9 @@ setupSlideSteps('s-m1a','stp-m1a',[
   {c:[.72,.75], click:true, key:'⌘ ↵',ms:2400, act:function(){ if(window.agvSetPhase) window.agvSetPhase(3); }}
 ]);
 setupSlideSteps('s-m1b','stp-m1b',[
-  {c:[.28,.32],                       ms:2400},
-  {c:[.65,.50], click:true,           ms:2400},
-  {c:[.50,.80], click:true, key:'⌘ K',ms:2400}
+  {c:[.74,.55],                       ms:2800, act:function(){ if(window.dashSetPhase) window.dashSetPhase(1); }},
+  {c:[.60,.42], click:true,           ms:2800, act:function(){ if(window.dashSetPhase) window.dashSetPhase(2); }},
+  {c:[.60,.50], click:true, key:'⌘ K',ms:2800, act:function(){ if(window.dashSetPhase) window.dashSetPhase(3); }}
 ]);
 setupSlideSteps('s-m2a','stp-m2a',[
   {ms:2500},

@@ -12,7 +12,7 @@
 | 项 | 值 |
 |---|---|
 | 主文件 | `/Users/hsin/Documents/Coding/CLI/ai-dev-tools-design.html` |
-| 当前行数 | 约 2800 行 |
+| 当前行数 | 约 3500 行 |
 | 受众 | 设计/产品评审，需视觉冲击力 |
 | 语言 | 中文界面，英文技术术语混用 |
 
@@ -82,7 +82,8 @@
 | 1 | `s-cover` | 封面 | ~304 |
 | 2 | `s-bg` | 背景：信号扫描 | ~339 |
 | 3 | `s-bg2` | 背景：范式演进时间轴 | ~431 |
-| 4 | `s-j-overview` | 用户旅程全景地图（7阶段×6维度） | ~527 |
+| 3.5 | `s-bg3` | 代码是过程，结果才是产出物（新增） | ~527 |
+| 4 | `s-j-overview` | 用户旅程全景地图（7阶段×6维度） | ~640 |
 | 5 | `s-m4a` | 记忆启动 — 跨会话上下文 | ~1046 |
 | 6 | `s-m2c` | 语音×光标 — 指着说话 | ~818 |
 | 7 | `s-m2b` | 手势 Prompt — Flow 不中断 | ~748 |
@@ -292,11 +293,39 @@ grep -n "id=\"s-m" file.html | head    # 快速列出所有 section
 
 ---
 
-## 待办
+## 已完成（本轮会话）
 
+| commit | 内容 |
+|---|---|
+| `bd663c8` | 快捷键 badge 放大（font 8→12px，padding 增大） |
+| `11b60df` | s-m2a / s-m2b / s-m5a ba-before 移除过程态代码，换成渲染结果 UI |
+| `4ed0704` | 新增 s-bg3：代码是过程→结果是产出物，三步动画演示 |
+| `a463d0b` | 修复：光标全白、导航遮挡、Agent View 分阶段、s-m6a 简化、Goal key 去掉 |
+| `fcb7cdc` | 修复 Stage 01 (s-m4a)：记忆窗口数量 1→3 分阶段显示 |
+| `818e7b7` | 修复 Stage 03 (s-m3b)：Goal 三个面板顺序出现（cmd→进度→log） |
+
+---
+
+## 待办（按优先级）
+
+### 紧急 — 用户明确指出的 Bug
+- [ ] **s-m1b 看板**：mockup 看不出设计价值，需要 phase-based 动画（正常→异常高亮→注入指令）
+- [ ] **s-m2c (Stage 02 1/3)**：Space 唤醒语音的快捷键未显示
+- [ ] **s-m2b (Stage 02 2/3)**：AI 修改建议后，结果未展示（表格数据应更新）
+- [ ] **s-m2a (Stage 02 3/3)**：sim-cursor 点击位置错误
+- [ ] **s-m6a 光标伴侣**：白色鼠标光标应跟随紫色三角形飞行，目前没有
+
+### 低优先级 — 锦上添花
 - [ ] 旅程地图情绪曲线缺 `ResizeObserver`（窗口 resize 后 SVG 宽度不更新）
-- [ ] Agent View ✽ 图标可考虑 SVG spinner 替代 CSS spin
-- [ ] s-m1b 看板卡片无优先级排序逻辑（error > wait > run > done）
 - [ ] 总结页可考虑加设计系统全览对比图
-- [ ] 光标伴侣：语音 waveform 和三角飞行可考虑时序联动
-- [ ] 步骤指示条 onStep 可考虑与各幻灯片现有动画联动（如 s-m5a 跟随 tab 切换）
+
+---
+
+## 全局 window 函数速查
+
+| 函数 | 所在 Section | 作用 |
+|---|---|---|
+| `window.agvSetPhase(1/2/3)` | s-m1a | Agent View 显示 2/4/5 个会话 |
+| `window.memSetPhase(1/2/3)` | s-m4a | 记忆窗口数量 1/3(暗)/3(亮) |
+| `window.goalShowPanel(1/2/3)` | s-m3b | Goal 面板：仅命令/+进度框/+日志 |
+| `window.dashSetPhase(1/2/3)` | s-m1b | 看板：正常/异常高亮/注入指令（待实现） |
