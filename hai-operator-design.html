@@ -611,10 +611,107 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
   </div>
 </div>
 
+<!-- ══ STAGE 08: 光标伴侣 ══ -->
+<div class="sec" id="s-m6a" style="background:var(--sur);">
+  <div class="slabel">
+    <span class="sub">表达意图 · Stage 02 · 设计点 2/4</span>
+    <span class="main">光标伴侣 — msprof 分析全程 AI 贴身引导</span>
+  </div>
+  <div class="inner">
+    <div class="dp-layout">
+      <div class="dp-left">
+        <div class="dp-desc">
+          <div class="dp-label">设计说明</div>
+          <div class="dp-title">msprof × AI 引导</div>
+          <div class="dp-body">msprof 界面指标众多，新手往往不知道该看哪里。AI 光标伴侣在 msprof 界面上飞行，依次指向关键指标，用语音气泡说明含义和优化方向，把专家经验内化为可交互的引导流程。</div>
+        </div>
+        <div class="dp-desc">
+          <div class="dp-label">核心设计点</div>
+          <div class="dp-points">
+            <div class="dpp">三角形伴侣飞行至目标指标，白色光标同步跟随</div>
+            <div class="dpp">语音气泡说明指标含义 + 当前值的诊断结论</div>
+            <div class="dpp">引导路径：AI Core 利用率 → CUBE/VECTOR 分布 → 内存带宽 → 建议优化点</div>
+            <div class="dpp">可打断：用户随时点击其他指标，伴侣立即响应</div>
+          </div>
+        </div>
+        <div class="ba-grid">
+          <div class="ba-before">
+            <div class="ba-label"><span>✕</span> 过去的做法</div>
+            <div style="display:flex;flex-direction:column;gap:3px;margin-top:4px;">
+              <div style="background:var(--sur);padding:5px 8px;border-left:2px solid var(--grey-2);border:.5px solid var(--bdr2);">
+                <div style="font-size:8px;color:var(--tx2);">打开 msprof…</div>
+                <div style="font-size:8px;color:var(--tx3);">这个 MTE2 是什么意思？</div>
+                <div style="font-size:8px;color:var(--tx3);">Scalar 单元利用 0% 正常吗？</div>
+              </div>
+              <div style="background:rgba(220,38,38,.06);border:.5px solid rgba(220,38,38,.2);padding:5px 8px;border-left:2px solid var(--grey-2);font-size:8px;color:var(--r);">看不懂 → 查文档 → 还是看不懂</div>
+            </div>
+          </div>
+          <div class="ba-after">
+            <div class="ba-label"><span>◆</span> 新的设计</div>
+            <div class="ba-text">AI 伴侣在 msprof 界面飞行引导，依次解释每个关键指标，直接给出"这里是瓶颈，建议这样改"的结论。</div>
+          </div>
+        </div>
+      </div>
+      <div class="dp-right">
+        <div class="mockup-label">动态 Mockup — msprof 光标引导</div>
+        <div class="stp-strip" id="stp-m6a">
+          <div class="stp-bar"><div class="stp-fill"></div></div>
+          <div class="stp-steps">
+            <div class="stp-step"><div class="stp-num">1</div><span class="stp-lbl">指向 AI Core 总览</span></div>
+            <div class="stp-step"><div class="stp-num">2</div><span class="stp-lbl">CUBE 利用率分析</span></div>
+            <div class="stp-step"><div class="stp-num">3</div><span class="stp-lbl">给出优化建议</span></div>
+          </div>
+        </div>
+        <div class="clicky-app" id="nsight-app">
+          <div class="ns-toolbar">
+            <span style="font-family:'DM Mono',monospace;font-size:10px;color:#834DF0;font-weight:600;">msprof</span>
+            <div class="ns-tab active">Timeline</div>
+            <div class="ns-tab">Op Summary</div>
+            <div class="ns-tab">Memory</div>
+            <span style="font-family:'DM Mono',monospace;font-size:8px;color:#4E4E5E;margin-left:auto;">RMSNorm_forward · 910B</span>
+          </div>
+          <div class="ms-panel" id="ns-metrics">
+            <div style="font-family:'DM Mono',monospace;font-size:8px;color:#4E4E5E;margin-bottom:2px;">■ 硬件利用率概览</div>
+            <div id="ns-metric-1" style="padding:6px 8px;background:rgba(255,255,255,.03);border-radius:5px;border:.5px solid rgba(255,255,255,.06);transition:border-color .25s;" class="ms-metric">
+              <div class="ms-metric-label" style="font-size:9px;">AI Core 总利用率</div>
+              <div class="ms-bar-track"><div class="ms-bar-fill" style="width:38%;background:var(--ty);"></div></div>
+              <div class="ms-pct" style="color:var(--ty);">38%</div>
+            </div>
+            <div id="ns-metric-2" style="padding:6px 8px;background:rgba(255,255,255,.03);border-radius:5px;border:.5px solid rgba(255,255,255,.06);transition:border-color .25s;" class="ms-metric">
+              <div class="ms-metric-label" style="font-size:9px;">CUBE 单元利用率</div>
+              <div class="ms-bar-track"><div class="ms-bar-fill" style="width:21%;background:var(--tr);"></div></div>
+              <div class="ms-pct" style="color:var(--tr);">21%</div>
+            </div>
+            <div id="ns-metric-3" style="padding:6px 8px;background:rgba(255,255,255,.03);border-radius:5px;border:.5px solid rgba(255,255,255,.06);transition:border-color .25s;" class="ms-metric">
+              <div class="ms-metric-label" style="font-size:9px;">VECTOR 单元利用率</div>
+              <div class="ms-bar-track"><div class="ms-bar-fill" style="width:87%;background:var(--tg);"></div></div>
+              <div class="ms-pct" style="color:var(--tg);">87%</div>
+            </div>
+            <div id="ns-metric-4" style="padding:6px 8px;background:rgba(255,255,255,.03);border-radius:5px;border:.5px solid rgba(255,255,255,.06);transition:border-color .25s;" class="ms-metric">
+              <div class="ms-metric-label" style="font-size:9px;">MTE 内存带宽利用率</div>
+              <div class="ms-bar-track"><div class="ms-bar-fill" style="width:64%;background:var(--tb2);"></div></div>
+              <div class="ms-pct" style="color:var(--tb2);">64%</div>
+            </div>
+          </div>
+          <div id="ck-mouse-cursor" style="position:absolute;width:14px;height:18px;pointer-events:none;z-index:19;transform:translate(-2px,-2px);transition:left .7s ease,top .7s ease;filter:drop-shadow(0 1px 3px rgba(0,0,0,.5));left:-20px;top:-20px;"><svg width="14" height="18" viewBox="0 0 12 16" fill="none"><path d="M2 1L2 13L5.2 10.3L7.5 15L9.2 14.2L6.9 9.5H11.5Z" fill="white" stroke="#1A1A2E" stroke-width=".8" stroke-linejoin="round"/></svg></div>
+          <div id="ck-speech" style="position:absolute;background:#15151C;border:.5px solid rgba(131,77,240,.5);border-radius:8px;padding:7px 11px;font-family:'DM Mono',monospace;font-size:8.5px;color:var(--tw);max-width:190px;z-index:25;opacity:0;transition:opacity .3s;pointer-events:none;box-shadow:0 6px 18px rgba(0,0,0,.5);line-height:1.5;white-space:pre-line;"></div>
+          <svg id="ck-companion-svg" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:20;overflow:visible;">
+            <circle id="ck-ring-el" r="0" fill="none" stroke="#834DF0" stroke-width="1.5" opacity="0"/>
+            <g id="ck-companion-g" transform="translate(-100,-100)">
+              <polygon points="0,-11 9,6 -9,6" fill="#834DF0" opacity="0.95"/>
+              <polygon points="0,-7 6,4 -6,4" fill="rgba(131,77,240,0.3)"/>
+            </g>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- ══ STAGE 02-2: 手势 Prompt ══ -->
 <div class="sec" id="s-m2b" style="background:var(--bg);">
   <div class="slabel">
-    <span class="sub">表达意图 · Stage 02 · 设计点 2/3</span>
+    <span class="sub">表达意图 · Stage 02 · 设计点 3/4</span>
     <span class="main">圈选 TBE 代码 — 下意识动作触发 AI 优化</span>
   </div>
   <div class="inner">
@@ -670,7 +767,7 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
             <div style="width:7px;height:7px;border-radius:50%;background:#28C840;"></div>
             <span style="font-family:'DM Mono',monospace;font-size:9px;color:var(--td);margin-left:4px;">rmsnorm_tbe.py</span>
           </div>
-          <div style="padding:10px 14px;font-family:'DM Mono',monospace;font-size:9.5px;line-height:1.75;flex:1;position:relative;" id="tbe-code-area">
+          <div style="padding:10px 14px;font-family:'DM Mono',monospace;font-size:9.5px;line-height:1.75;flex:1;position:relative;color:var(--tw);" id="tbe-code-area">
             <div style="color:var(--td);"># RMSNorm TBE 实现</div>
             <div><span style="color:var(--tp);">def</span> <span style="color:var(--tb2);">rmsnorm_compute</span>(tik_instance, x, gamma, y):</div>
             <div style="padding-left:16px;">
@@ -702,7 +799,7 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
 <!-- ══ STAGE 02-3: 光标感知 ══ -->
 <div class="sec" id="s-m2a" style="background:var(--sur);">
   <div class="slabel">
-    <span class="sub">表达意图 · Stage 02 · 设计点 3/3</span>
+    <span class="sub">表达意图 · Stage 02 · 设计点 4/4</span>
     <span class="main">光标即上下文 — 停留在 TBE 代码行触发硬件分析</span>
   </div>
   <div class="inner">
@@ -757,7 +854,7 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
             <div style="width:7px;height:7px;border-radius:50%;background:#28C840;"></div>
             <span style="font-family:'DM Mono',monospace;font-size:9px;color:var(--td);margin-left:4px;">rmsnorm_tbe.py · 昇腾 910B</span>
           </div>
-          <div style="padding:10px 14px;font-family:'DM Mono',monospace;font-size:9.5px;line-height:1.85;flex:1;position:relative;">
+          <div style="padding:10px 14px;font-family:'DM Mono',monospace;font-size:9.5px;line-height:1.85;flex:1;position:relative;color:var(--tw);">
             <div style="color:var(--td);">25  # --- 数据搬运 ---</div>
             <div id="cd-line-1" style="transition:background .2s;border-radius:3px;padding:0 3px;margin:0 -3px;"><span style="color:var(--td);">26</span>  <span style="color:var(--tb2);">tik.data_move</span>(x_ub, x_gm, <span style="color:var(--tg);">0</span>, <span style="color:var(--tg);">1</span>, burst_len, <span style="color:var(--tg);">0</span>, <span style="color:var(--tg);">0</span>)</div>
             <div style="color:var(--td);">27  </div>
@@ -832,8 +929,8 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
           </div>
         </div>
         <div style="display:flex;flex-direction:column;gap:8px;flex:1;overflow:hidden;">
-          <div class="goal-box" id="goal-box" style="display:none;">
-            <div style="font-family:'DM Mono',monospace;font-size:9px;color:var(--acc);margin-bottom:6px;">◆ 算子验收条件</div>
+          <div class="goal-box" id="goal-box" style="opacity:0;transform:translateY(-8px);transition:opacity .4s,transform .4s;border-left:3px solid var(--acc);background:rgba(0,47,167,.06);padding:12px 16px;">
+            <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--acc);margin-bottom:8px;letter-spacing:.08em;">◆ GOAL · 验收条件</div>
             <div style="display:flex;flex-direction:column;gap:4px;">
               <div style="display:flex;align-items:center;gap:6px;">
                 <span style="font-size:9px;width:16px;text-align:center;" id="goal-icon-1">⏳</span>
@@ -854,7 +951,11 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
           </div>
           <div class="goal-term" style="flex:1;">
             <div class="goal-term-hd">HAI Terminal · RMSNorm 算子</div>
-            <div class="goal-term-body" id="goal-log"></div>
+            <div class="goal-term-body" id="goal-log">
+              <div style="font-family:'DM Mono',monospace;font-size:9px;color:var(--td);line-height:1.6;">
+                <span style="color:var(--acc);">$ </span><span style="color:var(--tw);">/goal cube_util &gt; 70% &amp;&amp; max_error &lt; 1e-5 &amp;&amp; compat: [910B, 310P]</span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -1375,103 +1476,6 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
   </div>
 </div>
 
-<!-- ══ STAGE 08: 光标伴侣 ══ -->
-<div class="sec" id="s-m6a" style="background:var(--sur);">
-  <div class="slabel">
-    <span class="sub">工具引导 · Stage 08 · 设计点 1/1</span>
-    <span class="main">光标伴侣 — msprof 分析全程 AI 贴身引导</span>
-  </div>
-  <div class="inner">
-    <div class="dp-layout">
-      <div class="dp-left">
-        <div class="dp-desc">
-          <div class="dp-label">设计说明</div>
-          <div class="dp-title">msprof × AI 引导</div>
-          <div class="dp-body">msprof 界面指标众多，新手往往不知道该看哪里。AI 光标伴侣在 msprof 界面上飞行，依次指向关键指标，用语音气泡说明含义和优化方向，把专家经验内化为可交互的引导流程。</div>
-        </div>
-        <div class="dp-desc">
-          <div class="dp-label">核心设计点</div>
-          <div class="dp-points">
-            <div class="dpp">三角形伴侣飞行至目标指标，白色光标同步跟随</div>
-            <div class="dpp">语音气泡说明指标含义 + 当前值的诊断结论</div>
-            <div class="dpp">引导路径：AI Core 利用率 → CUBE/VECTOR 分布 → 内存带宽 → 建议优化点</div>
-            <div class="dpp">可打断：用户随时点击其他指标，伴侣立即响应</div>
-          </div>
-        </div>
-        <div class="ba-grid">
-          <div class="ba-before">
-            <div class="ba-label"><span>✕</span> 过去的做法</div>
-            <div style="display:flex;flex-direction:column;gap:3px;margin-top:4px;">
-              <div style="background:var(--sur);padding:5px 8px;border-left:2px solid var(--grey-2);border:.5px solid var(--bdr2);">
-                <div style="font-size:8px;color:var(--tx2);">打开 msprof…</div>
-                <div style="font-size:8px;color:var(--tx3);">这个 MTE2 是什么意思？</div>
-                <div style="font-size:8px;color:var(--tx3);">Scalar 单元利用 0% 正常吗？</div>
-              </div>
-              <div style="background:rgba(220,38,38,.06);border:.5px solid rgba(220,38,38,.2);padding:5px 8px;border-left:2px solid var(--grey-2);font-size:8px;color:var(--r);">看不懂 → 查文档 → 还是看不懂</div>
-            </div>
-          </div>
-          <div class="ba-after">
-            <div class="ba-label"><span>◆</span> 新的设计</div>
-            <div class="ba-text">AI 伴侣在 msprof 界面飞行引导，依次解释每个关键指标，直接给出"这里是瓶颈，建议这样改"的结论。</div>
-          </div>
-        </div>
-      </div>
-      <div class="dp-right">
-        <div class="mockup-label">动态 Mockup — msprof 光标引导</div>
-        <div class="stp-strip" id="stp-m6a">
-          <div class="stp-bar"><div class="stp-fill"></div></div>
-          <div class="stp-steps">
-            <div class="stp-step"><div class="stp-num">1</div><span class="stp-lbl">指向 AI Core 总览</span></div>
-            <div class="stp-step"><div class="stp-num">2</div><span class="stp-lbl">CUBE 利用率分析</span></div>
-            <div class="stp-step"><div class="stp-num">3</div><span class="stp-lbl">给出优化建议</span></div>
-          </div>
-        </div>
-        <div class="clicky-app" id="nsight-app">
-          <div class="ns-toolbar">
-            <span style="font-family:'DM Mono',monospace;font-size:10px;color:#834DF0;font-weight:600;">msprof</span>
-            <div class="ns-tab active">Timeline</div>
-            <div class="ns-tab">Op Summary</div>
-            <div class="ns-tab">Memory</div>
-            <span style="font-family:'DM Mono',monospace;font-size:8px;color:#4E4E5E;margin-left:auto;">RMSNorm_forward · 910B</span>
-          </div>
-          <div class="ms-panel" id="ns-metrics">
-            <div style="font-family:'DM Mono',monospace;font-size:8px;color:#4E4E5E;margin-bottom:2px;">■ 硬件利用率概览</div>
-            <div id="ns-metric-1" style="padding:6px 8px;background:rgba(255,255,255,.03);border-radius:5px;border:.5px solid rgba(255,255,255,.06);transition:border-color .25s;" class="ms-metric">
-              <div class="ms-metric-label" style="font-size:9px;">AI Core 总利用率</div>
-              <div class="ms-bar-track"><div class="ms-bar-fill" style="width:38%;background:var(--ty);"></div></div>
-              <div class="ms-pct" style="color:var(--ty);">38%</div>
-            </div>
-            <div id="ns-metric-2" style="padding:6px 8px;background:rgba(255,255,255,.03);border-radius:5px;border:.5px solid rgba(255,255,255,.06);transition:border-color .25s;" class="ms-metric">
-              <div class="ms-metric-label" style="font-size:9px;">CUBE 单元利用率</div>
-              <div class="ms-bar-track"><div class="ms-bar-fill" style="width:21%;background:var(--tr);"></div></div>
-              <div class="ms-pct" style="color:var(--tr);">21%</div>
-            </div>
-            <div id="ns-metric-3" style="padding:6px 8px;background:rgba(255,255,255,.03);border-radius:5px;border:.5px solid rgba(255,255,255,.06);transition:border-color .25s;" class="ms-metric">
-              <div class="ms-metric-label" style="font-size:9px;">VECTOR 单元利用率</div>
-              <div class="ms-bar-track"><div class="ms-bar-fill" style="width:87%;background:var(--tg);"></div></div>
-              <div class="ms-pct" style="color:var(--tg);">87%</div>
-            </div>
-            <div id="ns-metric-4" style="padding:6px 8px;background:rgba(255,255,255,.03);border-radius:5px;border:.5px solid rgba(255,255,255,.06);transition:border-color .25s;" class="ms-metric">
-              <div class="ms-metric-label" style="font-size:9px;">MTE 内存带宽利用率</div>
-              <div class="ms-bar-track"><div class="ms-bar-fill" style="width:64%;background:var(--tb2);"></div></div>
-              <div class="ms-pct" style="color:var(--tb2);">64%</div>
-            </div>
-          </div>
-          <div id="ck-mouse-cursor" style="position:absolute;width:14px;height:18px;pointer-events:none;z-index:19;transform:translate(-2px,-2px);transition:left .7s ease,top .7s ease;filter:drop-shadow(0 1px 3px rgba(0,0,0,.5));left:-20px;top:-20px;"><svg width="14" height="18" viewBox="0 0 12 16" fill="none"><path d="M2 1L2 13L5.2 10.3L7.5 15L9.2 14.2L6.9 9.5H11.5Z" fill="white" stroke="#1A1A2E" stroke-width=".8" stroke-linejoin="round"/></svg></div>
-          <div id="ck-speech" style="position:absolute;background:#15151C;border:.5px solid rgba(131,77,240,.5);border-radius:8px;padding:7px 11px;font-family:'DM Mono',monospace;font-size:8.5px;color:var(--tw);max-width:190px;z-index:25;opacity:0;transition:opacity .3s;pointer-events:none;box-shadow:0 6px 18px rgba(0,0,0,.5);line-height:1.5;white-space:pre-line;"></div>
-          <svg id="ck-companion-svg" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:20;overflow:visible;">
-            <circle id="ck-ring-el" r="0" fill="none" stroke="#834DF0" stroke-width="1.5" opacity="0"/>
-            <g id="ck-companion-g" transform="translate(-100,-100)">
-              <polygon points="0,-11 9,6 -9,6" fill="#834DF0" opacity="0.95"/>
-              <polygon points="0,-7 6,4 -6,4" fill="rgba(131,77,240,0.3)"/>
-            </g>
-          </svg>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
 <!-- ══ SUMMARY ══ -->
 <div class="sec" id="s-sum" style="background:var(--sur);">
   <div class="slabel">
@@ -1549,15 +1553,17 @@ function setupSlideSteps(secId, stripId, defs) {
   let simCursor = sec.querySelector('.sim-cursor');
   let activated = false;
 
-  const dots = strip.querySelectorAll('.stp-dot');
+  const dots = strip.querySelectorAll('.stp-step');
 
   function goTo(i) {
     if (i === cur) return;
     cur = i;
     dots.forEach((d, di) => {
-      d.classList.toggle('active', di === i);
-      d.classList.toggle('done', di < i);
+      d.classList.toggle('stp-active', di === i);
+      d.classList.toggle('stp-done', di < i);
     });
+    const fill = strip.querySelector('.stp-fill');
+    if (fill && defs.length > 1) fill.style.width = (i / (defs.length - 1) * 100) + '%';
 
     const def = defs[i];
     if (!def) return;
@@ -1628,7 +1634,7 @@ function setupSlideSteps(secId, stripId, defs) {
     { id:'jst-7', icon:'🚀', title:'发布上线', sub:'算子库合入', color:'#16A085' },
   ];
 
-  const grid = document.getElementById('journey-grid');
+  const grid = document.getElementById('journey-root');
   if (!grid) return;
 
   steps.forEach((s, i) => {
@@ -1647,6 +1653,7 @@ function setupSlideSteps(secId, stripId, defs) {
     grid.appendChild(div);
   });
 
+  grid.style.cssText += ';display:flex;flex-wrap:wrap;gap:16px;align-content:center;justify-content:center;padding:8px;';
   const obs = new IntersectionObserver(entries => {
     if (entries[0].isIntersecting) {
       grid.querySelectorAll('div').forEach(d => {
@@ -1701,7 +1708,7 @@ function setupSlideSteps(secId, stripId, defs) {
     },
   ];
 
-  const container = document.getElementById('mem-cards');
+  const container = document.getElementById('mem-sessions');
   if (!container) return;
 
   cards.forEach(card => {
@@ -1738,31 +1745,33 @@ function setupSlideSteps(secId, stripId, defs) {
   function setPhase(p) {
     vPhase = p;
     const voiceCursor = document.getElementById('voice-cursor');
-    const aiOutput = document.getElementById('ai-output-box');
-    const bars = document.querySelectorAll('#msprof-bars .metric-fill');
-    const metricVals = document.querySelectorAll('#msprof-bars .metric-val');
+    const aiOutput = document.getElementById('voice-ai-output');
+    const aiText = document.getElementById('voice-ai-text');
+    /* metric bar fills and pct labels */
+    const bars = document.querySelectorAll('.ms-bar-fill');
+    const pcts = document.querySelectorAll('.ms-pct');
 
     if (p === 0) {
-      if (voiceCursor) voiceCursor.style.opacity = '0';
-      if (aiOutput) aiOutput.style.opacity = '0';
+      if (voiceCursor) { voiceCursor.style.opacity = '0'; voiceCursor.style.left = '15%'; voiceCursor.style.top = '30%'; }
     } else if (p === 1) {
-      /* cursor appears at mic button */
+      /* cursor moves to CUBE bar row */
       if (voiceCursor) {
         voiceCursor.style.opacity = '1';
-        voiceCursor.style.left = '72%';
-        voiceCursor.style.top = '88%';
+        voiceCursor.style.left = '55%';
+        voiceCursor.style.top = '38%';
       }
     } else if (p === 2) {
-      /* AI output appears */
-      if (aiOutput) {
-        aiOutput.style.opacity = '1';
-        aiOutput.style.transform = 'translateY(0)';
-      }
+      /* AI output updates */
+      if (aiText) aiText.style.color = 'var(--tw)';
+      if (aiText) aiText.textContent = 'CUBE 利用率 21% 过低 → data_move 占比 67%，建议将 tile_m 从 64 → 128，预计 CUBE 提升至 ~72%';
       /* bars animate to optimized values */
-      const targets = ['72.4%', '71.2%', '88%', '67%'];
-      const widths  = ['72.4%', '71.2%', '88%', '67%'];
-      bars.forEach((b, i) => { b.style.width = widths[i]; });
-      if (metricVals) metricVals.forEach((v, i) => { v.textContent = targets[i]; });
+      const newWidths = ['72.4%','71.2%','88%','67%'];
+      const newColors = ['var(--ty)','var(--tg)','var(--tg)','var(--tb2)'];
+      const newPcts   = ['72.4%','71.2%','88%','67%'];
+      bars.forEach((b, i) => {
+        if (newWidths[i]) { b.style.width = newWidths[i]; b.style.transition = 'width 1s ease'; b.style.background = newColors[i]; }
+      });
+      pcts.forEach((v, i) => { if (newPcts[i]) { v.textContent = newPcts[i]; } });
     }
   }
 
@@ -1788,24 +1797,25 @@ function setupSlideSteps(secId, stripId, defs) {
 
   function setPhase(p) {
     gPhase = p;
-    const aiBar = document.getElementById('gesture-ai-bar');
-    const paramTileM = document.getElementById('param-tile-m');
-    const paramUbSize = document.getElementById('param-ub-size');
-    const q4Row = document.getElementById('q4-result-row');
+    const aiBar = document.getElementById('tbe-ai-bar');      /* matches HTML */
+    const aiText = document.getElementById('tbe-ai-text');
+    const tileMVal = document.getElementById('tile-m-val');    /* the green value span */
+    const tileLine = document.getElementById('tbe-line-tm');
+    const overlay = document.getElementById('gesture-overlay-tbe');
 
     if (p === 1) {
-      /* ai bar expands */
-      if (aiBar) { aiBar.style.opacity = '1'; aiBar.style.maxHeight = '40px'; }
+      /* highlight tile_m line, show AI bar */
+      if (tileLine) tileLine.style.background = 'rgba(0,47,167,.18)';
+      if (aiBar) aiBar.style.display = 'block';
+      if (aiText) aiText.textContent = '检测到 tile_m 参数 — 当前 64，CUBE 利用率 21%。建议 tile_m=128，预计 CUBE 利用率 ~72%';
     } else if (p === 2) {
-      /* params update */
-      if (paramTileM) { paramTileM.style.color = '#A78BFA'; paramTileM.textContent = '128'; }
-      if (paramUbSize) { paramUbSize.style.color = '#A78BFA'; paramUbSize.textContent = '256*1024'; }
+      /* update tile_m value */
+      if (tileMVal) { tileMVal.textContent = '128'; tileMVal.style.color = 'var(--acc-l)'; }
+      if (aiText) aiText.textContent = '✓ tile_m 已更新为 128 · UB 占用: 64KB → 128KB（安全范围内）';
     } else if (p === 3) {
-      /* Q4 prediction row appears */
-      if (q4Row) {
-        q4Row.style.opacity = '1';
-        q4Row.style.transform = 'translateX(0)';
-      }
+      /* show verification result */
+      if (tileLine) tileLine.style.background = 'rgba(52,211,153,.1)';
+      if (aiText) aiText.textContent = '✓ msprof 验证：CUBE 利用率 71.2%，精度误差 8.3e-6，910B 验证通过';
     }
   }
 
@@ -1820,9 +1830,9 @@ function setupSlideSteps(secId, stripId, defs) {
   if (!sec) return;
 
   const targets = [
-    { x: 0.15, y: 0.52, label: 'data_move — 搬移输入到UB' },
-    { x: 0.15, y: 0.57, label: 'vmul — 向量乘法运算' },
-    { x: 0.15, y: 0.62, label: 'data_move — 写回输出' },
+    { x: 0.08, y: 0.35, lineId: 'cd-line-1', label: 'data_move: HBM→UB 搬运，burst_len 需与 tile_m 对齐，当前效率 ~82%' },
+    { x: 0.08, y: 0.55, lineId: 'cd-line-2', label: 'gamma_ub 搬运可与 x_ub 合并为一次 data_move，减少 DMA 开销' },
+    { x: 0.08, y: 0.72, lineId: 'cd-line-3', label: 'vmul 连续 x² — CUBE 单元效率 71%，可尝试 vmul+vln 融合' },
   ];
 
   let idx = 0;
@@ -1831,14 +1841,27 @@ function setupSlideSteps(secId, stripId, defs) {
   function moveTo(t) {
     const cursor = document.getElementById('cd-cursor');
     const popup = document.getElementById('cd-popup-tbe');
-    if (!cursor) return;
-    const r = sec.getBoundingClientRect();
+    const codeArea = document.getElementById('cursor-demo-tbe');
+    if (!cursor || !codeArea) return;
+    const r = codeArea.getBoundingClientRect();
     cursor.style.left = (t.x * r.width) + 'px';
     cursor.style.top  = (t.y * r.height) + 'px';
+    /* highlight current line */
+    ['cd-line-1','cd-line-2','cd-line-3'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.style.background = '';
+    });
+    if (t.lineId) {
+      const ln = document.getElementById(t.lineId);
+      if (ln) ln.style.background = 'rgba(0,47,167,.18)';
+    }
     if (popup) {
+      popup.style.display = 'block';
       popup.style.opacity = '1';
-      const lbl = popup.querySelector('.popup-label');
-      if (lbl) lbl.textContent = t.label;
+      const lbl = document.getElementById('cd-popup-label-tbe');
+      const txt = document.getElementById('cd-popup-text-tbe');
+      if (lbl) lbl.textContent = 'AI 分析';
+      if (txt) txt.textContent = t.label;
     }
   }
 
@@ -1869,7 +1892,7 @@ function setupSlideSteps(secId, stripId, defs) {
     const goalLog = document.getElementById('goal-log');
 
     if (p === 1) {
-      if (goalBox) { goalBox.style.opacity = '1'; goalBox.style.transform = 'translateY(0)'; }
+      if (goalBox) { goalBox.style.display = 'block'; setTimeout(()=>{ goalBox.style.opacity='1'; goalBox.style.transform='none'; },30); }
     } else if (p === 2) {
       /* log lines appear */
       if (goalLog) {
