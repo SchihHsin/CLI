@@ -1722,6 +1722,7 @@ body{background:var(--bg);color:var(--tx);font-family:'Space Grotesk','Noto Sans
               </g>
             </svg>
             <div id="ck-speech" style="position:absolute;z-index:25;background:#11111A;border:.5px solid rgba(131,77,240,.5);border-radius:8px 8px 2px 8px;padding:5px 9px;font-family:'DM Mono',monospace;font-size:8px;color:#CECEE0;white-space:pre-line;line-height:1.55;opacity:0;transition:opacity .3s;pointer-events:none;box-shadow:0 3px 14px rgba(131,77,240,.28);max-width:120px;left:0;top:0;"></div>
+            <div id="ck-mouse-cursor" style="position:absolute;width:14px;height:18px;pointer-events:none;z-index:19;transform:translate(-2px,-2px);transition:left .7s ease,top .7s ease;filter:drop-shadow(0 1px 3px rgba(0,0,0,.5));left:-20px;top:-20px;"><svg width="14" height="18" viewBox="0 0 12 16" fill="none"><path d="M2 1L2 13L5.2 10.3L7.5 15L9.2 14.2L6.9 9.5H11.5Z" fill="white" stroke="#1A1A2E" stroke-width=".8" stroke-linejoin="round"/></svg></div>
             <div id="ck-highlight" style="position:absolute;z-index:22;border-radius:4px;border:1.5px solid rgba(131,77,240,.8);box-shadow:0 0 0 3px rgba(131,77,240,.18),0 0 8px rgba(131,77,240,.3);pointer-events:none;opacity:0;transition:opacity .25s;"></div>
             <!-- Step guidance panel — inside app as AI overlay -->
             <div id="ck-step-card" style="position:absolute;bottom:0;left:0;right:0;background:rgba(131,77,240,.07);border-top:.5px solid rgba(131,77,240,.22);padding:7px 11px;z-index:21;backdrop-filter:blur(2px);">
@@ -2589,6 +2590,9 @@ function setupSlideSteps(secId, stripId, defs) {
       : { x: app.clientWidth * 0.62, y: app.clientHeight * 0.65 };
     if (!target) { step++; setTimeout(runLoop, 100); return; }
 
+    const mc = document.getElementById('ck-mouse-cursor');
+    if (mc) { mc.style.left = target.x + 'px'; mc.style.top = target.y + 'px'; }
+
     flyTo(target, 850, function() {
       if (!running) return;
       pulseRing(target.x, target.y);
@@ -2681,8 +2685,10 @@ const gestureStates = [
   }
 ];
 let gestureIdx = 0;
+let gPhase = 0;
 
 function runGestureDemo() {
+  if (gPhase === 3) return;
   const state = gestureStates[gestureIdx % gestureStates.length];
   document.querySelectorAll('[id^="g-row-"]').forEach(el => {
     el.style.background = '';
@@ -2713,6 +2719,53 @@ function runGestureDemo() {
 
 runGestureDemo();
 setInterval(runGestureDemo, 4500);
+
+window.gestureSetPhase = function(phase) {
+  gPhase = phase;
+  const bar = document.getElementById('gesture-ai-bar');
+  const aiText = document.getElementById('gesture-ai-text');
+  const overlay = document.getElementById('gesture-overlay');
+  document.querySelectorAll('[id^="g-row-"]').forEach(el => { el.style.background = ''; el.style.borderLeft = ''; });
+  if (phase === 1) {
+    const r4 = document.getElementById('g-row-4');
+    if (r4) r4.parentElement.removeChild(r4);
+    if (overlay) overlay.innerHTML = '';
+    if (bar) bar.style.display = 'none';
+    const r3 = document.getElementById('g-row-3');
+    if (r3) r3.style.background = 'rgba(131,77,240,.08)';
+  } else if (phase === 2) {
+    const r3 = document.getElementById('g-row-3');
+    if (r3) { r3.style.background = 'rgba(131,77,240,.15)'; r3.style.borderLeft = '2px solid #834DF0'; }
+    if (overlay) overlay.innerHTML = '<div style="position:absolute;top:8px;right:8px;background:rgba(131,77,240,.2);border:.5px solid rgba(131,77,240,.4);border-radius:5px;font-family:'DM Mono',monospace;font-size:9px;color:#A78BFA;padding:3px 8px;animation:fadeIn .2s ease;">检测到停顿：Q3 数据行</div>';
+    if (bar && aiText) {
+      bar.style.display = 'block';
+      aiText.style.color = 'var(--tx2)';
+      aiText.textContent = 'Q3 增速放缓至 +33%，连续第二季度下降。建议补充 Q4 趋势预测行，是否立即应用？';
+    }
+  } else {
+    if (overlay) overlay.innerHTML = '';
+    if (bar && aiText) {
+      bar.style.display = 'block';
+      aiText.style.color = 'var(--tg)';
+      aiText.textContent = '✓ 已应用 — Q4 趋势预测行已生成';
+    }
+    var r4 = document.getElementById('g-row-4');
+    if (!r4) {
+      var parent = document.getElementById('g-row-3') && document.getElementById('g-row-3').parentElement;
+      if (parent) {
+        r4 = document.createElement('div');
+        r4.id = 'g-row-4';
+        r4.className = 'g-data-row';
+        r4.style.cssText = 'display:grid;grid-template-columns:60px 1fr 60px 60px;background:rgba(131,77,240,.07);border-top:.5px solid rgba(131,77,240,.22);animation:fadeIn .4s ease;';
+        r4.innerHTML = '<div style="padding:6px 10px;font-size:10px;color:var(--acc-l);">Q4 ◆</div>'
+          + '<div style="padding:6px 10px;font-size:10px;font-weight:600;color:var(--acc);">~$2.9M</div>'
+          + '<div style="padding:6px 10px;font-size:9px;color:var(--tp);">+21%</div>'
+          + '<div style="padding:6px 10px;"><span style="font-size:7.5px;background:rgba(131,77,240,.12);color:var(--acc-l);border-radius:3px;padding:1px 4px;">AI预测</span></div>';
+        parent.appendChild(r4);
+      }
+    }
+  }
+};
 
 // ── SMART FIX ──
 const fixSequence = [
@@ -3544,13 +3597,13 @@ setupSlideSteps('s-m2a','stp-m2a',[
   {ms:2500}
 ]);
 setupSlideSteps('s-m2b','stp-m2b',[
-  {c:[.32,.44], click:true,           ms:2400},
-  {c:[.50,.54], click:true, key:'⌘ K',ms:2400},
-  {c:[.76,.68], click:true, key:'↵',  ms:2400}
+  {c:[.72,.58], click:true,           ms:2400, act:function(){ if(window.gestureSetPhase) window.gestureSetPhase(1); }},
+  {c:[.72,.48], click:true, key:'⌘ K',ms:2400, act:function(){ if(window.gestureSetPhase) window.gestureSetPhase(2); }},
+  {c:[.72,.80], click:true, key:'↵',  ms:2800, act:function(){ if(window.gestureSetPhase) window.gestureSetPhase(3); }}
 ]);
 setupSlideSteps('s-m2c','stp-m2c',[
   {ms:2800},
-  {ms:2800},
+  {ms:2800, key:'长按 Space'},
   {ms:3200}
 ]);
 setupSlideSteps('s-m3a','stp-m3a',[
