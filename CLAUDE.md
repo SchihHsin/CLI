@@ -305,37 +305,90 @@ grep -n "id=\"s-m" file.html | head    # 快速列出所有 section
 
 ## 已完成（本轮会话）
 
+### hai-operator-design.html 专项工作
+
 | commit | 内容 |
 |---|---|
-| `bd663c8` | 快捷键 badge 放大（font 8→12px，padding 增大） |
-| `11b60df` | s-m2a / s-m2b / s-m5a ba-before 移除过程态代码，换成渲染结果 UI |
-| `4ed0704` | 新增 s-bg3：代码是过程→结果是产出物，三步动画演示 |
-| `a463d0b` | 修复：光标全白、导航遮挡、Agent View 分阶段、s-m6a 简化、Goal key 去掉 |
-| `fcb7cdc` | 修复 Stage 01 (s-m4a)：记忆窗口数量 1→3 分阶段显示 |
-| `818e7b7` | 修复 Stage 03 (s-m3b)：Goal 三个面板顺序出现（cmd→进度→log） |
-| `c1e12e9` | 修复 s-m1b 看板：phase-based（正常→异常高亮→注入指令） |
+| `1eab472` | 新增 `hai-operator-design.html`：HAI × CANN 昇腾算子开发场景全新演示文稿（18个section） |
+| `f7ce851` | 更新 CLAUDE.md，记录第二份材料信息 |
+| `c99fe2f` | 移植 guizang 瑞士国际主义风格（IKB克莱因蓝）+ 右上角固定导航栏 |
+| `8cca3b6` | 修复多个JS/HTML bug + 将光标伴侣(s-m6a)提前至 Stage 02·2/4 |
+| 未push | s-m2c 语音mockup完整重建（光标移动→Space波形→文字转录→AI回答） |
+
+### ai-dev-tools-design.html 专项工作（更早）
+
+| commit | 内容 |
+|---|---|
 | `d26df5a` | 修复 Stage 02（Space badge、手势结果Q4行、s-m6a鼠标光标跟随三角形） |
-| `1eab472` | 新增 `hai-operator-design.html`：HAI × CANN 昇腾算子开发场景全新演示文稿（18个section，2241行） |
+| `c1e12e9` | 修复 s-m1b 看板：phase-based（正常→异常高亮→注入指令） |
+
+---
+
+## hai-operator-design.html 关键设计说明
+
+### 视觉风格（guizang 瑞士国际主义 Style B · IKB）
+| 变量 | 值 | 说明 |
+|---|---|---|
+| `--acc` | `#002FA7` | IKB 克莱因蓝（原紫色#834DF0） |
+| `--bg` | `#fafaf8` | 瑞士纸白 |
+| `--tx` | `#0a0a0a` | 近黑 |
+| `--grey-2` | `#d4d4d2` | hairline 分割线 |
+- 字体：Inter weight-200（大标题）+ DM Mono（代码/meta）
+- 边框：直角 + 左侧3px IKB 线条，无圆角无阴影
+- slabel：顶部 2.5px IKB 边框
+
+### Section 顺序（当前）
+```
+s-cover → s-bg → s-bg2 → s-bg3 → s-j-overview
+→ s-m4a（记忆启动）
+→ s-m2c（语音×光标 Stage02·1/3）
+→ s-m6a（光标伴侣 Stage02·2/4）← 已提前
+→ s-m2b（手势调参 Stage02·3/4）
+→ s-m2a（光标上下文 Stage02·4/4）
+→ s-m3b（Goal命令）→ s-m1a → s-m1b
+→ s-m3a → s-m5a → s-m5b → s-m4b → s-sum
+```
+
+### JS Bug 修复记录（fix_hai_bugs.py）
+- `setupSlideSteps`：`.stp-dot` → `.stp-step`，class名 `active/done` → `stp-active/stp-done`
+- `initJourney`：`journey-grid` → `journey-root`
+- `initSessionMemory`：`mem-cards` → `mem-sessions`
+- 终端代码区加 `color:var(--tw)` 防黑字继承
+- `voiceSetPhase`：ID 对齐实际 HTML（`voice-ai-output`、`.ms-bar-fill`）
+- `gestureSetPhase`：ID 对齐（`tbe-ai-bar`、`tile-m-val`）
+- `initCursorDemo`：popup `display:none` → `display:block`，坐标系改为相对 `cursor-demo-tbe`
+- `goalShowPanel`：`display:none` → opacity 过渡动画
+
+### s-m2c 语音Mockup动画流程（fix_m2c.py）
+1. 步骤1：白色光标滑到 CUBE 行（`left:52% top:30%`），行背景高亮蓝色
+2. 步骤2：`Space` badge，IKB 蓝波形条出现，文字逐字打出「这里为什么这么低？」
+3. 步骤3：波形消失，AI 回答逐字出现（CUBE 21%过低分析），进度条动画更新
+
+### s-m6a 光标伴侣待修复
+- `initCompanion()` 找 `companion-tri` 但 HTML 是 `ck-companion-g`（SVG `<g>`）
+- 需要用 `setAttribute('transform', 'translate(x,y)')` 移动三角，而非 `style.left/top`
+- 步骤化内容：Step1→AI Core总览气泡，Step2→CUBE利用率分析气泡，Step3→优化建议
 
 ---
 
 ## 待办（按优先级）
 
-### 低优先级 — 锦上添花
-- [ ] **s-m2a (Stage 02 3/3)**：cd-cursor 已自动移动到正确位置，sim-cursor 无坐标（OK）
-- [x] **s-m6a 光标伴侣**：已添加 #ck-mouse-cursor，随三角形目标位置移动
+### 进行中
+- [ ] **s-m6a**：修复三角伴侣飞行动画 + 步骤化气泡内容（CUBE分析→优化建议）
 
-### 低优先级 — 锦上添花
-- [ ] 旅程地图情绪曲线缺 `ResizeObserver`（窗口 resize 后 SVG 宽度不更新）
-- [ ] 总结页可考虑加设计系统全览对比图
+### 低优先级
+- [ ] s-m2a cursor demo 最终验证
+- [ ] 旅程地图页内容验证
 
 ---
 
-## 全局 window 函数速查
+## 全局 window 函数速查（hai-operator-design.html）
 
 | 函数 | 所在 Section | 作用 |
 |---|---|---|
-| `window.agvSetPhase(1/2/3)` | s-m1a | Agent View 显示 2/4/5 个会话 |
-| `window.memSetPhase(1/2/3)` | s-m4a | 记忆窗口数量 1/3(暗)/3(亮) |
-| `window.goalShowPanel(1/2/3)` | s-m3b | Goal 面板：仅命令/+进度框/+日志 |
-| `window.dashSetPhase(1/2/3)` | s-m1b | 看板：正常/异常高亮/注入指令（待实现） |
+| `window.voiceSetPhase(1/2/3)` | s-m2c | 光标移动/语音波形/AI回答 |
+| `window.gestureSetPhase(1/2/3)` | s-m2b | 高亮tile行/更新参数值/验证结果 |
+| `window.goalShowPanel(1/2/3)` | s-m3b | Goal面板显示/+进度/+日志 |
+| `window.dashSetPhase(1/2/3)` | s-m1b | 看板正常/异常高亮/注入指令 |
+| `window.sfSetPhase(1/2/3)` | s-m3a | 错误面板/修复面板/diff高亮 |
+| `window.reasonSetPhase(1/2)` | s-m5b | 推理框/决策badge |

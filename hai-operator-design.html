@@ -546,64 +546,89 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
         <div class="stp-strip" id="stp-m2c">
           <div class="stp-bar"><div class="stp-fill"></div></div>
           <div class="stp-steps">
-            <div class="stp-step"><div class="stp-num">1</div><span class="stp-lbl">光标定位指标</span></div>
-            <div class="stp-step"><div class="stp-num">2</div><span class="stp-lbl">语音描述疑惑</span></div>
+            <div class="stp-step"><div class="stp-num">1</div><span class="stp-lbl">光标指向 CUBE 指标</span></div>
+            <div class="stp-step"><div class="stp-num">2</div><span class="stp-lbl">按住 Space 说话</span></div>
             <div class="stp-step"><div class="stp-num">3</div><span class="stp-lbl">AI 给出优化建议</span></div>
           </div>
         </div>
         <div style="flex:1;display:flex;flex-direction:column;gap:8px;overflow:hidden;">
-          <div style="flex:1;background:#1a1a2e;border:.5px solid var(--grey-2);overflow:hidden;display:flex;flex-direction:column;position:relative;" id="msprof-demo">
-            <div style="background:#12121e;padding:6px 14px;border-bottom:.5px solid #242430;font-family:'DM Mono',monospace;font-size:9px;color:#4E4E5E;display:flex;align-items:center;gap:8px;">
-              <span style="color:#834DF0;">msprof</span>
-              <span>RMSNorm_forward · 910B · Step 3</span>
-              <span style="margin-left:auto;font-size:8.5px;color:#834DF0;" id="voice-hotkey-hint">长按 <kbd style="background:#242430;color:#A78BFA;padding:1px 5px;border-radius:3px;font-size:8.5px;">Space</kbd> 语音分析</span>
+          <!-- msprof panel -->
+          <div style="flex:1;background:#0a0a0f;border:.5px solid #1e1e28;overflow:hidden;display:flex;flex-direction:column;position:relative;" id="msprof-demo">
+            <!-- toolbar -->
+            <div style="background:#111118;padding:6px 14px;border-bottom:.5px solid #1e1e28;font-family:'DM Mono',monospace;font-size:9px;color:#48485C;display:flex;align-items:center;gap:8px;flex-shrink:0;">
+              <span style="color:var(--acc);font-weight:500;">msprof</span>
+              <span style="color:#C8C8DC;">RMSNorm_forward · 910B · Step 3</span>
+              <span id="space-badge-hint" style="margin-left:auto;font-size:8px;color:#48485C;transition:opacity .3s;">
+                长按 <span style="background:var(--acc);color:white;padding:1px 6px;font-size:8px;font-weight:500;">Space</span> 语音分析
+              </span>
             </div>
-            <div style="padding:12px 14px;flex:1;overflow:hidden;position:relative;" id="msprof-inner">
-              <!-- metric bars -->
-              <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:10px;">
-                <div class="ms-metric">
-                  <div class="ms-metric-label">AI Core 利用率</div>
-                  <div class="ms-bar-track"><div class="ms-bar-fill" style="width:38%;background:var(--ty);"></div></div>
-                  <div class="ms-pct" style="color:var(--ty);" id="metric-aicore">38%</div>
-                </div>
-                <div class="ms-metric">
-                  <div class="ms-metric-label">CUBE 单元利用率</div>
-                  <div class="ms-bar-track"><div class="ms-bar-fill" id="cube-bar" style="width:21%;background:var(--tr);"></div></div>
-                  <div class="ms-pct" style="color:var(--tr);" id="metric-cube">21%</div>
-                </div>
-                <div class="ms-metric">
-                  <div class="ms-metric-label">VECTOR 单元利用率</div>
-                  <div class="ms-bar-track"><div class="ms-bar-fill" style="width:87%;background:var(--tg);"></div></div>
-                  <div class="ms-pct" style="color:var(--tg);">87%</div>
-                </div>
-                <div class="ms-metric">
-                  <div class="ms-metric-label">内存带宽利用率</div>
-                  <div class="ms-bar-track"><div class="ms-bar-fill" style="width:64%;background:var(--tb2);"></div></div>
-                  <div class="ms-pct" style="color:var(--tb2);">64%</div>
-                </div>
+            <!-- metrics area -->
+            <div style="padding:10px 14px;flex:1;overflow:hidden;position:relative;" id="msprof-inner">
+              <!-- metric rows — id on the whole row for highlight -->
+              <div class="ms-metric" id="ms-row-aicore" style="transition:background .3s;padding:3px 6px;margin:0 -6px;">
+                <div class="ms-metric-label">AI Core 利用率</div>
+                <div class="ms-bar-track"><div class="ms-bar-fill ms-fill-aicore" style="width:38%;background:var(--ty);transition:width 1s ease;"></div></div>
+                <div class="ms-pct ms-val-aicore" style="color:var(--ty);">38%</div>
               </div>
-              <!-- timeline strip -->
-              <div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--td);margin-bottom:4px;">Timeline · AI Core Activity</div>
-              <div style="height:28px;background:rgba(255,255,255,.04);overflow:hidden;position:relative;" id="msprof-timeline">
-                <div style="position:absolute;left:0;top:0;bottom:0;right:0;display:flex;align-items:center;padding:0 4px;gap:1px;">
-                  <!-- simplified timeline bars -->
-                  <div style="flex:1;height:60%;background:var(--tg);border-radius:1px;opacity:.7;"></div>
-                  <div style="flex:2;height:80%;background:var(--tg);border-radius:1px;opacity:.8;"></div>
-                  <div style="flex:1;height:30%;background:var(--ty);border-radius:1px;opacity:.7;" id="tl-low-seg"></div>
-                  <div style="flex:1;height:20%;background:var(--tr);border-radius:1px;opacity:.8;" id="tl-dip"></div>
-                  <div style="flex:1;height:25%;background:var(--ty);border-radius:1px;opacity:.7;"></div>
-                  <div style="flex:2;height:75%;background:var(--tg);border-radius:1px;opacity:.8;"></div>
-                  <div style="flex:1;height:70%;background:var(--tg);border-radius:1px;opacity:.7;"></div>
-                </div>
-                <div style="position:absolute;left:46%;top:0;bottom:0;width:1px;background:rgba(248,113,113,.6);" id="tl-cursor-line"></div>
+              <div class="ms-metric" id="ms-row-cube" style="transition:background .3s;padding:3px 6px;margin:2px -6px;">
+                <div class="ms-metric-label" style="color:#C8C8DC;">CUBE 单元利用率</div>
+                <div class="ms-bar-track"><div class="ms-bar-fill ms-fill-cube" style="width:21%;background:var(--tr);transition:width 1s ease;"></div></div>
+                <div class="ms-pct ms-val-cube" style="color:var(--tr);">21%</div>
               </div>
-              <div id="voice-cursor" style="position:absolute;width:14px;height:18px;pointer-events:none;transform:translate(-2px,-2px);transition:left .5s ease,top .5s ease;filter:drop-shadow(0 1px 3px rgba(0,0,0,.6));top:15%;left:15%;"><svg width="14" height="18" viewBox="0 0 12 16" fill="none"><path d="M2 1L2 13L5.2 10.3L7.5 15L9.2 14.2L6.9 9.5H11.5Z" fill="white" stroke="#1A1A2E" stroke-width=".8" stroke-linejoin="round"/></svg></div>
-              <div id="voice-popup" style="display:none;position:absolute;z-index:10;"></div>
+              <div class="ms-metric" id="ms-row-vec" style="transition:background .3s;padding:3px 6px;margin:0 -6px;">
+                <div class="ms-metric-label">VECTOR 单元利用率</div>
+                <div class="ms-bar-track"><div class="ms-bar-fill" style="width:87%;background:var(--tg);"></div></div>
+                <div class="ms-pct" style="color:var(--tg);">87%</div>
+              </div>
+              <div class="ms-metric" id="ms-row-mte" style="transition:background .3s;padding:3px 6px;margin:0 -6px;">
+                <div class="ms-metric-label">内存带宽利用率</div>
+                <div class="ms-bar-track"><div class="ms-bar-fill" style="width:64%;background:var(--tb2);"></div></div>
+                <div class="ms-pct" style="color:var(--tb2);">64%</div>
+              </div>
+              <!-- timeline -->
+              <div style="font-family:'DM Mono',monospace;font-size:7.5px;color:#48485C;margin:8px 0 3px;">Timeline · CUBE Utilization</div>
+              <div style="height:24px;background:rgba(255,255,255,.03);overflow:hidden;position:relative;">
+                <div style="position:absolute;inset:0;display:flex;align-items:flex-end;padding:2px 4px;gap:1px;">
+                  <div style="flex:1;height:55%;background:#4A7FE8;opacity:.5;"></div>
+                  <div style="flex:2;height:70%;background:#4A7FE8;opacity:.6;"></div>
+                  <div style="flex:1;height:25%;background:var(--tr);opacity:.8;" id="tl-dip"></div>
+                  <div style="flex:1;height:18%;background:var(--tr);opacity:.9;"></div>
+                  <div style="flex:1;height:22%;background:var(--tr);opacity:.7;"></div>
+                  <div style="flex:2;height:65%;background:#4A7FE8;opacity:.6;"></div>
+                  <div style="flex:1;height:60%;background:#4A7FE8;opacity:.5;"></div>
+                </div>
+                <!-- vertical cursor line at the dip -->
+                <div id="tl-cursor-line" style="position:absolute;left:40%;top:0;bottom:0;width:1.5px;background:rgba(248,113,113,.7);transition:left .5s ease;"></div>
+              </div>
+              <!-- white cursor -->
+              <div id="voice-cursor" style="position:absolute;width:14px;height:18px;pointer-events:none;
+                transform:translate(-2px,-2px);transition:left .6s cubic-bezier(.4,0,.2,1),top .6s cubic-bezier(.4,0,.2,1);
+                filter:drop-shadow(0 1px 4px rgba(0,0,0,.7));left:10%;top:10%;opacity:1;">
+                <svg width="14" height="18" viewBox="0 0 12 16" fill="none">
+                  <path d="M2 1L2 13L5.2 10.3L7.5 15L9.2 14.2L6.9 9.5H11.5Z" fill="white" stroke="#0a0a0f" stroke-width=".8" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <!-- voice wave overlay (step 2) -->
+              <div id="voice-wave-bar" style="display:none;position:absolute;bottom:6px;left:50%;transform:translateX(-50%);
+                background:var(--acc);padding:5px 12px;display:flex;align-items:center;gap:8px;z-index:15;white-space:nowrap;">
+                <span style="font-family:'DM Mono',monospace;font-size:8px;color:white;letter-spacing:.08em;">Space</span>
+                <div style="display:flex;align-items:center;gap:2px;height:14px;">
+                  <div style="width:2px;background:rgba(255,255,255,.6);height:4px;animation:ck-wave .4s infinite;animation-delay:0s;"></div>
+                  <div style="width:2px;background:rgba(255,255,255,.9);height:10px;animation:ck-wave .4s infinite;animation-delay:.07s;"></div>
+                  <div style="width:2px;background:white;height:14px;animation:ck-wave .4s infinite;animation-delay:.14s;"></div>
+                  <div style="width:2px;background:rgba(255,255,255,.9);height:10px;animation:ck-wave .4s infinite;animation-delay:.21s;"></div>
+                  <div style="width:2px;background:rgba(255,255,255,.6);height:6px;animation:ck-wave .4s infinite;animation-delay:.28s;"></div>
+                  <div style="width:2px;background:rgba(255,255,255,.8);height:12px;animation:ck-wave .4s infinite;animation-delay:.35s;"></div>
+                  <div style="width:2px;background:rgba(255,255,255,.6);height:4px;animation:ck-wave .4s infinite;animation-delay:.42s;"></div>
+                </div>
+                <span id="voice-transcript" style="font-family:'DM Mono',monospace;font-size:9px;color:white;min-width:0;"></span>
+              </div>
             </div>
           </div>
-          <div style="background:#0C0C11;border-radius:8px;border:.5px solid #242430;padding:9px 14px;flex-shrink:0;min-height:52px;" id="voice-ai-output">
-            <div style="font-family:'DM Mono',monospace;font-size:8.5px;color:#4E4E5E;margin-bottom:3px;">AI · 关联分析</div>
-            <div style="font-size:9.5px;color:#4E4E5E;font-family:'DM Mono',monospace;" id="voice-ai-text">等待指向分析...</div>
+          <!-- AI answer panel -->
+          <div style="background:#111118;border-left:3px solid var(--acc);padding:10px 14px;flex-shrink:0;min-height:56px;transition:all .4s;" id="voice-ai-output">
+            <div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--acc);letter-spacing:.1em;margin-bottom:5px;">AI · 关联分析</div>
+            <div style="font-size:9px;color:#48485C;font-family:'DM Mono',monospace;line-height:1.6;" id="voice-ai-text">光标指向指标后按住 Space 说话…</div>
           </div>
         </div>
       </div>
@@ -1739,54 +1764,68 @@ function setupSlideSteps(secId, stripId, defs) {
    s-m2c: msprof voice demo IIFE
 ───────────────────────────────────────────── */
 (function initVoiceDemo() {
-  let vPhase = 0;
   let running = false;
 
-  function setPhase(p) {
-    vPhase = p;
-    const voiceCursor = document.getElementById('voice-cursor');
-    const aiOutput = document.getElementById('voice-ai-output');
-    const aiText = document.getElementById('voice-ai-text');
-    /* metric bar fills and pct labels */
-    const bars = document.querySelectorAll('.ms-bar-fill');
-    const pcts = document.querySelectorAll('.ms-pct');
+  function typeText(el, text, speed, cb) {
+    let i = 0; el.textContent = '';
+    const t = setInterval(() => {
+      if (i < text.length) { el.textContent += text[i++]; }
+      else { clearInterval(t); if (cb) cb(); }
+    }, speed);
+  }
 
-    if (p === 0) {
-      if (voiceCursor) { voiceCursor.style.opacity = '0'; voiceCursor.style.left = '15%'; voiceCursor.style.top = '30%'; }
-    } else if (p === 1) {
-      /* cursor moves to CUBE bar row */
-      if (voiceCursor) {
-        voiceCursor.style.opacity = '1';
-        voiceCursor.style.left = '55%';
-        voiceCursor.style.top = '38%';
+  function setPhase(p) {
+    const cursor    = document.getElementById('voice-cursor');
+    const cubeRow   = document.getElementById('ms-row-cube');
+    const wavebar   = document.getElementById('voice-wave-bar');
+    const transcript= document.getElementById('voice-transcript');
+    const aiText    = document.getElementById('voice-ai-text');
+    const cursorLine= document.getElementById('tl-cursor-line');
+
+    if (p === 1) {
+      /* cursor glides to CUBE row */
+      if (cursor) { cursor.style.left = '52%'; cursor.style.top = '30%'; }
+      /* highlight CUBE row */
+      if (cubeRow) cubeRow.style.background = 'rgba(0,47,167,.15)';
+      /* timeline cursor moves to the dip */
+      if (cursorLine) cursorLine.style.left = '40%';
+    }
+    else if (p === 2) {
+      /* Space held → wave + transcript */
+      if (wavebar) wavebar.style.display = 'flex';
+      if (transcript) typeText(transcript, '这里为什么这么低？', 90);
+    }
+    else if (p === 3) {
+      /* wave hides, AI answers, bars update */
+      if (wavebar) wavebar.style.display = 'none';
+      if (cubeRow) cubeRow.style.background = '';
+
+      /* AI answer types in */
+      if (aiText) {
+        aiText.style.color = '#C8C8DC';
+        typeText(aiText,
+          'CUBE 21% 过低：data_move 占 AI Core 时间 67%。
+建议 tile_m: 64 → 128，预计 CUBE ↑ 至 ~72%，AI Core ↑ 至 ~72.4%',
+          28);
       }
-    } else if (p === 2) {
-      /* AI output updates */
-      if (aiText) aiText.style.color = 'var(--tw)';
-      if (aiText) aiText.textContent = 'CUBE 利用率 21% 过低 → data_move 占比 67%，建议将 tile_m 从 64 → 128，预计 CUBE 提升至 ~72%';
       /* bars animate to optimized values */
-      const newWidths = ['72.4%','71.2%','88%','67%'];
-      const newColors = ['var(--ty)','var(--tg)','var(--tg)','var(--tb2)'];
-      const newPcts   = ['72.4%','71.2%','88%','67%'];
-      bars.forEach((b, i) => {
-        if (newWidths[i]) { b.style.width = newWidths[i]; b.style.transition = 'width 1s ease'; b.style.background = newColors[i]; }
-      });
-      pcts.forEach((v, i) => { if (newPcts[i]) { v.textContent = newPcts[i]; } });
+      const sec = document.getElementById('s-m2c');
+      if (sec) {
+        const updates = [
+          { fill:'.ms-fill-aicore', val:'.ms-val-aicore', w:'72.4%', c:'var(--ty)', t:'72.4%' },
+          { fill:'.ms-fill-cube',   val:'.ms-val-cube',   w:'71.2%', c:'var(--tg)', t:'71.2%' },
+        ];
+        updates.forEach(u => {
+          const b = sec.querySelector(u.fill);
+          const v = sec.querySelector(u.val);
+          if (b) { b.style.width = u.w; b.style.background = u.c; }
+          if (v) { v.textContent = u.t; v.style.color = u.c; }
+        });
+      }
     }
   }
 
   window.voiceSetPhase = setPhase;
-
-  function runVoiceDemo() {
-    if (running) return;
-    running = true;
-    setPhase(0);
-    setTimeout(() => setPhase(1), 800);
-    setTimeout(() => setPhase(2), 2400);
-    setTimeout(() => { running = false; }, 5000);
-  }
-
-  window.runVoiceDemo = runVoiceDemo;
 })();
 
 /* ─────────────────────────────────────────────
@@ -2162,51 +2201,57 @@ function setupSlideSteps(secId, stripId, defs) {
    s-m6a: msprof companion IIFE
 ───────────────────────────────────────────── */
 (function initCompanion() {
-  const sec = document.getElementById('s-m6a');
+  const sec   = document.getElementById('s-m6a');
   if (!sec) return;
+  const app   = document.getElementById('nsight-app');
+  const compG = document.getElementById('ck-companion-g');
+  const cursor= document.getElementById('ck-mouse-cursor');
+  const speech= document.getElementById('ck-speech');
+  const ring  = document.getElementById('ck-ring-el');
+  if (!app || !compG || !cursor || !speech) return;
 
-  const triangle = document.getElementById('companion-tri');
-  const mouseCursor = document.getElementById('ck-mouse-cursor');
-
-  /* targets the cursor moves between in the ns-metrics area */
-  const targets = [
-    { x: 0.32, y: 0.45 },
-    { x: 0.32, y: 0.55 },
-    { x: 0.32, y: 0.65 },
-    { x: 0.50, y: 0.45 },
+  const steps = [
+    { metric:'ns-metric-1', bubble:'AI Core 利用率 38%\n总体偏低，我来定位\n哪个单元是瓶颈 →' },
+    { metric:'ns-metric-2', bubble:'CUBE 单元仅 21%\n这是主要瓶颈\ndata_move 占 AI Core 67%' },
+    { metric:'ns-metric-2', bubble:'建议：tile_m 64→128\n预计 CUBE ↑ ~72%\nAI Core ↑ ~72.4%' },
   ];
 
-  let idx = 0;
-  let running = false;
-
-  function moveTo(t) {
-    const r = sec.getBoundingClientRect();
-    const px = t.x * r.width;
-    const py = t.y * r.height;
-    if (mouseCursor) {
-      mouseCursor.style.left = px + 'px';
-      mouseCursor.style.top  = py + 'px';
+  function goto(stepIdx) {
+    const s = steps[stepIdx];
+    const metricEl = document.getElementById(s.metric);
+    if (!metricEl) return;
+    document.querySelectorAll('#ns-metrics .ms-metric').forEach(m => {
+      m.style.borderColor = 'rgba(255,255,255,.06)';
+    });
+    metricEl.style.borderColor = 'rgba(0,47,167,.5)';
+    const appR = app.getBoundingClientRect();
+    const mR   = metricEl.getBoundingClientRect();
+    const mx = mR.left - appR.left + mR.width  * 0.72;
+    const my = mR.top  - appR.top  + mR.height * 0.5;
+    cursor.style.left = (mx - 6) + 'px';
+    cursor.style.top  = (my - 4) + 'px';
+    compG.setAttribute('transform', `translate(${mx + 12},${my - 18})`);
+    if (ring) {
+      ring.setAttribute('cx', mx + 12);
+      ring.setAttribute('cy', my - 18);
+      let rv = 0;
+      ring.setAttribute('r', '0');
+      ring.setAttribute('opacity', '0.7');
+      const ri = setInterval(() => {
+        rv++;
+        ring.setAttribute('r', rv);
+        ring.setAttribute('opacity', String(Math.max(0, 0.7 - rv / 18)));
+        if (rv > 18) { clearInterval(ri); ring.setAttribute('opacity', '0'); }
+      }, 25);
     }
-    /* companion triangle follows with slight offset */
-    if (triangle) {
-      triangle.style.left = (px + 30) + 'px';
-      triangle.style.top  = (py - 20) + 'px';
-    }
+    speech.textContent = s.bubble;
+    speech.style.left = Math.max(4, mx - 195) + 'px';
+    speech.style.top  = Math.max(4, my - 58) + 'px';
+    speech.style.opacity = '0';
+    requestAnimationFrame(() => { speech.style.opacity = '1'; });
   }
 
-  function loop() {
-    moveTo(targets[idx % targets.length]);
-    idx++;
-    setTimeout(loop, 2000);
-  }
-
-  const obs = new IntersectionObserver(entries => {
-    if (entries[0].isIntersecting && !running) {
-      running = true;
-      setTimeout(loop, 600);
-    }
-  }, { threshold: 0.4 });
-  obs.observe(sec);
+  window.companionSetStep = goto;
 })();
 
 /* ─────────────────────────────────────────────
@@ -2214,11 +2259,12 @@ function setupSlideSteps(secId, stripId, defs) {
 ───────────────────────────────────────────── */
 /* s-m2c: msprof voice query */
 setupSlideSteps('s-m2c', 'stp-m2c', [
-  { c:[.68,.60], ms:2400 },
-  { c:[.72,.88], click:true, ms:2400, key:'语音激活',
-    act: function() { if(window.runVoiceDemo) window.runVoiceDemo(); } },
-  { c:[.72,.50], ms:2800,
+  { ms:2000,
+    act: function() { if(window.voiceSetPhase) window.voiceSetPhase(1); } },
+  { ms:2600, key:'Space',
     act: function() { if(window.voiceSetPhase) window.voiceSetPhase(2); } },
+  { ms:3200,
+    act: function() { if(window.voiceSetPhase) window.voiceSetPhase(3); } },
 ]);
 
 /* s-m2b: gesture param edit */
@@ -2282,11 +2328,11 @@ setupSlideSteps('s-m5b', 'stp-m5b', [
     act: function() { if(window.reasonSetPhase) window.reasonSetPhase(2); } },
 ]);
 
-/* s-m6a: companion */
+/* s-m6a: companion — triangle managed by companionSetStep, no sim-cursor */
 setupSlideSteps('s-m6a', 'stp-m6a', [
-  { c:[.32,.45], ms:2200 },
-  { c:[.32,.55], ms:2200 },
-  { c:[.32,.65], ms:2200 },
+  { ms:2200, act: function() { if(window.companionSetStep) window.companionSetStep(0); } },
+  { ms:2400, act: function() { if(window.companionSetStep) window.companionSetStep(1); } },
+  { ms:2600, act: function() { if(window.companionSetStep) window.companionSetStep(2); } },
 ]);
 
 /* ── extra keyframe for agent progress bar ── */
