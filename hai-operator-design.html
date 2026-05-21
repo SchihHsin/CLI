@@ -4,60 +4,62 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>HAI — 昇腾算子开发交互设计</title>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Mono:ital,wght@0,300;0,400;0,500&family=Space+Grotesk:wght@300;400;500;600&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,200;0,300;0,400;0,500;0,600;1,300&family=DM+Mono:ital,wght@0,300;0,400;0,500&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
 :root{
-  --acc:#834DF0;--acc2:#6B38D4;--acc-l:#A87FF5;
-  --acc-dim:rgba(131,77,240,.08);--acc-b:rgba(131,77,240,.22);
-  --bg:#F7F7FA;--bg2:#EEEEF3;--sur:#FFFFFF;
-  --tx:#1A1A2E;--tx2:#4A4A6A;--tx3:#8888A0;
-  --bdr:rgba(0,0,0,.07);--bdr2:rgba(0,0,0,.13);
-  --g:#059669;--r:#DC2626;--y:#D97706;--bl:#2563EB;--tl:#0D9488;
-  --tb:#0C0C11;--tbar:#15151C;--tbdr:#242430;
-  --tw:#CECEE0;--td:#4E4E5E;
-  --tg:#34D399;--tb2:#60A5FA;--tp:#A78BFA;--ty:#FBBF24;--tr:#F87171;--tc:#2DD4BF;
+  /* Swiss International · IKB 克莱因蓝 */
+  --acc:#002FA7;--acc2:#001F80;--acc-l:#4A7FE8;
+  --acc-dim:rgba(0,47,167,.06);--acc-b:rgba(0,47,167,.16);
+  --bg:#fafaf8;--bg2:#f0f0ee;--sur:#ffffff;
+  --tx:#0a0a0a;--tx2:#3d3d3d;--tx3:#737373;
+  --bdr:rgba(0,0,0,.09);--bdr2:rgba(0,0,0,.18);
+  --grey-1:#f0f0ee;--grey-2:#d4d4d2;--grey-3:#737373;
+  --g:#059669;--r:#DC2626;--y:#b45309;--bl:#002FA7;--tl:#0D9488;
+  --tb:#0a0a0f;--tbar:#111118;--tbdr:#1e1e28;
+  --tw:#C8C8DC;--td:#48485C;
+  --tg:#34D399;--tb2:#60A5FA;--tp:#4A7FE8;--ty:#F59E0B;--tr:#F87171;--tc:#2DD4BF;
 }
 html{scroll-snap-type:y mandatory;overflow-y:scroll;height:100%;}
-body{font-family:'Space Grotesk','Noto Sans SC',sans-serif;background:var(--bg);color:var(--tx);height:100%;}
+body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;background:var(--bg);color:var(--tx);height:100%;}
 .sec{scroll-snap-align:start;height:100vh;position:relative;display:flex;flex-direction:column;overflow:hidden;}
 .inner{flex:1;display:flex;flex-direction:column;padding:20px 48px 12px;overflow:hidden;}
-.slabel{padding:14px 48px 0;display:flex;flex-direction:column;gap:2px;flex-shrink:0;}
-.slabel .sub{font-family:'DM Mono',monospace;font-size:11px;color:var(--acc);letter-spacing:.1em;text-transform:uppercase;}
-.slabel .main{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:var(--tx);line-height:1.2;}
+.slabel{padding:14px 48px 0;display:flex;flex-direction:column;gap:5px;flex-shrink:0;border-top:2.5px solid var(--acc);}
+.slabel .sub{font-family:'DM Mono',monospace;font-size:10px;color:var(--acc);letter-spacing:.16em;text-transform:uppercase;font-weight:500;}
+.slabel .main{font-family:'Inter','Helvetica Neue',Helvetica,sans-serif;font-size:28px;font-weight:200;color:var(--tx);line-height:1.1;letter-spacing:-.03em;}
 .dp-layout{display:flex;gap:32px;flex:1;overflow:hidden;}
 .dp-left{width:44%;display:flex;flex-direction:column;gap:10px;overflow-y:auto;padding-right:4px;}
 .dp-right{flex:1;display:flex;flex-direction:column;gap:8px;overflow:hidden;}
 .dp-desc{display:flex;flex-direction:column;gap:4px;}
-.dp-label{font-family:'DM Mono',monospace;font-size:9px;color:var(--acc);letter-spacing:.12em;text-transform:uppercase;}
-.dp-title{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:var(--tx);}
+.dp-label{font-family:'DM Mono',monospace;font-size:9px;color:var(--acc);letter-spacing:.16em;text-transform:uppercase;font-weight:500;}
+.dp-title{font-family:'Inter','Helvetica Neue',Helvetica,sans-serif;font-size:15px;font-weight:400;color:var(--tx);letter-spacing:-.01em;}
 .dp-body{font-size:11px;color:var(--tx2);line-height:1.65;}
 .dp-points{display:flex;flex-direction:column;gap:4px;margin-top:2px;}
 .dpp{font-size:10.5px;color:var(--tx2);padding-left:10px;position:relative;line-height:1.5;}
-.dpp::before{content:'◆';position:absolute;left:0;color:var(--acc);font-size:7px;top:3px;}
+.dpp::before{content:'—';position:absolute;left:0;color:var(--acc);font-size:8px;top:2px;font-weight:300;}
 .ba-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px;}
-.ba-before{background:rgba(220,38,38,.05);border:.5px solid rgba(220,38,38,.18);border-radius:8px;padding:10px 12px;}
-.ba-after{background:var(--acc-dim);border:.5px solid var(--acc-b);border-radius:8px;padding:10px 12px;}
+.ba-before{background:rgba(220,38,38,.04);border-left:3px solid var(--r);padding:10px 12px;}
+.ba-after{background:var(--acc-dim);border-left:3px solid var(--acc);padding:10px 12px;}
 .ba-label{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.08em;margin-bottom:4px;display:flex;align-items:center;gap:4px;}
 .ba-label span{font-size:11px;}
 .ba-before .ba-label{color:var(--r);}
 .ba-after .ba-label{color:var(--acc);}
 .ba-text{font-size:10px;color:var(--tx2);line-height:1.6;}
-.mockup-label{font-family:'DM Mono',monospace;font-size:9px;color:var(--tx3);letter-spacing:.08em;flex-shrink:0;}
+.mockup-label{font-family:'DM Mono',monospace;font-size:9px;color:var(--acc);letter-spacing:.14em;text-transform:uppercase;font-weight:500;flex-shrink:0;border-bottom:1px solid var(--grey-2);padding-bottom:4px;}
 .snav{display:none;}
-.key-badge{display:inline-flex;align-items:center;justify-content:center;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.28);border-radius:7px;padding:5px 12px;font-family:'DM Mono',monospace;font-size:12px;color:white;white-space:nowrap;pointer-events:none;text-shadow:0 1px 2px rgba(0,0,0,.5);}
+.key-badge{display:inline-flex;align-items:center;justify-content:center;background:var(--acc);border:none;padding:5px 12px;font-family:'DM Mono',monospace;font-size:12px;color:white;white-space:nowrap;pointer-events:none;font-weight:500;letter-spacing:.05em;}
 
 /* Step strip */
 .stp-strip{display:flex;flex-direction:column;gap:5px;flex-shrink:0;}
-.stp-bar{height:2px;background:rgba(131,77,240,.15);border-radius:1px;overflow:hidden;}
-.stp-fill{height:100%;width:0;background:var(--acc);border-radius:1px;transition:width .4s ease;}
+.stp-bar{height:1px;background:var(--grey-2);overflow:hidden;}
+.stp-fill{height:100%;width:0;background:var(--acc);transition:width .4s ease;}
 .stp-steps{display:flex;gap:4px;}
 .stp-step{display:flex;align-items:center;gap:4px;flex:1;opacity:.4;transition:opacity .3s;}
 .stp-step.stp-active{opacity:1;}
 .stp-step.stp-done{opacity:.7;}
-.stp-num{width:16px;height:16px;border-radius:50%;background:var(--acc-dim);border:.5px solid var(--acc-b);display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:8px;color:var(--acc);flex-shrink:0;transition:background .3s,color .3s;}
+.stp-num{width:16px;height:16px;background:var(--acc-dim);border:1px solid var(--acc-b);display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:8px;color:var(--acc);flex-shrink:0;transition:background .3s,color .3s;}
 .stp-step.stp-active .stp-num{background:var(--acc);color:white;border-color:var(--acc);}
-.stp-step.stp-done .stp-num{background:var(--tg);color:white;border-color:var(--tg);}
+.stp-step.stp-done .stp-num{background:var(--acc);color:white;border-color:var(--acc);}
 .stp-lbl{font-family:'DM Mono',monospace;font-size:8px;color:var(--tx3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .stp-step.stp-active .stp-lbl{color:var(--acc);}
 
@@ -80,7 +82,7 @@ body{font-family:'Space Grotesk','Noto Sans SC',sans-serif;background:var(--bg);
 .agv-pk-body{flex:1;overflow-y:auto;padding:10px 14px;display:flex;flex-direction:column;gap:3px;}
 .agv-pk-line{font-family:'DM Mono',monospace;font-size:9px;line-height:1.6;}
 .agv-ctx{display:flex;align-items:center;gap:6px;padding:6px 14px;border-top:.5px solid var(--tbdr);background:var(--tbar);flex-shrink:0;}
-.agv-dinput{flex:1;background:var(--tb);border:.5px solid var(--tbdr);border-radius:4px;padding:4px 8px;font-family:'DM Mono',monospace;font-size:9px;color:var(--tw);outline:none;}
+.agv-dinput{flex:1;background:var(--tb);border:.5px solid var(--tbdr);padding:4px 8px;font-family:'DM Mono',monospace;font-size:9px;color:var(--tw);outline:none;}
 .agv-sc{font-family:'DM Mono',monospace;font-size:8px;color:var(--td);}
 
 /* mem sessions */
@@ -99,32 +101,32 @@ body{font-family:'Space Grotesk','Noto Sans SC',sans-serif;background:var(--bg);
 .mem-entry.load .mem-text{color:var(--td);font-style:italic;}
 
 /* goal */
-.goal-box{background:var(--tb);border:.5px solid rgba(131,77,240,.3);border-radius:8px;padding:10px 14px;flex-shrink:0;}
-.goal-term{background:var(--tb);border-radius:8px;border:.5px solid var(--tbdr);flex:1;display:flex;flex-direction:column;overflow:hidden;}
+.goal-box{background:var(--tb);border-left:3px solid var(--acc);padding:10px 14px;flex-shrink:0;}
+.goal-term{background:var(--tb);border:.5px solid var(--tbdr);flex:1;display:flex;flex-direction:column;overflow:hidden;}
 .goal-term-hd{background:var(--tbar);padding:6px 12px;border-bottom:.5px solid var(--tbdr);font-family:'DM Mono',monospace;font-size:9px;color:var(--td);}
 .goal-term-body{flex:1;overflow-y:auto;padding:8px 12px;display:flex;flex-direction:column;gap:3px;}
 .goal-line{font-family:'DM Mono',monospace;font-size:9px;line-height:1.6;}
 
 /* cd-cursor */
 .cd-cursor{position:absolute;width:14px;height:18px;pointer-events:none;transform:translate(-2px,-2px);transition:left .4s ease,top .4s ease;filter:drop-shadow(0 1px 3px rgba(0,0,0,.6));}
-.cd-popup{position:absolute;background:var(--tbar);border:.5px solid var(--acc-b);border-radius:8px;padding:9px 13px;font-family:'DM Mono',monospace;color:var(--tw);max-width:240px;box-shadow:0 8px 24px rgba(0,0,0,.4);animation:fadeIn .25s ease;}
+.cd-popup{position:absolute;background:var(--tbar);border-left:3px solid var(--acc);border-top:none;border-right:none;border-bottom:none;padding:9px 13px;font-family:'DM Mono',monospace;color:var(--tw);max-width:240px;box-shadow:0 8px 24px rgba(0,0,0,.4);animation:fadeIn .25s ease;}
 .cd-popup-label{font-size:8px;color:var(--acc);letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px;}
 .cd-popup-text{font-size:9px;color:var(--tw);line-height:1.55;}
 
 /* clicky (companion) */
-.clicky-app{position:relative;flex:1;background:#F6F6FA;border-radius:10px;border:.5px solid var(--bdr2);overflow:hidden;display:flex;flex-direction:column;}
+.clicky-app{position:relative;flex:1;background:#F6F6FA;border:1px solid var(--grey-2);overflow:hidden;display:flex;flex-direction:column;}
 
 /* Cover styles */
 .cover-grid{display:grid;grid-template-columns:1fr 1fr;height:100%;align-items:center;}
 .cover-left{padding:60px;display:flex;flex-direction:column;gap:20px;}
-.cover-tag{font-family:'DM Mono',monospace;font-size:11px;color:var(--acc);letter-spacing:.15em;}
-.cover-title{font-family:'Syne',sans-serif;font-size:52px;font-weight:800;line-height:1.05;color:var(--tx);}
+.cover-tag{font-family:'DM Mono',monospace;font-size:10px;color:var(--acc);letter-spacing:.2em;font-weight:500;text-transform:uppercase;}
+.cover-title{font-family:'Inter','Helvetica Neue',Helvetica,sans-serif;font-size:56px;font-weight:200;line-height:.98;color:var(--tx);letter-spacing:-.04em;}
 .cover-title span{color:var(--acc);}
 .cover-sub{font-size:15px;color:var(--tx2);line-height:1.65;max-width:400px;}
 .cover-stat{display:flex;gap:24px;margin-top:8px;}
 .cst{display:flex;flex-direction:column;gap:2px;}
-.cst-n{font-family:'Syne',sans-serif;font-size:28px;font-weight:800;color:var(--acc);}
-.cst-l{font-size:10px;color:var(--tx3);}
+.cst-n{font-family:'Inter','Helvetica Neue',Helvetica,sans-serif;font-size:36px;font-weight:200;color:var(--acc);letter-spacing:-.04em;}
+.cst-l{font-size:9px;color:var(--tx3);font-weight:400;letter-spacing:.02em;}
 
 /* journey map */
 .jmap-wrap{flex:1;overflow:hidden;display:flex;flex-direction:column;gap:8px;}
@@ -133,26 +135,26 @@ body{font-family:'Space Grotesk','Noto Sans SC',sans-serif;background:var(--bg);
 /* bg2 timeline */
 .tl-wrap{display:flex;gap:0;flex:1;align-items:stretch;}
 .tl-era{flex:1;display:flex;flex-direction:column;gap:8px;padding:16px 20px;position:relative;}
-.tl-era+.tl-era::before{content:'';position:absolute;left:0;top:20%;bottom:20%;width:.5px;background:var(--bdr2);}
+.tl-era+.tl-era::before{content:'';position:absolute;left:0;top:0;bottom:0;width:1px;background:var(--grey-2);}
 .tl-year{font-family:'DM Mono',monospace;font-size:10px;color:var(--tx3);}
-.tl-name{font-family:'Syne',sans-serif;font-size:16px;font-weight:700;color:var(--tx);margin-bottom:4px;}
+.tl-name{font-family:'Inter','Helvetica Neue',Helvetica,sans-serif;font-size:15px;font-weight:400;color:var(--tx);margin-bottom:4px;letter-spacing:-.01em;}
 .tl-items{display:flex;flex-direction:column;gap:5px;}
 .tl-item{font-size:10px;color:var(--tx2);padding-left:10px;position:relative;}
 .tl-item::before{content:'·';position:absolute;left:2px;color:var(--tx3);}
-.tl-now{background:var(--acc-dim);border:.5px solid var(--acc-b);border-radius:8px;}
+.tl-now{background:var(--acc-dim);border-left:3px solid var(--acc);}
 .tl-now .tl-name{color:var(--acc);}
 .tl-now .tl-item::before{color:var(--acc);}
 .tl-now .tl-item{color:var(--tx);}
 
 /* s-sum */
 .sum-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;flex:1;}
-.sum-card{background:var(--acc-dim);border:.5px solid var(--acc-b);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:6px;}
+.sum-card{background:var(--acc-dim);border-left:3px solid var(--acc);padding:16px 20px;display:flex;flex-direction:column;gap:6px;}
 .sum-icon{font-size:20px;}
-.sum-title{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--tx);}
+.sum-title{font-family:'Inter','Helvetica Neue',Helvetica,sans-serif;font-size:13px;font-weight:500;color:var(--tx);letter-spacing:-.01em;}
 .sum-desc{font-size:10px;color:var(--tx2);line-height:1.55;}
 
 /* nsight mock */
-.nsight-app{position:relative;flex:1;background:#1a1a2e;border-radius:10px;overflow:hidden;display:flex;flex-direction:column;}
+.nsight-app{position:relative;flex:1;background:#0a0a0f;overflow:hidden;display:flex;flex-direction:column;}
 .ns-toolbar{background:#12121e;padding:6px 12px;border-bottom:.5px solid #242430;display:flex;align-items:center;gap:8px;flex-shrink:0;}
 .ns-tab{font-family:'DM Mono',monospace;font-size:9px;padding:3px 10px;border-radius:3px;cursor:pointer;}
 .ns-tab.active{background:rgba(131,77,240,.2);color:#A78BFA;}
@@ -174,25 +176,66 @@ body{font-family:'Space Grotesk','Noto Sans SC',sans-serif;background:var(--bg);
 @keyframes glow{0%,100%{box-shadow:0 0 6px var(--acc)}50%{box-shadow:0 0 14px var(--acc)}}
 @keyframes ck-wave{0%,100%{transform:scaleY(1)}50%{transform:scaleY(2)}}
 @keyframes errPulse{0%,100%{box-shadow:0 0 8px rgba(248,113,113,.3)}50%{box-shadow:0 0 18px rgba(248,113,113,.6)}}
+
+/* ── Top-right nav ── */
+#top-nav{
+  position:fixed;top:16px;right:20px;z-index:9999;
+  display:flex;align-items:center;gap:6px;
+  background:rgba(250,250,248,.88);
+  border:1px solid var(--grey-2);
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  padding:5px 8px;
+  font-family:'DM Mono',monospace;
+}
+#top-nav .tn-dots{display:flex;gap:4px;align-items:center;padding-right:8px;border-right:1px solid var(--grey-2);}
+#top-nav .tn-dot{width:7px;height:7px;background:var(--grey-2);cursor:pointer;transition:background .2s,transform .15s;flex-shrink:0;}
+#top-nav .tn-dot:hover{background:var(--acc);}
+#top-nav .tn-dot.tn-active{background:var(--acc);transform:scale(1.3);}
+#top-nav .tn-label{font-size:8px;color:var(--tx3);letter-spacing:.1em;text-transform:uppercase;min-width:80px;}
+#top-nav .tn-arrows{display:flex;gap:2px;padding-left:8px;border-left:1px solid var(--grey-2);}
+#top-nav .tn-btn{width:22px;height:22px;background:none;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--tx3);transition:color .15s;}
+#top-nav .tn-btn:hover{color:var(--acc);}
 </style>
 </head>
 <body>
 
+<!-- ── Top-right navigation ── -->
+<div id="top-nav">
+  <div class="tn-dots" id="tn-dots"></div>
+  <span class="tn-label" id="tn-label">封面</span>
+  <div class="tn-arrows">
+    <button class="tn-btn" id="tn-prev" title="上一页">
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M8 2L4 6L8 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/></svg>
+    </button>
+    <button class="tn-btn" id="tn-next" title="下一页">
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M4 2L8 6L4 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/></svg>
+    </button>
+  </div>
+</div>
+
 <!-- ══ COVER ══ -->
 <div class="sec" id="s-cover" style="background:var(--sur);">
-  <div class="cover-grid">
-    <div class="cover-left">
-      <div class="cover-tag">HAI · Human × AI Interaction</div>
-      <div class="cover-title">昇腾算子<br><span>下一代</span><br>开发体验</div>
-      <div class="cover-sub">以算子开发为场景，重新设计人与 AI 的协作界面。<br>让工程师把注意力集中在算法意图上，而非硬件细节。</div>
-      <div class="cover-stat">
-        <div class="cst"><div class="cst-n">76%</div><div class="cst-l">开发时间用于调试与验证</div></div>
-        <div class="cst"><div class="cst-n">4×</div><div class="cst-l">多硬件适配的重复工作量</div></div>
-        <div class="cst"><div class="cst-n">~2天</div><div class="cst-l">单算子性能调优平均耗时</div></div>
+  <div class="cover-grid" style="position:relative;">
+    <!-- IKB accent bar -->
+    <div style="position:absolute;top:0;left:0;right:0;height:4px;background:var(--acc);"></div>
+    <div class="cover-left" style="padding:72px 60px 60px;">
+      <div class="cover-tag" style="margin-bottom:16px;">HAI · Human × AI Interaction</div>
+      <div class="cover-title">昇腾算子<br><span style="color:var(--acc);font-style:italic;">下一代</span><br>开发体验</div>
+      <div class="cover-sub" style="margin-top:24px;font-size:14px;font-weight:300;color:var(--tx2);line-height:1.7;max-width:380px;">以算子开发为场景，重新设计人与 AI 的协作界面。让工程师把注意力集中在算法意图上，而非硬件细节。</div>
+      <div style="display:flex;gap:0;margin-top:32px;border-top:1px solid var(--grey-2);padding-top:24px;">
+        <div class="cst" style="padding-right:28px;border-right:1px solid var(--grey-2);">
+          <div class="cst-n">76%</div><div class="cst-l">调试与验证占用的开发时间</div>
+        </div>
+        <div class="cst" style="padding:0 28px;border-right:1px solid var(--grey-2);">
+          <div class="cst-n">4×</div><div class="cst-l">多硬件适配重复工作量</div>
+        </div>
+        <div class="cst" style="padding-left:28px;">
+          <div class="cst-n">~2天</div><div class="cst-l">单算子调优平均耗时</div>
+        </div>
       </div>
     </div>
     <div style="padding:40px;display:flex;align-items:center;justify-content:center;">
-      <div style="width:100%;max-width:380px;background:var(--tb);border-radius:12px;border:.5px solid var(--tbdr);overflow:hidden;">
+      <div style="width:100%;max-width:380px;background:var(--tb);border:.5px solid var(--tbdr);overflow:hidden;">
         <div style="background:var(--tbar);padding:8px 14px;border-bottom:.5px solid var(--tbdr);display:flex;align-items:center;gap:6px;">
           <div style="width:8px;height:8px;border-radius:50%;background:#FF5F57;"></div>
           <div style="width:8px;height:8px;border-radius:50%;background:#FEBC2E;"></div>
@@ -224,7 +267,7 @@ body{font-family:'Space Grotesk','Noto Sans SC',sans-serif;background:var(--bg);
     <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;flex:1;align-items:start;padding-top:8px;">
       <div style="display:flex;flex-direction:column;gap:8px;">
         <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--r);letter-spacing:.08em;">01 · 错误定位难</div>
-        <div style="background:var(--tb);border-radius:8px;border:.5px solid var(--tbdr);padding:10px 12px;font-family:'DM Mono',monospace;font-size:8.5px;line-height:1.7;">
+        <div style="background:var(--tb);border:.5px solid var(--tbdr);padding:10px 12px;font-family:'DM Mono',monospace;font-size:8.5px;line-height:1.7;">
           <div style="color:var(--tr);">[ERROR] EZ9999: InnerError</div>
           <div style="color:var(--tr);">  OpType: RMSNorm</div>
           <div style="color:var(--td);">  Input format: NHWC</div>
@@ -237,7 +280,7 @@ body{font-family:'Space Grotesk','Noto Sans SC',sans-serif;background:var(--bg);
       </div>
       <div style="display:flex;flex-direction:column;gap:8px;">
         <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--r);letter-spacing:.08em;">02 · 性能调优盲目</div>
-        <div style="background:var(--tb);border-radius:8px;border:.5px solid var(--tbdr);padding:10px 12px;font-family:'DM Mono',monospace;font-size:8.5px;line-height:1.7;">
+        <div style="background:var(--tb);border:.5px solid var(--tbdr);padding:10px 12px;font-family:'DM Mono',monospace;font-size:8.5px;line-height:1.7;">
           <div style="color:var(--tw);">AI Core 利用率: <span style="color:var(--ty);">38%</span></div>
           <div style="color:var(--tw);">CUBE 单元: <span style="color:var(--tr);">21%</span></div>
           <div style="color:var(--tw);">VECTOR 单元: <span style="color:var(--tg);">91%</span></div>
@@ -250,7 +293,7 @@ body{font-family:'Space Grotesk','Noto Sans SC',sans-serif;background:var(--bg);
       </div>
       <div style="display:flex;flex-direction:column;gap:8px;">
         <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--r);letter-spacing:.08em;">03 · 多硬件适配重复</div>
-        <div style="background:var(--sur);border-radius:8px;border:.5px solid var(--bdr2);padding:10px 12px;font-size:9px;line-height:1.8;">
+        <div style="background:var(--sur);border:.5px solid var(--grey-2);padding:10px 12px;font-size:9px;line-height:1.8;">
           <div style="display:flex;justify-content:space-between;border-bottom:.5px solid var(--bdr2);padding-bottom:5px;margin-bottom:5px;">
             <span style="color:var(--tx2);">任务</span><span style="font-family:'DM Mono',monospace;color:var(--tx3);">910B</span><span style="font-family:'DM Mono',monospace;color:var(--tx3);">310P</span>
           </div>
@@ -262,7 +305,7 @@ body{font-family:'Space Grotesk','Noto Sans SC',sans-serif;background:var(--bg);
         <div style="font-size:10px;color:var(--tx2);">910B 写好的算子在 310P 上往往需要大量重新适配，工作重复。</div>
       </div>
     </div>
-    <div style="margin-top:12px;padding:10px 14px;background:var(--acc-dim);border:.5px solid var(--acc-b);border-radius:8px;">
+    <div style="margin-top:12px;padding:10px 14px;background:var(--acc-dim);border-left:3px solid var(--acc);">
       <span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--acc);">◆ HAI 设计目标 — </span>
       <span style="font-size:10px;color:var(--tx2);">AI 理解昇腾硬件约束，让开发者只需描述算子的数学意图，硬件适配、性能调优、格式转换由 AI 协作完成。</span>
     </div>
@@ -319,7 +362,7 @@ body{font-family:'Space Grotesk','Noto Sans SC',sans-serif;background:var(--bg);
         </div>
       </div>
     </div>
-    <div style="padding:10px 14px;background:var(--acc-dim);border:.5px solid var(--acc-b);border-radius:8px;margin-top:8px;">
+    <div style="padding:10px 14px;background:var(--acc-dim);border-left:3px solid var(--acc);margin-top:8px;">
       <span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--acc);">核心范式转变 — </span>
       <span style="font-size:10px;color:var(--tx2);">开发者从<strong style="color:var(--tx);">「怎么写 TBE 代码」</strong>转向<strong style="color:var(--tx);">「描述算子应该做什么、达到什么指标」</strong>，AI 负责将意图翻译为硬件最优实现。</span>
     </div>
@@ -336,11 +379,11 @@ body{font-family:'Space Grotesk','Noto Sans SC',sans-serif;background:var(--bg);
     <div class="dp-layout">
       <div class="dp-left">
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;">
-          <div style="background:rgba(220,38,38,.05);border:.5px solid rgba(220,38,38,.15);border-radius:8px;padding:10px 12px;">
+          <div style="background:rgba(220,38,38,.05);border:.5px solid rgba(220,38,38,.15);padding:10px 12px;">
             <div style="font-family:'DM Mono',monospace;font-size:9px;color:var(--r);margin-bottom:6px;">过去关注</div>
             <div style="font-size:10px;color:var(--tx2);line-height:1.6;">TBE DSL 语法是否正确<br>data_move 顺序对不对<br>tile_m/tile_n 怎么设<br>手动计算 UB 大小</div>
           </div>
-          <div style="background:var(--acc-dim);border:.5px solid var(--acc-b);border-radius:8px;padding:10px 12px;">
+          <div style="background:var(--acc-dim);border:.5px solid var(--acc-b);padding:10px 12px;">
             <div style="font-family:'DM Mono',monospace;font-size:9px;color:var(--acc);margin-bottom:6px;">AI 时代关注</div>
             <div style="font-size:10px;color:var(--tx2);line-height:1.6;">CUBE 利用率达没达标<br>数值误差在范围内吗<br>310P 兼容性通过了吗<br>与参考实现的精度差</div>
           </div>
@@ -348,7 +391,7 @@ body{font-family:'Space Grotesk','Noto Sans SC',sans-serif;background:var(--bg);
         <div style="font-size:11px;color:var(--tx2);line-height:1.7;">
           算子工程师的核心价值在于<strong style="color:var(--tx);">理解算法和硬件的结合点</strong>——哪种 tiling 策略适合这个计算模式，哪种 format 在昇腾上效率最高。TBE 代码本身是实现手段，AI 可以代劳。
         </div>
-        <div style="background:var(--acc-dim);border:.5px solid var(--acc-b);border-radius:8px;padding:10px 14px;margin-top:4px;">
+        <div style="background:var(--acc-dim);border:.5px solid var(--acc-b);padding:10px 14px;margin-top:4px;">
           <div style="font-family:'DM Mono',monospace;font-size:9px;color:var(--acc);margin-bottom:4px;">◆ HAI 设计原则</div>
           <div style="font-size:10px;color:var(--tx2);line-height:1.6;">让开发者只需表达「这个算子需要做什么、达到什么指标」，AI 自动生成符合昇腾硬件约束的 TBE 实现，并持续迭代直到满足验收条件。</div>
         </div>
@@ -356,7 +399,7 @@ body{font-family:'Space Grotesk','Noto Sans SC',sans-serif;background:var(--bg);
       <div class="dp-right">
         <div class="mockup-label">范式对比 — 同一个 RMSNorm 算子</div>
         <div style="display:grid;grid-template-rows:1fr 1fr;gap:8px;flex:1;">
-          <div style="background:var(--tb);border-radius:8px;border:.5px solid var(--tbdr);overflow:hidden;display:flex;flex-direction:column;">
+          <div style="background:var(--tb);border:.5px solid var(--tbdr);overflow:hidden;display:flex;flex-direction:column;">
             <div style="background:var(--tbar);padding:5px 12px;border-bottom:.5px solid var(--tbdr);display:flex;align-items:center;gap:6px;">
               <span style="font-family:'DM Mono',monospace;font-size:8px;color:var(--td);">过去 · 开发者手写 TBE</span>
               <span style="margin-left:auto;font-family:'DM Mono',monospace;font-size:8px;color:var(--ty);">~3天</span>
@@ -370,7 +413,7 @@ body{font-family:'Space Grotesk','Noto Sans SC',sans-serif;background:var(--bg);
               <div><span style="color:var(--tw);">tik.data_move</span>(x_ub, x_gm, ...)</div>
             </div>
           </div>
-          <div style="background:var(--tb);border-radius:8px;border:.5px solid rgba(131,77,240,.3);overflow:hidden;display:flex;flex-direction:column;">
+          <div style="background:var(--tb);border-left:3px solid var(--acc);overflow:hidden;display:flex;flex-direction:column;">
             <div style="background:var(--tbar);padding:5px 12px;border-bottom:.5px solid rgba(131,77,240,.2);display:flex;align-items:center;gap:6px;">
               <span style="font-family:'DM Mono',monospace;font-size:8px;color:var(--acc);">HAI · 描述意图，AI 生成</span>
               <span style="margin-left:auto;font-family:'DM Mono',monospace;font-size:8px;color:var(--tg);">~20分钟</span>
@@ -427,12 +470,12 @@ body{font-family:'Space Grotesk','Noto Sans SC',sans-serif;background:var(--bg);
           <div class="ba-before">
             <div class="ba-label"><span>✕</span> 过去的做法</div>
             <div style="display:flex;flex-direction:column;gap:3px;margin-top:4px;">
-              <div style="background:var(--bg2);border-radius:4px;padding:5px 8px;font-size:8px;color:var(--tx2);">
+              <div style="background:var(--bg2);padding:5px 8px;border-left:2px solid var(--grey-2);font-size:8px;color:var(--tx2);">
                 早上重新打开项目…<br>
                 <span style="color:var(--tx3);">「上次 tile_m 调到多少来着？」</span>
               </div>
-              <div style="background:var(--bg2);border-radius:4px;padding:5px 8px;font-size:8px;color:var(--tx2);">翻 msprof 日志…找昨天的记录…</div>
-              <div style="background:rgba(220,38,38,.06);border:.5px solid rgba(220,38,38,.2);border-radius:4px;padding:5px 8px;font-size:8px;color:var(--r);">重新向 AI 解释算子背景 ~15min</div>
+              <div style="background:var(--bg2);padding:5px 8px;border-left:2px solid var(--grey-2);font-size:8px;color:var(--tx2);">翻 msprof 日志…找昨天的记录…</div>
+              <div style="background:rgba(220,38,38,.06);border:.5px solid rgba(220,38,38,.2);padding:5px 8px;border-left:2px solid var(--grey-2);font-size:8px;color:var(--r);">重新向 AI 解释算子背景 ~15min</div>
               <div style="text-align:center;font-size:7.5px;color:var(--tx3);font-family:'DM Mono',monospace;margin-top:2px;">每次启动损耗 15-30 分钟热身时间</div>
             </div>
           </div>
@@ -485,11 +528,11 @@ body{font-family:'Space Grotesk','Noto Sans SC',sans-serif;background:var(--bg);
           <div class="ba-before">
             <div class="ba-label"><span>✕</span> 过去的做法</div>
             <div style="display:flex;flex-direction:column;gap:3px;margin-top:4px;">
-              <div style="background:var(--bg2);border-radius:4px;padding:5px 8px;border:.5px solid var(--bdr2);">
+              <div style="background:var(--bg2);padding:5px 8px;border-left:2px solid var(--grey-2);border:.5px solid var(--bdr2);">
                 <span style="font-size:8px;color:var(--tx);">「CUBE 利用率 38%，我应该怎么优化？」</span>
               </div>
               <div style="font-size:8px;color:var(--tx3);padding:0 4px;">↓ AI 不知道是哪个算子哪个时间点</div>
-              <div style="background:rgba(220,38,38,.06);border:.5px solid rgba(220,38,38,.2);border-radius:4px;padding:5px 8px;font-size:8px;color:var(--r);">需要手动粘贴 msprof 数据 + 说明背景</div>
+              <div style="background:rgba(220,38,38,.06);border:.5px solid rgba(220,38,38,.2);padding:5px 8px;border-left:2px solid var(--grey-2);font-size:8px;color:var(--r);">需要手动粘贴 msprof 数据 + 说明背景</div>
             </div>
           </div>
           <div class="ba-after">
@@ -509,7 +552,7 @@ body{font-family:'Space Grotesk','Noto Sans SC',sans-serif;background:var(--bg);
           </div>
         </div>
         <div style="flex:1;display:flex;flex-direction:column;gap:8px;overflow:hidden;">
-          <div style="flex:1;background:#1a1a2e;border-radius:8px;border:.5px solid var(--bdr2);overflow:hidden;display:flex;flex-direction:column;position:relative;" id="msprof-demo">
+          <div style="flex:1;background:#1a1a2e;border:.5px solid var(--grey-2);overflow:hidden;display:flex;flex-direction:column;position:relative;" id="msprof-demo">
             <div style="background:#12121e;padding:6px 14px;border-bottom:.5px solid #242430;font-family:'DM Mono',monospace;font-size:9px;color:#4E4E5E;display:flex;align-items:center;gap:8px;">
               <span style="color:#834DF0;">msprof</span>
               <span>RMSNorm_forward · 910B · Step 3</span>
@@ -541,7 +584,7 @@ body{font-family:'Space Grotesk','Noto Sans SC',sans-serif;background:var(--bg);
               </div>
               <!-- timeline strip -->
               <div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--td);margin-bottom:4px;">Timeline · AI Core Activity</div>
-              <div style="height:28px;background:rgba(255,255,255,.04);border-radius:4px;overflow:hidden;position:relative;" id="msprof-timeline">
+              <div style="height:28px;background:rgba(255,255,255,.04);overflow:hidden;position:relative;" id="msprof-timeline">
                 <div style="position:absolute;left:0;top:0;bottom:0;right:0;display:flex;align-items:center;padding:0 4px;gap:1px;">
                   <!-- simplified timeline bars -->
                   <div style="flex:1;height:60%;background:var(--tg);border-radius:1px;opacity:.7;"></div>
@@ -595,10 +638,10 @@ body{font-family:'Space Grotesk','Noto Sans SC',sans-serif;background:var(--bg);
           <div class="ba-before">
             <div class="ba-label"><span>✕</span> 过去的做法</div>
             <div style="display:flex;flex-direction:column;gap:3px;margin-top:4px;">
-              <div style="background:var(--tb);border-radius:4px;padding:6px 8px;font-family:'DM Mono',monospace;font-size:8px;border:.5px solid var(--tbdr);">
+              <div style="background:var(--tb);padding:6px 8px;font-family:'DM Mono',monospace;font-size:8px;border:.5px solid var(--tbdr);">
                 <span style="color:var(--tp);">tile_m</span> = <span style="color:var(--tg);">64</span> <span style="color:var(--td)"># 经验值</span>
               </div>
-              <div style="background:var(--bg2);border-radius:4px;padding:5px 8px;border:.5px solid var(--bdr2);">
+              <div style="background:var(--bg2);padding:5px 8px;border-left:2px solid var(--grey-2);border:.5px solid var(--bdr2);">
                 <div style="font-size:8px;color:var(--tx2);">「tile_m 设多少合适？」<span style="color:var(--tx3);">（手动输入）</span></div>
               </div>
               <div style="text-align:center;font-size:7.5px;color:var(--tx3);font-family:'DM Mono',monospace;">停下来思考 → 切换 → 描述背景</div>
@@ -620,7 +663,7 @@ body{font-family:'Space Grotesk','Noto Sans SC',sans-serif;background:var(--bg);
             <div class="stp-step"><div class="stp-num">3</div><span class="stp-lbl">就地更新配置</span></div>
           </div>
         </div>
-        <div style="flex:1;background:#1a1a2e;border-radius:8px;border:.5px solid var(--bdr2);display:flex;flex-direction:column;overflow:hidden;position:relative;" id="tbe-demo">
+        <div style="flex:1;background:#1a1a2e;border:.5px solid var(--grey-2);display:flex;flex-direction:column;overflow:hidden;position:relative;" id="tbe-demo">
           <div style="background:#12121e;padding:5px 12px;border-bottom:.5px solid #242430;display:flex;align-items:center;gap:6px;flex-shrink:0;">
             <div style="width:7px;height:7px;border-radius:50%;background:#FF5F57;"></div>
             <div style="width:7px;height:7px;border-radius:50%;background:#FEBC2E;"></div>
@@ -683,11 +726,11 @@ body{font-family:'Space Grotesk','Noto Sans SC',sans-serif;background:var(--bg);
           <div class="ba-before">
             <div class="ba-label"><span>✕</span> 过去的做法</div>
             <div style="display:flex;flex-direction:column;gap:3px;margin-top:4px;">
-              <div style="background:var(--tb);border-radius:4px;padding:5px 8px;font-family:'DM Mono',monospace;font-size:8px;border:.5px solid var(--tbdr);">
+              <div style="background:var(--tb);padding:5px 8px;border-left:2px solid var(--grey-2);font-family:'DM Mono',monospace;font-size:8px;border:.5px solid var(--tbdr);">
                 <span style="color:var(--tw);">tik.data_move(x_ub, x_gm, ...)</span>
               </div>
               <div style="font-size:8px;color:var(--tx3);padding:0 4px;">↓ 不确定搬运效率</div>
-              <div style="background:var(--bg2);border-radius:4px;padding:5px 8px;font-size:8px;color:var(--tx2);">查文档 → 手动计算带宽 → 反复 msprof 测</div>
+              <div style="background:var(--bg2);padding:5px 8px;border-left:2px solid var(--grey-2);font-size:8px;color:var(--tx2);">查文档 → 手动计算带宽 → 反复 msprof 测</div>
               <div style="text-align:center;font-size:7.5px;color:var(--tx3);font-family:'DM Mono',monospace;">每次都要重新推算</div>
             </div>
           </div>
@@ -707,7 +750,7 @@ body{font-family:'Space Grotesk','Noto Sans SC',sans-serif;background:var(--bg);
             <div class="stp-step"><div class="stp-num">3</div><span class="stp-lbl">硬件分析浮现</span></div>
           </div>
         </div>
-        <div style="flex:1;background:#1a1a2e;border-radius:8px;border:.5px solid var(--bdr2);display:flex;flex-direction:column;overflow:hidden;position:relative;" id="cursor-demo-tbe">
+        <div style="flex:1;background:#1a1a2e;border:.5px solid var(--grey-2);display:flex;flex-direction:column;overflow:hidden;position:relative;" id="cursor-demo-tbe">
           <div style="background:#12121e;padding:5px 12px;border-bottom:.5px solid #242430;display:flex;align-items:center;gap:6px;flex-shrink:0;">
             <div style="width:7px;height:7px;border-radius:50%;background:#FF5F57;"></div>
             <div style="width:7px;height:7px;border-radius:50%;background:#FEBC2E;"></div>
@@ -984,7 +1027,7 @@ body{font-family:'Space Grotesk','Noto Sans SC',sans-serif;background:var(--bg);
             <div class="stp-step"><div class="stp-num">3</div><span class="stp-lbl">一键应用修复</span></div>
           </div>
         </div>
-        <div style="flex:1;background:var(--tb);border-radius:8px;border:.5px solid var(--tbdr);display:flex;flex-direction:column;overflow:hidden;">
+        <div style="flex:1;background:var(--tb);border:.5px solid var(--tbdr);display:flex;flex-direction:column;overflow:hidden;">
           <div style="background:var(--tbar);padding:6px 12px;border-bottom:.5px solid var(--tbdr);font-family:'DM Mono',monospace;font-size:9px;color:var(--td);display:flex;align-items:center;gap:8px;">
             <span style="color:var(--acc);">HAI Terminal</span>
             <span>RMSNorm · 910B</span>
@@ -993,11 +1036,11 @@ body{font-family:'Space Grotesk','Noto Sans SC',sans-serif;background:var(--bg);
           <div id="fix-preview-card" style="display:none;border-top:.5px solid var(--tbdr);padding:8px 14px;background:rgba(52,211,153,.05);">
             <div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--tg);margin-bottom:4px;">✓ 修复后效果预览</div>
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
-              <div style="background:rgba(248,113,113,.08);border:.5px solid rgba(248,113,113,.3);border-radius:4px;padding:5px 8px;">
+              <div style="background:rgba(248,113,113,.08);border:.5px solid rgba(248,113,113,.3);padding:5px 8px;border-left:2px solid var(--grey-2);">
                 <div style="font-family:'DM Mono',monospace;font-size:7.5px;color:var(--tr);margin-bottom:3px;">修复前</div>
                 <div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--td);">format=NHWC → EZ9999</div>
               </div>
-              <div style="background:rgba(52,211,153,.08);border:.5px solid rgba(52,211,153,.3);border-radius:4px;padding:5px 8px;">
+              <div style="background:rgba(52,211,153,.08);border:.5px solid rgba(52,211,153,.3);padding:5px 8px;border-left:2px solid var(--grey-2);">
                 <div style="font-family:'DM Mono',monospace;font-size:7.5px;color:var(--tg);margin-bottom:3px;">修复后</div>
                 <div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--tg);">format=FRACTAL_NZ → ✓</div>
               </div>
@@ -1036,7 +1079,7 @@ body{font-family:'Space Grotesk','Noto Sans SC',sans-serif;background:var(--bg);
           <div class="ba-before">
             <div class="ba-label"><span>✕</span> 过去的做法</div>
             <div style="display:flex;flex-direction:column;gap:3px;margin-top:4px;">
-              <div style="background:var(--tb);border-radius:4px;padding:5px 8px;font-family:'DM Mono',monospace;font-size:8px;border:.5px solid var(--tbdr);">
+              <div style="background:var(--tb);padding:5px 8px;border-left:2px solid var(--grey-2);font-family:'DM Mono',monospace;font-size:8px;border:.5px solid var(--tbdr);">
                 <div style="color:var(--td);">msprof 报告: report_0312.html</div>
                 <div style="color:var(--td);">精度对比: compare_0312.txt</div>
                 <div style="color:var(--td);">约束文档: constraint.xlsx</div>
@@ -1060,7 +1103,7 @@ body{font-family:'Space Grotesk','Noto Sans SC',sans-serif;background:var(--bg);
             <div class="stp-step"><div class="stp-num">3</div><span class="stp-lbl">确认约束矩阵</span></div>
           </div>
         </div>
-        <div style="flex:1;background:var(--tb);border-radius:8px;border:.5px solid var(--tbdr);display:flex;flex-direction:column;overflow:hidden;">
+        <div style="flex:1;background:var(--tb);border:.5px solid var(--tbdr);display:flex;flex-direction:column;overflow:hidden;">
           <div style="background:var(--tbar);padding:0 14px;border-bottom:.5px solid var(--tbdr);display:flex;gap:0;flex-shrink:0;">
             <div class="review-tab active" id="tab-perf" style="padding:8px 14px;font-family:'DM Mono',monospace;font-size:9px;cursor:pointer;border-bottom:2px solid var(--acc);color:var(--acc);">🔥 性能</div>
             <div class="review-tab" id="tab-prec" style="padding:8px 14px;font-family:'DM Mono',monospace;font-size:9px;cursor:pointer;border-bottom:2px solid transparent;color:var(--td);">✓ 精度</div>
@@ -1072,17 +1115,17 @@ body{font-family:'Space Grotesk','Noto Sans SC',sans-serif;background:var(--bg);
               <div style="display:flex;gap:10px;">
                 <div style="flex:1;background:rgba(52,211,153,.08);border:.5px solid rgba(52,211,153,.25);border-radius:6px;padding:8px 10px;">
                   <div style="font-family:'DM Mono',monospace;font-size:7.5px;color:var(--td);margin-bottom:3px;">AI Core 利用率</div>
-                  <div style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:var(--tg);">72.4%</div>
+                  <div style="font-family:'Inter','Helvetica Neue',Helvetica,sans-serif;font-size:20px;font-weight:800;color:var(--tg);">72.4%</div>
                   <div style="font-family:'DM Mono',monospace;font-size:7.5px;color:var(--tg);">↑ +51pt vs 基线</div>
                 </div>
                 <div style="flex:1;background:rgba(96,165,250,.08);border:.5px solid rgba(96,165,250,.25);border-radius:6px;padding:8px 10px;">
                   <div style="font-family:'DM Mono',monospace;font-size:7.5px;color:var(--td);margin-bottom:3px;">推理延迟</div>
-                  <div style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:var(--tb2);">38ms</div>
+                  <div style="font-family:'Inter','Helvetica Neue',Helvetica,sans-serif;font-size:20px;font-weight:800;color:var(--tb2);">38ms</div>
                   <div style="font-family:'DM Mono',monospace;font-size:7.5px;color:var(--tb2);">↓ −22ms vs 基线</div>
                 </div>
                 <div style="flex:1;background:rgba(167,139,250,.08);border:.5px solid rgba(167,139,250,.25);border-radius:6px;padding:8px 10px;">
                   <div style="font-family:'DM Mono',monospace;font-size:7.5px;color:var(--td);margin-bottom:3px;">CUBE 利用率</div>
-                  <div style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:var(--tp);">71.2%</div>
+                  <div style="font-family:'Inter','Helvetica Neue',Helvetica,sans-serif;font-size:20px;font-weight:800;color:var(--tp);">71.2%</div>
                   <div style="font-family:'DM Mono',monospace;font-size:7.5px;color:var(--tp);">↑ +50pt vs 基线</div>
                 </div>
               </div>
@@ -1183,11 +1226,11 @@ body{font-family:'Space Grotesk','Noto Sans SC',sans-serif;background:var(--bg);
           <div class="ba-before">
             <div class="ba-label"><span>✕</span> 过去的做法</div>
             <div style="display:flex;flex-direction:column;gap:3px;margin-top:4px;">
-              <div style="background:var(--tb);border-radius:4px;padding:5px 8px;font-family:'DM Mono',monospace;font-size:8px;border:.5px solid var(--tbdr);">
+              <div style="background:var(--tb);padding:5px 8px;border-left:2px solid var(--grey-2);font-family:'DM Mono',monospace;font-size:8px;border:.5px solid var(--tbdr);">
                 <span style="color:var(--tp);">tile_m</span> = <span style="color:var(--tg);">128</span>  <span style="color:var(--td);"># ???</span>
               </div>
               <div style="font-size:8px;color:var(--tx3);padding:0 4px;">这个值是哪来的？为什么不是 64 或 256？</div>
-              <div style="background:rgba(220,38,38,.06);border:.5px solid rgba(220,38,38,.2);border-radius:4px;padding:5px 8px;font-size:8px;color:var(--r);">不敢乱改，只能保持原样</div>
+              <div style="background:rgba(220,38,38,.06);border:.5px solid rgba(220,38,38,.2);padding:5px 8px;border-left:2px solid var(--grey-2);font-size:8px;color:var(--r);">不敢乱改，只能保持原样</div>
             </div>
           </div>
           <div class="ba-after">
@@ -1206,7 +1249,7 @@ body{font-family:'Space Grotesk','Noto Sans SC',sans-serif;background:var(--bg);
             <div class="stp-step"><div class="stp-num">3</div><span class="stp-lbl">主动修改约束</span></div>
           </div>
         </div>
-        <div style="flex:1;background:var(--tb);border-radius:8px;border:.5px solid var(--tbdr);display:flex;flex-direction:column;overflow:hidden;">
+        <div style="flex:1;background:var(--tb);border:.5px solid var(--tbdr);display:flex;flex-direction:column;overflow:hidden;">
           <div style="background:var(--tbar);padding:6px 14px;border-bottom:.5px solid var(--tbdr);font-family:'DM Mono',monospace;font-size:9px;color:var(--td);">
             RMSNorm · AI 决策解释
           </div>
@@ -1219,8 +1262,8 @@ body{font-family:'Space Grotesk','Noto Sans SC',sans-serif;background:var(--bg);
             </div>
           </div>
           <div style="padding:8px 14px;border-top:.5px solid var(--tbdr);display:flex;gap:6px;align-items:center;" id="intent-input-row" style="display:none;">
-            <input id="intent-input" style="flex:1;background:var(--tb);border:.5px solid var(--tbdr);border-radius:4px;padding:5px 9px;font-family:'DM Mono',monospace;font-size:9px;color:var(--tw);outline:none;" placeholder="我想要 cube_util > 75%，请重新优化..." />
-            <div style="font-size:9px;color:var(--acc);padding:4px 8px;border:.5px solid var(--acc-b);border-radius:4px;cursor:pointer;font-family:'DM Mono',monospace;">↵</div>
+            <input id="intent-input" style="flex:1;background:var(--tb);border:.5px solid var(--tbdr);padding:5px 9px;font-family:'DM Mono',monospace;font-size:9px;color:var(--tw);outline:none;" placeholder="我想要 cube_util > 75%，请重新优化..." />
+            <div style="font-size:9px;color:var(--acc);padding:4px 8px;border:.5px solid var(--acc-b);cursor:pointer;font-family:'DM Mono',monospace;">↵</div>
           </div>
         </div>
       </div>
@@ -1256,10 +1299,10 @@ body{font-family:'Space Grotesk','Noto Sans SC',sans-serif;background:var(--bg);
             <div class="ba-label"><span>✕</span> 过去的做法</div>
             <div style="display:flex;flex-direction:column;gap:3px;margin-top:4px;">
               <div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:2px;">
-                <span style="background:var(--bg2);border:.5px solid var(--bdr2);border-radius:4px;padding:3px 7px;font-size:8px;color:var(--tx3);">群里问过</span>
-                <span style="background:var(--bg2);border:.5px solid var(--bdr2);border-radius:4px;padding:3px 7px;font-size:8px;color:var(--tx3);">wiki 找不到</span>
-                <span style="background:var(--bg2);border:.5px solid var(--bdr2);border-radius:4px;padding:3px 7px;font-size:8px;color:var(--tx3);">同事离职带走了</span>
-                <span style="background:var(--bg2);border:.5px solid var(--bdr2);border-radius:4px;padding:3px 7px;font-size:8px;color:var(--tx3);">3年前的邮件</span>
+                <span style="background:var(--bg2);border:.5px solid var(--bdr2);padding:3px 7px;font-size:8px;color:var(--tx3);">群里问过</span>
+                <span style="background:var(--bg2);border:.5px solid var(--bdr2);padding:3px 7px;font-size:8px;color:var(--tx3);">wiki 找不到</span>
+                <span style="background:var(--bg2);border:.5px solid var(--bdr2);padding:3px 7px;font-size:8px;color:var(--tx3);">同事离职带走了</span>
+                <span style="background:var(--bg2);border:.5px solid var(--bdr2);padding:3px 7px;font-size:8px;color:var(--tx3);">3年前的邮件</span>
               </div>
               <div style="text-align:center;font-size:7.5px;color:var(--tx3);font-family:'DM Mono',monospace;margin-top:4px;">昇腾开发经验散落各处，难以复用</div>
             </div>
@@ -1359,12 +1402,12 @@ body{font-family:'Space Grotesk','Noto Sans SC',sans-serif;background:var(--bg);
           <div class="ba-before">
             <div class="ba-label"><span>✕</span> 过去的做法</div>
             <div style="display:flex;flex-direction:column;gap:3px;margin-top:4px;">
-              <div style="background:var(--sur);border-radius:4px;padding:5px 8px;border:.5px solid var(--bdr2);">
+              <div style="background:var(--sur);padding:5px 8px;border-left:2px solid var(--grey-2);border:.5px solid var(--bdr2);">
                 <div style="font-size:8px;color:var(--tx2);">打开 msprof…</div>
                 <div style="font-size:8px;color:var(--tx3);">这个 MTE2 是什么意思？</div>
                 <div style="font-size:8px;color:var(--tx3);">Scalar 单元利用 0% 正常吗？</div>
               </div>
-              <div style="background:rgba(220,38,38,.06);border:.5px solid rgba(220,38,38,.2);border-radius:4px;padding:5px 8px;font-size:8px;color:var(--r);">看不懂 → 查文档 → 还是看不懂</div>
+              <div style="background:rgba(220,38,38,.06);border:.5px solid rgba(220,38,38,.2);padding:5px 8px;border-left:2px solid var(--grey-2);font-size:8px;color:var(--r);">看不懂 → 查文档 → 还是看不懂</div>
             </div>
           </div>
           <div class="ba-after">
@@ -1459,7 +1502,7 @@ body{font-family:'Space Grotesk','Noto Sans SC',sans-serif;background:var(--bg);
       </div>
     </div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;flex:1;">
-      <div style="background:var(--tb);border-radius:10px;border:.5px solid var(--tbdr);padding:16px 20px;display:flex;flex-direction:column;gap:8px;">
+      <div style="background:var(--tb);border:.5px solid var(--tbdr);padding:16px 20px;display:flex;flex-direction:column;gap:8px;">
         <div style="font-family:'DM Mono',monospace;font-size:9px;color:var(--acc);letter-spacing:.1em;">设计价值量化</div>
         <div style="display:flex;flex-direction:column;gap:6px;">
           <div style="display:flex;justify-content:space-between;align-items:baseline;">
@@ -1672,7 +1715,7 @@ function setupSlideSteps(secId, stripId, defs) {
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
         <span style="font-size:12px;font-weight:700;color:#E0D9FF;">${card.name}</span>
         <span style="font-size:9px;font-weight:600;color:${card.tagColor};background:${card.tagColor}22;
-          padding:2px 6px;border-radius:4px;">${card.tag}</span>
+          padding:2px 6px;">${card.tag}</span>
       </div>
       ${card.details.map(d => `
         <div style="display:flex;justify-content:space-between;margin-bottom:5px;">
@@ -2084,7 +2127,7 @@ function setupSlideSteps(secId, stripId, defs) {
     row.innerHTML = `
       <span style="font-size:10px;font-weight:600;color:#E0D9FF;font-family:monospace;">${op.name}</span>
       <span style="font-size:9px;font-weight:600;color:${statusColor};background:${statusColor}22;
-        padding:2px 6px;border-radius:4px;text-align:center;">${statusLabel}</span>
+        padding:2px 6px;text-align:center;">${statusLabel}</span>
       <span style="font-size:9px;color:#8A7FC0;">${op.hw}</span>
       <span style="font-size:9px;color:#6A5FA0;">${op.notes || '—'}</span>
     `;
@@ -2236,6 +2279,82 @@ sty.textContent = `
   }
 `;
 document.head.appendChild(sty);
+
+/* ── Top-nav logic ── */
+(function initTopNav() {
+  const sections = [
+    { id:'s-cover',      label:'封面' },
+    { id:'s-bg',         label:'背景 · 痛点' },
+    { id:'s-bg2',        label:'范式演进' },
+    { id:'s-bg3',        label:'设计方向' },
+    { id:'s-j-overview', label:'开发旅程' },
+    { id:'s-m4a',        label:'记忆启动' },
+    { id:'s-m2c',        label:'语音查询' },
+    { id:'s-m2b',        label:'手势调参' },
+    { id:'s-m2a',        label:'光标上下文' },
+    { id:'s-m3b',        label:'Goal 命令' },
+    { id:'s-m1a',        label:'Agent 视图' },
+    { id:'s-m1b',        label:'多硬件看板' },
+    { id:'s-m3a',        label:'智能修复' },
+    { id:'s-m5a',        label:'结果审核' },
+    { id:'s-m5b',        label:'AI 推理' },
+    { id:'s-m4b',        label:'团队库' },
+    { id:'s-m6a',        label:'光标伴侣' },
+    { id:'s-sum',        label:'总结' },
+  ];
+
+  const dotsEl = document.getElementById('tn-dots');
+  const labelEl = document.getElementById('tn-label');
+  const prevBtn = document.getElementById('tn-prev');
+  const nextBtn = document.getElementById('tn-next');
+  let curIdx = 0;
+
+  /* build dots */
+  sections.forEach((s, i) => {
+    const d = document.createElement('div');
+    d.className = 'tn-dot' + (i === 0 ? ' tn-active' : '');
+    d.title = s.label;
+    d.addEventListener('click', () => scrollTo(i));
+    dotsEl.appendChild(d);
+  });
+
+  function scrollTo(i) {
+    const el = document.getElementById(sections[i].id);
+    if (el) el.scrollIntoView({ behavior:'smooth' });
+  }
+
+  function update(i) {
+    curIdx = i;
+    dotsEl.querySelectorAll('.tn-dot').forEach((d, di) => {
+      d.classList.toggle('tn-active', di === i);
+    });
+    labelEl.textContent = sections[i].label;
+  }
+
+  /* IntersectionObserver — track which section is visible */
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const i = sections.findIndex(s => s.id === e.target.id);
+        if (i >= 0) update(i);
+      }
+    });
+  }, { threshold: 0.5 });
+
+  sections.forEach(s => {
+    const el = document.getElementById(s.id);
+    if (el) obs.observe(el);
+  });
+
+  prevBtn.addEventListener('click', () => scrollTo(Math.max(0, curIdx - 1)));
+  nextBtn.addEventListener('click', () => scrollTo(Math.min(sections.length - 1, curIdx + 1)));
+
+  /* keyboard ↑↓ */
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowDown' || e.key === 'PageDown') scrollTo(Math.min(sections.length - 1, curIdx + 1));
+    if (e.key === 'ArrowUp'   || e.key === 'PageUp')   scrollTo(Math.max(0, curIdx - 1));
+  });
+})();
 </script>
 </body>
 </html>
