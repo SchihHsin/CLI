@@ -334,8 +334,9 @@ grep -n "id=\"s-m" file.html | head    # 快速列出所有 section
 | `--tx` | `#0a0a0a` | 近黑 |
 | `--grey-2` | `#d4d4d2` | hairline 分割线 |
 - 字体：Inter weight-200（大标题）+ DM Mono（代码/meta）
-- 边框：直角 + 左侧3px IKB 线条，无圆角无阴影
+- 边框：直角，hairline `.5px solid var(--grey-2)`，无左侧描边，无圆角无阴影
 - slabel：顶部 2.5px IKB 边框
+- **禁忌**：不使用「浅色底色 + 左侧彩色描边」样式（用户明确拒绝，"太像AI了"）
 
 ### Section 顺序（当前）
 ```
@@ -364,17 +365,51 @@ s-cover → s-bg → s-bg2 → s-bg3 → s-j-overview
 2. 步骤2：`Space` badge，IKB 蓝波形条出现，文字逐字打出「这里为什么这么低？」
 3. 步骤3：波形消失，AI 回答逐字出现（CUBE 21%过低分析），进度条动画更新
 
-### s-m6a 光标伴侣待修复
-- `initCompanion()` 找 `companion-tri` 但 HTML 是 `ck-companion-g`（SVG `<g>`）
-- 需要用 `setAttribute('transform', 'translate(x,y)')` 移动三角，而非 `style.left/top`
-- 步骤化内容：Step1→AI Core总览气泡，Step2→CUBE利用率分析气泡，Step3→优化建议
+### s-m6a 光标伴侣（已完成 2026-05-23）
+- `initCompanion()` 使用 `setAttribute('transform','translate(x,y)')` 移动 `<g>` 组，非 `style.left/top`
+- 3步骤：AI Core总览气泡 → CUBE 21% 瓶颈分析 → tile_m 64→128 优化建议
+
+### 关键 JS 修复记录（2026-05-23）
+- **致命 Bug**：`voiceSetPhase` 函数内单引号字符串含字面换行符 → `SyntaxError: Invalid or unexpected token` → 所有 JS 失效（含 `initTopNav` → 导航点消失）
+- 修复：将字面换行改为 `\n` 转义。验证方法：`node /tmp/check.js` 确认无语法错误
+
+### top-nav 玻璃拟态（当前样式，2026-05-23）
+```css
+background:rgba(250,250,248,.72);
+border:1px solid rgba(255,255,255,.6);
+backdrop-filter:blur(28px) saturate(200%) brightness(1.04);
+box-shadow:0 2px 20px rgba(0,47,167,.10),0 1px 0 rgba(255,255,255,.8) inset,0 0 0 .5px rgba(0,47,167,.08);
+```
+- 导航点颜色：`rgba(0,47,167,.22)`（非灰色），hover → `rgba(0,47,167,.55)`
+- 注意：不要用纯白 `rgba(255,255,255,.65)` 背景 + 纯白边框，白页上会完全消失
+
+### s-bg2 范式演进（已完成）
+- 布局：4张浮动卡片，gap:16px，高度拉伸齐平
+- Cards 01-03：`background:var(--sur)` 白底，`.5px solid var(--grey-2)`
+- Card 04 HAI：`background:var(--acc)` IKB 蓝，白色文字，flex:1.4
+
+### s-sum 设计总结（已完成）
+- 上方4卡：SVG 线性图标，去掉数字序号 badge
+- 右下卡：`background:var(--acc2)` 深蓝，文字 `rgba(255,255,255,.75)`
+
+### Before/After 面板规范（已完成）
+```html
+<div class="ba-label" style="gap:6px;">
+  <span style="font-family:'DM Mono',monospace;font-size:7px;letter-spacing:.1em;background:var(--grey-2);color:var(--tx2);padding:1px 6px;">BEFORE</span>过去的做法
+</div>
+<div class="ba-label" style="gap:6px;">
+  <span style="...;background:var(--acc);color:white;padding:1px 6px;">AFTER</span>新的设计
+</div>
+```
+
+### s-j-overview 用户旅程（已完成）
+- 5阶段：01-04 深色 `var(--tx)` 背景，05 IKB 蓝 `var(--acc)` 背景
+- 情绪曲线 SVG：IKB 蓝折线从左下→右上
+- 每阶段含 mini terminal mockup
 
 ---
 
 ## 待办（按优先级）
-
-### 进行中
-- [ ] **s-m6a**：修复三角伴侣飞行动画 + 步骤化气泡内容（CUBE分析→优化建议）
 
 ### 低优先级
 - [ ] s-m2a cursor demo 最终验证
