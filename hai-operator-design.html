@@ -1477,96 +1477,95 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
 
         <!-- Desk scene -->
         <div style="flex:1;display:flex;flex-direction:column;gap:10px;min-height:0;">
-          <div style="flex:1;display:flex;align-items:flex-end;justify-content:center;gap:28px;padding:12px 10px 0;">
+          <div style="flex:1;display:flex;align-items:flex-end;gap:14px;min-height:0;overflow:hidden;padding-bottom:2px;">
 
-            <!-- ──── Laptop ──── -->
-            <div style="display:flex;flex-direction:column;align-items:center;filter:drop-shadow(0 8px 24px rgba(0,0,0,.4));">
-              <!-- Screen assembly -->
-              <div style="position:relative;width:210px;">
+            <!-- ──── Laptop (dominant) ──── -->
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;min-width:0;filter:drop-shadow(0 10px 28px rgba(0,0,0,.45));">
+              <!-- Screen lid -->
+              <div style="position:relative;width:100%;">
                 <!-- Bezel -->
-                <div style="background:#1c1c1f;border:2px solid #2e2e32;border-bottom:none;padding:10px 10px 6px;position:relative;">
+                <div style="background:#1c1c1f;border:2.5px solid #2e2e32;border-bottom:none;padding:10px 10px 7px;position:relative;">
                   <!-- Camera dot -->
-                  <div style="position:absolute;top:4px;left:50%;transform:translateX(-50%);width:5px;height:5px;border-radius:50%;background:#111;border:.5px solid #333;"></div>
-                  <!-- Screen content -->
-                  <div id="tl-screen" style="background:#0b0b11;border:.5px solid #1e1e28;padding:7px 8px;font-family:'DM Mono',monospace;font-size:6.5px;line-height:1.75;height:105px;overflow:hidden;">
-                    <div style="color:#48485C;margin-bottom:2px;">HAI · Agent View</div>
-                    <div style="color:#6060A0;">─────────────────────────────</div>
-                    <div id="tl-s1" style="color:#CECEE0;">$ hai run RMSNorm --hw 910B</div>
-                    <div id="tl-s2" style="color:#4E4E70;opacity:0;transition:opacity .4s;">◆ tbe-gen + shape-infer 启动...</div>
-                    <div id="tl-s3" style="color:#4E4E70;opacity:0;transition:opacity .4s 0.15s;">  CUBE 利用率分析: 38% → 目标 70%</div>
-                    <div id="tl-s4" style="color:#FBBF24;opacity:0;transition:opacity .4s;">▶ tile_m=128 超 UB，需确认策略</div>
-                    <div id="tl-s5" style="color:#34D399;opacity:0;transition:opacity .4s;">✓ 完成 · CUBE 72.4% · 误差 4.1e-6</div>
+                  <div style="position:absolute;top:5px;left:50%;transform:translateX(-50%);width:6px;height:6px;border-radius:50%;background:#111;border:.5px solid #333;"></div>
+                  <!-- Screen -->
+                  <div id="tl-screen" style="background:#09090f;border:.5px solid #1e1e2a;padding:8px 10px;font-family:'DM Mono',monospace;font-size:7px;line-height:1.8;overflow:hidden;height:140px;">
+                    <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;padding-bottom:5px;border-bottom:.5px solid #1e1e2a;">
+                      <span style="color:#002FA7;font-size:7.5px;">◆</span>
+                      <span style="color:#48485C;letter-spacing:.08em;">HAI · Agent View · RMSNorm 优化</span>
+                      <span id="tl-status-chip" style="margin-left:auto;color:var(--ty);background:rgba(251,191,36,.1);border:.5px solid rgba(251,191,36,.25);padding:1px 6px;font-size:6.5px;transition:all .3s;">RUNNING</span>
+                    </div>
+                    <div id="tl-s1" style="color:#CECEE0;">$ hai run RMSNorm --hw 910B --goal "cube_util > 70%"</div>
+                    <div id="tl-s2" style="color:#4E4E7A;opacity:0;transition:opacity .4s;">◆ Agent 启动 · tbe-gen + shape-infer + perf-bench</div>
+                    <div id="tl-s3" style="color:#4E4E7A;opacity:0;transition:opacity .45s 0.12s;">  分析 msprof · CUBE 38% → 评估 tile_m 64/96/128</div>
+                    <div id="tl-s4" style="color:#FBBF24;opacity:0;transition:opacity .4s;">▶ tile_m=128 超 UB 预算，需要确认：降至 96 还是双缓冲？</div>
+                    <div id="tl-s5" style="color:#002FA7;opacity:0;transition:opacity .4s 0.1s;">  [等待开发者选择…]</div>
+                    <div id="tl-s6" style="color:#34D399;opacity:0;transition:opacity .4s;">✓ RMSNorm TBE 生成完成</div>
+                    <div id="tl-s7" style="color:#34D399;opacity:0;transition:opacity .4s 0.15s;">✓ CUBE 利用率: 38% → 72.4%  ·  精度误差: 4.1e-6 · 通过验收</div>
                   </div>
                 </div>
-                <!-- Hinge shadow -->
-                <div style="height:3px;background:linear-gradient(180deg,#111,#1a1a1f);margin:0 -1px;"></div>
+                <!-- Hinge -->
+                <div style="height:3px;background:linear-gradient(180deg,#0e0e14,#1a1a1f);"></div>
               </div>
               <!-- Keyboard base -->
-              <div style="width:218px;height:16px;background:linear-gradient(180deg,#222226,#1a1a1e);border:1.5px solid #2e2e32;border-top:.5px solid #3a3a3e;"></div>
+              <div style="width:calc(100% + 8px);height:18px;background:linear-gradient(180deg,#222226,#1a1a1e);border:2px solid #2e2e32;border-top:.5px solid #3a3a3e;"></div>
               <!-- Trackpad -->
-              <div style="width:58px;height:7px;background:#1e1e22;border:.5px solid #2a2a2e;margin-top:3px;"></div>
+              <div style="width:72px;height:8px;background:#1c1c20;border:.5px solid #2a2a2e;margin-top:4px;"></div>
               <!-- Desk shadow -->
-              <div style="width:200px;height:4px;background:rgba(0,0,0,.3);border-radius:50%;margin-top:6px;filter:blur(3px);"></div>
+              <div style="width:90%;height:5px;background:rgba(0,0,0,.28);border-radius:50%;margin-top:8px;filter:blur(4px);"></div>
             </div>
 
             <!-- ──── USB Cable ──── -->
-            <div style="position:relative;width:24px;height:80px;flex-shrink:0;margin-bottom:26px;">
-              <svg width="24" height="80" viewBox="0 0 24 80" fill="none" style="overflow:visible;">
-                <path d="M4 0 C4 30 20 50 20 80" stroke="#2a2a2a" stroke-width="2.5" stroke-linecap="round"/>
-                <path d="M4 0 C4 30 20 50 20 80" stroke="#3a3a3a" stroke-width="1" stroke-linecap="round"/>
+            <div style="flex-shrink:0;width:22px;margin-bottom:32px;align-self:flex-end;">
+              <svg width="22" height="70" viewBox="0 0 22 70" fill="none" overflow="visible">
+                <path d="M2 0 C2 28 20 42 20 70" stroke="#252528" stroke-width="3" stroke-linecap="round"/>
+                <path d="M2 0 C2 28 20 42 20 70" stroke="#3a3a3e" stroke-width="1.2" stroke-linecap="round"/>
               </svg>
             </div>
 
-            <!-- ──── Traffic Light Device ──── -->
-            <div style="display:flex;flex-direction:column;align-items:center;margin-bottom:10px;filter:drop-shadow(0 6px 18px rgba(0,0,0,.5));">
-              <!-- Housing top cap -->
-              <div style="width:38px;height:5px;background:linear-gradient(180deg,#3a3a3e,#28282c);border:1px solid #3e3e42;border-bottom:none;"></div>
-              <!-- Main housing -->
-              <div style="width:38px;background:linear-gradient(90deg,#2a2a2e 0%,#323236 40%,#2e2e32 70%,#222224 100%);border:1px solid #3a3a3e;border-top:none;border-bottom:none;padding:10px 7px;display:flex;flex-direction:column;gap:0;position:relative;">
-                <!-- Left highlight stripe (3D effect) -->
-                <div style="position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,.02));"></div>
-
-                <!-- Red light well -->
-                <div style="padding:7px 0;display:flex;justify-content:center;border-bottom:1px solid #1a1a1e;">
-                  <div style="position:relative;width:24px;height:24px;">
-                    <!-- Well recess -->
-                    <div style="position:absolute;inset:0;border-radius:50%;background:#111;box-shadow:inset 0 2px 5px rgba(0,0,0,.8);"></div>
-                    <!-- Light -->
+            <!-- ──── Traffic Light Device (accent) ──── -->
+            <div style="flex-shrink:0;display:flex;flex-direction:column;align-items:center;margin-bottom:12px;filter:drop-shadow(0 6px 20px rgba(0,0,0,.55));">
+              <!-- Top cap -->
+              <div style="width:34px;height:5px;background:linear-gradient(180deg,#3c3c40,#28282c);border:1px solid #3e3e42;border-bottom:none;"></div>
+              <!-- Housing -->
+              <div style="width:34px;background:linear-gradient(90deg,#2e2e32 0%,#38383c 35%,#323236 65%,#222224 100%);border:1px solid #3a3a3e;border-top:none;border-bottom:none;padding:9px 6px;display:flex;flex-direction:column;gap:0;position:relative;">
+                <div style="position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.02));"></div>
+                <!-- Red well -->
+                <div style="padding:6px 0;display:flex;justify-content:center;border-bottom:1px solid #1a1a1e;">
+                  <div style="position:relative;width:22px;height:22px;">
+                    <div style="position:absolute;inset:0;border-radius:50%;background:#0e0e0e;box-shadow:inset 0 2px 5px rgba(0,0,0,.9);"></div>
                     <div id="tl-red" style="position:absolute;inset:3px;border-radius:50%;background:#200808;transition:background .25s,box-shadow .25s;"></div>
                   </div>
                 </div>
-
-                <!-- Yellow light well -->
-                <div style="padding:7px 0;display:flex;justify-content:center;border-bottom:1px solid #1a1a1e;">
-                  <div style="position:relative;width:24px;height:24px;">
-                    <div style="position:absolute;inset:0;border-radius:50%;background:#111;box-shadow:inset 0 2px 5px rgba(0,0,0,.8);"></div>
+                <!-- Yellow well -->
+                <div style="padding:6px 0;display:flex;justify-content:center;border-bottom:1px solid #1a1a1e;">
+                  <div style="position:relative;width:22px;height:22px;">
+                    <div style="position:absolute;inset:0;border-radius:50%;background:#0e0e0e;box-shadow:inset 0 2px 5px rgba(0,0,0,.9);"></div>
                     <div id="tl-yellow" style="position:absolute;inset:3px;border-radius:50%;background:#1a1400;transition:background .25s,box-shadow .25s;"></div>
                   </div>
                 </div>
-
-                <!-- Green light well -->
-                <div style="padding:7px 0;display:flex;justify-content:center;">
-                  <div style="position:relative;width:24px;height:24px;">
-                    <div style="position:absolute;inset:0;border-radius:50%;background:#111;box-shadow:inset 0 2px 5px rgba(0,0,0,.8);"></div>
+                <!-- Green well -->
+                <div style="padding:6px 0;display:flex;justify-content:center;">
+                  <div style="position:relative;width:22px;height:22px;">
+                    <div style="position:absolute;inset:0;border-radius:50%;background:#0e0e0e;box-shadow:inset 0 2px 5px rgba(0,0,0,.9);"></div>
                     <div id="tl-green" style="position:absolute;inset:3px;border-radius:50%;background:#081408;transition:background .25s,box-shadow .25s;"></div>
                   </div>
                 </div>
               </div>
               <!-- Bottom cap -->
-              <div style="width:38px;height:4px;background:linear-gradient(180deg,#28282c,#1e1e22);border:1px solid #3a3a3e;border-top:none;"></div>
-              <!-- USB connector neck -->
-              <div style="width:14px;height:10px;background:#1a1a1e;border:1px solid #2a2a2e;"></div>
+              <div style="width:34px;height:4px;background:linear-gradient(180deg,#28282c,#1e1e22);border:1px solid #3a3a3e;border-top:none;"></div>
+              <!-- USB neck -->
+              <div style="width:12px;height:9px;background:#1a1a1e;border:1px solid #2a2a2e;"></div>
               <!-- USB plug -->
-              <div style="width:18px;height:6px;background:#252528;border:1px solid #3a3a3e;border-radius:0 0 1px 1px;"></div>
-              <!-- Logo label -->
-              <div style="margin-top:6px;font-family:'DM Mono',monospace;font-size:6px;color:#3a3a3e;letter-spacing:.15em;">HAI LINK</div>
-              <!-- Desk shadow -->
-              <div style="width:32px;height:3px;background:rgba(0,0,0,.25);border-radius:50%;margin-top:4px;filter:blur(2px);"></div>
+              <div style="width:16px;height:5px;background:#242428;border:1px solid #383838;border-radius:0 0 1px 1px;"></div>
+              <!-- Label -->
+              <div style="margin-top:5px;font-family:'DM Mono',monospace;font-size:5.5px;color:#383838;letter-spacing:.18em;">HAI LINK</div>
+              <!-- Shadow -->
+              <div style="width:28px;height:3px;background:rgba(0,0,0,.3);border-radius:50%;margin-top:3px;filter:blur(2px);"></div>
             </div>
 
           </div>
 
-          <!-- State bar -->
+              <!-- State bar -->
           <div id="tl-state-bar" style="padding:8px 14px;background:rgba(251,191,36,.06);border:.5px solid rgba(251,191,36,.2);display:flex;align-items:center;gap:10px;transition:background .4s,border-color .4s;flex-shrink:0;">
             <div id="tl-dot" style="width:8px;height:8px;border-radius:50%;background:var(--ty);flex-shrink:0;transition:background .3s;"></div>
             <div>
@@ -3007,6 +3006,7 @@ setupSlideSteps('s-m1b', 'stp-m1b', [
   var red    = document.getElementById('tl-red');
   var yellow = document.getElementById('tl-yellow');
   var green  = document.getElementById('tl-green');
+  var statusChip  = document.getElementById('tl-status-chip');
   var stateBar    = document.getElementById('tl-state-bar');
   var stateDot    = document.getElementById('tl-dot');
   var stateTitle  = document.getElementById('tl-state-title');
@@ -3031,7 +3031,8 @@ setupSlideSteps('s-m1b', 'stp-m1b', [
     clearLights();
     if (p === 1) {
       if (yellow) { yellow.style.background = '#FBBF24'; yellow.style.boxShadow = '0 0 12px 5px rgba(251,191,36,.6),0 0 28px 8px rgba(251,191,36,.2)'; }
-      show(['tl-s2','tl-s3']); hide(['tl-s4','tl-s5']);
+      show(['tl-s2','tl-s3']); hide(['tl-s4','tl-s5','tl-s6','tl-s7']);
+      if (statusChip) { statusChip.textContent = 'RUNNING'; statusChip.style.color = 'var(--ty)'; statusChip.style.background = 'rgba(251,191,36,.1)'; statusChip.style.borderColor = 'rgba(251,191,36,.25)'; }
       if (stateBar)   { stateBar.style.background = 'rgba(251,191,36,.06)'; stateBar.style.borderColor = 'rgba(251,191,36,.2)'; }
       if (stateDot)   { stateDot.style.background = 'var(--ty)'; }
       if (stateTitle) { stateTitle.style.color = 'var(--ty)'; stateTitle.textContent = 'Agent 运行中 — 黄灯常亮'; }
@@ -3050,7 +3051,8 @@ setupSlideSteps('s-m1b', 'stp-m1b', [
         }
         redOn = !redOn;
       }, 550);
-      show(['tl-s2','tl-s3','tl-s4']); hide(['tl-s5']);
+      show(['tl-s2','tl-s3','tl-s4','tl-s5']); hide(['tl-s6','tl-s7']);
+      if (statusChip) { statusChip.textContent = 'CONFIRM'; statusChip.style.color = 'var(--tr)'; statusChip.style.background = 'rgba(239,68,68,.1)'; statusChip.style.borderColor = 'rgba(239,68,68,.25)'; }
       if (stateBar)   { stateBar.style.background = 'rgba(239,68,68,.06)'; stateBar.style.borderColor = 'rgba(239,68,68,.2)'; }
       if (stateDot)   { stateDot.style.background = 'var(--tr)'; }
       if (stateTitle) { stateTitle.style.color = 'var(--tr)'; stateTitle.textContent = '需要确认 — 红黄交替闪烁'; }
@@ -3058,7 +3060,8 @@ setupSlideSteps('s-m1b', 'stp-m1b', [
 
     } else if (p === 3) {
       if (green) { green.style.background = '#34D399'; green.style.boxShadow = '0 0 14px 6px rgba(52,211,153,.6),0 0 30px 10px rgba(52,211,153,.2)'; }
-      show(['tl-s2','tl-s3','tl-s5']); hide(['tl-s4']);
+      show(['tl-s2','tl-s3','tl-s6','tl-s7']); hide(['tl-s4','tl-s5']);
+      if (statusChip) { statusChip.textContent = 'DONE'; statusChip.style.color = 'var(--tg)'; statusChip.style.background = 'rgba(52,211,153,.1)'; statusChip.style.borderColor = 'rgba(52,211,153,.25)'; }
       if (stateBar)   { stateBar.style.background = 'rgba(52,211,153,.06)'; stateBar.style.borderColor = 'rgba(52,211,153,.2)'; }
       if (stateDot)   { stateDot.style.background = 'var(--tg)'; }
       if (stateTitle) { stateTitle.style.color = 'var(--tg)'; stateTitle.textContent = '任务完成 — 绿灯常亮'; }
