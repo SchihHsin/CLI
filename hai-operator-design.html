@@ -1414,6 +1414,115 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
   </div>
 </div>
 
+<!-- ══ STAGE 04-3: 实体状态灯 ══ -->
+<div class="sec" id="s-m1c" style="background:var(--bg);">
+  <div class="slabel">
+    <span class="sub">感知延伸 · Stage 04 · 设计点 3/3</span>
+    <span class="main">实体状态灯 — AI Agent 进度跃出屏幕</span>
+  </div>
+  <div class="inner">
+    <div class="dp-layout">
+
+      <!-- ── 左：说明 + Before/After ── -->
+      <div class="dp-left">
+        <div class="dp-desc">
+          <div class="dp-label">设计说明</div>
+          <div class="dp-title">物理信号让"AI 在干什么"一眼可知</div>
+          <div class="dp-body">开发者在等待 AI Agent 的过程中，如果要知道当前进度，必须切换窗口盯屏幕。HAI 通过 USB 实体状态灯将 Agent 状态投射到物理世界——无需看屏幕，灯光即状态。</div>
+        </div>
+        <div class="ba-grid">
+          <div class="ba-before">
+            <div class="ba-label" style="gap:6px;"><span style="font-family:'DM Mono',monospace;font-size:7px;letter-spacing:.1em;background:var(--grey-2);color:var(--tx2);padding:1px 6px;">BEFORE</span>过去的做法</div>
+            <div style="padding:10px 12px;background:var(--tb);border:.5px solid var(--tbdr);font-family:'DM Mono',monospace;font-size:8px;line-height:1.8;margin-top:6px;">
+              <div style="color:var(--td);"># 必须切回终端才能知道进度</div>
+              <div style="color:var(--tw);">$ hai run RMSNorm --hw 910B</div>
+              <div style="color:var(--td);">... 等待 ... 等待 ... 等待 ...</div>
+              <div style="color:var(--ty);margin-top:4px;">← 做其他事就不知道 AI 停了</div>
+            </div>
+          </div>
+          <div class="ba-after">
+            <div class="ba-label" style="gap:6px;"><span style="font-family:'DM Mono',monospace;font-size:7px;letter-spacing:.1em;background:var(--acc);color:white;padding:1px 6px;">AFTER</span>新的设计</div>
+            <div style="font-size:10px;color:var(--tx2);line-height:1.6;margin-top:6px;">USB 状态灯实时反映 Agent 进度 — 黄灯思考中，红黄闪烁需确认，绿灯完成可审核。离开屏幕仍能感知。</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── 右：Mockup ── -->
+      <div class="dp-right">
+        <div class="mockup-label">硬件联动演示 — Agent 执行 RMSNorm 优化</div>
+        <div class="stp-strip" id="stp-m1c">
+          <div class="stp-bar"><div class="stp-fill"></div></div>
+          <div class="stp-steps">
+            <div class="stp-step"><div class="stp-num">1</div><span class="stp-lbl">Agent 运行中</span></div>
+            <div class="stp-step"><div class="stp-num">2</div><span class="stp-lbl">等待确认</span></div>
+            <div class="stp-step"><div class="stp-num">3</div><span class="stp-lbl">任务完成</span></div>
+          </div>
+        </div>
+
+        <!-- Mockup body -->
+        <div style="flex:1;display:flex;gap:14px;min-height:0;overflow:hidden;">
+
+          <!-- Traffic light device -->
+          <div style="display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:6px;flex-shrink:0;padding-bottom:8px;">
+            <div style="font-family:'DM Mono',monospace;font-size:7.5px;color:var(--tx3);letter-spacing:.08em;margin-bottom:4px;">USB · HAI LINK</div>
+            <!-- device housing -->
+            <div id="tl-device" style="width:44px;background:#141416;border:.5px solid #2a2a2a;padding:14px 0 10px;display:flex;flex-direction:column;align-items:center;gap:0;position:relative;box-shadow:0 4px 16px rgba(0,0,0,.5);">
+              <!-- red light -->
+              <div style="padding:8px 0;">
+                <div id="tl-red" style="width:22px;height:22px;border-radius:50%;background:#1a0808;transition:background .3s,box-shadow .3s;"></div>
+              </div>
+              <div style="width:30px;height:.5px;background:#1e1e22;"></div>
+              <!-- yellow light -->
+              <div style="padding:8px 0;">
+                <div id="tl-yellow" style="width:22px;height:22px;border-radius:50%;background:#1a1506;transition:background .3s,box-shadow .3s;"></div>
+              </div>
+              <div style="width:30px;height:.5px;background:#1e1e22;"></div>
+              <!-- green light -->
+              <div style="padding:8px 0;">
+                <div id="tl-green" style="width:22px;height:22px;border-radius:50%;background:#081a0c;transition:background .3s,box-shadow .3s;"></div>
+              </div>
+            </div>
+            <!-- USB connector -->
+            <div style="width:20px;height:6px;background:#1e1e22;border:.5px solid #2a2a2a;"></div>
+            <div style="width:8px;height:12px;background:#111;border:.5px solid #222;"></div>
+          </div>
+
+          <!-- Status panel -->
+          <div style="flex:1;display:flex;flex-direction:column;gap:8px;min-height:0;">
+            <!-- terminal header -->
+            <div style="background:var(--tbar);border:.5px solid var(--tbdr);border-bottom:none;padding:5px 12px;display:flex;align-items:center;gap:6px;">
+              <span style="font-family:'DM Mono',monospace;font-size:8px;color:var(--td);">HAI Agent · RMSNorm 优化</span>
+              <span id="tl-status-chip" style="margin-left:auto;font-family:'DM Mono',monospace;font-size:7px;color:var(--ty);background:rgba(251,191,36,.1);border:.5px solid rgba(251,191,36,.3);padding:1px 7px;transition:all .3s;">RUNNING</span>
+            </div>
+            <div id="tl-terminal" style="background:var(--tb);border:.5px solid var(--tbdr);padding:10px 12px;font-family:'DM Mono',monospace;font-size:8px;line-height:1.85;flex:1;overflow:hidden;">
+              <div style="color:var(--td);">$ hai run RMSNorm --hw 910B --goal "cube_util > 70%"</div>
+              <div id="tl-line1" style="color:var(--tw);opacity:0;transition:opacity .4s;">◆ Agent 启动 · tbe-gen + shape-infer + perf-bench</div>
+              <div id="tl-line2" style="color:var(--td);opacity:0;transition:opacity .4s 0.2s;">  分析 msprof 数据 · CUBE 38% → 评估 tile_m 优化策略...</div>
+              <div id="tl-line3" style="color:var(--td);opacity:0;transition:opacity .4s 0.4s;">  生成候选方案: tile_m=64, 96, 128 各方案 UB 分析...</div>
+              <div id="tl-line4" style="color:var(--ty);opacity:0;transition:opacity .4s;">▶ tile_m=128 超出 UB 预算，需要确认：降至 96 或双缓冲？</div>
+              <div id="tl-line5" style="color:var(--acc);opacity:0;transition:opacity .4s 0.1s;">  [等待开发者选择...]</div>
+              <div id="tl-line6" style="color:var(--tg);opacity:0;transition:opacity .4s;">✓ RMSNorm TBE 生成完成</div>
+              <div id="tl-line7" style="color:var(--tg);opacity:0;transition:opacity .4s 0.2s;">✓ CUBE 利用率: 38% → <span style="font-weight:600;">72.4%</span></div>
+              <div id="tl-line8" style="color:var(--tg);opacity:0;transition:opacity .4s 0.4s;">✓ 精度误差: 4.1e-6 · 通过验收</div>
+            </div>
+
+            <!-- state label bar -->
+            <div id="tl-state-bar" style="padding:8px 12px;background:rgba(251,191,36,.06);border:.5px solid rgba(251,191,36,.2);display:flex;align-items:center;gap:10px;transition:background .4s,border-color .4s;">
+              <div id="tl-dot" style="width:8px;height:8px;border-radius:50%;background:var(--ty);flex-shrink:0;transition:background .3s;"></div>
+              <div style="flex:1;">
+                <div id="tl-state-title" style="font-family:'DM Mono',monospace;font-size:8.5px;color:var(--ty);transition:color .3s;">Agent 运行中 — 黄灯常亮</div>
+                <div id="tl-state-desc" style="font-size:9px;color:var(--tx3);margin-top:1px;transition:color .3s;">AI 正在分析 msprof 并生成优化方案，无需关注屏幕</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
 <!-- ══ STAGE 05: Smart Fix ══ -->
 <div class="sec" id="s-m3a" style="background:var(--sur);">
   <div class="slabel">
@@ -2832,6 +2941,104 @@ setupSlideSteps('s-m1b', 'stp-m1b', [
     act: function() { if(window.dashSetPhase) window.dashSetPhase(3); } },
 ]);
 
+/* s-m1c: traffic light */
+(function initTrafficLight() {
+  var sec = document.getElementById('s-m1c');
+  if (!sec) return;
+
+  var red    = document.getElementById('tl-red');
+  var yellow = document.getElementById('tl-yellow');
+  var green  = document.getElementById('tl-green');
+  var statusChip  = document.getElementById('tl-status-chip');
+  var stateBar    = document.getElementById('tl-state-bar');
+  var stateDot    = document.getElementById('tl-dot');
+  var stateTitle  = document.getElementById('tl-state-title');
+  var stateDesc   = document.getElementById('tl-state-desc');
+  var blinkTimer  = null;
+
+  function clearLights() {
+    clearInterval(blinkTimer);
+    if (red)    { red.style.background    = '#1a0808'; red.style.boxShadow    = 'none'; }
+    if (yellow) { yellow.style.background = '#1a1506'; yellow.style.boxShadow = 'none'; }
+    if (green)  { green.style.background  = '#081a0c'; green.style.boxShadow  = 'none'; }
+  }
+
+  window.trafficSetPhase = function(p) {
+    clearLights();
+    if (p === 1) {
+      /* yellow on — thinking */
+      if (yellow) { yellow.style.background = '#FBBF24'; yellow.style.boxShadow = '0 0 14px 4px rgba(251,191,36,.55)'; }
+      /* show first 3 log lines */
+      ['tl-line1','tl-line2','tl-line3'].forEach(function(id) {
+        var el = document.getElementById(id); if (el) el.style.opacity = '1';
+      });
+      ['tl-line4','tl-line5','tl-line6','tl-line7','tl-line8'].forEach(function(id) {
+        var el = document.getElementById(id); if (el) el.style.opacity = '0';
+      });
+      if (statusChip) { statusChip.textContent = 'RUNNING'; statusChip.style.color = 'var(--ty)'; statusChip.style.background = 'rgba(251,191,36,.1)'; statusChip.style.borderColor = 'rgba(251,191,36,.3)'; }
+      if (stateBar)   { stateBar.style.background = 'rgba(251,191,36,.06)'; stateBar.style.borderColor = 'rgba(251,191,36,.2)'; }
+      if (stateDot)   { stateDot.style.background = 'var(--ty)'; }
+      if (stateTitle) { stateTitle.style.color = 'var(--ty)'; stateTitle.textContent = 'Agent 运行中 — 黄灯常亮'; }
+      if (stateDesc)  { stateDesc.textContent = 'AI 正在分析 msprof 并生成优化方案，无需关注屏幕'; }
+
+    } else if (p === 2) {
+      /* red + yellow blinking — needs confirmation */
+      var redOn = true;
+      blinkTimer = setInterval(function() {
+        if (!red || !yellow) return;
+        if (redOn) {
+          red.style.background    = '#EF4444'; red.style.boxShadow    = '0 0 14px 4px rgba(239,68,68,.5)';
+          yellow.style.background = '#FBBF24'; yellow.style.boxShadow = '0 0 10px 3px rgba(251,191,36,.4)';
+        } else {
+          red.style.background    = '#1a0808'; red.style.boxShadow    = 'none';
+          yellow.style.background = '#1a1506'; yellow.style.boxShadow = 'none';
+        }
+        redOn = !redOn;
+      }, 550);
+      ['tl-line1','tl-line2','tl-line3','tl-line4','tl-line5'].forEach(function(id) {
+        var el = document.getElementById(id); if (el) el.style.opacity = '1';
+      });
+      ['tl-line6','tl-line7','tl-line8'].forEach(function(id) {
+        var el = document.getElementById(id); if (el) el.style.opacity = '0';
+      });
+      if (statusChip) { statusChip.textContent = 'CONFIRM'; statusChip.style.color = 'var(--tr)'; statusChip.style.background = 'rgba(239,68,68,.1)'; statusChip.style.borderColor = 'rgba(239,68,68,.3)'; }
+      if (stateBar)   { stateBar.style.background = 'rgba(239,68,68,.06)'; stateBar.style.borderColor = 'rgba(239,68,68,.2)'; }
+      if (stateDot)   { stateDot.style.background = 'var(--tr)'; }
+      if (stateTitle) { stateTitle.style.color = 'var(--tr)'; stateTitle.textContent = '需要确认 — 红黄交替闪烁'; }
+      if (stateDesc)  { stateDesc.textContent = 'Agent 遇到需要开发者决策的岔路口，闪灯提示无论身在何处'; }
+
+    } else if (p === 3) {
+      /* green on — complete */
+      if (green) { green.style.background = '#34D399'; green.style.boxShadow = '0 0 16px 5px rgba(52,211,153,.5)'; }
+      ['tl-line1','tl-line2','tl-line3','tl-line6','tl-line7','tl-line8'].forEach(function(id) {
+        var el = document.getElementById(id); if (el) el.style.opacity = '1';
+      });
+      ['tl-line4','tl-line5'].forEach(function(id) {
+        var el = document.getElementById(id); if (el) el.style.opacity = '0';
+      });
+      if (statusChip) { statusChip.textContent = 'DONE'; statusChip.style.color = 'var(--tg)'; statusChip.style.background = 'rgba(52,211,153,.1)'; statusChip.style.borderColor = 'rgba(52,211,153,.3)'; }
+      if (stateBar)   { stateBar.style.background = 'rgba(52,211,153,.06)'; stateBar.style.borderColor = 'rgba(52,211,153,.2)'; }
+      if (stateDot)   { stateDot.style.background = 'var(--tg)'; }
+      if (stateTitle) { stateTitle.style.color = 'var(--tg)'; stateTitle.textContent = '任务完成 — 绿灯常亮'; }
+      if (stateDesc)  { stateDesc.textContent = 'TBE 生成 + 精度验证全部通过，可以去审核结果了'; }
+    }
+  };
+
+  /* auto-start phase 1 when section enters view */
+  var obs = new IntersectionObserver(function(entries) {
+    if (entries[0].isIntersecting) window.trafficSetPhase(1);
+    else { clearLights(); }
+  }, { threshold: 0.4 });
+  obs.observe(sec);
+})();
+
+/* s-m1c setupSlideSteps */
+setupSlideSteps('s-m1c', 'stp-m1c', [
+  { ms:2000, act: function() { if(window.trafficSetPhase) window.trafficSetPhase(1); } },
+  { ms:2800, act: function() { if(window.trafficSetPhase) window.trafficSetPhase(2); } },
+  { ms:2600, act: function() { if(window.trafficSetPhase) window.trafficSetPhase(3); } },
+]);
+
 /* s-m3a: smart fix */
 setupSlideSteps('s-m3a', 'stp-m3a', [
   { c:[.50,.45], ms:2400,
@@ -2900,6 +3107,7 @@ document.head.appendChild(sty);
     { id:'s-m3b',        label:'Goal 命令' },
     { id:'s-m1a',        label:'Agent 视图' },
     { id:'s-m1b',        label:'多硬件看板' },
+    { id:'s-m1c',        label:'实体状态灯' },
     { id:'s-m3a',        label:'智能修复' },
     { id:'s-m5a',        label:'结果审核' },
     { id:'s-m5b',        label:'AI 推理' },
