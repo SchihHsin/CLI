@@ -41,7 +41,6 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
 .ba-before{background:var(--grey-1);border:.5px solid var(--grey-2);padding:10px 12px;}
 .ba-after{background:var(--acc-dim);border:.5px solid var(--acc-b);padding:10px 12px;}
 .ba-label{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.08em;margin-bottom:4px;display:flex;align-items:center;gap:4px;}
-.ba-label span{font-size:11px;}
 .ba-before .ba-label{color:var(--tx2);}
 .ba-after .ba-label{color:var(--acc);}
 .ba-text{font-size:10px;color:var(--tx2);line-height:1.6;}
@@ -621,7 +620,7 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
         </div>
         <div class="ba-grid">
           <div class="ba-before">
-            <div class="ba-label"><span>✕</span> 过去的做法</div>
+            <div class="ba-label" style="gap:6px;"><span style="font-family:'DM Mono',monospace;font-size:7px;letter-spacing:.1em;background:var(--grey-2);color:var(--tx2);padding:1px 6px;">BEFORE</span>过去的做法</div>
             <div style="display:flex;flex-direction:column;gap:3px;margin-top:4px;">
               <div style="background:var(--bg2);padding:5px 8px;border-left:2px solid var(--grey-2);font-size:8px;color:var(--tx2);">
                 早上重新打开项目…<br>
@@ -633,7 +632,7 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
             </div>
           </div>
           <div class="ba-after">
-            <div class="ba-label"><span>◆</span> 新的设计</div>
+            <div class="ba-label" style="gap:6px;"><span style="font-family:'DM Mono',monospace;font-size:7px;letter-spacing:.1em;background:var(--acc);color:white;padding:1px 6px;">AFTER</span>新的设计</div>
             <div class="ba-text">AI 自动加载历史：TBE 版本历史、msprof 分析基线、shape 约束记录，开发者直接从上次断点继续。</div>
           </div>
         </div>
@@ -679,7 +678,7 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
         </div>
         <div class="ba-grid">
           <div class="ba-before">
-            <div class="ba-label"><span>✕</span> 过去的做法</div>
+            <div class="ba-label" style="gap:6px;"><span style="font-family:'DM Mono',monospace;font-size:7px;letter-spacing:.1em;background:var(--grey-2);color:var(--tx2);padding:1px 6px;">BEFORE</span>过去的做法</div>
             <div style="display:flex;flex-direction:column;gap:3px;margin-top:4px;">
               <div style="background:var(--bg2);padding:5px 8px;border-left:2px solid var(--grey-2);border:.5px solid var(--bdr2);">
                 <span style="font-size:8px;color:var(--tx);">「CUBE 利用率 38%，我应该怎么优化？」</span>
@@ -689,7 +688,7 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
             </div>
           </div>
           <div class="ba-after">
-            <div class="ba-label"><span>◆</span> 新的设计</div>
+            <div class="ba-label" style="gap:6px;"><span style="font-family:'DM Mono',monospace;font-size:7px;letter-spacing:.1em;background:var(--acc);color:white;padding:1px 6px;">AFTER</span>新的设计</div>
             <div class="ba-text">光标指向 msprof 中的 CUBE 利用率低谷，说出疑问，AI 自动关联代码段给出 data_move 优化建议。</div>
           </div>
         </div>
@@ -814,7 +813,7 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
         </div>
         <div class="ba-grid">
           <div class="ba-before">
-            <div class="ba-label"><span>✕</span> 过去的做法</div>
+            <div class="ba-label" style="gap:6px;"><span style="font-family:'DM Mono',monospace;font-size:7px;letter-spacing:.1em;background:var(--grey-2);color:var(--tx2);padding:1px 6px;">BEFORE</span>过去的做法</div>
             <div style="display:flex;flex-direction:column;gap:3px;margin-top:4px;">
               <div style="background:var(--sur);padding:5px 8px;border-left:2px solid var(--grey-2);border:.5px solid var(--bdr2);">
                 <div style="font-size:8px;color:var(--tx2);">打开 msprof…</div>
@@ -825,7 +824,7 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
             </div>
           </div>
           <div class="ba-after">
-            <div class="ba-label"><span>◆</span> 新的设计</div>
+            <div class="ba-label" style="gap:6px;"><span style="font-family:'DM Mono',monospace;font-size:7px;letter-spacing:.1em;background:var(--acc);color:white;padding:1px 6px;">AFTER</span>新的设计</div>
             <div class="ba-text">AI 伴侣在 msprof 界面飞行引导，依次解释每个关键指标，直接给出"这里是瓶颈，建议这样改"的结论。</div>
           </div>
         </div>
@@ -911,7 +910,7 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
         </div>
         <div class="ba-grid">
           <div class="ba-before">
-            <div class="ba-label"><span>✕</span> 过去的做法</div>
+            <div class="ba-label" style="gap:6px;"><span style="font-family:'DM Mono',monospace;font-size:7px;letter-spacing:.1em;background:var(--grey-2);color:var(--tx2);padding:1px 6px;">BEFORE</span>过去的做法</div>
             <div style="display:flex;flex-direction:column;gap:3px;margin-top:4px;">
               <div style="background:var(--tb);padding:6px 8px;font-family:'DM Mono',monospace;font-size:8px;border:.5px solid var(--tbdr);">
                 <span style="color:var(--tp);">tile_m</span> = <span style="color:var(--tg);">64</span> <span style="color:var(--td)"># 经验值</span>
@@ -923,7 +922,7 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
             </div>
           </div>
           <div class="ba-after">
-            <div class="ba-label"><span>◆</span> 新的设计</div>
+            <div class="ba-label" style="gap:6px;"><span style="font-family:'DM Mono',monospace;font-size:7px;letter-spacing:.1em;background:var(--acc);color:white;padding:1px 6px;">AFTER</span>新的设计</div>
             <div class="ba-text">停顿在 tile_m 参数行，AI 自动计算该配置下的 UB 占用与 AI Core 理论利用率，给出最优值建议。</div>
           </div>
         </div>
@@ -999,7 +998,7 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
         </div>
         <div class="ba-grid">
           <div class="ba-before">
-            <div class="ba-label"><span>✕</span> 过去的做法</div>
+            <div class="ba-label" style="gap:6px;"><span style="font-family:'DM Mono',monospace;font-size:7px;letter-spacing:.1em;background:var(--grey-2);color:var(--tx2);padding:1px 6px;">BEFORE</span>过去的做法</div>
             <div style="display:flex;flex-direction:column;gap:3px;margin-top:4px;">
               <div style="background:var(--tb);padding:5px 8px;border-left:2px solid var(--grey-2);font-family:'DM Mono',monospace;font-size:8px;border:.5px solid var(--tbdr);">
                 <span style="color:var(--tw);">tik.data_move(x_ub, x_gm, ...)</span>
@@ -1010,7 +1009,7 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
             </div>
           </div>
           <div class="ba-after">
-            <div class="ba-label"><span>◆</span> 新的设计</div>
+            <div class="ba-label" style="gap:6px;"><span style="font-family:'DM Mono',monospace;font-size:7px;letter-spacing:.1em;background:var(--acc);color:white;padding:1px 6px;">AFTER</span>新的设计</div>
             <div class="ba-text">光标悬停在 data_move 行 1.5s，AI 自动计算该搬运操作的带宽效率和昇腾内存层次命中情况，给出优化提示。</div>
           </div>
         </div>
@@ -1081,7 +1080,7 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
         </div>
         <div class="ba-grid">
           <div class="ba-before">
-            <div class="ba-label"><span>✕</span> 过去的做法</div>
+            <div class="ba-label" style="gap:6px;"><span style="font-family:'DM Mono',monospace;font-size:7px;letter-spacing:.1em;background:var(--grey-2);color:var(--tx2);padding:1px 6px;">BEFORE</span>过去的做法</div>
             <div style="background:#0f0f16;border-radius:5px;padding:7px 9px;font-family:'DM Mono',monospace;font-size:8px;border:.5px solid #252530;margin-top:4px;line-height:1.7;">
               <div style="color:var(--td);">改 tile_m=64 → 跑 msprof → 38%</div>
               <div style="color:var(--td);">改 tile_m=128 → 跑 msprof → 51%</div>
@@ -1091,7 +1090,7 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
             </div>
           </div>
           <div class="ba-after">
-            <div class="ba-label"><span>◆</span> 新的设计</div>
+            <div class="ba-label" style="gap:6px;"><span style="font-family:'DM Mono',monospace;font-size:7px;letter-spacing:.1em;background:var(--acc);color:white;padding:1px 6px;">AFTER</span>新的设计</div>
             <div class="ba-text">一次 /goal 声明验收条件，AI 自动迭代 TBE 变体 + 并行跑 msprof + 验证精度，达成即停止。</div>
           </div>
         </div>
@@ -1166,7 +1165,7 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
         </div>
         <div class="ba-grid">
           <div class="ba-before">
-            <div class="ba-label"><span>✕</span> 过去的做法</div>
+            <div class="ba-label" style="gap:6px;"><span style="font-family:'DM Mono',monospace;font-size:7px;letter-spacing:.1em;background:var(--grey-2);color:var(--tx2);padding:1px 6px;">BEFORE</span>过去的做法</div>
             <div style="background:#0f0f16;border-radius:5px;padding:7px 9px;font-family:'DM Mono',monospace;font-size:8px;border:.5px solid #252530;margin-top:4px;line-height:1.7;">
               <div style="color:var(--td);">[08:30] 提交 TBE 代码</div>
               <div style="color:var(--td);">[09:15] shape 推导报错 → 修复</div>
@@ -1176,7 +1175,7 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
             </div>
           </div>
           <div class="ba-after">
-            <div class="ba-label"><span>◆</span> 新的设计</div>
+            <div class="ba-label" style="gap:6px;"><span style="font-family:'DM Mono',monospace;font-size:7px;letter-spacing:.1em;background:var(--acc);color:white;padding:1px 6px;">AFTER</span>新的设计</div>
             <div class="ba-text">4 个 Agent 并行执行，shape/dtype/性能同步验证，任何异常即时浮出，开发者只需在关键节点确认决策。</div>
           </div>
         </div>
@@ -1225,7 +1224,7 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
         </div>
         <div class="ba-grid">
           <div class="ba-before">
-            <div class="ba-label"><span>✕</span> 过去的做法</div>
+            <div class="ba-label" style="gap:6px;"><span style="font-family:'DM Mono',monospace;font-size:7px;letter-spacing:.1em;background:var(--grey-2);color:var(--tx2);padding:1px 6px;">BEFORE</span>过去的做法</div>
             <div style="background:#0f0f16;border-radius:5px;padding:7px 9px;font-family:'DM Mono',monospace;font-size:8px;border:.5px solid #252530;margin-top:4px;line-height:1.7;">
               <div style="color:var(--td);">[910B] AI Core: 72% ✓</div>
               <div style="color:var(--tr);">[310P] EZ9999: format error</div>
@@ -1234,7 +1233,7 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
             </div>
           </div>
           <div class="ba-after">
-            <div class="ba-label"><span>◆</span> 新的设计</div>
+            <div class="ba-label" style="gap:6px;"><span style="font-family:'DM Mono',monospace;font-size:7px;letter-spacing:.1em;background:var(--acc);color:white;padding:1px 6px;">AFTER</span>新的设计</div>
             <div class="ba-text">多硬件测试结果聚合到一张看板，异常卡自动高亮，开发者无需切换终端即可发现 310P 的 format 问题并注入修复。</div>
           </div>
         </div>
@@ -1280,7 +1279,7 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
         </div>
         <div class="ba-grid">
           <div class="ba-before">
-            <div class="ba-label"><span>✕</span> 过去的做法</div>
+            <div class="ba-label" style="gap:6px;"><span style="font-family:'DM Mono',monospace;font-size:7px;letter-spacing:.1em;background:var(--grey-2);color:var(--tx2);padding:1px 6px;">BEFORE</span>过去的做法</div>
             <div style="background:#0f0f16;border-radius:5px;padding:7px 9px;font-family:'DM Mono',monospace;font-size:8px;border:.5px solid #252530;margin-top:4px;line-height:1.7;">
               <div style="color:var(--tr);">[ERROR] EZ9999 InnerError</div>
               <div style="color:var(--td);">  at aicore_build.cc:2341</div>
@@ -1291,7 +1290,7 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
             </div>
           </div>
           <div class="ba-after">
-            <div class="ba-label"><span>◆</span> 新的设计</div>
+            <div class="ba-label" style="gap:6px;"><span style="font-family:'DM Mono',monospace;font-size:7px;letter-spacing:.1em;background:var(--acc);color:white;padding:1px 6px;">AFTER</span>新的设计</div>
             <div class="ba-text">AI 将 EZ9999 映射到业务 TBE 代码第 26 行的 format 配置，生成修复代码并解释昇腾 format 约束原因。</div>
           </div>
         </div>
@@ -1356,7 +1355,7 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
         </div>
         <div class="ba-grid">
           <div class="ba-before">
-            <div class="ba-label"><span>✕</span> 过去的做法</div>
+            <div class="ba-label" style="gap:6px;"><span style="font-family:'DM Mono',monospace;font-size:7px;letter-spacing:.1em;background:var(--grey-2);color:var(--tx2);padding:1px 6px;">BEFORE</span>过去的做法</div>
             <div style="display:flex;flex-direction:column;gap:3px;margin-top:4px;">
               <div style="background:var(--tb);padding:5px 8px;border-left:2px solid var(--grey-2);font-family:'DM Mono',monospace;font-size:8px;border:.5px solid var(--tbdr);">
                 <div style="color:var(--td);">msprof 报告: report_0312.html</div>
@@ -1367,7 +1366,7 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
             </div>
           </div>
           <div class="ba-after">
-            <div class="ba-label"><span>◆</span> 新的设计</div>
+            <div class="ba-label" style="gap:6px;"><span style="font-family:'DM Mono',monospace;font-size:7px;letter-spacing:.1em;background:var(--acc);color:white;padding:1px 6px;">AFTER</span>新的设计</div>
             <div class="ba-text">AI 自动聚合性能、精度、约束三维数据，统一展示在交互式审核面板中，一屏看清算子交付状态。</div>
           </div>
         </div>
@@ -1503,7 +1502,7 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
         </div>
         <div class="ba-grid">
           <div class="ba-before">
-            <div class="ba-label"><span>✕</span> 过去的做法</div>
+            <div class="ba-label" style="gap:6px;"><span style="font-family:'DM Mono',monospace;font-size:7px;letter-spacing:.1em;background:var(--grey-2);color:var(--tx2);padding:1px 6px;">BEFORE</span>过去的做法</div>
             <div style="display:flex;flex-direction:column;gap:3px;margin-top:4px;">
               <div style="background:var(--tb);padding:5px 8px;border-left:2px solid var(--grey-2);font-family:'DM Mono',monospace;font-size:8px;border:.5px solid var(--tbdr);">
                 <span style="color:var(--tp);">tile_m</span> = <span style="color:var(--tg);">128</span>  <span style="color:var(--td);"># ???</span>
@@ -1513,7 +1512,7 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
             </div>
           </div>
           <div class="ba-after">
-            <div class="ba-label"><span>◆</span> 新的设计</div>
+            <div class="ba-label" style="gap:6px;"><span style="font-family:'DM Mono',monospace;font-size:7px;letter-spacing:.1em;background:var(--acc);color:white;padding:1px 6px;">AFTER</span>新的设计</div>
             <div class="ba-text">AI 给出 tile_m=128 的完整推导：UB 容量 / CUBE 粒度约束 / 实测利用率对比，工程师理解后可主动干预调整。</div>
           </div>
         </div>
@@ -1575,7 +1574,7 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
         </div>
         <div class="ba-grid">
           <div class="ba-before">
-            <div class="ba-label"><span>✕</span> 过去的做法</div>
+            <div class="ba-label" style="gap:6px;"><span style="font-family:'DM Mono',monospace;font-size:7px;letter-spacing:.1em;background:var(--grey-2);color:var(--tx2);padding:1px 6px;">BEFORE</span>过去的做法</div>
             <div style="display:flex;flex-direction:column;gap:3px;margin-top:4px;">
               <div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:2px;">
                 <span style="background:var(--bg2);border:.5px solid var(--bdr2);padding:3px 7px;font-size:8px;color:var(--tx3);">群里问过</span>
@@ -1587,7 +1586,7 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
             </div>
           </div>
           <div class="ba-after">
-            <div class="ba-label"><span>◆</span> 新的设计</div>
+            <div class="ba-label" style="gap:6px;"><span style="font-family:'DM Mono',monospace;font-size:7px;letter-spacing:.1em;background:var(--acc);color:white;padding:1px 6px;">AFTER</span>新的设计</div>
             <div class="ba-text">AI 开发时自动沉淀经验，团队算子库结构化可检索，新开发者直接继承团队的昇腾优化积累。</div>
           </div>
         </div>
