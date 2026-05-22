@@ -1642,81 +1642,6 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
 </div>
 
 <!-- ══ STAGE 05: Smart Fix ══ -->
-<div class="sec" id="s-m3a" style="background:var(--sur);">
-  <div class="slabel">
-    <span class="sub">出错恢复 · Stage 05 · 设计点 1/1</span>
-    <span class="main">Smart Fix — CANN 错误语义化诊断，一键修复</span>
-  </div>
-  <div class="inner">
-    <div class="dp-layout">
-      <div class="dp-left">
-        <div class="dp-desc">
-          <div class="dp-label">设计说明</div>
-          <div class="dp-title">CANN 错误码 → 业务代码定位</div>
-          <div class="dp-body">CANN 的错误码（EZ9999、RT_ERROR 等）指向框架内部，与业务 TBE 代码相差数十层调用栈。AI 分析完整 stack trace + 算子配置，将错误映射回开发者代码中的具体行，并生成可直接应用的修复方案。</div>
-        </div>
-        <div class="dp-desc">
-          <div class="dp-label">核心设计点</div>
-          <div class="dp-points">
-            <div class="dpp">支持 CANN 全系列错误类型：format 不匹配、shape 推导失败、dtype 不支持、OOM</div>
-            <div class="dpp">自动关联：错误码 → TBE 代码行 → 修复方案</div>
-            <div class="dpp">修复方案含昇腾硬件约束说明（为什么这样改）</div>
-            <div class="dpp">输入 <span style="font-family:'DM Mono',monospace;color:var(--acc);">fix</span> 触发，一键应用修复</div>
-          </div>
-        </div>
-        <div class="ba-grid">
-          <div class="ba-before">
-            <div class="ba-label" style="gap:6px;"><span style="font-family:'DM Mono',monospace;font-size:7px;letter-spacing:.1em;background:var(--grey-2);color:var(--tx2);padding:1px 6px;">BEFORE</span>过去的做法</div>
-            <div style="background:#0f0f16;border-radius:5px;padding:7px 9px;font-family:'DM Mono',monospace;font-size:8px;border:.5px solid #252530;margin-top:4px;line-height:1.7;">
-              <div style="color:var(--tr);">[ERROR] EZ9999 InnerError</div>
-              <div style="color:var(--td);">  at aicore_build.cc:2341</div>
-              <div style="color:var(--td);">  at tbe_compile.py:847</div>
-              <div style="color:var(--td);margin-top:4px;"># 搜索 EZ9999...</div>
-              <div style="color:var(--td);"># 查 CANN 文档...</div>
-              <div style="color:var(--ty);">← 30分钟无法定位</div>
-            </div>
-          </div>
-          <div class="ba-after">
-            <div class="ba-label" style="gap:6px;"><span style="font-family:'DM Mono',monospace;font-size:7px;letter-spacing:.1em;background:var(--acc);color:white;padding:1px 6px;">AFTER</span>新的设计</div>
-            <div class="ba-text">AI 将 EZ9999 映射到业务 TBE 代码第 26 行的 format 配置，生成修复代码并解释昇腾 format 约束原因。</div>
-          </div>
-        </div>
-      </div>
-      <div class="dp-right">
-        <div class="mockup-label">动态 Mockup — CANN 错误诊断</div>
-        <div class="stp-strip" id="stp-m3a">
-          <div class="stp-bar"><div class="stp-fill"></div></div>
-          <div class="stp-steps">
-            <div class="stp-step"><div class="stp-num">1</div><span class="stp-lbl">CANN 报错</span></div>
-            <div class="stp-step"><div class="stp-num">2</div><span class="stp-lbl">AI 语义化诊断</span></div>
-            <div class="stp-step"><div class="stp-num">3</div><span class="stp-lbl">一键应用修复</span></div>
-          </div>
-        </div>
-        <div style="flex:1;background:var(--tb);border:.5px solid var(--tbdr);display:flex;flex-direction:column;overflow:hidden;">
-          <div style="background:var(--tbar);padding:6px 12px;border-bottom:.5px solid var(--tbdr);font-family:'DM Mono',monospace;font-size:9px;color:var(--td);display:flex;align-items:center;gap:8px;">
-            <span style="color:var(--acc);">HAI Terminal</span>
-            <span>RMSNorm · 910B</span>
-          </div>
-          <div style="flex:1;overflow-y:auto;padding:10px 14px;display:flex;flex-direction:column;gap:3px;" id="fix-terminal"></div>
-          <div id="fix-preview-card" style="display:none;border-top:.5px solid var(--tbdr);padding:8px 14px;background:rgba(52,211,153,.05);">
-            <div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--tg);margin-bottom:4px;">✓ 修复后效果预览</div>
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
-              <div style="background:rgba(248,113,113,.08);border:.5px solid rgba(248,113,113,.3);padding:5px 8px;border-left:2px solid var(--grey-2);">
-                <div style="font-family:'DM Mono',monospace;font-size:7.5px;color:var(--tr);margin-bottom:3px;">修复前</div>
-                <div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--td);">format=NHWC → EZ9999</div>
-              </div>
-              <div style="background:rgba(52,211,153,.08);border:.5px solid rgba(52,211,153,.3);padding:5px 8px;border-left:2px solid var(--grey-2);">
-                <div style="font-family:'DM Mono',monospace;font-size:7.5px;color:var(--tg);margin-bottom:3px;">修复后</div>
-                <div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--tg);">format=FRACTAL_NZ → ✓</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
 <!-- ══ STAGE 06-1: 结果审核 ══ -->
 <div class="sec" id="s-m5a" style="background:var(--bg);">
   <div class="slabel">
@@ -2731,58 +2656,6 @@ function setupSlideSteps(secId, stripId, defs) {
 })();
 
 /* ─────────────────────────────────────────────
-   s-m3a: Smart fix IIFE (EZ9999)
-───────────────────────────────────────────── */
-(function initSmartFix() {
-  const terminal = document.getElementById('fix-terminal');
-  const preview  = document.getElementById('fix-preview-card');
-
-  function addLine(text, color, delay) {
-    setTimeout(() => {
-      if (!terminal) return;
-      const d = document.createElement('div');
-      d.style.cssText = 'font-family:\'DM Mono\',monospace;font-size:8.5px;line-height:1.75;color:' + color + ';';
-      d.textContent = text;
-      terminal.appendChild(d);
-      terminal.scrollTop = terminal.scrollHeight;
-    }, delay);
-  }
-
-  let initialized = false;
-  function setPhase(p) {
-    if (!terminal) return;
-    if (!initialized) {
-      terminal.innerHTML = '';
-      initialized = true;
-    }
-    if (p === 1) {
-      addLine('$ hai compile rmsnorm.py --target 910B', 'var(--td)', 0);
-      addLine('[COMPILE] 正在构建算子...', 'var(--td)', 200);
-      addLine('[ERROR] EZ9999: InnerError', 'var(--tr)', 500);
-      addLine('  OpType: RMSNorm', 'var(--tr)', 650);
-      addLine('  Input format: NHWC', 'var(--td)', 800);
-      addLine('  Expected: FRACTAL_NZ', 'var(--tr)', 950);
-      addLine('  at tbe_compile.py:2847', 'var(--td)', 1100);
-      addLine('  at aicore_build.cc:341', 'var(--td)', 1200);
-    } else if (p === 2) {
-      addLine('', 'var(--td)', 0);
-      addLine('◆ HAI 错误语义化分析', 'var(--acc)', 100);
-      addLine('  EZ9999 → format 不匹配：NHWC vs FRACTAL_NZ', 'var(--tw)', 350);
-      addLine('  定位到业务代码：rmsnorm.py:26', 'var(--tw)', 600);
-      addLine('  问题：输入 tensor format 未显式声明', 'var(--ty)', 850);
-      addLine('  修复：添加 .set_format(TbeDataFormat.FRACTAL_NZ)', 'var(--tg)', 1100);
-    } else if (p === 3) {
-      addLine('', 'var(--td)', 0);
-      addLine('✓ 修复已应用 · 正在重新编译...', 'var(--tg)', 100);
-      addLine('✓ 910B 编译成功', 'var(--tg)', 600);
-      if (preview) setTimeout(() => { preview.style.display = 'block'; }, 700);
-    }
-  }
-
-  window.sfSetPhase = setPhase;
-})();
-
-/* ─────────────────────────────────────────────
    s-m5a: Review tabs IIFE
 ───────────────────────────────────────────── */
 (function initReviewTabs() {
@@ -3145,16 +3018,6 @@ setupSlideSteps('s-m1c', 'stp-m1c', [
   { ms:2600, act: function() { if(window.trafficSetPhase) window.trafficSetPhase(3); } },
 ]);
 
-/* s-m3a: smart fix */
-setupSlideSteps('s-m3a', 'stp-m3a', [
-  { c:[.50,.45], ms:2400,
-    act: function() { if(window.sfSetPhase) window.sfSetPhase(1); } },
-  { c:[.50,.55], click:true, key:'⌘ K', ms:2400,
-    act: function() { if(window.sfSetPhase) window.sfSetPhase(2); } },
-  { c:[.50,.65], click:true, key:'↵', ms:2800,
-    act: function() { if(window.sfSetPhase) window.sfSetPhase(3); } },
-]);
-
 /* s-m5a: review panel — tab switching */
 setupSlideSteps('s-m5a', 'stp-m5a', [
   { ms:2000, act: function() { if(window.reviewSetPhase) window.reviewSetPhase(1); } },
@@ -3214,7 +3077,6 @@ document.head.appendChild(sty);
     { id:'s-m1a',        label:'Agent 视图' },
     { id:'s-m1b',        label:'多硬件看板' },
     { id:'s-m1c',        label:'实体状态灯' },
-    { id:'s-m3a',        label:'智能修复' },
     { id:'s-m5a',        label:'结果审核' },
     { id:'s-m5b',        label:'AI 推理' },
     { id:'s-m4b',        label:'团队库' },
