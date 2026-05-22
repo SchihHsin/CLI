@@ -349,7 +349,7 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
     </div>
 
     <!-- 03 CANN + MindSpore -->
-    <div style="flex:1;background:var(--grey-1);border:.5px solid var(--grey-2);padding:28px 24px;display:flex;flex-direction:column;gap:12px;">
+    <div style="flex:1;background:var(--sur);border:.5px solid var(--grey-2);padding:28px 24px;display:flex;flex-direction:column;gap:12px;">
       <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.12em;color:var(--grey-3);">2020 — 2024</div>
       <div style="font-family:'Inter','Helvetica Neue',sans-serif;font-size:20px;font-weight:200;color:var(--tx);line-height:1.2;letter-spacing:-.02em;">CANN +<br>MindSpore</div>
       <div style="height:.5px;background:var(--grey-2);"></div>
@@ -1995,8 +1995,7 @@ function setupSlideSteps(secId, stripId, defs) {
       if (aiText) {
         aiText.style.color = 'var(--tx)';
         typeText(aiText,
-          'CUBE 21% 过低：data_move 占 AI Core 时间 67%。
-建议 tile_m: 64 → 128，预计 CUBE ↑ 至 ~72%，AI Core ↑ 至 ~72.4%',
+          'CUBE 21% 过低：data_move 占 AI Core 时间 67%。\n建议 tile_m: 64 → 128，预计 CUBE ↑ 至 ~72%，AI Core ↑ 至 ~72.4%',
           28);
       }
       /* bars animate to optimized values */
