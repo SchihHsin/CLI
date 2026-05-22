@@ -1477,90 +1477,151 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
 
         <!-- Desk scene -->
         <div style="flex:1;display:flex;flex-direction:column;gap:10px;min-height:0;">
-          <div style="flex:1;display:flex;align-items:flex-end;gap:14px;min-height:0;overflow:hidden;padding-bottom:2px;">
+          <!-- scene wrapper — position:relative for cable overlay -->
+          <div style="flex:1;display:flex;align-items:flex-end;gap:0;min-height:0;position:relative;padding:8px 4px 0;">
 
-            <!-- ──── Laptop (dominant) ──── -->
-            <div style="flex:1;display:flex;flex-direction:column;align-items:center;min-width:0;filter:drop-shadow(0 10px 28px rgba(0,0,0,.45));">
-              <!-- Screen lid -->
-              <div style="position:relative;width:100%;">
-                <!-- Bezel -->
-                <div style="background:#1c1c1f;border:2.5px solid #2e2e32;border-bottom:none;padding:10px 10px 7px;position:relative;">
-                  <!-- Camera dot -->
-                  <div style="position:absolute;top:5px;left:50%;transform:translateX(-50%);width:6px;height:6px;border-radius:50%;background:#111;border:.5px solid #333;"></div>
-                  <!-- Screen -->
-                  <div id="tl-screen" style="background:#09090f;border:.5px solid #1e1e2a;padding:8px 10px;font-family:'DM Mono',monospace;font-size:7px;line-height:1.8;overflow:hidden;height:140px;">
-                    <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;padding-bottom:5px;border-bottom:.5px solid #1e1e2a;">
-                      <span style="color:#002FA7;font-size:7.5px;">◆</span>
-                      <span style="color:#48485C;letter-spacing:.08em;">HAI · Agent View · RMSNorm 优化</span>
-                      <span id="tl-status-chip" style="margin-left:auto;color:var(--ty);background:rgba(251,191,36,.1);border:.5px solid rgba(251,191,36,.25);padding:1px 6px;font-size:6.5px;transition:all .3s;">RUNNING</span>
-                    </div>
-                    <div id="tl-s1" style="color:#CECEE0;">$ hai run RMSNorm --hw 910B --goal "cube_util > 70%"</div>
-                    <div id="tl-s2" style="color:#4E4E7A;opacity:0;transition:opacity .4s;">◆ Agent 启动 · tbe-gen + shape-infer + perf-bench</div>
-                    <div id="tl-s3" style="color:#4E4E7A;opacity:0;transition:opacity .45s 0.12s;">  分析 msprof · CUBE 38% → 评估 tile_m 64/96/128</div>
-                    <div id="tl-s4" style="color:#FBBF24;opacity:0;transition:opacity .4s;">▶ tile_m=128 超 UB 预算，需要确认：降至 96 还是双缓冲？</div>
-                    <div id="tl-s5" style="color:#002FA7;opacity:0;transition:opacity .4s 0.1s;">  [等待开发者选择…]</div>
-                    <div id="tl-s6" style="color:#34D399;opacity:0;transition:opacity .4s;">✓ RMSNorm TBE 生成完成</div>
-                    <div id="tl-s7" style="color:#34D399;opacity:0;transition:opacity .4s 0.15s;">✓ CUBE 利用率: 38% → 72.4%  ·  精度误差: 4.1e-6 · 通过验收</div>
-                  </div>
+            <!-- ──── MacBook mockup ──── -->
+            <div style="flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;filter:drop-shadow(0 10px 30px rgba(0,0,0,.5));">
+
+              <!-- Screen lid: aluminium bezel -->
+              <div style="width:100%;background:linear-gradient(180deg,#c8c8c8,#b0b0b0);border:1.5px solid #888;border-bottom:none;padding:6px 6px 0;border-radius:5px 5px 0 0;box-shadow:inset 0 1px 0 rgba(255,255,255,.6);">
+                <!-- Camera notch area -->
+                <div style="height:8px;display:flex;justify-content:center;align-items:center;">
+                  <div style="width:5px;height:5px;border-radius:50%;background:#7a7a7a;border:.5px solid #606060;"></div>
                 </div>
-                <!-- Hinge -->
-                <div style="height:3px;background:linear-gradient(180deg,#0e0e14,#1a1a1f);"></div>
+                <!-- Screen glass + macOS UI -->
+                <div style="background:#000;border-radius:2px 2px 0 0;overflow:hidden;">
+                  <div id="tl-screen" style="position:relative;overflow:hidden;aspect-ratio:16/10;">
+
+                    <!-- Wallpaper -->
+                    <div style="position:absolute;inset:0;background:linear-gradient(155deg,#0c0e1f 0%,#131740 22%,#0a2070 48%,#0050c8 72%,#1a7ae0 90%,#40a0f0 100%);"></div>
+                    <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 22% 30%,rgba(120,160,255,.28) 0%,transparent 50%),radial-gradient(ellipse at 80% 70%,rgba(160,100,255,.2) 0%,transparent 45%);pointer-events:none;"></div>
+
+                    <!-- Menu bar -->
+                    <div style="position:absolute;top:0;left:0;right:0;height:14px;background:rgba(0,0,0,.3);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);display:flex;align-items:center;padding:0 8px;gap:6px;z-index:10;">
+                      <span style="font-size:8px;color:rgba(255,255,255,.9);">&#63743;</span>
+                      <span style="font-size:5.5px;font-weight:700;color:rgba(255,255,255,.9);font-family:-apple-system,sans-serif;letter-spacing:.02em;">Terminal</span>
+                      <span style="font-size:5.5px;color:rgba(255,255,255,.5);font-family:-apple-system,sans-serif;">Shell</span>
+                      <span style="font-size:5.5px;color:rgba(255,255,255,.5);font-family:-apple-system,sans-serif;">Edit</span>
+                      <div style="margin-left:auto;display:flex;align-items:center;gap:5px;">
+                        <span style="font-size:5.5px;color:rgba(255,255,255,.65);font-family:-apple-system,sans-serif;">100%</span>
+                        <span style="font-size:5.5px;color:rgba(255,255,255,.85);font-family:-apple-system,sans-serif;font-weight:500;">11:42</span>
+                      </div>
+                    </div>
+
+                    <!-- Floating Terminal window -->
+                    <div style="position:absolute;top:18px;left:5%;right:5%;bottom:20px;background:rgba(8,8,10,.93);border-radius:6px;box-shadow:0 6px 28px rgba(0,0,0,.7),0 0 0 .5px rgba(255,255,255,.07);overflow:hidden;display:flex;flex-direction:column;">
+                      <!-- Traffic-light title bar -->
+                      <div style="height:17px;background:#2a2a2c;display:flex;align-items:center;padding:0 8px;gap:5px;flex-shrink:0;border-bottom:.5px solid rgba(255,255,255,.06);">
+                        <div style="width:7px;height:7px;border-radius:50%;background:#ff5f57;"></div>
+                        <div style="width:7px;height:7px;border-radius:50%;background:#febc2e;"></div>
+                        <div style="width:7px;height:7px;border-radius:50%;background:#28c840;"></div>
+                        <span style="flex:1;text-align:center;font-size:5.5px;color:rgba(255,255,255,.4);font-family:-apple-system,sans-serif;">HAI Terminal — zsh</span>
+                        <span id="tl-status-chip" style="font-family:'DM Mono',monospace;font-size:5.5px;color:#fbbf24;background:rgba(251,191,36,.12);border:.5px solid rgba(251,191,36,.3);padding:1px 5px;transition:all .3s;white-space:nowrap;">RUNNING</span>
+                      </div>
+                      <!-- Terminal body -->
+                      <div style="flex:1;padding:5px 8px;font-family:'DM Mono',monospace;font-size:6.5px;line-height:1.8;overflow:hidden;">
+                        <div id="tl-s1" style="color:#c8c8d0;">$ hai run RMSNorm --hw 910B --goal <span style="color:#a8d8a8;">"cube_util &gt; 70%"</span></div>
+                        <div id="tl-s2" style="color:#8888a8;opacity:0;transition:opacity .4s;">◆ Agent 启动 · tbe-gen + shape-infer + perf-bench</div>
+                        <div id="tl-s3" style="color:#666680;opacity:0;transition:opacity .45s 0.12s;">  分析 msprof · CUBE 38% → 评估 tile_m 64/96/128</div>
+                        <div id="tl-s4" style="color:#e8c060;opacity:0;transition:opacity .4s;">▶ tile_m=128 超 UB，确认策略：96 还是双缓冲？</div>
+                        <div id="tl-s5" style="color:#6090e0;opacity:0;transition:opacity .4s 0.1s;">  [等待开发者选择…]</div>
+                        <div id="tl-s6" style="color:#50d080;opacity:0;transition:opacity .4s;">✓ RMSNorm TBE 生成完成</div>
+                        <div id="tl-s7" style="color:#50d080;opacity:0;transition:opacity .4s 0.15s;">✓ CUBE 72.4% · 精度误差 4.1e-6 · 通过验收</div>
+                      </div>
+                    </div>
+
+                    <!-- Dock -->
+                    <div style="position:absolute;bottom:2px;left:50%;transform:translateX(-50%);background:rgba(255,255,255,.18);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-radius:9px;padding:2px 5px 3px;display:flex;gap:3px;align-items:flex-end;border:.5px solid rgba(255,255,255,.22);box-shadow:0 2px 10px rgba(0,0,0,.3);white-space:nowrap;">
+                      <div style="width:14px;height:14px;border-radius:3px;background:linear-gradient(145deg,#5bc5f7,#0063d3);flex-shrink:0;"></div>
+                      <div style="width:14px;height:14px;border-radius:3px;background:#002FA7;flex-shrink:0;display:flex;align-items:center;justify-content:center;"><span style="font-size:5px;color:white;font-family:'DM Mono',monospace;font-weight:700;">H</span></div>
+                      <div style="width:14px;height:16px;border-radius:3px;background:#1a1a1a;border:.5px solid rgba(255,255,255,.12);flex-shrink:0;display:flex;align-items:center;justify-content:center;margin-bottom:-2px;"><span style="font-size:6px;color:#50d080;font-family:'DM Mono',monospace;">&gt;_</span></div>
+                      <div style="width:14px;height:14px;border-radius:3px;background:linear-gradient(135deg,#1e90ff,#1060cc);flex-shrink:0;"></div>
+                      <div style="width:14px;height:14px;border-radius:50%;background:conic-gradient(#EA4335 0deg 90deg,#FBBC05 90deg 180deg,#34A853 180deg 270deg,#4285F4 270deg 360deg);flex-shrink:0;"></div>
+                      <div style="width:14px;height:14px;border-radius:3px;background:#4A154B;flex-shrink:0;"></div>
+                      <div style="width:.5px;height:10px;background:rgba(255,255,255,.28);margin:0 1px;flex-shrink:0;align-self:center;"></div>
+                      <div style="width:14px;height:14px;border-radius:3px;background:linear-gradient(180deg,#888,#555);flex-shrink:0;"></div>
+                    </div>
+
+                  </div><!-- /tl-screen -->
+                </div><!-- /screen glass -->
+              </div><!-- /screen lid -->
+
+              <!-- Hinge line -->
+              <div style="width:100%;height:2px;background:linear-gradient(90deg,#888,#aaa 15%,#c0c0c0 50%,#aaa 85%,#888);"></div>
+
+              <!-- Keyboard base (aluminium) -->
+              <div style="width:calc(100% + 6px);background:linear-gradient(180deg,#b8b8b8,#a8a8a8);border:1.5px solid #888;border-top:.5px solid #ccc;padding:5px 10px 8px;border-radius:0 0 4px 4px;box-shadow:inset 0 -1px 0 rgba(0,0,0,.15),0 3px 8px rgba(0,0,0,.3);">
+                <!-- Keyboard hint rows -->
+                <div style="display:flex;gap:2px;margin-bottom:3px;justify-content:center;">
+                  <div style="height:5px;width:8px;background:rgba(0,0,0,.15);border-radius:1px;"></div>
+                  <div style="height:5px;flex:1;background:rgba(0,0,0,.15);border-radius:1px;"></div>
+                  <div style="height:5px;width:8px;background:rgba(0,0,0,.15);border-radius:1px;"></div>
+                </div>
+                <div style="display:flex;gap:2px;justify-content:center;">
+                  <div style="height:5px;width:14px;background:rgba(0,0,0,.15);border-radius:1px;"></div>
+                  <div style="height:5px;flex:1;background:rgba(0,0,0,.12);border-radius:1px;"></div>
+                  <div style="height:5px;width:14px;background:rgba(0,0,0,.15);border-radius:1px;"></div>
+                </div>
               </div>
-              <!-- Keyboard base -->
-              <div style="width:calc(100% + 8px);height:18px;background:linear-gradient(180deg,#222226,#1a1a1e);border:2px solid #2e2e32;border-top:.5px solid #3a3a3e;"></div>
+
               <!-- Trackpad -->
-              <div style="width:72px;height:8px;background:#1c1c20;border:.5px solid #2a2a2e;margin-top:4px;"></div>
+              <div style="width:35%;height:8px;background:linear-gradient(180deg,#b0b0b0,#a4a4a4);border:1px solid #888;border-top:none;border-radius:0 0 2px 2px;margin-top:-1px;"></div>
+
               <!-- Desk shadow -->
-              <div style="width:90%;height:5px;background:rgba(0,0,0,.28);border-radius:50%;margin-top:8px;filter:blur(4px);"></div>
+              <div style="width:85%;height:6px;background:rgba(0,0,0,.22);border-radius:50%;margin-top:7px;filter:blur(4px);"></div>
             </div>
 
             <!-- ──── USB Cable ──── -->
-            <div style="flex-shrink:0;width:22px;margin-bottom:32px;align-self:flex-end;">
-              <svg width="22" height="70" viewBox="0 0 22 70" fill="none" overflow="visible">
-                <path d="M2 0 C2 28 20 42 20 70" stroke="#252528" stroke-width="3" stroke-linecap="round"/>
-                <path d="M2 0 C2 28 20 42 20 70" stroke="#3a3a3e" stroke-width="1.2" stroke-linecap="round"/>
+            <!-- Uses position:absolute SVG overlay anchored to both elements -->
+            <div style="flex-shrink:0;width:24px;position:relative;align-self:stretch;margin-bottom:13px;">
+              <svg width="100%" height="100%" viewBox="0 0 24 120" preserveAspectRatio="none" style="position:absolute;inset:0;overflow:visible;">
+                <!-- Cable from laptop right edge (y≈72, keyboard level) to traffic light USB plug (y≈102) -->
+                <path d="M0 72 C8 72 16 90 24 102" stroke="#2a2a2a" stroke-width="3" stroke-linecap="round" fill="none"/>
+                <path d="M0 72 C8 72 16 90 24 102" stroke="#3e3e42" stroke-width="1.2" stroke-linecap="round" fill="none"/>
               </svg>
             </div>
 
-            <!-- ──── Traffic Light Device (accent) ──── -->
-            <div style="flex-shrink:0;display:flex;flex-direction:column;align-items:center;margin-bottom:12px;filter:drop-shadow(0 6px 20px rgba(0,0,0,.55));">
-              <!-- Top cap -->
-              <div style="width:34px;height:5px;background:linear-gradient(180deg,#3c3c40,#28282c);border:1px solid #3e3e42;border-bottom:none;"></div>
-              <!-- Housing -->
-              <div style="width:34px;background:linear-gradient(90deg,#2e2e32 0%,#38383c 35%,#323236 65%,#222224 100%);border:1px solid #3a3a3e;border-top:none;border-bottom:none;padding:9px 6px;display:flex;flex-direction:column;gap:0;position:relative;">
-                <div style="position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.02));"></div>
+            <!-- ──── Traffic Light Device ──── -->
+            <div style="flex-shrink:0;display:flex;flex-direction:column;align-items:center;margin-bottom:13px;filter:drop-shadow(0 6px 18px rgba(0,0,0,.55));">
+              <!-- Top rounded cap -->
+              <div style="width:36px;height:6px;background:linear-gradient(180deg,#3c3c40,#2a2a2e);border:1px solid #404044;border-bottom:none;border-radius:4px 4px 0 0;"></div>
+              <!-- Main housing -->
+              <div style="width:36px;background:linear-gradient(90deg,#2e2e32 0%,#3a3a3e 30%,#343438 60%,#242428 100%);border:1px solid #3c3c40;border-top:none;border-bottom:none;padding:10px 7px;display:flex;flex-direction:column;gap:0;position:relative;">
+                <!-- Left highlight -->
+                <div style="position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(180deg,rgba(255,255,255,.09),rgba(255,255,255,.02));border-radius:0;"></div>
                 <!-- Red well -->
-                <div style="padding:6px 0;display:flex;justify-content:center;border-bottom:1px solid #1a1a1e;">
+                <div style="padding:7px 0;display:flex;justify-content:center;border-bottom:1px solid #1c1c20;">
                   <div style="position:relative;width:22px;height:22px;">
-                    <div style="position:absolute;inset:0;border-radius:50%;background:#0e0e0e;box-shadow:inset 0 2px 5px rgba(0,0,0,.9);"></div>
+                    <div style="position:absolute;inset:0;border-radius:50%;background:#0e0e0e;box-shadow:inset 0 2px 6px rgba(0,0,0,.9);"></div>
                     <div id="tl-red" style="position:absolute;inset:3px;border-radius:50%;background:#200808;transition:background .25s,box-shadow .25s;"></div>
                   </div>
                 </div>
                 <!-- Yellow well -->
-                <div style="padding:6px 0;display:flex;justify-content:center;border-bottom:1px solid #1a1a1e;">
+                <div style="padding:7px 0;display:flex;justify-content:center;border-bottom:1px solid #1c1c20;">
                   <div style="position:relative;width:22px;height:22px;">
-                    <div style="position:absolute;inset:0;border-radius:50%;background:#0e0e0e;box-shadow:inset 0 2px 5px rgba(0,0,0,.9);"></div>
+                    <div style="position:absolute;inset:0;border-radius:50%;background:#0e0e0e;box-shadow:inset 0 2px 6px rgba(0,0,0,.9);"></div>
                     <div id="tl-yellow" style="position:absolute;inset:3px;border-radius:50%;background:#1a1400;transition:background .25s,box-shadow .25s;"></div>
                   </div>
                 </div>
                 <!-- Green well -->
-                <div style="padding:6px 0;display:flex;justify-content:center;">
+                <div style="padding:7px 0;display:flex;justify-content:center;">
                   <div style="position:relative;width:22px;height:22px;">
-                    <div style="position:absolute;inset:0;border-radius:50%;background:#0e0e0e;box-shadow:inset 0 2px 5px rgba(0,0,0,.9);"></div>
+                    <div style="position:absolute;inset:0;border-radius:50%;background:#0e0e0e;box-shadow:inset 0 2px 6px rgba(0,0,0,.9);"></div>
                     <div id="tl-green" style="position:absolute;inset:3px;border-radius:50%;background:#081408;transition:background .25s,box-shadow .25s;"></div>
                   </div>
                 </div>
               </div>
               <!-- Bottom cap -->
-              <div style="width:34px;height:4px;background:linear-gradient(180deg,#28282c,#1e1e22);border:1px solid #3a3a3e;border-top:none;"></div>
+              <div style="width:36px;height:5px;background:linear-gradient(180deg,#2a2a2e,#1e1e22);border:1px solid #3c3c40;border-top:none;border-radius:0 0 2px 2px;"></div>
               <!-- USB neck -->
-              <div style="width:12px;height:9px;background:#1a1a1e;border:1px solid #2a2a2e;"></div>
-              <!-- USB plug -->
-              <div style="width:16px;height:5px;background:#242428;border:1px solid #383838;border-radius:0 0 1px 1px;"></div>
+              <div style="width:13px;height:9px;background:#1e1e22;border:1px solid #2e2e32;"></div>
+              <!-- USB plug (where cable connects) -->
+              <div style="width:18px;height:5px;background:#28282c;border:1px solid #3a3a3e;border-radius:0 0 1px 1px;"></div>
               <!-- Label -->
-              <div style="margin-top:5px;font-family:'DM Mono',monospace;font-size:5.5px;color:#383838;letter-spacing:.18em;">HAI LINK</div>
-              <!-- Shadow -->
-              <div style="width:28px;height:3px;background:rgba(0,0,0,.3);border-radius:50%;margin-top:3px;filter:blur(2px);"></div>
+              <div style="margin-top:5px;font-family:'DM Mono',monospace;font-size:5.5px;color:#3a3a3e;letter-spacing:.18em;">HAI LINK</div>
+              <!-- Desk shadow -->
+              <div style="width:30px;height:3px;background:rgba(0,0,0,.28);border-radius:50%;margin-top:3px;filter:blur(2px);"></div>
             </div>
 
           </div>
