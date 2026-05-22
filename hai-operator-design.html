@@ -196,6 +196,7 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
 #top-nav .tn-arrows{display:flex;gap:2px;padding-left:8px;border-left:1px solid var(--grey-2);}
 #top-nav .tn-btn{width:22px;height:22px;background:none;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--tx3);transition:color .15s;}
 #top-nav .tn-btn:hover{color:var(--acc);}
+#nav-tooltip{position:fixed;background:var(--tx);color:rgba(255,255,255,.9);font-family:'DM Mono',monospace;font-size:7.5px;letter-spacing:.06em;padding:4px 9px;pointer-events:none;opacity:0;transition:opacity .15s;z-index:10001;white-space:nowrap;}
 </style>
 </head>
 <body>
@@ -235,28 +236,55 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
         </div>
       </div>
     </div>
-    <div style="padding:40px;display:flex;align-items:center;justify-content:center;">
-      <div style="width:100%;max-width:380px;background:var(--tb);border:.5px solid var(--tbdr);overflow:hidden;">
-        <div style="background:var(--tbar);padding:8px 14px;border-bottom:.5px solid var(--tbdr);display:flex;align-items:center;gap:6px;">
-          <div style="width:8px;height:8px;border-radius:50%;background:#FF5F57;"></div>
-          <div style="width:8px;height:8px;border-radius:50%;background:#FEBC2E;"></div>
-          <div style="width:8px;height:8px;border-radius:50%;background:#28C840;"></div>
-          <span style="font-family:'DM Mono',monospace;font-size:9px;color:var(--td);margin-left:6px;">hai-operator-dev</span>
+    <div style="padding:40px 48px;display:flex;flex-direction:column;gap:12px;justify-content:center;">
+      <!-- HCI -->
+      <div style="border:.5px solid var(--grey-2);padding:20px 24px;position:relative;overflow:hidden;">
+        <div style="position:absolute;top:0;left:0;right:0;height:2px;background:var(--grey-2);"></div>
+        <div style="font-family:'DM Mono',monospace;font-size:7.5px;letter-spacing:.15em;color:var(--tx3);margin-bottom:10px;">HCI · Human–Computer Interaction · 1960s—2020s</div>
+        <div style="font-size:24px;font-weight:200;font-family:'Inter',sans-serif;color:var(--tx2);line-height:1.1;margin-bottom:12px;">Human — Computer<br>Interaction</div>
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+          <span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--tx3);">H</span>
+          <div style="height:.5px;flex:1;background:var(--grey-2);"></div>
+          <span style="font-family:'DM Mono',monospace;font-size:8px;background:var(--grey-1);border:.5px solid var(--grey-2);padding:2px 8px;color:var(--tx3);">Computer</span>
+          <div style="height:.5px;flex:1;background:var(--grey-2);"></div>
+          <span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--tx3);">I</span>
         </div>
-        <div style="padding:14px;font-family:'DM Mono',monospace;font-size:9.5px;line-height:1.8;">
-          <div style="color:var(--td);"># 定义验收标准</div>
-          <div><span style="color:var(--acc);">/goal</span> <span style="color:var(--tw);">cube_util &gt; 70%</span></div>
-          <div style="color:var(--tw);">      <span style="color:var(--tp);">&amp;&amp;</span> max_error <span style="color:var(--tp);">&lt;</span> <span style="color:var(--tg);">1e-5</span></div>
-          <div style="color:var(--tw);">      <span style="color:var(--tp);">&amp;&amp;</span> compat<span style="color:var(--tp);">:</span> [<span style="color:var(--ty);">910B</span>, <span style="color:var(--ty);">310P</span>]</div>
-          <div style="margin-top:8px;color:var(--acc);">◆ AI 正在迭代优化...</div>
-          <div style="color:var(--tg);">✓ v3: cube_util=72.4% · error=8.3e-6</div>
-          <div style="color:var(--tg);">✓ 910B 验证通过 · 310P 验证通过</div>
-          <div style="color:var(--tg);">✓ 所有验收条件达成</div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;">
+          <span style="font-size:8px;color:var(--tx3);background:var(--grey-1);border:.5px solid var(--grey-2);padding:2px 6px;font-family:'DM Mono',monospace;">键鼠输入</span>
+          <span style="font-size:8px;color:var(--tx3);background:var(--grey-1);border:.5px solid var(--grey-2);padding:2px 6px;font-family:'DM Mono',monospace;">等待输出</span>
+          <span style="font-size:8px;color:var(--tx3);background:var(--grey-1);border:.5px solid var(--grey-2);padding:2px 6px;font-family:'DM Mono',monospace;">串行操作</span>
+          <span style="font-size:8px;color:var(--tx3);background:var(--grey-1);border:.5px solid var(--grey-2);padding:2px 6px;font-family:'DM Mono',monospace;">过程式指令</span>
+        </div>
+      </div>
+      <!-- arrow -->
+      <div style="display:flex;align-items:center;gap:10px;padding:0 4px;">
+        <div style="flex:1;height:.5px;background:linear-gradient(to right, var(--grey-2), var(--acc));"></div>
+        <div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--acc);letter-spacing:.1em;">范式跃迁</div>
+        <div style="flex:1;height:.5px;background:var(--acc);"></div>
+      </div>
+      <!-- HAI -->
+      <div style="border:.5px solid var(--acc-b);padding:20px 24px;position:relative;overflow:hidden;background:var(--acc-dim);">
+        <div style="position:absolute;top:0;left:0;right:0;height:2px;background:var(--acc);"></div>
+        <div style="font-family:'DM Mono',monospace;font-size:7.5px;letter-spacing:.15em;color:var(--acc);margin-bottom:10px;">HAI · Human × AI Interaction · 2024—</div>
+        <div style="font-size:24px;font-weight:200;font-family:'Inter',sans-serif;color:var(--acc);line-height:1.1;margin-bottom:12px;">Human × AI<br>Interaction</div>
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+          <span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--acc);">H</span>
+          <div style="height:.5px;flex:1;background:var(--acc-b);"></div>
+          <span style="font-family:'DM Mono',monospace;font-size:8px;background:var(--acc);color:white;padding:2px 8px;">AI</span>
+          <div style="height:.5px;flex:1;background:var(--acc-b);"></div>
+          <span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--acc);">Environment</span>
+        </div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;">
+          <span style="font-size:8px;color:var(--acc);background:rgba(0,47,167,.12);border:.5px solid var(--acc-b);padding:2px 6px;font-family:'DM Mono',monospace;">意图声明</span>
+          <span style="font-size:8px;color:var(--acc);background:rgba(0,47,167,.12);border:.5px solid var(--acc-b);padding:2px 6px;font-family:'DM Mono',monospace;">协同决策</span>
+          <span style="font-size:8px;color:var(--acc);background:rgba(0,47,167,.12);border:.5px solid var(--acc-b);padding:2px 6px;font-family:'DM Mono',monospace;">持续感知</span>
+          <span style="font-size:8px;color:var(--acc);background:rgba(0,47,167,.12);border:.5px solid var(--acc-b);padding:2px 6px;font-family:'DM Mono',monospace;">跨会话记忆</span>
         </div>
       </div>
     </div>
   </div>
 </div>
+<div id="nav-tooltip"></div>
 
 <!-- ══ BG: 现状痛点 ══ -->
 <div class="sec" id="s-bg" style="background:var(--bg);">
@@ -453,47 +481,47 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
 
       <!-- ══ ROW 1: 阶段 ══ -->
       <div style="background:var(--grey-1);border-right:.5px solid var(--grey-2);border-bottom:.5px solid var(--grey-2);display:flex;align-items:center;justify-content:center;">
-        <span style="font-family:'DM Mono',monospace;font-size:6px;color:var(--tx3);letter-spacing:.1em;writing-mode:vertical-rl;transform:rotate(180deg);">阶段</span>
+        <span style="font-family:'DM Mono',monospace;font-size:6px;color:var(--tx3);letter-spacing:.1em;writing-mode:vertical-lr;">阶段</span>
       </div>
       <!-- 01 -->
-      <div style="background:var(--tx);padding:12px 14px 10px;border-right:.5px solid rgba(255,255,255,.07);border-bottom:.5px solid var(--grey-2);">
+      <div style="background:var(--tx);padding:12px 14px 10px;border-right:.5px solid rgba(255,255,255,.07);border-bottom:.5px solid var(--grey-2);border-top:3px solid rgba(0,47,167,.18);">
         <div style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.12em;color:rgba(255,255,255,.28);margin-bottom:3px;">01</div>
         <div style="font-size:15px;font-weight:200;font-family:'Inter',sans-serif;color:#fff;line-height:1.2;margin-bottom:5px;">环境启动</div>
         <div style="font-size:8px;color:rgba(255,255,255,.4);line-height:1.55;">AI 恢复算子上下文<br>零热身直接开发</div>
         <div style="margin-top:6px;font-family:'DM Mono',monospace;font-size:7px;color:rgba(255,255,255,.22);">⏱ &lt;30s</div>
       </div>
       <!-- 02 -->
-      <div style="background:var(--tx);padding:12px 14px 10px;border-right:.5px solid rgba(255,255,255,.07);border-bottom:.5px solid var(--grey-2);">
+      <div style="background:var(--tx);padding:12px 14px 10px;border-right:.5px solid rgba(255,255,255,.07);border-bottom:.5px solid var(--grey-2);border-top:3px solid rgba(0,47,167,.38);">
         <div style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.12em;color:rgba(255,255,255,.28);margin-bottom:3px;">02</div>
         <div style="font-size:15px;font-weight:200;font-family:'Inter',sans-serif;color:#fff;line-height:1.2;margin-bottom:5px;">表达意图</div>
         <div style="font-size:8px;color:rgba(255,255,255,.4);line-height:1.55;">指着 msprof 说话<br>光标伴侣精准辅助</div>
         <div style="margin-top:6px;font-family:'DM Mono',monospace;font-size:7px;color:rgba(255,255,255,.22);">⏱ 即时</div>
       </div>
       <!-- 03 -->
-      <div style="background:var(--tx);padding:12px 14px 10px;border-right:.5px solid rgba(255,255,255,.07);border-bottom:.5px solid var(--grey-2);">
+      <div style="background:var(--tx);padding:12px 14px 10px;border-right:.5px solid rgba(255,255,255,.07);border-bottom:.5px solid var(--grey-2);border-top:3px solid rgba(0,47,167,.6);">
         <div style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.12em;color:rgba(255,255,255,.28);margin-bottom:3px;">03</div>
         <div style="font-size:15px;font-weight:200;font-family:'Inter',sans-serif;color:#fff;line-height:1.2;margin-bottom:5px;">定义目标</div>
         <div style="font-size:8px;color:rgba(255,255,255,.4);line-height:1.55;">Goal 命令声明验收<br>AI 生成 TBE 变体</div>
         <div style="margin-top:6px;font-family:'DM Mono',monospace;font-size:7px;color:rgba(255,255,255,.22);">⏱ &lt;2min</div>
       </div>
       <!-- 04 -->
-      <div style="background:var(--tx);padding:12px 14px 10px;border-right:.5px solid rgba(255,255,255,.07);border-bottom:.5px solid var(--grey-2);">
+      <div style="background:var(--tx);padding:12px 14px 10px;border-right:.5px solid rgba(255,255,255,.07);border-bottom:.5px solid var(--grey-2);border-top:3px solid rgba(0,47,167,.8);">
         <div style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.12em;color:rgba(255,255,255,.28);margin-bottom:3px;">04</div>
         <div style="font-size:15px;font-weight:200;font-family:'Inter',sans-serif;color:#fff;line-height:1.2;margin-bottom:5px;">协同执行</div>
         <div style="font-size:8px;color:rgba(255,255,255,.4);line-height:1.55;">Agent 并行运行<br>910B / 310P 同步验证</div>
         <div style="margin-top:6px;font-family:'DM Mono',monospace;font-size:7px;color:rgba(255,255,255,.22);">⏱ 自动运行</div>
       </div>
       <!-- 05 -->
-      <div style="background:var(--acc);padding:12px 14px 10px;border-bottom:.5px solid rgba(0,47,167,.35);">
-        <div style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.12em;color:rgba(255,255,255,.35);margin-bottom:3px;">05</div>
+      <div style="background:var(--tx);padding:12px 14px 10px;border-bottom:.5px solid var(--grey-2);border-top:3px solid var(--acc);">
+        <div style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.12em;color:rgba(255,255,255,.28);margin-bottom:3px;">05</div>
         <div style="font-size:15px;font-weight:200;font-family:'Inter',sans-serif;color:#fff;line-height:1.2;margin-bottom:5px;">审核沉淀</div>
-        <div style="font-size:8px;color:rgba(255,255,255,.5);line-height:1.55;">结果对齐 + 经验入库<br>团队知识共享</div>
-        <div style="margin-top:6px;font-family:'DM Mono',monospace;font-size:7px;color:rgba(255,255,255,.28);">⏱ 永久保留</div>
+        <div style="font-size:8px;color:rgba(255,255,255,.4);line-height:1.55;">结果对齐 + 经验入库<br>团队知识共享</div>
+        <div style="margin-top:6px;font-family:'DM Mono',monospace;font-size:7px;color:rgba(255,255,255,.22);">⏱ 永久保留</div>
       </div>
 
       <!-- ══ ROW 2: 触点 ══ -->
       <div style="background:var(--grey-1);border-right:.5px solid var(--grey-2);border-bottom:.5px solid var(--grey-2);display:flex;align-items:center;justify-content:center;">
-        <span style="font-family:'DM Mono',monospace;font-size:6px;color:var(--tx3);letter-spacing:.1em;writing-mode:vertical-rl;transform:rotate(180deg);">触点</span>
+        <span style="font-family:'DM Mono',monospace;font-size:6px;color:var(--tx3);letter-spacing:.1em;writing-mode:vertical-lr;">触点</span>
       </div>
       <div style="padding:7px 12px;border-right:.5px solid var(--grey-2);border-bottom:.5px solid var(--grey-2);display:flex;flex-direction:column;gap:4px;justify-content:center;">
         <span style="font-family:'DM Mono',monospace;font-size:7.5px;color:var(--acc);background:var(--acc-dim);border:.5px solid var(--acc-b);padding:2px 7px;align-self:flex-start;">HAI CLI</span>
@@ -512,13 +540,13 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
         <span style="font-size:8px;color:var(--tx3);">910B / 310P 状态聚合</span>
       </div>
       <div style="padding:7px 12px;border-bottom:.5px solid var(--grey-2);display:flex;flex-direction:column;gap:4px;justify-content:center;">
-        <span style="font-family:'DM Mono',monospace;font-size:7.5px;color:#fff;background:var(--acc);padding:2px 7px;align-self:flex-start;">审核视图</span>
+        <span style="font-family:'DM Mono',monospace;font-size:7.5px;color:var(--acc);background:var(--acc-dim);border:.5px solid var(--acc-b);padding:2px 7px;align-self:flex-start;">审核视图</span>
         <span style="font-size:8px;color:var(--tx3);">团队知识库 · 决策溯源</span>
       </div>
 
       <!-- ══ ROW 3: 用户行为 ══ -->
       <div style="background:var(--grey-1);border-right:.5px solid var(--grey-2);border-bottom:.5px solid var(--grey-2);display:flex;align-items:center;justify-content:center;">
-        <span style="font-family:'DM Mono',monospace;font-size:6px;color:var(--tx3);letter-spacing:.1em;writing-mode:vertical-rl;transform:rotate(180deg);">用户行为</span>
+        <span style="font-family:'DM Mono',monospace;font-size:6px;color:var(--tx3);letter-spacing:.1em;writing-mode:vertical-lr;">用户行为</span>
       </div>
       <div style="padding:7px 12px;border-right:.5px solid var(--grey-2);border-bottom:.5px solid var(--grey-2);display:flex;flex-direction:column;gap:3px;justify-content:center;">
         <div style="font-size:8.5px;color:var(--tx);line-height:1.55;">启动 HAI，自动加载<br>FlashAttn 算子历史会话</div>
@@ -543,7 +571,7 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
 
       <!-- ══ ROW 4: 情绪曲线 ══ -->
       <div style="background:var(--grey-1);border-right:.5px solid var(--grey-2);border-bottom:.5px solid var(--grey-2);display:flex;align-items:center;justify-content:center;">
-        <span style="font-family:'DM Mono',monospace;font-size:6px;color:var(--tx3);letter-spacing:.1em;writing-mode:vertical-rl;transform:rotate(180deg);">情绪曲线</span>
+        <span style="font-family:'DM Mono',monospace;font-size:6px;color:var(--tx3);letter-spacing:.1em;writing-mode:vertical-lr;">情绪曲线</span>
       </div>
       <div style="grid-column:span 5;border-bottom:.5px solid var(--grey-2);position:relative;background:var(--grey-1);">
         <svg viewBox="0 0 900 48" preserveAspectRatio="none" style="position:absolute;inset:0;width:100%;height:100%;" xmlns="http://www.w3.org/2000/svg">
@@ -553,30 +581,34 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
           <text x="2"  y="12"  font-size="5.5" fill="#a3a3a1" font-family="DM Mono,monospace">积极</text>
           <text x="2"  y="43"  font-size="5.5" fill="#a3a3a1" font-family="DM Mono,monospace">消极</text>
           <defs>
-            <linearGradient id="eg-fill2" x1="0" y1="0" x2="0" y2="1">
+            <linearGradient id="eg-stroke" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%"   stop-color="rgba(0,47,167,.3)"/>
+              <stop offset="100%" stop-color="#002FA7"/>
+            </linearGradient>
+            <linearGradient id="eg-fill3" x1="0" y1="0" x2="0" y2="1">
               <stop offset="0%" stop-color="#002FA7" stop-opacity="0.13"/>
               <stop offset="100%" stop-color="#002FA7" stop-opacity="0.01"/>
             </linearGradient>
           </defs>
-          <path d="M90,32 C120,24 160,14 250,10 C330,6 380,8 450,10 C510,12 555,11 635,8 C700,6 755,4 820,2 L820,46 L90,46 Z" fill="url(#eg-fill2)"/>
+          <path d="M90,32 C120,24 160,14 250,10 C330,6 380,8 450,10 C510,12 555,11 635,8 C700,6 755,4 820,2 L820,46 L90,46 Z" fill="url(#eg-fill3)"/>
           <path d="M90,32 C120,24 160,14 250,10 C330,6 380,8 450,10 C510,12 555,11 635,8 C700,6 755,4 820,2"
-                fill="none" stroke="#002FA7" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-          <circle cx="90"  cy="32" r="3" fill="#002FA7" stroke="white" stroke-width="1.5"/>
-          <circle cx="268" cy="10" r="3" fill="#002FA7" stroke="white" stroke-width="1.5"/>
-          <circle cx="450" cy="10" r="3" fill="#002FA7" stroke="white" stroke-width="1.5"/>
-          <circle cx="635" cy="8"  r="3" fill="#002FA7" stroke="white" stroke-width="1.5"/>
-          <circle cx="820" cy="2"  r="3" fill="#002FA7" stroke="white" stroke-width="1.5"/>
-          <text x="90"  y="48" font-size="6" fill="#002FA7" text-anchor="middle" font-family="DM Mono,monospace">就绪</text>
-          <text x="268" y="48" font-size="6" fill="#002FA7" text-anchor="middle" font-family="DM Mono,monospace">流畅</text>
-          <text x="450" y="48" font-size="6" fill="#002FA7" text-anchor="middle" font-family="DM Mono,monospace">掌控</text>
-          <text x="635" y="48" font-size="6" fill="#002FA7" text-anchor="middle" font-family="DM Mono,monospace">高效</text>
-          <text x="820" y="48" font-size="6" fill="#002FA7" text-anchor="middle" font-family="DM Mono,monospace">沉淀</text>
+                fill="none" stroke="url(#eg-stroke)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="90"  cy="32" r="3" fill="rgba(0,47,167,.35)" stroke="white" stroke-width="1.5"/>
+          <circle cx="268" cy="10" r="3" fill="rgba(0,47,167,.6)"  stroke="white" stroke-width="1.5"/>
+          <circle cx="450" cy="10" r="3" fill="rgba(0,47,167,.75)" stroke="white" stroke-width="1.5"/>
+          <circle cx="635" cy="8"  r="3" fill="rgba(0,47,167,.9)"  stroke="white" stroke-width="1.5"/>
+          <circle cx="820" cy="2"  r="3" fill="#002FA7"            stroke="white" stroke-width="1.5"/>
+          <text x="90"  y="48" font-size="6" fill="rgba(0,47,167,.5)"  text-anchor="middle" font-family="DM Mono,monospace">就绪</text>
+          <text x="268" y="48" font-size="6" fill="rgba(0,47,167,.7)"  text-anchor="middle" font-family="DM Mono,monospace">流畅</text>
+          <text x="450" y="48" font-size="6" fill="rgba(0,47,167,.85)" text-anchor="middle" font-family="DM Mono,monospace">掌控</text>
+          <text x="635" y="48" font-size="6" fill="rgba(0,47,167,.95)" text-anchor="middle" font-family="DM Mono,monospace">高效</text>
+          <text x="820" y="48" font-size="6" fill="#002FA7"            text-anchor="middle" font-family="DM Mono,monospace">沉淀</text>
         </svg>
       </div>
 
       <!-- ══ ROW 5: 痛点 ══ -->
       <div style="background:var(--grey-1);border-right:.5px solid var(--grey-2);border-bottom:.5px solid var(--grey-2);display:flex;align-items:center;justify-content:center;">
-        <span style="font-family:'DM Mono',monospace;font-size:6px;color:var(--tx3);letter-spacing:.1em;writing-mode:vertical-rl;transform:rotate(180deg);">痛点</span>
+        <span style="font-family:'DM Mono',monospace;font-size:6px;color:var(--tx3);letter-spacing:.1em;writing-mode:vertical-lr;">痛点</span>
       </div>
       <div style="padding:7px 12px;border-right:.5px solid var(--grey-2);border-bottom:.5px solid var(--grey-2);display:flex;align-items:flex-start;gap:7px;">
         <div style="width:3px;height:3px;background:var(--r);flex-shrink:0;margin-top:5px;"></div>
@@ -601,7 +633,7 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
 
       <!-- ══ ROW 6: 机会点 ══ -->
       <div style="background:var(--grey-1);border-right:.5px solid var(--grey-2);display:flex;align-items:center;justify-content:center;">
-        <span style="font-family:'DM Mono',monospace;font-size:6px;color:var(--tx3);letter-spacing:.1em;writing-mode:vertical-rl;transform:rotate(180deg);">机会点</span>
+        <span style="font-family:'DM Mono',monospace;font-size:6px;color:var(--tx3);letter-spacing:.1em;writing-mode:vertical-lr;">机会点</span>
       </div>
       <div style="padding:7px 12px;border-right:.5px solid var(--grey-2);background:var(--acc-dim);display:flex;align-items:flex-start;gap:7px;">
         <div style="width:3px;height:3px;background:var(--acc);flex-shrink:0;margin-top:5px;"></div>
@@ -2187,45 +2219,52 @@ function setupSlideSteps(secId, stripId, defs) {
 ───────────────────────────────────────────── */
 (function initAgentView() {
   const agents = [
-    { id: 'ag-tbe-gen',    name: 'tbe-gen',      icon: '✏️',  color: '#834DF0', status: 'running',  task: '生成RMSNorm TBE代码' },
-    { id: 'ag-shape-infer',name: 'shape-infer',   icon: '🔍',  color: '#2980B9', status: 'running',  task: '推导输出shape' },
-    { id: 'ag-dtype-check', name: 'dtype-check',  icon: '🧪',  color: '#27AE60', status: 'done',     task: 'fp16/bf16验证 ✓' },
-    { id: 'ag-perf-bench',  name: 'perf-bench',   icon: '⚡',  color: '#E67E22', status: 'waiting',  task: '等待代码生成完成' },
+    { id:'ag-tbe-gen',    name:'tbe-gen',     status:'running', task:'RMSNorm TBE 代码生成 · tile_m 迭代中' },
+    { id:'ag-shape-infer',name:'shape-infer', status:'running', task:'输出 shape 推导验证' },
+    { id:'ag-dtype-check',name:'dtype-check', status:'done',    task:'fp16 / bf16 约束矩阵 ✓' },
+    { id:'ag-perf-bench', name:'perf-bench',  status:'waiting', task:'等待 tbe-gen 完成' },
   ];
+  const statusColors = { running:'var(--acc)', done:'var(--tg)', waiting:'rgba(255,255,255,.2)' };
+  const statusLabels = { running:'运行中', done:'完成', waiting:'等待' };
 
-  const container = document.getElementById('agent-cards');
-  if (!container) return;
+  const list = document.getElementById('agv-list');
+  const peek = document.getElementById('agv-peek');
+  if (!list) return;
 
-  agents.forEach(ag => {
-    const statusColor = ag.status === 'running' ? '#834DF0' : ag.status === 'done' ? '#27AE60' : '#555';
-    const statusLabel = ag.status === 'running' ? '运行中' : ag.status === 'done' ? '完成' : '等待';
+  agents.forEach((ag, i) => {
+    const sc = statusColors[ag.status];
+    const sl = statusLabels[ag.status];
     const el = document.createElement('div');
     el.id = ag.id;
-    el.style.cssText = `
-      background:#1A1535;border:1.5px solid ${ag.color}44;border-radius:10px;padding:14px;flex:1;min-width:0;
-      ${ag.status==='running'?'box-shadow:0 0 12px '+ag.color+'33;':''}
-    `;
-    el.innerHTML = `
-      <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
-        <span style="font-size:18px;">${ag.icon}</span>
-        <div>
-          <div style="font-size:10px;font-weight:700;color:#E0D9FF;">${ag.name}</div>
-          <div style="display:flex;align-items:center;gap:4px;margin-top:2px;">
-            <span style="width:6px;height:6px;border-radius:50%;background:${statusColor};
-              ${ag.status==='running'?'animation:pulse 1.2s infinite;':''}display:inline-block;"></span>
-            <span style="font-size:8px;color:${statusColor};">${statusLabel}</span>
-          </div>
-        </div>
-      </div>
-      <div style="font-size:9px;color:#8A7FC0;line-height:1.4;">${ag.task}</div>
-      ${ag.status==='running'?`
-        <div style="margin-top:8px;height:3px;background:#2D2550;border-radius:2px;overflow:hidden;">
-          <div style="height:100%;background:${ag.color};border-radius:2px;animation:agentProgress 2s linear infinite;width:40%;"></div>
-        </div>
-      `:''}
-    `;
-    container.appendChild(el);
+    el.style.cssText = 'padding:9px 12px;border-bottom:.5px solid var(--tbdr);cursor:pointer;display:flex;flex-direction:column;gap:4px;transition:background .15s;';
+    if (i === 0) el.style.background = 'rgba(0,47,167,.12)';
+    el.innerHTML =
+      '<div style="display:flex;align-items:center;justify-content:space-between;">' +
+        '<span style="font-family:\'DM Mono\',monospace;font-size:9px;color:var(--tw);">' + ag.name + '</span>' +
+        '<span style="display:flex;align-items:center;gap:4px;">' +
+          '<span style="width:5px;height:5px;background:' + sc + ';' + (ag.status==='running'?'animation:pulse 1.2s infinite;':'') + 'flex-shrink:0;"></span>' +
+          '<span style="font-family:\'DM Mono\',monospace;font-size:7.5px;color:' + sc + ';">' + sl + '</span>' +
+        '</span>' +
+      '</div>' +
+      '<div style="font-size:8px;color:var(--td);line-height:1.4;">' + ag.task + '</div>' +
+      (ag.status==='running' ? '<div style="height:2px;background:rgba(255,255,255,.06);margin-top:2px;"><div style="height:100%;background:var(--acc);animation:agentProgress 2s linear infinite;width:40%;"></div></div>' : '');
+    el.addEventListener('click', () => {
+      list.querySelectorAll('[id^=ag-]').forEach(e => e.style.background = '');
+      el.style.background = 'rgba(0,47,167,.12)';
+      if (peek) peek.innerHTML =
+        '<div style="padding:12px 14px;border-bottom:.5px solid var(--tbdr);font-family:\'DM Mono\',monospace;font-size:8.5px;color:var(--acc);">' + ag.name + '</div>' +
+        '<div style="padding:10px 14px;font-size:8.5px;color:var(--td);line-height:1.6;">' + ag.task + '<br><br>' +
+        '<span style="color:var(--tw);">状态：' + sl + '</span></div>';
+    });
+    list.appendChild(el);
   });
+
+  // init peek with first agent
+  if (peek) peek.innerHTML =
+    '<div style="padding:12px 14px;border-bottom:.5px solid var(--tbdr);font-family:\'DM Mono\',monospace;font-size:8.5px;color:var(--acc);">tbe-gen</div>' +
+    '<div style="padding:10px 14px;font-size:8.5px;color:var(--td);line-height:1.6;">RMSNorm TBE 代码生成中<br>当前 tile_m=64 → 正在评估 128<br><br>' +
+    '<span style="color:var(--tg);">✓ dtype: fp16 / bf16</span><br>' +
+    '<span style="color:var(--ty);">⏳ CUBE 利用率: 38% → 目标 &gt;70%</span></div>';
 })();
 
 /* ─────────────────────────────────────────────
@@ -2246,7 +2285,7 @@ function setupSlideSteps(secId, stripId, defs) {
       metrics: [], color: '#555' },
   ];
 
-  const container = document.getElementById('hw-cards');
+  const container = document.getElementById('dashboard-grid');
   if (!container) return;
 
   function buildCards(phase) {
@@ -2254,8 +2293,8 @@ function setupSlideSteps(secId, stripId, defs) {
     hardware.forEach(hw => {
       let borderColor = hw.color + '44';
       let glowStyle = '';
-      let statusLabel = { running:'运行中', error:'错误', done:'完成', pending:'待测' }[hw.status];
-      let statusColor = { running:'#834DF0', error:'#E74C3C', done:'#27AE60', pending:'#555' }[hw.status];
+      let statusLabel = { running:'运行中', error:'FORMAT 错误', done:'完成', pending:'待测' }[hw.status];
+      let statusColor = { running:'var(--acc)', error:'var(--tr)', done:'var(--tg)', pending:'var(--td)' }[hw.status];
 
       if (phase === 2 && hw.status === 'error') {
         borderColor = '#E74C3C99';
@@ -2266,7 +2305,7 @@ function setupSlideSteps(secId, stripId, defs) {
 
       const el = document.createElement('div');
       el.id = hw.id;
-      el.style.cssText = `background:#1A1535;border:1.5px solid ${borderColor};border-radius:10px;padding:14px;flex:1;min-width:0;transition:all .5s;${glowStyle}`;
+      el.style.cssText = `background:var(--tb);border:.5px solid ${borderColor};padding:12px;min-width:0;transition:all .5s;${glowStyle}`;
 
       let metricsHtml = '';
       if (hw.status === 'error' && phase >= 2) {
@@ -2277,8 +2316,8 @@ function setupSlideSteps(secId, stripId, defs) {
             <div style="display:flex;justify-content:space-between;font-size:8px;color:#6A5FA0;margin-bottom:2px;">
               <span>${m.k}</span><span>${m.v}%</span>
             </div>
-            <div style="height:3px;background:#2D2550;border-radius:2px;">
-              <div style="height:100%;width:${m.v}%;background:${hw.color};border-radius:2px;"></div>
+            <div style="height:2px;background:rgba(255,255,255,.06);">
+              <div style="height:100%;width:${m.v}%;background:${hw.color};"></div>
             </div>
           </div>
         `).join('');
@@ -2289,7 +2328,7 @@ function setupSlideSteps(secId, stripId, defs) {
       let injectHtml = '';
       if (phase === 3 && hw.status === 'error') {
         injectHtml = `
-          <div style="margin-top:8px;padding:6px 8px;background:#834DF022;border:1px solid #834DF066;border-radius:6px;font-size:9px;color:#A78BFA;animation:fadeInUp .4s ease;">
+          <div style="margin-top:8px;padding:5px 8px;background:rgba(0,47,167,.1);border:.5px solid var(--acc-b);font-family:'DM Mono',monospace;font-size:8px;color:var(--acc);animation:fadeIn .3s;">
             ⌘K → 切换格式 NHWC→FRACTAL_NZ
           </div>
         `;
@@ -2299,8 +2338,8 @@ function setupSlideSteps(secId, stripId, defs) {
         <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;">
           <span style="font-size:16px;">${hw.icon}</span>
           <div>
-            <div style="font-size:10px;font-weight:700;color:#E0D9FF;">${hw.name}</div>
-            <div style="font-size:8px;color:#6A5FA0;">${hw.sub}</div>
+            <div style="font-family:'DM Mono',monospace;font-size:9px;color:var(--tw);">${hw.name}</div>
+            <div style="font-family:'DM Mono',monospace;font-size:7.5px;color:var(--td);">${hw.sub}</div>
           </div>
           <div style="margin-left:auto;display:flex;align-items:center;gap:4px;">
             <span style="width:6px;height:6px;border-radius:50%;background:${statusColor};display:inline-block;
@@ -2323,22 +2362,48 @@ function setupSlideSteps(secId, stripId, defs) {
    s-m3a: Smart fix IIFE (EZ9999)
 ───────────────────────────────────────────── */
 (function initSmartFix() {
-  let sfPhase = 0;
+  const terminal = document.getElementById('fix-terminal');
+  const preview  = document.getElementById('fix-preview-card');
 
+  function addLine(text, color, delay) {
+    setTimeout(() => {
+      if (!terminal) return;
+      const d = document.createElement('div');
+      d.style.cssText = 'font-family:\'DM Mono\',monospace;font-size:8.5px;line-height:1.75;color:' + color + ';';
+      d.textContent = text;
+      terminal.appendChild(d);
+      terminal.scrollTop = terminal.scrollHeight;
+    }, delay);
+  }
+
+  let initialized = false;
   function setPhase(p) {
-    sfPhase = p;
-    const errPanel = document.getElementById('sf-error-panel');
-    const fixPanel = document.getElementById('sf-fix-panel');
-    const diffOld = document.getElementById('sf-diff-old');
-    const diffNew = document.getElementById('sf-diff-new');
-
+    if (!terminal) return;
+    if (!initialized) {
+      terminal.innerHTML = '';
+      initialized = true;
+    }
     if (p === 1) {
-      if (errPanel) { errPanel.style.opacity = '1'; errPanel.style.transform = 'translateX(0)'; }
+      addLine('$ hai compile rmsnorm.py --target 910B', 'var(--td)', 0);
+      addLine('[COMPILE] 正在构建算子...', 'var(--td)', 200);
+      addLine('[ERROR] EZ9999: InnerError', 'var(--tr)', 500);
+      addLine('  OpType: RMSNorm', 'var(--tr)', 650);
+      addLine('  Input format: NHWC', 'var(--td)', 800);
+      addLine('  Expected: FRACTAL_NZ', 'var(--tr)', 950);
+      addLine('  at tbe_compile.py:2847', 'var(--td)', 1100);
+      addLine('  at aicore_build.cc:341', 'var(--td)', 1200);
     } else if (p === 2) {
-      if (fixPanel) { fixPanel.style.opacity = '1'; fixPanel.style.transform = 'translateX(0)'; }
+      addLine('', 'var(--td)', 0);
+      addLine('◆ HAI 错误语义化分析', 'var(--acc)', 100);
+      addLine('  EZ9999 → format 不匹配：NHWC vs FRACTAL_NZ', 'var(--tw)', 350);
+      addLine('  定位到业务代码：rmsnorm.py:26', 'var(--tw)', 600);
+      addLine('  问题：输入 tensor format 未显式声明', 'var(--ty)', 850);
+      addLine('  修复：添加 .set_format(TbeDataFormat.FRACTAL_NZ)', 'var(--tg)', 1100);
     } else if (p === 3) {
-      if (diffOld) diffOld.style.background = '#E74C3C22';
-      if (diffNew) diffNew.style.background = '#27AE6022';
+      addLine('', 'var(--td)', 0);
+      addLine('✓ 修复已应用 · 正在重新编译...', 'var(--tg)', 100);
+      addLine('✓ 910B 编译成功', 'var(--tg)', 600);
+      if (preview) setTimeout(() => { preview.style.display = 'block'; }, 700);
     }
   }
 
@@ -2368,17 +2433,56 @@ function setupSlideSteps(secId, stripId, defs) {
    s-m5b: AI reasoning IIFE
 ───────────────────────────────────────────── */
 (function initReasoning() {
-  let rPhase = 0;
+  const answerBox  = document.getElementById('intent-answer');
+  const inputRow   = document.getElementById('intent-input-row');
 
+  function addCard(html, delay) {
+    setTimeout(() => {
+      if (!answerBox) return;
+      const d = document.createElement('div');
+      d.innerHTML = html;
+      d.style.cssText = 'opacity:0;transition:opacity .35s;';
+      answerBox.appendChild(d);
+      requestAnimationFrame(() => { d.style.opacity = '1'; });
+    }, delay);
+  }
+
+  let initialized = false;
   function setPhase(p) {
-    rPhase = p;
-    const reasonBox = document.getElementById('reason-box');
-    const decisionBadge = document.getElementById('decision-badge');
-
+    if (!initialized && p >= 1) {
+      if (answerBox) answerBox.innerHTML = '';
+      initialized = true;
+    }
     if (p === 1) {
-      if (reasonBox) { reasonBox.style.opacity = '1'; reasonBox.style.transform = 'translateY(0)'; }
+      addCard(
+        '<div style="background:var(--tb);border:.5px solid var(--tbdr);padding:8px 12px;display:flex;flex-direction:column;gap:5px;">' +
+        '<div style="font-family:\'DM Mono\',monospace;font-size:8px;color:var(--acc);margin-bottom:2px;">◆ AI 决策推导</div>' +
+        '<div style="font-size:8.5px;color:var(--td);line-height:1.6;">1. UB 容量：256KB ÷ (fp16 × 2 tensors) = 65536 元素</div>' +
+        '<div style="font-size:8.5px;color:var(--td);line-height:1.6;">2. CUBE 粒度：昇腾 910B CUBE 矩阵乘以 16×16 为粒度</div>' +
+        '<div style="font-size:8.5px;color:var(--td);line-height:1.6;">3. tile_m = 128 = 8 × 16 · 充分填充 CUBE，减少空转</div>' +
+        '</div>',
+        0
+      );
+      addCard(
+        '<div style="background:var(--tb);border:.5px solid var(--tbdr);padding:8px 12px;">' +
+        '<div style="font-family:\'DM Mono\',monospace;font-size:8px;color:var(--acc);margin-bottom:4px;">备选方案对比</div>' +
+        '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:4px;">' +
+        '<div style="padding:5px 8px;border:.5px solid var(--tbdr);text-align:center;"><div style="font-family:\'DM Mono\',monospace;font-size:8px;color:var(--td);">tile_m=64</div><div style="font-size:7.5px;color:var(--tr);">CUBE 21%</div></div>' +
+        '<div style="padding:5px 8px;border:.5px solid var(--acc-b);background:rgba(0,47,167,.08);text-align:center;"><div style="font-family:\'DM Mono\',monospace;font-size:8px;color:var(--acc);">tile_m=128</div><div style="font-size:7.5px;color:var(--tg);">CUBE 72% ✓</div></div>' +
+        '<div style="padding:5px 8px;border:.5px solid var(--tbdr);text-align:center;"><div style="font-family:\'DM Mono\',monospace;font-size:8px;color:var(--td);">tile_m=256</div><div style="font-size:7.5px;color:var(--ty);">OOM 风险</div></div>' +
+        '</div></div>',
+        400
+      );
     } else if (p === 2) {
-      if (decisionBadge) { decisionBadge.style.opacity = '1'; decisionBadge.style.transform = 'scale(1)'; }
+      addCard(
+        '<div style="background:rgba(0,47,167,.08);border:.5px solid var(--acc-b);padding:8px 12px;">' +
+        '<div style="font-family:\'DM Mono\',monospace;font-size:8px;color:var(--acc);margin-bottom:4px;">决策确认 · tile_m = 128</div>' +
+        '<div style="font-size:8.5px;color:var(--tx);line-height:1.6;">基于 UB 容量约束和 CUBE 吞吐公式，128 是当前 shape 下的最优解。' +
+        '工程师可在此修改约束后重新优化。</div>' +
+        '</div>',
+        0
+      );
+      if (inputRow) inputRow.style.display = 'flex';
     }
   }
 
@@ -2594,8 +2698,9 @@ document.head.appendChild(sty);
     { id:'s-sum',        label:'总结' },
   ];
 
-  const dotsEl = document.getElementById('tn-dots');
-  const labelEl = document.getElementById('tn-label');
+  const dotsEl   = document.getElementById('tn-dots');
+  const labelEl  = document.getElementById('tn-label');
+  const tooltip  = document.getElementById('nav-tooltip');
   const prevBtn = document.getElementById('tn-prev');
   const nextBtn = document.getElementById('tn-next');
   let curIdx = 0;
@@ -2606,6 +2711,15 @@ document.head.appendChild(sty);
     d.className = 'tn-dot' + (i === 0 ? ' tn-active' : '');
     d.title = s.label;
     d.addEventListener('click', () => scrollTo(i));
+    d.addEventListener('mouseenter', () => {
+      if (!tooltip) return;
+      const r = d.getBoundingClientRect();
+      tooltip.textContent = s.label;
+      tooltip.style.left = Math.round(r.left + r.width/2 - tooltip.offsetWidth/2) + 'px';
+      tooltip.style.top  = (r.bottom + 6) + 'px';
+      tooltip.style.opacity = '1';
+    });
+    d.addEventListener('mouseleave', () => { if (tooltip) tooltip.style.opacity = '0'; });
     dotsEl.appendChild(d);
   });
 
