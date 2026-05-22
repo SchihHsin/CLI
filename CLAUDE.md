@@ -313,7 +313,8 @@ grep -n "id=\"s-m" file.html | head    # 快速列出所有 section
 | `f7ce851` | 更新 CLAUDE.md，记录第二份材料信息 |
 | `c99fe2f` | 移植 guizang 瑞士国际主义风格（IKB克莱因蓝）+ 右上角固定导航栏 |
 | `8cca3b6` | 修复多个JS/HTML bug + 将光标伴侣(s-m6a)提前至 Stage 02·2/4 |
-| 未push | s-m2c 语音mockup完整重建（光标移动→Space波形→文字转录→AI回答） |
+| `519bfa4` | s-m2c 语音mockup完整重建 + BEFORE/AFTER tags + s-j-overview重建 + 封面HCI→HAI + 4个mockup ID修复 + 旅程行标题方向修复 + 渐变top-border阶段区分 + tooltip向上 + 光标伴侣三角 |
+| `747adbb` | 所有step-driven mockup连接act回调 + 修复JS语法错误 + 光标伴侣渐变光晕光标 + s-bg重新排版（大数字统计+更丰富内容）|
 
 ### ai-dev-tools-design.html 专项工作（更早）
 
@@ -368,6 +369,9 @@ s-cover → s-bg → s-bg2 → s-bg3 → s-j-overview
 ### s-m6a 光标伴侣（已完成 2026-05-23）
 - `initCompanion()` 使用 `setAttribute('transform','translate(x,y)')` 移动 `<g>` 组，非 `style.left/top`
 - 3步骤：AI Core总览气泡 → CUBE 21% 瓶颈分析 → tile_m 64→128 优化建议
+- 光标形状：渐变IKB蓝cursor arrow（SVG path）+ 双层glow（ck-cglow blur=3.5 / ck-cglow2 blur=6蓝色外晕）
+- 颜色：linearGradient `#4A8AFF→#001F80`，描边 `rgba(255,255,255,.75)`
+- 旧三角 polygon 已移除，IKB ring stroke 从 #834DF0 改为 `rgba(0,47,167,.6)`
 
 ### 关键 JS 修复记录（2026-05-23）
 - **致命 Bug**：`voiceSetPhase` 函数内单引号字符串含字面换行符 → `SyntaxError: Invalid or unexpected token` → 所有 JS 失效（含 `initTopNav` → 导航点消失）
@@ -414,6 +418,8 @@ box-shadow:0 2px 20px rgba(0,47,167,.10),0 1px 0 rgba(255,255,255,.8) inset,0 0 
 ### 低优先级
 - [ ] s-m2a cursor demo 最终验证
 - [ ] 旅程地图页内容验证
+- [ ] s-m3b Goal demo emoji清理（🧪✓⚡不符合IKB风格）
+- [ ] s-m4b 卡片 border-radius:6px 清理为直角
 
 ---
 
@@ -427,3 +433,8 @@ box-shadow:0 2px 20px rgba(0,47,167,.10),0 1px 0 rgba(255,255,255,.8) inset,0 0 
 | `window.dashSetPhase(1/2/3)` | s-m1b | 看板正常/异常高亮/注入指令 |
 | `window.sfSetPhase(1/2/3)` | s-m3a | 错误面板/修复面板/diff高亮 |
 | `window.reasonSetPhase(1/2)` | s-m5b | 推理框/决策badge |
+| `window.memSetPhase(1/2/3)` | s-m4a | hai start命令/会话列表淡入/高亮当前 |
+| `window.cursorSetPhase(0/1/2)` | s-m2a | 光标移动到targets[index] |
+| `window.agvSetPhase(1/2/3)` | s-m1a | tbe-gen运行/shape-infer报警/全部完成 |
+| `window.reviewSetPhase(1/2/3)` | s-m5a | 切换tab: perf/prec/cstr |
+| `window.libSetPhase(1/2/3)` | s-m4b | 高亮算子库列/高亮调试库列/高亮推荐条 |
