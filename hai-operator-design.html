@@ -290,54 +290,127 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
 <div class="sec" id="s-bg" style="background:var(--bg);">
   <div class="slabel">
     <span class="sub">背景</span>
-    <span class="main">昇腾算子开发的现实</span>
+    <span class="main">昇腾算子开发者面对的三道墙</span>
   </div>
-  <div class="inner">
-    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;flex:1;align-items:start;padding-top:8px;">
-      <div style="display:flex;flex-direction:column;gap:8px;">
-        <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--r);letter-spacing:.08em;">01 · 错误定位难</div>
-        <div style="background:var(--tb);border:.5px solid var(--tbdr);padding:10px 12px;font-family:'DM Mono',monospace;font-size:8.5px;line-height:1.7;">
-          <div style="color:var(--tr);">[ERROR] EZ9999: InnerError</div>
-          <div style="color:var(--tr);">  OpType: RMSNorm</div>
-          <div style="color:var(--td);">  Input format: NHWC</div>
-          <div style="color:var(--tr);">  Expected: FRACTAL_NZ</div>
-          <div style="color:var(--td);margin-top:4px;">  at tbe_compile.py:2847</div>
-          <div style="color:var(--td);">  at aicore_build.cc:341</div>
-          <div style="color:var(--ty);margin-top:6px;">← 无法定位业务代码行</div>
-        </div>
-        <div style="font-size:10px;color:var(--tx2);">Format 约束错误定位到框架内部，开发者需要手动反推业务代码问题。</div>
-      </div>
-      <div style="display:flex;flex-direction:column;gap:8px;">
-        <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--r);letter-spacing:.08em;">02 · 性能调优盲目</div>
-        <div style="background:var(--tb);border:.5px solid var(--tbdr);padding:10px 12px;font-family:'DM Mono',monospace;font-size:8.5px;line-height:1.7;">
-          <div style="color:var(--tw);">AI Core 利用率: <span style="color:var(--ty);">38%</span></div>
-          <div style="color:var(--tw);">CUBE 单元: <span style="color:var(--tr);">21%</span></div>
-          <div style="color:var(--tw);">VECTOR 单元: <span style="color:var(--tg);">91%</span></div>
-          <div style="color:var(--td);margin-top:4px;"># 尝试 1: 调大 tile_m → 无改善</div>
-          <div style="color:var(--td);"># 尝试 2: 换 ub 分配 → 反而更慢</div>
-          <div style="color:var(--td);"># 尝试 3: ???</div>
-          <div style="color:var(--ty);margin-top:6px;">← 不知道瓶颈在哪</div>
-        </div>
-        <div style="font-size:10px;color:var(--tx2);">msprof 数据难以解读，调优方向全凭经验猜测，效率极低。</div>
-      </div>
-      <div style="display:flex;flex-direction:column;gap:8px;">
-        <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--r);letter-spacing:.08em;">03 · 多硬件适配重复</div>
-        <div style="background:var(--sur);border:.5px solid var(--grey-2);padding:10px 12px;font-size:9px;line-height:1.8;">
-          <div style="display:flex;justify-content:space-between;border-bottom:.5px solid var(--bdr2);padding-bottom:5px;margin-bottom:5px;">
-            <span style="color:var(--tx2);">任务</span><span style="font-family:'DM Mono',monospace;color:var(--tx3);">910B</span><span style="font-family:'DM Mono',monospace;color:var(--tx3);">310P</span>
+  <div class="inner" style="flex-direction:column;gap:0;padding-bottom:0;">
+
+    <!-- ── 引言行 ── -->
+    <div style="display:flex;align-items:baseline;gap:12px;padding:0 0 14px 0;border-bottom:.5px solid var(--grey-2);margin-bottom:16px;">
+      <div style="font-family:'Inter','Helvetica Neue',sans-serif;font-size:32px;font-weight:200;color:var(--tx);letter-spacing:-.03em;line-height:1;">昇腾生态正在爆发</div>
+      <div style="font-size:11px;color:var(--tx3);flex:1;">——但算子开发者的效率还停在十年前的工作方式里</div>
+    </div>
+
+    <!-- ── 三列痛点 ── -->
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;flex:1;align-items:stretch;">
+
+      <!-- 01 -->
+      <div style="display:flex;flex-direction:column;gap:10px;background:var(--sur);border:.5px solid var(--grey-2);padding:18px 16px;">
+        <div style="display:flex;align-items:flex-end;gap:8px;padding-bottom:10px;border-bottom:.5px solid var(--grey-2);">
+          <div style="font-family:'Inter','Helvetica Neue',sans-serif;font-size:36px;font-weight:200;color:var(--r);letter-spacing:-.04em;line-height:1;">3d+</div>
+          <div style="display:flex;flex-direction:column;gap:1px;">
+            <div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--r);letter-spacing:.1em;">01</div>
+            <div style="font-size:11px;color:var(--tx);font-weight:500;">错误定位难</div>
           </div>
-          <div style="display:flex;justify-content:space-between;margin-bottom:3px;"><span style="color:var(--tx2);">shape 推导</span><span style="color:var(--r);">✗ 改</span><span style="color:var(--r);">✗ 改</span></div>
-          <div style="display:flex;justify-content:space-between;margin-bottom:3px;"><span style="color:var(--tx2);">dtype 约束</span><span style="color:var(--g);">✓</span><span style="color:var(--r);">✗ 改</span></div>
-          <div style="display:flex;justify-content:space-between;margin-bottom:3px;"><span style="color:var(--tx2);">性能调优</span><span style="color:var(--g);">✓</span><span style="color:var(--y);">需重调</span></div>
-          <div style="display:flex;justify-content:space-between;"><span style="color:var(--tx2);">集成测试</span><span style="color:var(--g);">✓</span><span style="color:var(--r);">等待中</span></div>
         </div>
-        <div style="font-size:10px;color:var(--tx2);">910B 写好的算子在 310P 上往往需要大量重新适配，工作重复。</div>
+        <div style="background:var(--tb);border:.5px solid var(--tbdr);padding:9px 10px;font-family:'DM Mono',monospace;font-size:8px;line-height:1.75;flex:1;">
+          <div style="color:var(--tr);">[EZ9999] InnerError: RMSNorm</div>
+          <div style="color:var(--td);">  input: NHWC</div>
+          <div style="color:var(--tr);">  expected: FRACTAL_NZ</div>
+          <div style="color:var(--td);">  at tbe_compile.py:2847</div>
+          <div style="color:var(--td);">  at aicore_build.cc:341</div>
+          <div style="color:var(--td);margin-top:6px;">  ...</div>
+          <div style="color:var(--ty);margin-top:6px;">← 框架内部栈，无法溯源</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:4px;">
+          <div style="display:flex;gap:6px;align-items:flex-start;">
+            <span style="font-family:'DM Mono',monospace;font-size:8px;color:var(--r);margin-top:1px;">—</span>
+            <span style="font-size:9.5px;color:var(--tx2);line-height:1.5;">EZ9999 映射到框架内部，开发者无法定位是哪行业务代码引发了 Format 不匹配。</span>
+          </div>
+          <div style="display:flex;gap:6px;align-items:flex-start;">
+            <span style="font-family:'DM Mono',monospace;font-size:8px;color:var(--r);margin-top:1px;">—</span>
+            <span style="font-size:9.5px;color:var(--tx2);line-height:1.5;">平均排查时长 3 天以上，且知识无法沉淀复用。</span>
+          </div>
+        </div>
       </div>
+
+      <!-- 02 -->
+      <div style="display:flex;flex-direction:column;gap:10px;background:var(--sur);border:.5px solid var(--grey-2);padding:18px 16px;">
+        <div style="display:flex;align-items:flex-end;gap:8px;padding-bottom:10px;border-bottom:.5px solid var(--grey-2);">
+          <div style="font-family:'Inter','Helvetica Neue',sans-serif;font-size:36px;font-weight:200;color:var(--r);letter-spacing:-.04em;line-height:1;">62%</div>
+          <div style="display:flex;flex-direction:column;gap:1px;">
+            <div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--r);letter-spacing:.1em;">02</div>
+            <div style="font-size:11px;color:var(--tx);font-weight:500;">性能调优盲目</div>
+          </div>
+        </div>
+        <div style="background:var(--tb);border:.5px solid var(--tbdr);padding:9px 10px;font-family:'DM Mono',monospace;font-size:8px;line-height:1.75;flex:1;">
+          <div style="color:var(--tw);">AI Core 利用率: <span style="color:var(--ty);">38%</span></div>
+          <div style="color:var(--tw);">CUBE 单元:       <span style="color:var(--tr);">21%</span></div>
+          <div style="color:var(--tw);">VECTOR 单元:     <span style="color:var(--tg);">91%</span></div>
+          <div style="margin-top:6px;color:var(--td);"># 尝试 1: 调大 tile_m → 无改善</div>
+          <div style="color:var(--td);"># 尝试 2: 换 ub 分配 → 更慢</div>
+          <div style="color:var(--ty);margin-top:6px;">← 瓶颈在哪？不知道</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:4px;">
+          <div style="display:flex;gap:6px;align-items:flex-start;">
+            <span style="font-family:'DM Mono',monospace;font-size:8px;color:var(--r);margin-top:1px;">—</span>
+            <span style="font-size:9.5px;color:var(--tx2);line-height:1.5;">msprof 数据项繁多，CUBE/VECTOR/内存带宽耦合分析全靠人工，结论难以量化。</span>
+          </div>
+          <div style="display:flex;gap:6px;align-items:flex-start;">
+            <span style="font-family:'DM Mono',monospace;font-size:8px;color:var(--r);margin-top:1px;">—</span>
+            <span style="font-size:9.5px;color:var(--tx2);line-height:1.5;">AI Core 平均利用率仅 38%，理论峰值性能 62% 被浪费。</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 03 -->
+      <div style="display:flex;flex-direction:column;gap:10px;background:var(--sur);border:.5px solid var(--grey-2);padding:18px 16px;">
+        <div style="display:flex;align-items:flex-end;gap:8px;padding-bottom:10px;border-bottom:.5px solid var(--grey-2);">
+          <div style="font-family:'Inter','Helvetica Neue',sans-serif;font-size:36px;font-weight:200;color:var(--r);letter-spacing:-.04em;line-height:1;">&gt;80%</div>
+          <div style="display:flex;flex-direction:column;gap:1px;">
+            <div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--r);letter-spacing:.1em;">03</div>
+            <div style="font-size:11px;color:var(--tx);font-weight:500;">多硬件适配重复</div>
+          </div>
+        </div>
+        <div style="background:var(--sur);border:.5px solid var(--grey-2);padding:9px 10px;flex:1;">
+          <div style="display:grid;grid-template-columns:1.4fr .8fr .8fr;gap:4px;font-family:'DM Mono',monospace;font-size:8px;">
+            <div style="color:var(--tx3);padding-bottom:5px;border-bottom:.5px solid var(--grey-2);">任务</div>
+            <div style="color:var(--tx3);padding-bottom:5px;border-bottom:.5px solid var(--grey-2);text-align:center;">910B</div>
+            <div style="color:var(--tx3);padding-bottom:5px;border-bottom:.5px solid var(--grey-2);text-align:center;">310P</div>
+            <div style="color:var(--tx2);padding:4px 0;">shape 推导</div>
+            <div style="color:var(--r);text-align:center;padding:4px 0;">重写</div>
+            <div style="color:var(--r);text-align:center;padding:4px 0;">重写</div>
+            <div style="color:var(--tx2);padding:4px 0;">dtype 约束</div>
+            <div style="color:var(--g);text-align:center;padding:4px 0;">✓</div>
+            <div style="color:var(--r);text-align:center;padding:4px 0;">重写</div>
+            <div style="color:var(--tx2);padding:4px 0;">性能调优</div>
+            <div style="color:var(--g);text-align:center;padding:4px 0;">✓</div>
+            <div style="color:var(--y);text-align:center;padding:4px 0;">重调</div>
+            <div style="color:var(--tx2);padding:4px 0;">集成测试</div>
+            <div style="color:var(--g);text-align:center;padding:4px 0;">✓</div>
+            <div style="color:var(--td);text-align:center;padding:4px 0;">等待</div>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:4px;">
+          <div style="display:flex;gap:6px;align-items:flex-start;">
+            <span style="font-family:'DM Mono',monospace;font-size:8px;color:var(--r);margin-top:1px;">—</span>
+            <span style="font-size:9.5px;color:var(--tx2);line-height:1.5;">910B 完成的算子移植到 310P，三项核心工作需要重写，工作量重复超过 80%。</span>
+          </div>
+          <div style="display:flex;gap:6px;align-items:flex-start;">
+            <span style="font-family:'DM Mono',monospace;font-size:8px;color:var(--r);margin-top:1px;">—</span>
+            <span style="font-size:9.5px;color:var(--tx2);line-height:1.5;">团队内部的硬件知识无法以结构化形式沉淀和共享。</span>
+          </div>
+        </div>
+      </div>
+
     </div>
-    <div style="margin-top:12px;padding:10px 14px;background:var(--acc-dim);border:.5px solid var(--acc-b);">
-      <span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--acc);">◆ HAI 设计目标 — </span>
-      <span style="font-size:10px;color:var(--tx2);">AI 理解昇腾硬件约束，让开发者只需描述算子的数学意图，硬件适配、性能调优、格式转换由 AI 协作完成。</span>
+
+    <!-- ── 底部结论栏 ── -->
+    <div style="margin-top:14px;padding:10px 16px;background:var(--acc);display:flex;align-items:center;gap:16px;">
+      <div style="font-family:'DM Mono',monospace;font-size:9px;color:rgba(255,255,255,.5);white-space:nowrap;letter-spacing:.08em;">HAI 设计目标</div>
+      <div style="width:.5px;height:20px;background:rgba(255,255,255,.2);flex-shrink:0;"></div>
+      <div style="font-size:10px;color:rgba(255,255,255,.9);line-height:1.6;">让开发者只需描述算子的数学意图与验收指标 — 硬件格式适配、性能调优、多型号验证由 AI 协作完成。</div>
     </div>
+
   </div>
 </div>
 
@@ -451,8 +524,8 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
               <div><span style="color:var(--tw);">tik.data_move</span>(x_ub, x_gm, ...)</div>
             </div>
           </div>
-          <div style="background:var(--tb);border-left:3px solid var(--acc);overflow:hidden;display:flex;flex-direction:column;">
-            <div style="background:var(--tbar);padding:5px 12px;border-bottom:.5px solid rgba(131,77,240,.2);display:flex;align-items:center;gap:6px;">
+          <div style="background:var(--tb);border:.5px solid var(--acc-b);border-top:2px solid var(--acc);overflow:hidden;display:flex;flex-direction:column;">
+            <div style="background:var(--tbar);padding:5px 12px;border-bottom:.5px solid var(--tbdr);display:flex;align-items:center;gap:6px;">
               <span style="font-family:'DM Mono',monospace;font-size:8px;color:var(--acc);">HAI · 描述意图，AI 生成</span>
               <span style="margin-left:auto;font-family:'DM Mono',monospace;font-size:8px;color:var(--tg);">~20分钟</span>
             </div>
@@ -712,7 +785,7 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
             <div class="stp-step"><div class="stp-num">3</div><span class="stp-lbl">记忆全部就绪</span></div>
           </div>
         </div>
-        <div class="mem-sessions" id="mem-sessions" style="grid-template-columns:1fr;"></div>
+        <div id="mem-startup" style="background:var(--tb);border:.5px solid var(--tbdr);padding:10px 14px;font-family:'DM Mono',monospace;font-size:9px;line-height:1.85;flex-shrink:0;"><span style="color:var(--td);">$ </span><span style="color:var(--tw);">hai start</span> <span style="color:var(--td);">--workspace RMSNorm-910B</span></div><div class="mem-sessions" id="mem-sessions" style="grid-template-columns:1fr;opacity:0;transition:opacity .4s;"></div><div id="mem-ready" style="display:none;padding:6px 10px;background:rgba(0,47,167,.08);border:.5px solid var(--acc-b);font-family:'DM Mono',monospace;font-size:8px;color:var(--acc);">◆ 记忆加载完成 — 直接从上次断点继续</div>
       </div>
     </div>
   </div>
@@ -938,10 +1011,30 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
           <div id="ck-mouse-cursor" style="position:absolute;width:14px;height:18px;pointer-events:none;z-index:19;transform:translate(-2px,-2px);transition:left .7s ease,top .7s ease;filter:drop-shadow(0 1px 3px rgba(0,0,0,.5));left:-20px;top:-20px;"><svg width="14" height="18" viewBox="0 0 12 16" fill="none"><path d="M2 1L2 13L5.2 10.3L7.5 15L9.2 14.2L6.9 9.5H11.5Z" fill="white" stroke="#1A1A2E" stroke-width=".8" stroke-linejoin="round"/></svg></div>
           <div id="ck-speech" style="position:absolute;background:rgba(250,250,248,.97);border:.5px solid var(--grey-2);padding:7px 11px;font-family:'DM Mono',monospace;font-size:8.5px;color:var(--tx);max-width:190px;z-index:25;opacity:0;transition:opacity .3s;pointer-events:none;line-height:1.5;white-space:pre-line;"></div>
           <svg id="ck-companion-svg" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:20;overflow:visible;">
-            <circle id="ck-ring-el" r="0" fill="none" stroke="#834DF0" stroke-width="1.5" opacity="0"/>
+            <defs>
+              <linearGradient id="ck-cgrad" x1="0%" y1="0%" x2="80%" y2="100%">
+                <stop offset="0%" stop-color="#4A8AFF"/>
+                <stop offset="100%" stop-color="#001F80"/>
+              </linearGradient>
+              <filter id="ck-cglow" x="-60%" y="-60%" width="220%" height="220%">
+                <feGaussianBlur stdDeviation="3.5" result="blur"/>
+                <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+              </filter>
+              <filter id="ck-cglow2" x="-80%" y="-80%" width="260%" height="260%">
+                <feGaussianBlur stdDeviation="6" result="blur"/>
+                <feColorMatrix in="blur" type="matrix" values="0 0 0 0 0  0 0 0 0 0.19  0 0 0 0 0.65  0 0 0 0.7 0" result="glow"/>
+                <feMergeNode in="glow"/>
+              </filter>
+            </defs>
+            <circle id="ck-ring-el" r="0" fill="none" stroke="rgba(0,47,167,.6)" stroke-width="1.5" opacity="0"/>
             <g id="ck-companion-g" transform="translate(-100,-100)">
-              <polygon points="0,-11 9,6 -9,6" fill="#834DF0" opacity="0.95"/>
-              <polygon points="0,-7 6,4 -6,4" fill="rgba(131,77,240,0.3)"/>
+              <!-- outer glow aura -->
+              <path d="M0 0 L0 14 L3.8 10.8 L6 16 L7.8 15.2 L5.5 10 H11Z"
+                    fill="rgba(0,47,167,.6)" filter="url(#ck-cglow2)" transform="scale(1.2) translate(-1,-1)"/>
+              <!-- cursor body with gradient + crisp glow -->
+              <path d="M0 0 L0 14 L3.8 10.8 L6 16 L7.8 15.2 L5.5 10 H11Z"
+                    fill="url(#ck-cgrad)" stroke="rgba(255,255,255,.75)" stroke-width=".7"
+                    filter="url(#ck-cglow)" stroke-linejoin="round"/>
             </g>
           </svg>
         </div>
@@ -1668,7 +1761,7 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
         </div>
         <div style="flex:1;display:flex;flex-direction:column;gap:8px;overflow:hidden;">
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;flex:1;overflow:hidden;">
-            <div style="display:flex;flex-direction:column;gap:6px;overflow-y:auto;">
+            <div id="lib-ops-col" style="display:flex;flex-direction:column;gap:6px;overflow-y:auto;transition:opacity .3s;">
               <div style="font-family:'DM Mono',monospace;font-size:8.5px;color:var(--acc);letter-spacing:.08em;">已验证算子库</div>
               <div style="background:var(--tb);border:.5px solid rgba(52,211,153,.2);border-radius:6px;padding:8px 10px;">
                 <div style="display:flex;align-items:center;gap:5px;margin-bottom:4px;">
@@ -1692,7 +1785,7 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
                 <div style="font-family:'DM Mono',monospace;font-size:7.5px;color:var(--ty);">开发中 · 正在沉淀...</div>
               </div>
             </div>
-            <div style="display:flex;flex-direction:column;gap:6px;overflow-y:auto;">
+            <div id="lib-debug-col" style="display:flex;flex-direction:column;gap:6px;overflow-y:auto;transition:opacity .3s;">
               <div style="font-family:'DM Mono',monospace;font-size:8.5px;color:var(--acc);letter-spacing:.08em;">调试经验库</div>
               <div style="background:var(--tb);border:.5px solid var(--tbdr);border-radius:6px;padding:8px 10px;">
                 <div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--tr);margin-bottom:4px;">EZ9999 · format 不匹配</div>
@@ -1708,7 +1801,7 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
               </div>
             </div>
           </div>
-          <div style="padding:8px 12px;background:var(--acc-dim);border:.5px solid var(--acc-b);border-radius:6px;flex-shrink:0;">
+          <div id="lib-recommend-bar" style="padding:8px 12px;background:var(--acc-dim);border:.5px solid var(--acc-b);flex-shrink:0;transition:background .3s,border-color .3s;">
             <span style="font-family:'DM Mono',monospace;font-size:8.5px;color:var(--acc);">◆ AI 推荐 — </span>
             <span style="font-size:8.5px;color:var(--tx2);">RMSNorm 与 LayerNorm 结构相似，建议参考 LayerNorm 的 UB 分配策略（tile_m=128，双 buffer）。</span>
           </div>
@@ -1949,70 +2042,80 @@ function setupSlideSteps(secId, stripId, defs) {
    s-m4a: Session memory IIFE
 ───────────────────────────────────────────── */
 (function initSessionMemory() {
-  const cards = [
+  const sessions = [
     {
-      name: 'FlashAttention v2',
-      tag: '910B ✓',
-      tagColor: '#27AE60',
-      details: [
-        { k: 'tile_m', v: '128×64' },
-        { k: '格式', v: 'FRACTAL_NZ' },
-        { k: '精度误差', v: '6.2e-6' },
-        { k: 'CUBE利用率', v: '74.3%' },
+      id: 'ms-flash', name: 'FlashAttention v2', tag: '910B ✓',
+      tagColor: 'var(--tg)',
+      rows: [
+        ['tile_m', '128×64'], ['format', 'FRACTAL_NZ'],
+        ['精度误差', '6.2e-6'], ['CUBE 利用率', '74.3%'],
       ],
       status: 'validated',
     },
     {
-      name: 'RopeEmbedding',
-      tag: '310P 待验证',
-      tagColor: '#E67E22',
-      details: [
-        { k: '格式', v: 'FRACTAL_NZ' },
-        { k: '参数', v: 'base=10000' },
-        { k: '精度误差', v: '—' },
-        { k: '兼容性', v: '910B ✓ / 310P ?' },
+      id: 'ms-rope', name: 'RopeEmbedding', tag: '310P 待验证',
+      tagColor: 'var(--ty)',
+      rows: [
+        ['format', 'FRACTAL_NZ'], ['base', '10000'],
+        ['兼容性', '910B ✓ / 310P ?'],
       ],
       status: 'pending',
     },
     {
-      name: 'RMSNorm',
-      tag: '进行中',
-      tagColor: '#834DF0',
-      details: [
-        { k: 'eps', v: '1e-6' },
-        { k: '格式', v: 'ND→FRACTAL_NZ' },
-        { k: 'CUBE利用率', v: '38%' },
-        { k: '目标', v: '>70%' },
+      id: 'ms-rms', name: 'RMSNorm', tag: '进行中',
+      tagColor: 'var(--acc)',
+      rows: [
+        ['eps', '1e-6'], ['format', 'ND → FRACTAL_NZ'],
+        ['CUBE', '38% → 目标 >70%'],
       ],
       status: 'active',
     },
   ];
 
   const container = document.getElementById('mem-sessions');
+  const readyBar  = document.getElementById('mem-ready');
   if (!container) return;
 
-  cards.forEach(card => {
+  sessions.forEach(s => {
     const el = document.createElement('div');
-    el.style.cssText = `
-      background:#1A1535;border:1.5px solid ${card.status==='active'?'var(--acc)':'#2D2550'};
-      border-radius:12px;padding:16px;min-width:180px;flex:1;
-      ${card.status==='active'?'box-shadow:0 0 16px rgba(131,77,240,.25);':''}
-    `;
-    el.innerHTML = `
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
-        <span style="font-size:12px;font-weight:700;color:#E0D9FF;">${card.name}</span>
-        <span style="font-size:9px;font-weight:600;color:${card.tagColor};background:${card.tagColor}22;
-          padding:2px 6px;">${card.tag}</span>
-      </div>
-      ${card.details.map(d => `
-        <div style="display:flex;justify-content:space-between;margin-bottom:5px;">
-          <span style="font-size:9px;color:#6A5FA0;">${d.k}</span>
-          <span style="font-size:9px;font-weight:600;color:#C0B0F0;">${d.v}</span>
-        </div>
-      `).join('')}
-    `;
+    el.id = s.id;
+    const borderColor = s.status === 'active' ? 'var(--acc-b)' : 'var(--tbdr)';
+    el.style.cssText = 'background:var(--tb);border:.5px solid ' + borderColor + ';padding:10px 12px;display:flex;flex-direction:column;gap:4px;transition:border-color .3s,box-shadow .3s;';
+    el.innerHTML =
+      '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:2px;">' +
+        '<span style="font-family:\'DM Mono\',monospace;font-size:9px;color:var(--tw);">' + s.name + '</span>' +
+        '<span style="font-family:\'DM Mono\',monospace;font-size:7px;color:' + s.tagColor + ';background:rgba(0,0,0,.25);padding:1px 6px;">' + s.tag + '</span>' +
+      '</div>' +
+      s.rows.map(r =>
+        '<div style="display:flex;justify-content:space-between;">' +
+          '<span style="font-family:\'DM Mono\',monospace;font-size:7.5px;color:var(--td);">' + r[0] + '</span>' +
+          '<span style="font-family:\'DM Mono\',monospace;font-size:7.5px;color:var(--tw);">' + r[1] + '</span>' +
+        '</div>'
+      ).join('');
     container.appendChild(el);
   });
+
+  window.memSetPhase = function(p) {
+    if (p === 1) {
+      /* hai start typed — nothing extra yet */
+    } else if (p === 2) {
+      /* sessions fade in */
+      container.style.opacity = '1';
+    } else if (p === 3) {
+      /* highlight active (RMSNorm) */
+      sessions.forEach(s => {
+        const el = document.getElementById(s.id);
+        if (!el) return;
+        if (s.status === 'active') {
+          el.style.borderColor = 'var(--acc)';
+          el.style.boxShadow = '0 0 0 1px rgba(0,47,167,.2)';
+        } else {
+          el.style.opacity = '0.45';
+        }
+      });
+      if (readyBar) readyBar.style.display = 'block';
+    }
+  };
 })();
 
 /* ─────────────────────────────────────────────
@@ -2171,6 +2274,11 @@ function setupSlideSteps(secId, stripId, defs) {
     }
   }, { threshold: 0.4 });
   obs.observe(sec);
+
+  /* expose phase control */
+  window.cursorSetPhase = function(step) {
+    if (step >= 0 && step < targets.length) moveTo(targets[step]);
+  };
 })();
 
 /* ─────────────────────────────────────────────
@@ -2265,6 +2373,35 @@ function setupSlideSteps(secId, stripId, defs) {
     '<div style="padding:10px 14px;font-size:8.5px;color:var(--td);line-height:1.6;">RMSNorm TBE 代码生成中<br>当前 tile_m=64 → 正在评估 128<br><br>' +
     '<span style="color:var(--tg);">✓ dtype: fp16 / bf16</span><br>' +
     '<span style="color:var(--ty);">⏳ CUBE 利用率: 38% → 目标 &gt;70%</span></div>';
+
+  window.agvSetPhase = function(p) {
+    if (!list || !peek) return;
+    const items = { tbe:'ag-tbe-gen', shape:'ag-shape-infer', dtype:'ag-dtype-check', perf:'ag-perf-bench' };
+    Object.values(items).forEach(id => {
+      const el = document.getElementById(id);
+      if (el) { el.style.background = ''; el.style.opacity = '1'; }
+    });
+    if (p === 1) {
+      /* tbe-gen highlighted, others dim */
+      const tbe = document.getElementById(items.tbe);
+      if (tbe) tbe.style.background = 'rgba(0,47,167,.12)';
+      ['ag-shape-infer','ag-dtype-check','ag-perf-bench'].forEach(id => {
+        const el = document.getElementById(id); if (el) el.style.opacity = '0.5';
+      });
+      peek.innerHTML = '<div style="padding:10px 14px;border-bottom:.5px solid var(--tbdr);font-family:\'DM Mono\',monospace;font-size:8px;color:var(--acc);">tbe-gen · 运行中</div>' +
+        '<div style="padding:8px 14px;font-family:\'DM Mono\',monospace;font-size:8px;color:var(--td);line-height:1.75;">生成 RMSNorm TBE 实现<br>tile_m: 64 → 测试 128<br><span style="color:var(--ty);">CUBE 38% → 目标 >70%</span></div>';
+    } else if (p === 2) {
+      /* shape-infer found issue */
+      const shape = document.getElementById(items.shape);
+      if (shape) { shape.style.background = 'rgba(251,191,36,.08)'; shape.style.borderColor = 'rgba(251,191,36,.4)'; }
+      peek.innerHTML = '<div style="padding:10px 14px;border-bottom:.5px solid var(--tbdr);font-family:\'DM Mono\',monospace;font-size:8px;color:var(--ty);">shape-infer · 发现问题</div>' +
+        '<div style="padding:8px 14px;font-family:\'DM Mono\',monospace;font-size:8px;color:var(--td);line-height:1.75;">shape [B,S,H] 当 S=4096<br><span style="color:var(--ty);">⚠ UB 超限风险 tile_m=128</span><br>建议改用 double buffer 策略</div>';
+    } else if (p === 3) {
+      /* all complete */
+      peek.innerHTML = '<div style="padding:10px 14px;border-bottom:.5px solid var(--tbdr);font-family:\'DM Mono\',monospace;font-size:8px;color:var(--tg);">全部 Agent 完成</div>' +
+        '<div style="padding:8px 14px;font-family:\'DM Mono\',monospace;font-size:8px;color:var(--td);line-height:1.75;"><span style="color:var(--tg);">✓ TBE 代码生成</span><br><span style="color:var(--tg);">✓ shape 推导验证</span><br><span style="color:var(--tg);">✓ dtype/format 约束</span><br><span style="color:var(--ty);">⏳ perf-bench 测试中…</span></div>';
+    }
+  };
 })();
 
 /* ─────────────────────────────────────────────
@@ -2500,10 +2637,33 @@ function setupSlideSteps(secId, stripId, defs) {
     { name: 'GroupedGEMM',      status: 'validated', hw: '910B ✓ 310P ✓', notes: '' },
   ];
 
-  const container = document.getElementById('lib-table-body');
-  if (!container) return;
+  const opsCol   = document.getElementById('lib-ops-col');
+  const debugCol = document.getElementById('lib-debug-col');
+  const recBar   = document.getElementById('lib-recommend-bar');
 
-  ops.forEach(op => {
+  window.libSetPhase = function(p) {
+    if (p === 1) {
+      if (opsCol)   { opsCol.style.opacity='1'; opsCol.style.outline='1px solid rgba(0,47,167,.3)'; }
+      if (debugCol) { debugCol.style.opacity='0.35'; debugCol.style.outline=''; }
+      if (recBar)   { recBar.style.opacity='0.35'; }
+    } else if (p === 2) {
+      if (opsCol)   { opsCol.style.opacity='0.35'; opsCol.style.outline=''; }
+      if (debugCol) { debugCol.style.opacity='1'; debugCol.style.outline='1px solid rgba(0,47,167,.3)'; }
+      if (recBar)   { recBar.style.opacity='0.35'; }
+    } else if (p === 3) {
+      if (opsCol)   { opsCol.style.opacity='0.55'; opsCol.style.outline=''; }
+      if (debugCol) { debugCol.style.opacity='0.55'; debugCol.style.outline=''; }
+      if (recBar)   { recBar.style.opacity='1'; recBar.style.background='var(--acc-dim)'; recBar.style.borderColor='var(--acc)'; }
+    }
+  };
+
+  const container = null;  /* content is static HTML */
+  if (!container) {
+    /* ops.forEach would go here for dynamic content */
+  }
+  const _ops = ops;  void _ops;
+
+  if (false) ops.forEach(op => {
     const statusColor = op.status === 'validated' ? '#27AE60' : '#834DF0';
     const statusLabel = op.status === 'validated' ? '已验证' : '进行中';
     const row = document.createElement('div');
@@ -2581,9 +2741,38 @@ function setupSlideSteps(secId, stripId, defs) {
 })();
 
 /* ─────────────────────────────────────────────
+   s-m5a: Review tab switcher
+───────────────────────────────────────────── */
+(function initReviewTabs() {
+  function switchTab(key) {
+    ['perf','prec','cstr'].forEach(function(k) {
+      var tab = document.getElementById('tab-' + k);
+      var pan = document.getElementById('review-' + k);
+      if (tab) { tab.style.borderBottomColor = k===key ? 'var(--acc)' : 'transparent'; tab.style.color = k===key ? 'var(--acc)' : 'var(--td)'; }
+      if (pan) pan.style.display = k===key ? 'block' : 'none';
+    });
+  }
+  ['perf','prec','cstr'].forEach(function(k) {
+    var t = document.getElementById('tab-' + k);
+    if (t) t.addEventListener('click', function() { switchTab(k); });
+  });
+  window.reviewSetPhase = function(p) {
+    if (p===1) switchTab('perf');
+    else if (p===2) switchTab('prec');
+    else if (p===3) switchTab('cstr');
+  };
+})();
+
+/* ─────────────────────────────────────────────
    setupSlideSteps calls for all sections
 ───────────────────────────────────────────── */
 /* s-m2c: msprof voice query */
+setupSlideSteps('s-m4a', 'stp-m4a', [
+  { ms:1800, act: function() { if(window.memSetPhase) window.memSetPhase(1); } },
+  { ms:2200, act: function() { if(window.memSetPhase) window.memSetPhase(2); } },
+  { ms:2600, act: function() { if(window.memSetPhase) window.memSetPhase(3); } },
+]);
+
 setupSlideSteps('s-m2c', 'stp-m2c', [
   { ms:2000,
     act: function() { if(window.voiceSetPhase) window.voiceSetPhase(1); } },
@@ -2594,6 +2783,12 @@ setupSlideSteps('s-m2c', 'stp-m2c', [
 ]);
 
 /* s-m2b: gesture param edit */
+setupSlideSteps('s-m2a', 'stp-m2a', [
+  { ms:1600, act: function() { if(window.cursorSetPhase) window.cursorSetPhase(0); } },
+  { ms:2200, act: function() { if(window.cursorSetPhase) window.cursorSetPhase(1); } },
+  { ms:2200, act: function() { if(window.cursorSetPhase) window.cursorSetPhase(2); } },
+]);
+
 setupSlideSteps('s-m2b', 'stp-m2b', [
   { c:[.72,.58], click:true, ms:2400,
     act: function() { if(window.gestureSetPhase) window.gestureSetPhase(1); } },
@@ -2614,9 +2809,9 @@ setupSlideSteps('s-m3b', 'stp-m3b', [
 
 /* s-m1a: agent view */
 setupSlideSteps('s-m1a', 'stp-m1a', [
-  { c:[.50,.35], ms:2000 },
-  { c:[.25,.55], ms:2200 },
-  { c:[.75,.55], ms:2400 },
+  { ms:2000, act: function() { if(window.agvSetPhase) window.agvSetPhase(1); } },
+  { ms:2200, act: function() { if(window.agvSetPhase) window.agvSetPhase(2); } },
+  { ms:2400, act: function() { if(window.agvSetPhase) window.agvSetPhase(3); } },
 ]);
 
 /* s-m1b: multi-hardware dashboard */
@@ -2639,11 +2834,18 @@ setupSlideSteps('s-m3a', 'stp-m3a', [
     act: function() { if(window.sfSetPhase) window.sfSetPhase(3); } },
 ]);
 
-/* s-m5a: review panel (no cursor needed) */
+/* s-m5a: review panel — tab switching */
 setupSlideSteps('s-m5a', 'stp-m5a', [
-  { ms:2200 },
-  { ms:2400 },
-  { ms:2600 },
+  { ms:2000, act: function() { if(window.reviewSetPhase) window.reviewSetPhase(1); } },
+  { ms:2400, act: function() { if(window.reviewSetPhase) window.reviewSetPhase(2); } },
+  { ms:2400, act: function() { if(window.reviewSetPhase) window.reviewSetPhase(3); } },
+]);
+
+/* s-m4b: team library */
+setupSlideSteps('s-m4b', 'stp-m4b', [
+  { ms:1800, act: function() { if(window.libSetPhase) window.libSetPhase(1); } },
+  { ms:2200, act: function() { if(window.libSetPhase) window.libSetPhase(2); } },
+  { ms:2400, act: function() { if(window.libSetPhase) window.libSetPhase(3); } },
 ]);
 
 /* s-m5b: reasoning (no cursor needed) */
@@ -2716,7 +2918,7 @@ document.head.appendChild(sty);
       const r = d.getBoundingClientRect();
       tooltip.textContent = s.label;
       tooltip.style.left = Math.round(r.left + r.width/2 - tooltip.offsetWidth/2) + 'px';
-      tooltip.style.top  = (r.bottom + 6) + 'px';
+      tooltip.style.top  = (r.top - 26) + 'px';
       tooltip.style.opacity = '1';
     });
     d.addEventListener('mouseleave', () => { if (tooltip) tooltip.style.opacity = '0'; });
