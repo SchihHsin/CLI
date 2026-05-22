@@ -21,10 +21,10 @@
 | 项 | 值 |
 |---|---|
 | 文件 | `/Users/hsin/Documents/Coding/CLI/hai-operator-design.html` |
-| 当前行数 | 2241 行 |
+| 当前大小 | ~204,655 字符（持续增长） |
 | 场景 | CANN 昇腾算子开发（TBE DSL、EZ9999错误、910B/310P适配） |
 | 技术栈 | `tik.Tensor`、`tik.data_move`、msprof profiler、FRACTAL_NZ格式 |
-| 状态 | 初版完成，尚未逐页验证 |
+| 状态 | 主体完成，s-m3a 待重新设计 |
 
 ---
 
@@ -101,7 +101,8 @@
 | 9 | `s-m3b` | Goal 命令 — 开发者定义完成 | ~967 |
 | 10 | `s-m1a` | Agent View — 多会话统一管理 | ~539 |
 | 11 | `s-m1b` | 并行看板 — 所有 Agent 一屏总览 | ~628 |
-| 12 | `s-m3a` | 智能 Fix — 一键上下文修复 | ~908 |
+| 11.5 | `s-m1c` | 实体状态灯 — AI Agent 进度跃出屏幕（新增） | 动态定位 |
+| 12 | `s-m3a` | 智能 Fix — 一键上下文修复（待重新设计） | ~1417 |
 | 13 | `s-m5a` | 结果审核 — 多维可视化 | ~1184 |
 | 14 | `s-m5b` | 意图对齐 — AI 决策透明化 | ~1240 |
 | 15 | `s-m4b` | 团队记忆库 — 隐性知识共享 | ~1104 |
@@ -295,6 +296,20 @@ grep -n "id=\"s-m" file.html | head    # 快速列出所有 section
 | `.stp-step.stp-active` | 当前步骤（紫色） |
 | `.stp-step.stp-done` | 已完成步骤（绿色 `--tg`） |
 
+### 快捷键 badge（.key-badge）
+
+`setupSlideSteps` 在检测到任意步骤含 `key` 属性时，自动向 `.dp-right` 注入 `<div class="key-badge">` 元素（之前只有CSS，没有HTML元素，导致永不显示）。
+
+CSS 样式：绝对定位 `bottom:18px;left:50%`，深色键帽风格（`background:var(--tx)`，底部投影 `box-shadow:0 3px 0 rgba(0,0,0,.55)`，IKB蓝光晕）。
+
+各 section 的 `key` 分配：
+- s-m4a 步骤1: `↵`，s-m2c 步骤2: `Space`
+- s-m2b 步骤2: `⌘ K`，步骤3: `↵`
+- s-m3b 步骤1: `/`，步骤2: `↵`
+- s-m1b 步骤3: `⌘ K`
+- s-m3a 步骤2: `⌘ K`，步骤3: `↵`
+- s-m6a 步骤1: `/`
+
 ### JS：`initStepper(secId, stripId, ms, onStep)`
 - `ms`：每步停留时长（最后一步停留 `ms × 2.5`）
 - `onStep`：目前全部传 `null`（视觉与动画独立推进）
@@ -315,6 +330,11 @@ grep -n "id=\"s-m" file.html | head    # 快速列出所有 section
 | `8cca3b6` | 修复多个JS/HTML bug + 将光标伴侣(s-m6a)提前至 Stage 02·2/4 |
 | `519bfa4` | s-m2c 语音mockup完整重建 + BEFORE/AFTER tags + s-j-overview重建 + 封面HCI→HAI + 4个mockup ID修复 + 旅程行标题方向修复 + 渐变top-border阶段区分 + tooltip向上 + 光标伴侣三角 |
 | `747adbb` | 所有step-driven mockup连接act回调 + 修复JS语法错误 + 光标伴侣渐变光晕光标 + s-bg重新排版（大数字统计+更丰富内容）|
+| `9e0b402` | 快捷键badge修复（CSS keycap样式+JS自动注入）+ 光标伴侣改为斜向三角形 |
+| `81f3b18` | 新增 s-m1c：USB 实体状态灯硬件联动设计点（黄/红黄闪/绿三态） |
+| `c76a14d` | s-m1c mockup重设计：desk scene笔记本+USB线+交通灯硬件 |
+| `b3810e3` | s-m1c 笔记本比例修复：flex:1宽度填满，144px屏高，状态芯片 |
+| `f079246` | s-m1c macOS风格笔记本：铝色边框+壁纸+菜单栏+Terminal窗口+Dock |
 
 ### ai-dev-tools-design.html 专项工作（更早）
 
@@ -347,7 +367,7 @@ s-cover → s-bg → s-bg2 → s-bg3 → s-j-overview
 → s-m6a（光标伴侣 Stage02·2/4）← 已提前
 → s-m2b（手势调参 Stage02·3/4）
 → s-m2a（光标上下文 Stage02·4/4）
-→ s-m3b（Goal命令）→ s-m1a → s-m1b
+→ s-m3b（Goal命令）→ s-m1a → s-m1b → s-m1c（实体状态灯）
 → s-m3a → s-m5a → s-m5b → s-m4b → s-sum
 ```
 
@@ -369,9 +389,9 @@ s-cover → s-bg → s-bg2 → s-bg3 → s-j-overview
 ### s-m6a 光标伴侣（已完成 2026-05-23）
 - `initCompanion()` 使用 `setAttribute('transform','translate(x,y)')` 移动 `<g>` 组，非 `style.left/top`
 - 3步骤：AI Core总览气泡 → CUBE 21% 瓶颈分析 → tile_m 64→128 优化建议
-- 光标形状：渐变IKB蓝cursor arrow（SVG path）+ 双层glow（ck-cglow blur=3.5 / ck-cglow2 blur=6蓝色外晕）
-- 颜色：linearGradient `#4A8AFF→#001F80`，描边 `rgba(255,255,255,.75)`
-- 旧三角 polygon 已移除，IKB ring stroke 从 #834DF0 改为 `rgba(0,47,167,.6)`
+- 光标形状：**斜向锐角等腰三角形** `points="0,0 15,5 5,15"`（用户要求：不像 Cursor 图标）
+- IKB 蓝填充 + IKB 蓝外晕 glow filter（ck-tri-glow, feGaussianBlur stdDeviation=4）
+- IKB ring stroke 从 #834DF0 改为 `rgba(0,47,167,.6)`
 
 ### 关键 JS 修复记录（2026-05-23）
 - **致命 Bug**：`voiceSetPhase` 函数内单引号字符串含字面换行符 → `SyntaxError: Invalid or unexpected token` → 所有 JS 失效（含 `initTopNav` → 导航点消失）
@@ -411,9 +431,44 @@ box-shadow:0 2px 20px rgba(0,47,167,.10),0 1px 0 rgba(255,255,255,.8) inset,0 0 
 - 情绪曲线 SVG：IKB 蓝折线从左下→右上
 - 每阶段含 mini terminal mockup
 
+### s-m1c 实体状态灯（已完成 2026-05-23）
+
+灵感：Cursor × Luxafor USB 硬件联动。
+
+**桌面场景 Mockup 结构（3个flex兄弟）：**
+1. **MacBook 笔记本**（`flex:1`）
+   - 铝色边框（`#b0b0b0` 渐变，模拟铝合金）
+   - 屏幕：`aspect-ratio:16/10`，深蓝壁纸渐变 + 双径向光斑
+   - 菜单栏（`height:14px`，半透明模糊）
+   - 浮动 Terminal 窗口（带 macOS 红黄绿标题栏点 + tl-s1..7 终端内容）
+   - Dock（半透明，Finder/HAI/Terminal/VSCode/Chrome/Slack/Trash）
+   - 键盘底座（铝色，两排按键暗示）+ 触控板
+2. **SVG USB 线**（`width:24px`，bezier 曲线从笔记本右侧弯向交通灯USB口）
+3. **交通灯硬件设备**（`flex-shrink:0, width:36px`）
+   - 圆角顶盖/底盖，渐变侧面（3D感），左侧高光条
+   - 三个凹陷灯槽（inner shadow）+ 内部灯圈
+   - USB 颈部 + USB 插头 + HAI LINK 标签
+
+**三个状态：**
+- Phase 1：黄灯常亮，终端显示 s2-s3（运行日志），statusChip=RUNNING
+- Phase 2：红黄交替闪烁（setInterval 550ms），终端显示 s2-s5（警告），statusChip=CONFIRM
+- Phase 3：绿灯常亮，终端显示 s2-s3+s6-s7（完成），statusChip=DONE
+
+**JS IDs：** `tl-red/yellow/green`（灯圈）、`tl-s1..7`（终端行）、`tl-status-chip`、`tl-state-bar/dot/title/desc`
+
+### s-m3a 智能修复（待重新设计）
+
+**核心理念（用户明确）：** 代码只是中间态，开发者不应直接对着代码改。  
+设计应体现「**指着结果说怎么改**」——用户指着运行输出（msprof数据 / 精度误差值 / benchmark结果），用自然语言说出意图，AI自动修改底层TBE代码，结果更新。结果驱动，代码透明。
+
+**设计方向待定**，已向用户提出4个方向（A=Copilot inline diff / B=Cursor Composer全屏diff / C=命令面板 / D=终端内联诊断）。等待用户选择或提供竞品参考后再实施。
+
 ---
 
 ## 待办（按优先级）
+
+### 高优先级
+- [ ] **s-m3a 重新设计** — 用户明确指出：开发者不应直接对代码改，代码只是中间态。设计核心理念：「指着结果说怎么改」，而非「看着代码改」。Mockup 应展示：用户指着运行结果（如 msprof 输出 / 精度误差数值）说出意图，AI 自动修改底层 TBE 代码 → 结果更新。体现"结果驱动，代码透明"。
 
 ### 低优先级
 - [ ] s-m2a cursor demo 最终验证
@@ -438,3 +493,4 @@ box-shadow:0 2px 20px rgba(0,47,167,.10),0 1px 0 rgba(255,255,255,.8) inset,0 0 
 | `window.agvSetPhase(1/2/3)` | s-m1a | tbe-gen运行/shape-infer报警/全部完成 |
 | `window.reviewSetPhase(1/2/3)` | s-m5a | 切换tab: perf/prec/cstr |
 | `window.libSetPhase(1/2/3)` | s-m4b | 高亮算子库列/高亮调试库列/高亮推荐条 |
+| `window.trafficSetPhase(1/2/3)` | s-m1c | 黄灯（思考）/红黄闪（确认）/绿灯（完成）|
