@@ -228,6 +228,9 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
   <div class="tn-dots" id="tn-dots"></div>
   <span class="tn-label" id="tn-label">封面</span>
   <div class="tn-arrows">
+    <button class="tn-btn" id="tn-reset" title="重置当前页动效">
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M10 6A4 4 0 1 1 6 2M6 2L8.5 0M6 2L8.5 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
     <button class="tn-btn" id="tn-prev" title="上一页">
       <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M8 2L4 6L8 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/></svg>
     </button>
@@ -1140,9 +1143,11 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
             <div class="stp-step"><div class="stp-num">3</div><span class="stp-lbl">松开 → 浮动编辑面板</span></div>
           </div>
         </div>
-        <div style="flex:1;display:flex;flex-direction:column;gap:8px;overflow:hidden;">
-          <!-- msprof panel -->
-          <div style="flex:1;background:#0a0a0f;border:.5px solid #1e1e28;overflow:hidden;display:flex;flex-direction:column;position:relative;" id="msprof-demo">
+        <!-- overlapping mockup: msprof top-left + terminal bottom-right -->
+        <div style="flex:1;min-height:0;position:relative;">
+
+          <!-- msprof profiler window — top-left, full area -->
+          <div id="msprof-demo" style="position:absolute;top:0;left:0;width:78%;height:72%;background:#0a0a0f;border:.5px solid #1e1e28;border-radius:8px;overflow:hidden;display:flex;flex-direction:column;">
             <!-- toolbar -->
             <div style="background:#111118;padding:6px 14px;border-bottom:.5px solid #1e1e28;font-family:'DM Mono',monospace;font-size:9px;color:#48485C;display:flex;align-items:center;gap:8px;flex-shrink:0;">
               <span style="color:var(--acc);font-weight:500;">msprof</span>
@@ -1153,26 +1158,25 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
             </div>
             <!-- metrics area -->
             <div style="padding:10px 14px;flex:1;overflow:hidden;position:relative;" id="msprof-inner">
-              <!-- metric rows — id on the whole row for highlight -->
               <div class="ms-metric" id="ms-row-aicore" style="transition:background .3s;padding:3px 6px;margin:0 -6px;">
                 <div class="ms-metric-label">AI Core 利用率</div>
                 <div class="ms-bar-track"><div class="ms-bar-fill ms-fill-aicore" style="width:38%;background:var(--ty);transition:width 1s ease;"></div></div>
                 <div class="ms-pct ms-val-aicore" style="color:var(--ty);">38%</div>
               </div>
               <div class="ms-metric" id="ms-row-cube" style="transition:background .3s;padding:3px 6px;margin:2px -6px;">
-                <div class="ms-metric-label" style="color:#C8C8DC;">CUBE 单元利用率</div>
-                <div class="ms-bar-track"><div class="ms-bar-fill ms-fill-cube" style="width:21%;background:var(--tr);transition:width 1s ease;"></div></div>
-                <div class="ms-pct ms-val-cube" style="color:var(--tr);">21%</div>
+                <div class="ms-metric-label">CUBE 利用率</div>
+                <div class="ms-bar-track"><div class="ms-bar-fill" style="width:21%;background:var(--tr);transition:width 1s ease;" id="ms-fill-cube"></div></div>
+                <div class="ms-pct" style="color:var(--tr);" id="ms-val-cube">21%</div>
               </div>
-              <div class="ms-metric" id="ms-row-vec" style="transition:background .3s;padding:3px 6px;margin:0 -6px;">
-                <div class="ms-metric-label">VECTOR 单元利用率</div>
-                <div class="ms-bar-track"><div class="ms-bar-fill" style="width:87%;background:var(--tg);"></div></div>
-                <div class="ms-pct" style="color:var(--tg);">87%</div>
+              <div class="ms-metric" id="ms-row-vec" style="transition:background .3s;padding:3px 6px;margin:2px -6px;">
+                <div class="ms-metric-label">Vector 利用率</div>
+                <div class="ms-bar-track"><div class="ms-bar-fill" style="width:87%;background:#4A7FE8;transition:width 1s ease;"></div></div>
+                <div class="ms-pct" style="color:var(--tb2);">87%</div>
               </div>
-              <div class="ms-metric" id="ms-row-mte" style="transition:background .3s;padding:3px 6px;margin:0 -6px;">
-                <div class="ms-metric-label">内存带宽利用率</div>
-                <div class="ms-bar-track"><div class="ms-bar-fill" style="width:64%;background:var(--tb2);"></div></div>
-                <div class="ms-pct" style="color:var(--tb2);">64%</div>
+              <div class="ms-metric" style="padding:3px 6px;margin:2px -6px;">
+                <div class="ms-metric-label">data_move 占比</div>
+                <div class="ms-bar-track"><div class="ms-bar-fill" style="width:62%;background:var(--tp);transition:width 1s ease;"></div></div>
+                <div class="ms-pct" style="color:var(--tp);">62%</div>
               </div>
               <!-- timeline -->
               <div style="font-family:'DM Mono',monospace;font-size:7.5px;color:#48485C;margin:8px 0 3px;">Timeline · CUBE Utilization</div>
@@ -1186,7 +1190,6 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
                   <div style="flex:2;height:65%;background:#4A7FE8;opacity:.6;"></div>
                   <div style="flex:1;height:60%;background:#4A7FE8;opacity:.5;"></div>
                 </div>
-                <!-- vertical cursor line at the dip -->
                 <div id="tl-cursor-line" style="position:absolute;left:40%;top:0;bottom:0;width:1.5px;background:rgba(248,113,113,.7);transition:left .5s ease;"></div>
               </div>
               <!-- white cursor -->
@@ -1199,60 +1202,69 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
               </div>
               <!-- voice wave overlay (step 2) -->
               <div id="voice-wave-bar" style="display:none;position:absolute;bottom:8px;left:50%;transform:translateX(-50%);
-                background:rgba(18,18,26,.92);
-                border:1px solid rgba(255,255,255,.1);
-                box-shadow:0 2px 16px rgba(0,0,0,.5);
-                padding:5px 20px;border-radius:100px;overflow:hidden;
-                display:flex;align-items:center;gap:10px;z-index:15;white-space:nowrap;">
+                background:linear-gradient(135deg,rgba(0,47,167,.88),rgba(107,56,212,.88));
+                border:1px solid rgba(255,255,255,.2);
+                box-shadow:0 4px 24px rgba(0,47,167,.5),inset 0 1px 0 rgba(255,255,255,.18);
+                padding:5px 22px;border-radius:100px;overflow:hidden;
+                align-items:center;gap:0;z-index:15;white-space:nowrap;">
                 <div style="display:flex;align-items:center;gap:1.5px;height:8px;overflow:hidden;">
-                  <div style="width:1px;background:linear-gradient(to top,#002FA7,#6B38D4);border-radius:1px;height:3px;animation:ck-wave .45s infinite;animation-delay:0s;"></div>
-                  <div style="width:1px;background:linear-gradient(to top,#002FA7,#6B38D4);border-radius:1px;height:5px;animation:ck-wave .45s infinite;animation-delay:.04s;"></div>
-                  <div style="width:1px;background:linear-gradient(to top,#002FA7,#6B38D4);border-radius:1px;height:7px;animation:ck-wave .45s infinite;animation-delay:.08s;"></div>
-                  <div style="width:1px;background:linear-gradient(to top,#002FA7,#6B38D4);border-radius:1px;height:8px;animation:ck-wave .45s infinite;animation-delay:.12s;"></div>
-                  <div style="width:1px;background:linear-gradient(to top,#002FA7,#6B38D4);border-radius:1px;height:5px;animation:ck-wave .45s infinite;animation-delay:.16s;"></div>
-                  <div style="width:1px;background:linear-gradient(to top,#002FA7,#6B38D4);border-radius:1px;height:8px;animation:ck-wave .45s infinite;animation-delay:.20s;"></div>
-                  <div style="width:1px;background:linear-gradient(to top,#002FA7,#6B38D4);border-radius:1px;height:4px;animation:ck-wave .45s infinite;animation-delay:.24s;"></div>
-                  <div style="width:1px;background:linear-gradient(to top,#002FA7,#6B38D4);border-radius:1px;height:7px;animation:ck-wave .45s infinite;animation-delay:.28s;"></div>
-                  <div style="width:1px;background:linear-gradient(to top,#002FA7,#6B38D4);border-radius:1px;height:6px;animation:ck-wave .45s infinite;animation-delay:.32s;"></div>
-                  <div style="width:1px;background:linear-gradient(to top,#002FA7,#6B38D4);border-radius:1px;height:8px;animation:ck-wave .45s infinite;animation-delay:.36s;"></div>
-                  <div style="width:1px;background:linear-gradient(to top,#002FA7,#6B38D4);border-radius:1px;height:3px;animation:ck-wave .45s infinite;animation-delay:.40s;"></div>
-                  <div style="width:1px;background:linear-gradient(to top,#002FA7,#6B38D4);border-radius:1px;height:6px;animation:ck-wave .45s infinite;animation-delay:.44s;"></div>
-                  <div style="width:1px;background:linear-gradient(to top,#002FA7,#6B38D4);border-radius:1px;height:8px;animation:ck-wave .45s infinite;animation-delay:.48s;"></div>
-                  <div style="width:1px;background:linear-gradient(to top,#002FA7,#6B38D4);border-radius:1px;height:5px;animation:ck-wave .45s infinite;animation-delay:.52s;"></div>
-                  <div style="width:1px;background:linear-gradient(to top,#002FA7,#6B38D4);border-radius:1px;height:7px;animation:ck-wave .45s infinite;animation-delay:.56s;"></div>
-                  <div style="width:1px;background:linear-gradient(to top,#002FA7,#6B38D4);border-radius:1px;height:4px;animation:ck-wave .45s infinite;animation-delay:.60s;"></div>
-                  <div style="width:1px;background:linear-gradient(to top,#002FA7,#6B38D4);border-radius:1px;height:6px;animation:ck-wave .45s infinite;animation-delay:.64s;"></div>
-                  <div style="width:1px;background:linear-gradient(to top,#002FA7,#6B38D4);border-radius:1px;height:3px;animation:ck-wave .45s infinite;animation-delay:.68s;"></div>
+                  <div style="width:1px;background:rgba(255,255,255,.9);filter:drop-shadow(0 0 3px rgba(255,255,255,.6));border-radius:1px;height:3px;animation:ck-wave .45s infinite;animation-delay:0s;"></div>
+                  <div style="width:1px;background:rgba(255,255,255,.9);filter:drop-shadow(0 0 3px rgba(255,255,255,.6));border-radius:1px;height:5px;animation:ck-wave .45s infinite;animation-delay:.04s;"></div>
+                  <div style="width:1px;background:rgba(255,255,255,.9);filter:drop-shadow(0 0 3px rgba(255,255,255,.6));border-radius:1px;height:7px;animation:ck-wave .45s infinite;animation-delay:.08s;"></div>
+                  <div style="width:1px;background:rgba(255,255,255,.9);filter:drop-shadow(0 0 3px rgba(255,255,255,.6));border-radius:1px;height:8px;animation:ck-wave .45s infinite;animation-delay:.12s;"></div>
+                  <div style="width:1px;background:rgba(255,255,255,.9);filter:drop-shadow(0 0 3px rgba(255,255,255,.6));border-radius:1px;height:5px;animation:ck-wave .45s infinite;animation-delay:.16s;"></div>
+                  <div style="width:1px;background:rgba(255,255,255,.9);filter:drop-shadow(0 0 3px rgba(255,255,255,.6));border-radius:1px;height:8px;animation:ck-wave .45s infinite;animation-delay:.20s;"></div>
+                  <div style="width:1px;background:rgba(255,255,255,.9);filter:drop-shadow(0 0 3px rgba(255,255,255,.6));border-radius:1px;height:4px;animation:ck-wave .45s infinite;animation-delay:.24s;"></div>
+                  <div style="width:1px;background:rgba(255,255,255,.9);filter:drop-shadow(0 0 3px rgba(255,255,255,.6));border-radius:1px;height:7px;animation:ck-wave .45s infinite;animation-delay:.28s;"></div>
+                  <div style="width:1px;background:rgba(255,255,255,.9);filter:drop-shadow(0 0 3px rgba(255,255,255,.6));border-radius:1px;height:6px;animation:ck-wave .45s infinite;animation-delay:.32s;"></div>
+                  <div style="width:1px;background:rgba(255,255,255,.9);filter:drop-shadow(0 0 3px rgba(255,255,255,.6));border-radius:1px;height:8px;animation:ck-wave .45s infinite;animation-delay:.36s;"></div>
+                  <div style="width:1px;background:rgba(255,255,255,.9);filter:drop-shadow(0 0 3px rgba(255,255,255,.6));border-radius:1px;height:3px;animation:ck-wave .45s infinite;animation-delay:.40s;"></div>
+                  <div style="width:1px;background:rgba(255,255,255,.9);filter:drop-shadow(0 0 3px rgba(255,255,255,.6));border-radius:1px;height:6px;animation:ck-wave .45s infinite;animation-delay:.44s;"></div>
+                  <div style="width:1px;background:rgba(255,255,255,.9);filter:drop-shadow(0 0 3px rgba(255,255,255,.6));border-radius:1px;height:8px;animation:ck-wave .45s infinite;animation-delay:.48s;"></div>
+                  <div style="width:1px;background:rgba(255,255,255,.9);filter:drop-shadow(0 0 3px rgba(255,255,255,.6));border-radius:1px;height:5px;animation:ck-wave .45s infinite;animation-delay:.52s;"></div>
+                  <div style="width:1px;background:rgba(255,255,255,.9);filter:drop-shadow(0 0 3px rgba(255,255,255,.6));border-radius:1px;height:7px;animation:ck-wave .45s infinite;animation-delay:.56s;"></div>
+                  <div style="width:1px;background:rgba(255,255,255,.9);filter:drop-shadow(0 0 3px rgba(255,255,255,.6));border-radius:1px;height:4px;animation:ck-wave .45s infinite;animation-delay:.60s;"></div>
+                  <div style="width:1px;background:rgba(255,255,255,.9);filter:drop-shadow(0 0 3px rgba(255,255,255,.6));border-radius:1px;height:6px;animation:ck-wave .45s infinite;animation-delay:.64s;"></div>
+                  <div style="width:1px;background:rgba(255,255,255,.9);filter:drop-shadow(0 0 3px rgba(255,255,255,.6));border-radius:1px;height:3px;animation:ck-wave .45s infinite;animation-delay:.68s;"></div>
                 </div>
-                <span id="voice-transcript" style="font-family:'DM Mono',monospace;font-size:8px;color:rgba(255,255,255,.6);min-width:0;letter-spacing:.04em;"></span>
+                <span id="voice-transcript" style="font-family:'DM Mono',monospace;font-size:8px;color:rgba(255,255,255,.6);min-width:0;letter-spacing:.04em;margin-left:8px;"></span>
               </div>
             </div>
           </div>
-          <!-- floating edit panel (step 3) -->
-          <div id="voice-ai-output" style="display:none;flex-shrink:0;background:#16161f;border:.5px solid rgba(255,255,255,.12);border-radius:10px;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,.5);transition:all .4s;">
-            <!-- panel title bar -->
-            <div style="background:#1e1e2a;padding:7px 12px;display:flex;align-items:center;gap:8px;border-bottom:.5px solid rgba(255,255,255,.08);">
-              <div style="width:6px;height:6px;border-radius:50%;background:linear-gradient(135deg,#002FA7,#6B38D4);"></div>
-              <span style="font-family:'DM Mono',monospace;font-size:8px;color:rgba(255,255,255,.55);letter-spacing:.08em;">语音转录 · 编辑后导入终端</span>
-              <div style="margin-left:auto;display:flex;gap:6px;align-items:center;">
-                <span style="font-family:'DM Mono',monospace;font-size:7px;color:rgba(255,255,255,.25);cursor:pointer;">取消</span>
-                <div style="background:linear-gradient(135deg,#002FA7,#6B38D4);color:white;font-family:'DM Mono',monospace;font-size:7px;padding:2px 10px;border-radius:20px;cursor:pointer;letter-spacing:.05em;">导入终端</div>
+
+          <!-- terminal window — floats bottom-right over msprof (step 3) -->
+          <div id="voice-terminal" style="display:none;position:absolute;bottom:0;right:0;width:56%;height:52%;z-index:20;
+            background:#0a0a0f;
+            border:.5px solid #2a2a38;
+            border-radius:8px;
+            box-shadow:-6px -6px 28px rgba(0,0,0,.7),0 0 0 .5px rgba(255,255,255,.06);
+            overflow:hidden;flex-direction:column;">
+            <!-- titlebar -->
+            <div style="background:#111118;padding:5px 12px;border-bottom:.5px solid #1e1e28;display:flex;align-items:center;gap:8px;flex-shrink:0;">
+              <div style="display:flex;gap:4px;">
+                <div style="width:7px;height:7px;border-radius:50%;background:#3a3a4a;"></div>
+                <div style="width:7px;height:7px;border-radius:50%;background:#3a3a4a;"></div>
+                <div style="width:7px;height:7px;border-radius:50%;background:#3a3a4a;"></div>
               </div>
+              <span style="font-family:'DM Mono',monospace;font-size:7.5px;color:#48485C;">terminal</span>
+              <span style="margin-left:auto;font-family:'DM Mono',monospace;font-size:7px;
+                color:var(--acc);background:var(--acc-dim);border:.5px solid var(--acc-b);
+                padding:1px 7px;">HAI 已发送指令</span>
             </div>
-            <!-- editable text area mockup -->
-            <div style="padding:10px 14px;">
-              <div id="voice-ai-text" style="font-family:'DM Mono',monospace;font-size:9px;color:rgba(255,255,255,.85);line-height:1.7;background:rgba(255,255,255,.04);border:.5px solid rgba(255,255,255,.1);border-radius:6px;padding:8px 10px;min-height:36px;cursor:text;"></div>
-              <div style="margin-top:6px;display:flex;gap:10px;align-items:center;">
-                <span style="font-family:'DM Mono',monospace;font-size:7px;color:rgba(255,255,255,.2);">可自由选中 · 编辑 · 删除</span>
-                <div style="margin-left:auto;display:flex;gap:4px;">
-                  <div style="padding:2px 8px;border:.5px solid rgba(255,255,255,.15);border-radius:4px;font-family:'DM Mono',monospace;font-size:7px;color:rgba(255,255,255,.4);">写入</div>
-                  <div style="padding:2px 8px;border:.5px solid rgba(255,255,255,.15);border-radius:4px;font-family:'DM Mono',monospace;font-size:7px;color:rgba(255,255,255,.4);">发送</div>
-                </div>
+            <!-- terminal content -->
+            <div style="padding:10px 14px;flex:1;overflow:hidden;font-family:'DM Mono',monospace;font-size:8px;line-height:1.8;color:#C8C8DC;">
+              <div style="color:#48485C;">$ msprof --op RMSNorm_forward</div>
+              <div style="color:#48485C;margin-bottom:6px;">  CUBE: 21%  Vector: 87%  data_move: 62%</div>
+              <div style="color:rgba(255,255,255,.5);">$ <span id="voice-ai-text" style="color:var(--acc);"></span></div>
+              <div id="voice-ai-result" style="display:none;margin-top:4px;">
+                <div style="color:var(--tg);">[HAI] CUBE 利用率低 → tile_m=64 偏小，data_move 占主导</div>
+                <div style="color:var(--tg);">      建议: tile_m 调整至 128，预计 CUBE 提升至 ~58%</div>
+                <div style="color:#48485C;margin-top:4px;">$ hai optimize --tile_m 128<span style="animation:bl .9s step-end infinite;color:rgba(255,255,255,.7);">▌</span></div>
               </div>
             </div>
           </div>
-        </div>
-      </div>
+
+        </div>      </div>
     </div>
   </div>
 </div>
@@ -2524,6 +2536,8 @@ const qs = (s, p=document) => p.querySelector(s);
 const qsa = (s, p=document) => [...p.querySelectorAll(s)];
 
 /* ── setupSlideSteps ── */
+window._stepperRestarts = window._stepperRestarts || {};
+
 function setupSlideSteps(secId, stripId, defs) {
   const sec = document.getElementById(secId);
   const strip = document.getElementById(stripId);
@@ -2532,6 +2546,7 @@ function setupSlideSteps(secId, stripId, defs) {
   let cur = -1;
   let simCursor = sec.querySelector('.sim-cursor');
   let activated = false;
+  let gen = 0;
 
   const dots = strip.querySelectorAll('.stp-step');
 
@@ -2590,9 +2605,10 @@ function setupSlideSteps(secId, stripId, defs) {
     }
   }
 
-  function autoPlay() {
+  function autoPlay(myGen) {
     let idx = 0;
     function next() {
+      if (gen !== myGen) return;
       if (idx >= defs.length) { idx = 0; }
       goTo(idx);
       const delay = (defs[idx] && defs[idx].ms) ? defs[idx].ms + 400 : 1400;
@@ -2602,11 +2618,25 @@ function setupSlideSteps(secId, stripId, defs) {
     next();
   }
 
+  function restart() {
+    gen++;
+    cur = -1;
+    /* reset strip UI */
+    const fill = strip.querySelector('.stp-fill');
+    if (fill) fill.style.width = '0%';
+    strip.querySelectorAll('.stp-step').forEach(d => {
+      d.classList.remove('stp-active', 'stp-done');
+    });
+    setTimeout(() => autoPlay(gen), 300);
+  }
+
+  window._stepperRestarts[secId] = restart;
+
   const obs = new IntersectionObserver(entries => {
     entries.forEach(e => {
       if (e.isIntersecting && !activated) {
         activated = true;
-        setTimeout(autoPlay, 600);
+        setTimeout(() => autoPlay(gen), 600);
       }
     });
   }, { threshold: 0.5 });
@@ -2775,16 +2805,36 @@ function setupSlideSteps(secId, stripId, defs) {
       if (transcript) typeText(transcript, '这里为什么这么低？', 90);
     }
     else if (p === 3) {
-      /* wave hides → show floating edit panel */
+      /* wave hides → terminal window floats in bottom-right */
       if (wavebar) wavebar.style.display = 'none';
-      if (cubeRow) cubeRow.style.background = '';
-      const panel = document.getElementById('voice-ai-output');
-      if (panel) panel.style.display = 'block';
-      if (aiText) typeText(aiText, '这里为什么这么低？CUBE 21% 过低，data_move 可能是瓶颈，建议检查 tile_m 参数', 30);
+      const term = document.getElementById('voice-terminal');
+      if (term) term.style.display = 'flex';
+      if (aiText) typeText(aiText, 'hai ask --ctx msprof:CUBE "这里为什么这么低？"', 38, function() {
+        const result = document.getElementById('voice-ai-result');
+        if (result) { result.style.display = 'block'; }
+      });
     }
   }
 
   window.voiceSetPhase = setPhase;
+
+  window._sectionDOMResets = window._sectionDOMResets || {};
+  window._sectionDOMResets['s-m2c'] = function() {
+    const cursor = document.getElementById('voice-cursor');
+    const cubeRow = document.getElementById('ms-row-cube');
+    const wavebar = document.getElementById('voice-wave-bar');
+    const transcript = document.getElementById('voice-transcript');
+    const term = document.getElementById('voice-terminal');
+    const aiText = document.getElementById('voice-ai-text');
+    const aiResult = document.getElementById('voice-ai-result');
+    if (cursor) { cursor.style.left = '10%'; cursor.style.top = '10%'; }
+    if (cubeRow) cubeRow.style.background = '';
+    if (wavebar) wavebar.style.display = 'none';
+    if (transcript) transcript.textContent = '';
+    if (term) term.style.display = 'none';
+    if (aiText) aiText.textContent = '';
+    if (aiResult) aiResult.style.display = 'none';
+  };
 })();
 
 /* ─────────────────────────────────────────────
@@ -3584,6 +3634,24 @@ document.head.appendChild(sty);
 
   prevBtn.addEventListener('click', () => scrollTo(Math.max(0, curIdx - 1)));
   nextBtn.addEventListener('click', () => scrollTo(Math.min(sections.length - 1, curIdx + 1)));
+
+  /* reset button */
+  const resetBtn = document.getElementById('tn-reset');
+  if (resetBtn) {
+    resetBtn.addEventListener('click', () => {
+      const secId = sections[curIdx].id;
+      /* stepper restart */
+      const restarter = window._stepperRestarts && window._stepperRestarts[secId];
+      if (restarter) restarter();
+      /* section-specific DOM cleanup */
+      const domReset = window._sectionDOMResets && window._sectionDOMResets[secId];
+      if (domReset) domReset();
+      /* spin icon briefly */
+      resetBtn.style.transform = 'rotate(360deg)';
+      resetBtn.style.transition = 'transform .45s ease';
+      setTimeout(() => { resetBtn.style.transform = ''; resetBtn.style.transition = ''; }, 500);
+    });
+  }
 
   /* keyboard ↑↓ */
   document.addEventListener('keydown', e => {

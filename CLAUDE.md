@@ -359,6 +359,10 @@ grep -n "id=\"s-m" file.html | head    # 快速列出所有 section
 | *(2026-05-23)* | 社区行内容更新：扩展至文档/下载/课程/学习路径/活动全生态 |
 | *(2026-05-23)* | s-m2c：语音波形浮层重设计（深色低饱和胶囊+蓝紫渐变细条）；右上角 Space chip 加圆角渐变；左侧新增三种交互模式；步骤3改为浮动编辑面板 |
 | *(2026-05-23)* | 新增 s-m2d（语音模式路由）：触发逻辑路由表 + 三种模式 mockup 对比 |
+| *(2026-05-24)* | 语音波形浮层换 A2 方案：蓝紫渐变底色+白色条+白色 drop-shadow 光晕；修复 display:none/display:flex 重复导致初始可见 bug；padding 改为对称 5px 22px，transcript 用 margin-left:8px 避免空时占位 |
+| *(2026-05-24)* | s-m2c mockup 重设计：msprof 窗口（左上 78%×72%，圆角8px）+ 终端窗口（右下 56%×52%，圆角8px，step3出现），两窗口重叠；step3改为"发送到终端"模式，终端显示 hai ask 命令+HAI分析结果 |
+| *(2026-05-24)* | top-nav 新增 ↺ 重置按钮：点击重置当前页 stepper 动效+DOM 状态，图标旋转360°反馈 |
+| *(2026-05-24)* | setupSlideSteps 加 generation 计数器（gen++取消旧 setTimeout 链）+ window._stepperRestarts[secId] 注册表；新增 window._sectionDOMResets[secId] 注册表供各 section 注册 DOM 清理函数 |
 
 ### ai-dev-tools-design.html 专项工作（更早）
 
