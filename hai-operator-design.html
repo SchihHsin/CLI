@@ -1255,11 +1255,11 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
             <div style="padding:10px 14px;flex:1;overflow:hidden;font-family:'DM Mono',monospace;font-size:8px;line-height:1.8;color:#C8C8DC;">
               <div style="color:#48485C;">$ msprof --op RMSNorm_forward</div>
               <div style="color:#48485C;margin-bottom:6px;">  CUBE: 21%  Vector: 87%  data_move: 62%</div>
-              <div style="color:rgba(255,255,255,.5);">$ <span id="voice-ai-text" style="color:var(--acc);"></span></div>
+              <div style="border-top:.5px solid rgba(255,255,255,.12);border-bottom:.5px solid rgba(255,255,255,.12);padding:3px 0;margin:3px 0;color:rgba(255,255,255,.5);">$ <span id="voice-ai-text" style="color:var(--acc);"></span></div>
               <div id="voice-ai-result" style="display:none;margin-top:4px;">
                 <div style="color:var(--tg);">[HAI] CUBE 利用率低 → tile_m=64 偏小，data_move 占主导</div>
                 <div style="color:var(--tg);">      建议: tile_m 调整至 128，预计 CUBE 提升至 ~58%</div>
-                <div style="color:#48485C;margin-top:4px;">$ hai optimize --tile_m 128<span style="animation:bl .9s step-end infinite;color:rgba(255,255,255,.7);">▌</span></div>
+                <div style="border-top:.5px solid rgba(255,255,255,.12);border-bottom:.5px solid rgba(255,255,255,.12);padding:3px 0;margin:3px 0;color:rgba(255,255,255,.7);">$ hai optimize --tile_m 128<span style="animation:bl .9s step-end infinite;color:rgba(255,255,255,.7);">▌</span></div>
               </div>
             </div>
           </div>
@@ -1351,7 +1351,7 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
                 <div style="padding:8px 10px;flex:1;font-family:'DM Mono',monospace;font-size:7px;line-height:1.85;overflow:hidden;position:relative;">
                   <div style="color:#48485C;">$ hai compile cube_rms.py</div>
                   <div style="color:#48485C;">$ hai run --test</div>
-                  <div style="color:rgba(255,255,255,.7);">$ <span id="m2d-typed1"></span><span id="m2d-cur1" style="display:inline-block;width:4px;height:10px;background:rgba(255,255,255,.65);vertical-align:-2px;animation:bl .8s step-end infinite;"></span></div>
+                  <div style="border-top:.5px solid rgba(255,255,255,.12);border-bottom:.5px solid rgba(255,255,255,.12);padding:3px 0;margin:3px 0;color:rgba(255,255,255,.7);">$ <span id="m2d-typed1"></span><span id="m2d-cur1" style="display:inline-block;width:4px;height:10px;background:rgba(255,255,255,.65);vertical-align:-2px;animation:bl .8s step-end infinite;"></span></div>
                   <div id="m2d-result1" style="display:none;font-size:6.5px;margin-top:3px;"></div>
               <div id="m2d-wave1" style="display:none;position:absolute;bottom:8px;left:50%;transform:translateX(-50%);
                 background:linear-gradient(135deg,rgba(0,47,167,.88),rgba(107,56,212,.88));
@@ -1397,7 +1397,7 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
                 <div style="padding:8px 10px;flex:1;font-family:'DM Mono',monospace;font-size:7px;line-height:1.85;overflow:hidden;position:relative;">
                   <div style="color:#48485C;">$ hai compile cube_rms.py</div>
                   <div style="color:#48485C;">$ hai run --test</div>
-                  <div style="color:rgba(255,255,255,.7);">$ <span id="m2d-typed2" style="color:var(--acc-l,#A87FF5);"></span><span id="m2d-cur2" style="display:inline-block;width:4px;height:10px;background:rgba(255,255,255,.65);vertical-align:-2px;animation:bl .8s step-end infinite;"></span></div>
+                  <div style="border-top:.5px solid rgba(255,255,255,.12);border-bottom:.5px solid rgba(255,255,255,.12);padding:3px 0;margin:3px 0;color:rgba(255,255,255,.7);">$ <span id="m2d-typed2" style="color:var(--acc-l,#A87FF5);"></span><span id="m2d-cur2" style="display:inline-block;width:4px;height:10px;background:rgba(255,255,255,.65);vertical-align:-2px;animation:bl .8s step-end infinite;"></span></div>
                   <div id="m2d-result2" style="display:none;font-size:6.5px;margin-top:3px;color:#48485C;"></div>
               <div id="m2d-wave2" style="display:none;position:absolute;bottom:8px;left:50%;transform:translateX(-50%);
                 background:linear-gradient(135deg,rgba(0,47,167,.88),rgba(107,56,212,.88));
@@ -2093,7 +2093,7 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
                       </div>
                       <!-- Terminal body -->
                       <div style="flex:1;padding:5px 8px;font-family:'DM Mono',monospace;font-size:6.5px;line-height:1.8;overflow:hidden;">
-                        <div id="tl-s1" style="color:#c8c8d0;">$ hai run RMSNorm --hw 910B --goal <span style="color:#a8d8a8;">"cube_util &gt; 70%"</span></div>
+                        <div id="tl-s1" style="border-top:.5px solid rgba(255,255,255,.12);border-bottom:.5px solid rgba(255,255,255,.12);padding:3px 0;margin:3px 0;color:#c8c8d0;">$ hai run RMSNorm --hw 910B --goal <span style="color:#a8d8a8;">"cube_util &gt; 70%"</span></div>
                         <div id="tl-s2" style="color:#8888a8;opacity:0;transition:opacity .4s;">◆ Agent 启动 · tbe-gen + shape-infer + perf-bench</div>
                         <div id="tl-s3" style="color:#666680;opacity:0;transition:opacity .45s 0.12s;">  分析 msprof · CUBE 38% → 评估 tile_m 64/96/128</div>
                         <div id="tl-s4" style="color:#e8c060;opacity:0;transition:opacity .4s;">▶ tile_m=128 超 UB，确认策略：96 还是双缓冲？</div>
