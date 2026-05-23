@@ -3970,17 +3970,6 @@ document.head.appendChild(sty);
   });
 })();
 
-/* ── Page numbers ── */
-(function injectPageNumbers() {
-  const secs = document.querySelectorAll('.sec');
-  const total = secs.length;
-  secs.forEach((el, i) => {
-    const pn = document.createElement('div');
-    pn.style.cssText = 'position:absolute;bottom:12px;right:18px;font-family:"DM Mono",monospace;font-size:8px;letter-spacing:.08em;color:rgba(0,47,167,.22);z-index:100;pointer-events:none;';
-    pn.textContent = String(i + 1).padStart(2, '0') + ' / ' + String(total).padStart(2, '0');
-    el.appendChild(pn);
-  });
-})();
 </script>
 </body>
 </html>
