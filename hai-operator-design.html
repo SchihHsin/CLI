@@ -2899,6 +2899,15 @@ function setupSlideSteps(secId, stripId, defs) {
     const cursorLine= document.getElementById('tl-cursor-line');
 
     if (p === 1) {
+      /* reset from previous loop */
+      const term = document.getElementById('voice-terminal');
+      if (term) term.style.display = 'none';
+      if (wavebar) wavebar.style.display = 'none';
+      if (transcript) transcript.textContent = '';
+      const aiText2 = document.getElementById('voice-ai-text');
+      const aiResult = document.getElementById('voice-ai-result');
+      if (aiText2) aiText2.textContent = '';
+      if (aiResult) aiResult.style.display = 'none';
       /* cursor glides to CUBE row */
       if (cursor) { cursor.style.left = '52%'; cursor.style.top = '30%'; }
       /* highlight CUBE row */
