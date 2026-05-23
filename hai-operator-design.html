@@ -313,7 +313,7 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
     </div>
 
     <!-- ── 三列痛点 ── -->
-    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;flex:1;align-items:stretch;">
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;align-items:stretch;">
 
       <!-- 01 -->
       <div style="display:flex;flex-direction:column;gap:10px;background:var(--sur);border:.5px solid var(--grey-2);padding:18px 16px;">
@@ -324,7 +324,7 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
             <div style="font-size:11px;color:var(--tx);font-weight:500;">错误定位难</div>
           </div>
         </div>
-        <div style="background:var(--tb);border:.5px solid var(--tbdr);padding:9px 10px;font-family:'DM Mono',monospace;font-size:8px;line-height:1.75;flex:1;">
+        <div style="background:var(--tb);border:.5px solid var(--tbdr);padding:9px 10px;font-family:'DM Mono',monospace;font-size:8px;line-height:1.75;">
           <div style="color:var(--tr);">[EZ9999] InnerError: RMSNorm</div>
           <div style="color:var(--td);">  input: NHWC</div>
           <div style="color:var(--tr);">  expected: FRACTAL_NZ</div>
@@ -354,7 +354,7 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
             <div style="font-size:11px;color:var(--tx);font-weight:500;">性能调优盲目</div>
           </div>
         </div>
-        <div style="background:var(--tb);border:.5px solid var(--tbdr);padding:9px 10px;font-family:'DM Mono',monospace;font-size:8px;line-height:1.75;flex:1;">
+        <div style="background:var(--tb);border:.5px solid var(--tbdr);padding:9px 10px;font-family:'DM Mono',monospace;font-size:8px;line-height:1.75;">
           <div style="color:var(--tw);">AI Core 利用率: <span style="color:var(--ty);">38%</span></div>
           <div style="color:var(--tw);">CUBE 单元:       <span style="color:var(--tr);">21%</span></div>
           <div style="color:var(--tw);">VECTOR 单元:     <span style="color:var(--tg);">91%</span></div>
@@ -383,7 +383,7 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
             <div style="font-size:11px;color:var(--tx);font-weight:500;">多硬件适配重复</div>
           </div>
         </div>
-        <div style="background:var(--sur);border:.5px solid var(--grey-2);padding:9px 10px;flex:1;">
+        <div style="background:var(--sur);border:.5px solid var(--grey-2);padding:9px 10px;">
           <div style="display:grid;grid-template-columns:1.4fr .8fr .8fr;gap:4px;font-family:'DM Mono',monospace;font-size:8px;">
             <div style="color:var(--tx3);padding-bottom:5px;border-bottom:.5px solid var(--grey-2);">任务</div>
             <div style="color:var(--tx3);padding-bottom:5px;border-bottom:.5px solid var(--grey-2);text-align:center;">910B</div>
@@ -492,84 +492,102 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
 
   </div>
 </div>
-<!-- ══ BG-SIGNAL: 行业验证 ══ -->
+<!-- ══ BG-SIGNAL: 行业验证 1/2 ══ -->
 <div class="sec" id="s-bg-signal" style="background:var(--bg);">
   <div class="slabel">
-    <span class="sub">行业验证 · 趋势已至</span>
-    <span class="main">领先产品已在做——AI 走向实体，交互走向自然</span>
+    <span class="sub">行业验证 · 1 / 2</span>
+    <span class="main">AI 走向实体——硬件联动，不是概念</span>
   </div>
-  <div class="inner" style="padding-top:16px;">
-    <div style="display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:14px;flex:1;min-height:0;">
+  <div class="inner" style="padding-top:14px;">
+    <div style="display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:12px;flex:1;min-height:0;">
 
-      <!-- ① Claude Desktop Buddy -->
       <div style="background:var(--sur);border:.5px solid var(--grey-2);display:flex;flex-direction:row;overflow:hidden;">
-        <div style="flex:0 0 52%;overflow:hidden;position:relative;">
-          <img src="https://raw.githubusercontent.com/anthropics/claude-desktop-buddy/main/docs/device.jpg"
-               alt="Claude Desktop Buddy on M5StickC Plus"
-               style="width:100%;height:100%;object-fit:cover;object-position:center center;display:block;">
-          <div style="position:absolute;bottom:0;left:0;right:0;padding:3px 8px;background:linear-gradient(transparent,rgba(0,0,0,.6));font-family:'DM Mono',monospace;font-size:6px;color:rgba(255,255,255,.75);">
-            Anthropic · github.com/anthropics/claude-desktop-buddy · 2026.04
-          </div>
+        <div style="flex:0 0 54%;background:#1a1a24;display:flex;align-items:center;justify-content:center;padding:10px;overflow:hidden;position:relative;">
+          <img src="https://raw.githubusercontent.com/anthropics/claude-desktop-buddy/main/docs/device.jpg" alt="Claude Desktop Buddy"
+               style="max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;display:block;">
         </div>
-        <div style="flex:1;padding:16px 16px 12px;display:flex;flex-direction:column;gap:7px;min-width:0;border-left:.5px solid var(--grey-2);">
-          <div style="font-family:'DM Mono',monospace;font-size:7px;color:var(--acc);letter-spacing:.12em;">ANTHROPIC · 2026.04</div>
-          <div style="font-size:14px;font-weight:200;font-family:'Inter',sans-serif;color:var(--tx);line-height:1.2;letter-spacing:-.02em;">Claude Desktop Buddy</div>
-          <div style="font-size:9.5px;color:var(--tx2);line-height:1.65;font-family:'Space Grotesk',sans-serif;">M5StickC Plus ($30 ESP32-S3)，通过 BLE 实时显示 Agent 运行状态，物理按钮直接审批权限请求。Anthropic 已开源。</div>
-          <div style="margin-top:auto;padding-top:8px;border-top:.5px solid var(--grey-2);font-family:'DM Mono',monospace;font-size:7px;color:var(--acc);">→ 印证设计点：实体状态灯 · s-m1c</div>
+        <div style="flex:1;padding:15px 15px 11px;display:flex;flex-direction:column;gap:6px;min-width:0;border-left:.5px solid var(--grey-2);">
+          <div style="font-family:'DM Mono',monospace;font-size:6.5px;color:var(--acc);letter-spacing:.12em;">ANTHROPIC · OPEN SOURCE · 2026.04</div>
+          <div style="font-size:13.5px;font-weight:200;font-family:'Inter',sans-serif;color:var(--tx);line-height:1.2;letter-spacing:-.02em;">Claude Desktop Buddy</div>
+          <div style="font-size:9.5px;color:var(--tx2);line-height:1.6;font-family:'Space Grotesk',sans-serif;">M5StickC Plus（$30 ESP32-S3），BLE 实时显示 Agent 运行状态，物理按钮直接审批权限请求。Anthropic 已开源，2026.04 发布。</div>
+          <div style="margin-top:auto;padding-top:7px;border-top:.5px solid var(--grey-2);font-family:'DM Mono',monospace;font-size:6.5px;color:var(--acc);">→ 印证设计点：实体状态灯 · s-m1c</div>
         </div>
       </div>
 
-      <!-- ② Cardputer 被抢爆 -->
       <div style="background:var(--sur);border:.5px solid var(--grey-2);display:flex;flex-direction:row;overflow:hidden;">
-        <div style="flex:0 0 52%;overflow:hidden;position:relative;">
-          <img src="https://www.espressif.com/sites/default/files/%E4%BC%81%E4%B8%9A%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_3e2c05b9-29d4-4667-bcd9-35f885efee43.png"
-               alt="Code with Claude Cardputer event"
-               style="width:100%;height:100%;object-fit:cover;object-position:center center;display:block;">
-          <div style="position:absolute;bottom:0;left:0;right:0;padding:3px 8px;background:linear-gradient(transparent,rgba(0,0,0,.6));font-family:'DM Mono',monospace;font-size:6px;color:rgba(255,255,255,.75);">
-            Espressif × Anthropic · "Code w/ Claude" Maker Station · 2026.05
-          </div>
+        <div style="flex:0 0 54%;background:#eeecea;display:flex;align-items:center;justify-content:center;padding:10px;overflow:hidden;position:relative;">
+          <img src="https://www.espressif.com/sites/default/files/%E4%BC%81%E4%B8%9A%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_3e2c05b9-29d4-4667-bcd9-35f885efee43.png" alt="M5Stack Cardputer 被抢爆"
+               style="max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;display:block;">
         </div>
-        <div style="flex:1;padding:16px 16px 12px;display:flex;flex-direction:column;gap:7px;min-width:0;border-left:.5px solid var(--grey-2);">
-          <div style="font-family:'DM Mono',monospace;font-size:7px;color:var(--acc);letter-spacing:.12em;">ESPRESSIF × ANTHROPIC · 2026.05</div>
-          <div style="font-size:14px;font-weight:200;font-family:'Inter',sans-serif;color:var(--tx);line-height:1.2;letter-spacing:-.02em;">M5Stack Cardputer 被抢爆</div>
-          <div style="font-size:9.5px;color:var(--tx2);line-height:1.65;font-family:'Space Grotesk',sans-serif;">Build with Claude 活动现场向参与者派发 Cardputer，Claude Code 直接写固件并烧录——全球开发者掀抢购潮。</div>
-          <div style="margin-top:auto;padding-top:8px;border-top:.5px solid var(--grey-2);font-family:'DM Mono',monospace;font-size:7px;color:var(--acc);">→ 印证趋势：AI 走向实体，物理化不可逆</div>
+        <div style="flex:1;padding:15px 15px 11px;display:flex;flex-direction:column;gap:6px;min-width:0;border-left:.5px solid var(--grey-2);">
+          <div style="font-family:'DM Mono',monospace;font-size:6.5px;color:var(--acc);letter-spacing:.12em;">ESPRESSIF × ANTHROPIC · 2026.05</div>
+          <div style="font-size:13.5px;font-weight:200;font-family:'Inter',sans-serif;color:var(--tx);line-height:1.2;letter-spacing:-.02em;">M5Stack Cardputer 被抢爆</div>
+          <div style="font-size:9.5px;color:var(--tx2);line-height:1.6;font-family:'Space Grotesk',sans-serif;">"Code w/ Claude" 活动现场向参与者派发 Cardputer，告诉 Claude Code 想做什么，Claude 直接写固件并烧录——全球开发者掀抢购潮。</div>
+          <div style="margin-top:auto;padding-top:7px;border-top:.5px solid var(--grey-2);font-family:'DM Mono',monospace;font-size:6.5px;color:var(--acc);">→ 印证趋势：AI 走向实体，物理化不可逆</div>
         </div>
       </div>
 
-      <!-- ③ Devin 2.0 -->
-      <div style="background:var(--sur);border:.5px solid var(--grey-2);display:flex;flex-direction:row;overflow:hidden;">
-        <div style="flex:0 0 52%;overflow:hidden;position:relative;">
-          <img src="https://cdn.sanity.io/images/2mc9cv2v/production/89fcacf48d33b51277268808596d123237018950-1920x1080.jpg?w=800&h=450&fit=crop"
-               alt="Devin AI multi-agent IDE interface"
-               style="width:100%;height:100%;object-fit:cover;object-position:left top;display:block;">
-          <div style="position:absolute;bottom:0;left:0;right:0;padding:3px 8px;background:linear-gradient(transparent,rgba(0,0,0,.6));font-family:'DM Mono',monospace;font-size:6px;color:rgba(255,255,255,.75);">
-            Cognition AI · devin.ai · 2025.04
-          </div>
+      <div style="background:var(--sur);border:.5px solid var(--grey-2);display:flex;flex-direction:row;overflow:hidden;grid-column:1/-1;">
+        <div style="flex:0 0 58%;background:#0d0d14;display:flex;align-items:center;justify-content:center;padding:12px;overflow:hidden;">
+          <img src="https://cdn.sanity.io/images/2mc9cv2v/production/89fcacf48d33b51277268808596d123237018950-1920x1080.jpg?w=900&h=506&fit=crop" alt="Devin — 业界第一自主软件工程师"
+               style="max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;display:block;">
         </div>
-        <div style="flex:1;padding:16px 16px 12px;display:flex;flex-direction:column;gap:7px;min-width:0;border-left:.5px solid var(--grey-2);">
-          <div style="font-family:'DM Mono',monospace;font-size:7px;color:var(--acc);letter-spacing:.12em;">COGNITION AI · DEVIN 2.0 · 2025</div>
-          <div style="font-size:14px;font-weight:200;font-family:'Inter',sans-serif;color:var(--tx);line-height:1.2;letter-spacing:-.02em;">Devin — 并行 Agent 编排</div>
-          <div style="font-size:9.5px;color:var(--tx2);line-height:1.65;font-family:'Space Grotesk',sans-serif;">业界第一自主软件工程师，多 Agent 并行运行，会话列表＋代码 diff＋测试报告三栏统一管控。</div>
-          <div style="margin-top:auto;padding-top:8px;border-top:.5px solid var(--grey-2);font-family:'DM Mono',monospace;font-size:7px;color:var(--acc);">→ 印证设计点：并行 Agent 看板 · s-m1b</div>
+        <div style="flex:1;padding:20px 20px 14px;display:flex;flex-direction:column;gap:8px;min-width:0;border-left:.5px solid var(--grey-2);">
+          <div style="font-family:'DM Mono',monospace;font-size:6.5px;color:var(--acc);letter-spacing:.12em;">COGNITION AI · DEVIN 2.0 · 2025.04</div>
+          <div style="font-size:16px;font-weight:200;font-family:'Inter',sans-serif;color:var(--tx);line-height:1.2;letter-spacing:-.02em;">Devin — 业界第一自主软件工程师</div>
+          <div style="font-size:10px;color:var(--tx2);line-height:1.65;font-family:'Space Grotesk',sans-serif;">多 Agent 并行执行，会话列表 + 代码 diff + 测试报告三栏统一管控，团队可同时委派数十个任务。Agent 自主规划、执行、验证，人只需在关键决策点介入。</div>
+          <div style="margin-top:auto;padding-top:9px;border-top:.5px solid var(--grey-2);font-family:'DM Mono',monospace;font-size:6.5px;color:var(--acc);">→ 印证设计点：并行 Agent 看板 · s-m1b</div>
         </div>
       </div>
 
-      <!-- ④ GitHub Copilot Agent -->
+    </div>
+  </div>
+</div>
+<!-- ══ BG-SIGNAL2: 行业验证 2/2 ══ -->
+<div class="sec" id="s-bg-signal2" style="background:var(--bg);">
+  <div class="slabel">
+    <span class="sub">行业验证 · 2 / 2</span>
+    <span class="main">Agent 编排进化——终端、IDE、多会话一屏管控</span>
+  </div>
+  <div class="inner" style="padding-top:14px;">
+    <div style="display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:12px;flex:1;min-height:0;">
+
       <div style="background:var(--sur);border:.5px solid var(--grey-2);display:flex;flex-direction:row;overflow:hidden;">
-        <div style="flex:0 0 52%;overflow:hidden;position:relative;">
-          <img src="https://github.blog/wp-content/uploads/2025/02/Multifile_Edit.png"
-               alt="GitHub Copilot agent mode multi-file editing in VS Code"
-               style="width:100%;height:100%;object-fit:cover;object-position:left top;display:block;">
-          <div style="position:absolute;bottom:0;left:0;right:0;padding:3px 8px;background:linear-gradient(transparent,rgba(0,0,0,.6));font-family:'DM Mono',monospace;font-size:6px;color:rgba(255,255,255,.75);">
-            GitHub · github.blog · 2025.02
-          </div>
+        <div style="flex:0 0 54%;background:#0d0d14;display:flex;align-items:center;justify-content:center;padding:10px;overflow:hidden;position:relative;">
+          <img src="https://cdn.sanity.io/images/1ygbk6d0/production/839d438793ba58f2089deac10710878b5f0478ad-2672x1688.jpg" alt="Warp — Agentic Development Environment"
+               style="max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;display:block;">
         </div>
-        <div style="flex:1;padding:16px 16px 12px;display:flex;flex-direction:column;gap:7px;min-width:0;border-left:.5px solid var(--grey-2);">
-          <div style="font-family:'DM Mono',monospace;font-size:7px;color:var(--acc);letter-spacing:.12em;">GITHUB · COPILOT AGENT MODE · 2025.02</div>
-          <div style="font-size:14px;font-weight:200;font-family:'Inter',sans-serif;color:var(--tx);line-height:1.2;letter-spacing:-.02em;">Copilot Agent — 跨文件自主编辑</div>
-          <div style="font-size:9.5px;color:var(--tx2);line-height:1.65;font-family:'Space Grotesk',sans-serif;">Agent 模式跨多文件自主规划修改，内联 diff 一键 Accept / Discard，无需手动追踪改动范围。</div>
-          <div style="margin-top:auto;padding-top:8px;border-top:.5px solid var(--grey-2);font-family:'DM Mono',monospace;font-size:7px;color:var(--acc);">→ 印证设计点：Agent 自主执行 · s-m1a</div>
+        <div style="flex:1;padding:15px 15px 11px;display:flex;flex-direction:column;gap:6px;min-width:0;border-left:.5px solid var(--grey-2);">
+          <div style="font-family:'DM Mono',monospace;font-size:6.5px;color:var(--acc);letter-spacing:.12em;">WARP · OPEN SOURCE · AGPLv3 · 2026.04</div>
+          <div style="font-size:13.5px;font-weight:200;font-family:'Inter',sans-serif;color:var(--tx);line-height:1.2;letter-spacing:-.02em;">Warp — Agentic Development Environment</div>
+          <div style="font-size:9.5px;color:var(--tx2);line-height:1.6;font-family:'Space Grotesk',sans-serif;">终端进化为 ADE（Agent 开发环境），开源后内置 Claude Code / Codex / Gemini CLI 共享上下文，Oz 平台支持多 Agent 云端并行编排。</div>
+          <div style="margin-top:auto;padding-top:7px;border-top:.5px solid var(--grey-2);font-family:'DM Mono',monospace;font-size:6.5px;color:var(--acc);">→ 印证趋势：终端 = Agent 编排中心</div>
+        </div>
+      </div>
+
+      <div style="background:var(--sur);border:.5px solid var(--grey-2);display:flex;flex-direction:row;overflow:hidden;">
+        <div style="flex:0 0 54%;background:#0d0d14;display:flex;align-items:center;justify-content:center;padding:10px;overflow:hidden;position:relative;">
+          <img src="https://github.blog/wp-content/uploads/2025/02/Multifile_Edit.png" alt="Copilot Agent — 跨文件自主编辑"
+               style="max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;display:block;">
+        </div>
+        <div style="flex:1;padding:15px 15px 11px;display:flex;flex-direction:column;gap:6px;min-width:0;border-left:.5px solid var(--grey-2);">
+          <div style="font-family:'DM Mono',monospace;font-size:6.5px;color:var(--acc);letter-spacing:.12em;">GITHUB · COPILOT AGENT MODE · 2025.02</div>
+          <div style="font-size:13.5px;font-weight:200;font-family:'Inter',sans-serif;color:var(--tx);line-height:1.2;letter-spacing:-.02em;">Copilot Agent — 跨文件自主编辑</div>
+          <div style="font-size:9.5px;color:var(--tx2);line-height:1.6;font-family:'Space Grotesk',sans-serif;">Agent 模式自主规划跨多文件修改，内联 diff 逐处 Accept / Discard，无需手动追踪改动范围。月更 50+ 功能，MCP 支持自定义 UI 组件。</div>
+          <div style="margin-top:auto;padding-top:7px;border-top:.5px solid var(--grey-2);font-family:'DM Mono',monospace;font-size:6.5px;color:var(--acc);">→ 印证设计点：Agent 自主执行 · s-m1a</div>
+        </div>
+      </div>
+
+      <div style="background:var(--sur);border:.5px solid var(--grey-2);display:flex;flex-direction:row;overflow:hidden;grid-column:1/-1;">
+        <div style="flex:0 0 58%;background:#0a0a10;display:flex;align-items:center;justify-content:center;padding:12px;overflow:hidden;">
+          <img src="https://mintcdn.com/claude-code/1B48Qz2Z9hac4SLG/images/agent-view-dark.png?fit=max&auto=format&n=1B48Qz2Z9hac4SLG&q=85&s=a5bed7434bae368faea3a8f023b52aa2" alt="Claude Code Agent View — 多会话统一看板"
+               style="max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;display:block;">
+        </div>
+        <div style="flex:1;padding:20px 20px 14px;display:flex;flex-direction:column;gap:8px;min-width:0;border-left:.5px solid var(--grey-2);">
+          <div style="font-family:'DM Mono',monospace;font-size:6.5px;color:var(--acc);letter-spacing:.12em;">ANTHROPIC · CLAUDE CODE AGENT VIEW · 2026.05</div>
+          <div style="font-size:16px;font-weight:200;font-family:'Inter',sans-serif;color:var(--tx);line-height:1.2;letter-spacing:-.02em;">Claude Code Agent View — 多会话统一看板</div>
+          <div style="font-size:10px;color:var(--tx2);line-height:1.65;font-family:'Space Grotesk',sans-serif;">claude agents 打开全局 Agent 看板，Running / Needs input / Done 分组，每行实时摘要。Space 预览、Enter 接管，无需离开终端即可调度数十个并行会话。2026.05.11 发布，研究预览阶段。</div>
+          <div style="margin-top:auto;padding-top:9px;border-top:.5px solid var(--grey-2);font-family:'DM Mono',monospace;font-size:6.5px;color:var(--acc);">→ 印证设计点：Agent View · s-m1a</div>
         </div>
       </div>
 
@@ -3151,7 +3169,8 @@ document.head.appendChild(sty);
     { id:'s-cover',      label:'封面' },
     { id:'s-bg',         label:'背景 · 痛点' },
     { id:'s-bg2',        label:'范式演进' },
-    { id:'s-bg-signal',   label:'行业验证' },
+    { id:'s-bg-signal',   label:'行业验证 1' },
+    { id:'s-bg-signal2',  label:'行业验证 2' },
     { id:'s-bg3',        label:'设计方向' },
     { id:'s-j-overview', label:'开发旅程' },
     { id:'s-m4a',        label:'记忆启动' },
