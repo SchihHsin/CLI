@@ -576,6 +576,9 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
     <div class="dp-layout">
       <div class="dp-left">
 
+        <!-- spacer: match mockup-label height for top alignment with right side -->
+        <div class="mockup-label" style="visibility:hidden;pointer-events:none;" aria-hidden="true">placeholder</div>
+
         <!-- 过去 vs AI时代 -->
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;">
           <div style="background:var(--grey-1);border:.5px solid var(--grey-2);padding:10px 12px;">
@@ -617,9 +620,9 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
         </div>
 
         <!-- HAI 设计原则 -->
-        <div style="background:var(--acc-dim);border:.5px solid var(--acc-b);padding:10px 14px;">
-          <div style="font-family:'DM Mono',monospace;font-size:9px;color:var(--acc);margin-bottom:4px;">◆ HAI 设计原则</div>
-          <div style="font-size:10px;color:var(--tx2);line-height:1.6;">让开发者只需表达「这个算子需要做什么、达到什么指标」，AI 自动生成符合昇腾硬件约束的 TBE 实现，并持续迭代直到满足验收条件。</div>
+        <div style="background:var(--acc);padding:10px 14px;">
+          <div style="font-family:'DM Mono',monospace;font-size:9px;color:rgba(255,255,255,.6);margin-bottom:4px;">◆ HAI 设计原则</div>
+          <div style="font-size:10px;color:rgba(255,255,255,.9);line-height:1.6;">让开发者只需表达「这个算子需要做什么、达到什么指标」，AI 自动生成符合昇腾硬件约束的 TBE 实现，并持续迭代直到满足验收条件。</div>
         </div>
 
       </div>
