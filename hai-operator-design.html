@@ -1276,14 +1276,14 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
     <span class="main">语音模式路由 — 上下文决定落地方式</span>
   </div>
   <div class="inner">
-    <div class="dp-layout">
-      <div class="dp-left">
+    <div class="dp-layout" style="flex-direction:column;gap:16px;">
+      <div class="dp-left" style="width:100%;flex-direction:row;align-items:flex-start;gap:28px;flex-shrink:0;overflow:visible;">
         <div class="dp-desc">
           <div class="dp-label">设计说明</div>
           <div class="dp-title">同一个语音输入，三种落地路径</div>
           <div class="dp-body">语音识别完成后，HAI 不是简单地把文字填入终端——它先读取两个信号：<strong style="color:var(--tx);">光标当前位置</strong>和<strong style="color:var(--tx);">话语的长度与置信度</strong>，再决定最合适的落地方式。让开发者在不同场景下都能以最低摩擦完成意图表达。</div>
         </div>
-        <div class="dp-desc">
+        <div class="dp-desc" style="flex:1;">
           <div class="dp-label">路由逻辑</div>
           <div style="display:flex;flex-direction:column;gap:0;border:.5px solid var(--bdr2);overflow:hidden;margin-top:4px;">
             <!-- header -->
@@ -1328,7 +1328,7 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
         </div>
       </div>
 
-      <div class="dp-right" style="position:relative;">
+      <div class="dp-right" style="position:relative;flex:1;min-height:0;">
         <div class="mockup-label">三种模式落地示意</div>
 
         <!-- 3 columns side-by-side, each with independent animation loop -->
