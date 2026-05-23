@@ -21,10 +21,12 @@
 | 项 | 值 |
 |---|---|
 | 文件 | `/Users/hsin/Documents/Coding/CLI/hai-operator-design.html` |
-| 当前大小 | ~208,955 字符（持续增长） |
-| 场景 | CANN 昇腾算子开发（TBE DSL、EZ9999错误、910B/310P适配） |
+| 当前大小 | ~234,789 字符（持续增长） |
+| 场景 | CANN 昇腾算子开发（TBE DSL、format 不兼容、UB 溢出、910B/310P适配） |
 | 技术栈 | `tik.Tensor`、`tik.data_move`、msprof profiler、FRACTAL_NZ格式 |
-| 状态 | 主体完成，s-m3a 已删除 |
+| 状态 | 主体完成，s-m3a 已删除；新增社区知识转化 2 页 |
+
+> **⚠️ 禁止使用假错误码**：原文件中 EZ9999/EZ6523 均已于 2026-05-23 清除，替换为具体错误类型描述（format 不兼容、UB 溢出、shape 推导失败等）。今后不得再创造假编号。
 
 ---
 
@@ -95,7 +97,9 @@
 | 3.3 | `s-bg-signal` | 行业验证 · 1/2 — AI 走向实体，硬件联动 | ~495 |
 | 3.4 | `s-bg-signal2` | 行业验证 · 2/2 — Agent 编排进化 | ~546 |
 | 3.5 | `s-bg3` | 代码是过程，结果才是产出物 | ~597 |
-| 4 | `s-j-overview` | 用户旅程全景地图（7阶段×6维度） | ~640 |
+| 3.6 | `s-bg-community` | 昇腾社区知识转化框架（三层内化模型） | ~669 |
+| 3.7 | `s-bg-community2` | 社区知识渗透地图（5阶段×知识类型矩阵） | ~801 |
+| 4 | `s-j-overview` | 用户旅程全景地图（5阶段×6维度） | ~930 |
 | 5 | `s-m4a` | 记忆启动 — 跨会话上下文 | ~1046 |
 | 6 | `s-m2c` | 语音×光标 — 指着说话 | ~818 |
 | 7 | `s-m2b` | 手势 Prompt — Flow 不中断 | ~748 |
@@ -299,9 +303,16 @@ grep -n "id=\"s-m" file.html | head    # 快速列出所有 section
 
 ### 快捷键 badge（.key-badge）
 
-`setupSlideSteps` 在检测到任意步骤含 `key` 属性时，自动向 `.dp-right` 注入 `<div class="key-badge">` 元素（之前只有CSS，没有HTML元素，导致永不显示）。
+`setupSlideSteps` 在检测到任意步骤含 `key` 属性时，自动向 `.dp-right` 注入 `<div class="key-badge">` 元素。
 
-CSS 样式：绝对定位 `bottom:18px;left:50%`，深色键帽风格（`background:var(--tx)`，底部投影 `box-shadow:0 3px 0 rgba(0,0,0,.55)`，IKB蓝光晕）。
+**CSS 样式（2026-05-23 重设计）：玻璃拟态大字居中浮层**
+- 位置：`position:absolute;top:50%;left:50%;transform:translate(-50%,-50%)`（水平垂直居中于 `.dp-right`）
+- 背景：`background:rgba(255,255,255,.13);backdrop-filter:blur(22px) saturate(180%)`
+- 边框：`border:1px solid rgba(255,255,255,.28)`
+- 字号：`font-size:54px`（DM Mono），`color:rgba(255,255,255,.96)`
+- 动画：弹出 `.28s cubic-bezier(.22,1,.36,1)` scale(.82→1)，消失 `.15s ease-in`
+- 停留：1.2s 后自动调用 `badge.classList.remove('kb-show')`
+- `.dp-right` 必须有 `position:relative`（绝对定位的锚点）
 
 各 section 的 `key` 分配：
 - s-m4a 步骤1: `↵`，s-m2c 步骤2: `Space`
@@ -338,6 +349,11 @@ CSS 样式：绝对定位 `bottom:18px;left:50%`，深色键帽风格（`backgro
 | `b244e37` | 删除 s-m3a（出错恢复）：在AI agent循环中自动处理，场景不独特，且与s-m5a结果审核重叠 |
 | `188957e` | 新增 s-bg-signal：行业验证页（4卡：Claude Desktop Buddy / OpenAI×Ive / Devin / Copilot Voice） |
 | `ff4c36d` | 行业验证分2页（实机截图+彩色底色 object-fit:contain）+ s-bg三道墙代码块高度修复（移除flex:1，HAI设计目标栏恢复可见）|
+| *(2026-05-23)* | s-j-overview 旅程图重构：情绪曲线改为 Option B（SVG路径+HTML点/标签）、阶段描边移至底部全谱色（黄→紫）、grid行比例调整、痛点/机会点3条bullet、行标题变大、整体93%高度上下居中 |
+| *(2026-05-23)* | key-badge 重设计：玻璃拟态大字居中浮层 + 弹性动画 + 1.2s自动消隐；修复 `.dp-right` 缺 `position:relative` 导致 Space badge 定位失效 |
+| *(2026-05-23)* | s-bg3：左侧加 visibility:hidden 占位对齐；HAI设计原则底色改为 `var(--acc)` IKB深蓝 |
+| *(2026-05-23)* | 新增 s-bg-community + s-bg-community2：昇腾社区知识三层内化框架 + 5阶段渗透地图 |
+| *(2026-05-23)* | 清除全部假错误码 EZ9999/EZ6523（12处），替换为具体错误类型描述（format不兼容/UB溢出/shape推导失败）|
 
 ### ai-dev-tools-design.html 专项工作（更早）
 
@@ -364,7 +380,9 @@ CSS 样式：绝对定位 `bottom:18px;left:50%`，深色键帽风格（`backgro
 
 ### Section 顺序（当前）
 ```
-s-cover → s-bg → s-bg2 → s-bg-signal（行业验证1/2）→ s-bg-signal2（行业验证2/2）→ s-bg3 → s-j-overview
+s-cover → s-bg → s-bg2 → s-bg-signal（行业验证1/2）→ s-bg-signal2（行业验证2/2）→ s-bg3
+→ s-bg-community（社区知识转化框架）→ s-bg-community2（社区知识渗透地图）
+→ s-j-overview
 → s-m4a（记忆启动）
 → s-m2c（语音×光标）
 → s-m6a（光标伴侣）
@@ -430,10 +448,46 @@ box-shadow:0 2px 20px rgba(0,47,167,.10),0 1px 0 rgba(255,255,255,.8) inset,0 0 
 </div>
 ```
 
-### s-j-overview 用户旅程（已完成）
-- 5阶段：01-04 深色 `var(--tx)` 背景，05 IKB 蓝 `var(--acc)` 背景
-- 情绪曲线 SVG：IKB 蓝折线从左下→右上
-- 每阶段含 mini terminal mockup
+### s-j-overview 用户旅程（2026-05-23 重构）
+
+**网格布局：**
+```css
+grid-template-columns: 46px repeat(5,1fr);
+grid-template-rows: 1.5fr 1fr 1fr 1.3fr 1fr 1fr;
+/* 6行：阶段标题 / 用户行为 / 触点 / 情绪曲线 / 痛点 / 机会点 */
+```
+整体高度：占容器 93%，`.inner` 设 `justify-content:center` 上下居中。
+
+**阶段描边（border-bottom，在阶段标题行底部）：**
+- 01: `4px solid #fbbf24`（黄），02: `4px solid #4ade80`（绿）
+- 03: `4px solid #22d3ee`（青），04: `4px solid #60a5fa`（蓝），05: `4px solid #c084fc`（紫）
+
+**阶段分隔线：** `border-right:.5px solid rgba(255,255,255,.2)` 列间隔（最后列不加）
+
+**情绪曲线（Option B）：**
+- SVG 只画路径和渐变（`preserveAspectRatio="none"`）
+- Labels（积极/消极）和圆点（5个）用 HTML 绝对定位元素，不受 SVG 拉伸影响
+- 折线从左下→右上（Stage01积极度低，逐渐升高）：`M90,42 L268,12 L450,13 L635,10 L820,8`
+- 点坐标：left 10%/29.8%/50%/70.6%/91.1%，top 70%/20%/21.7%/16.7%/13.3%
+
+**痛点/机会点行：** 每格 3 条 bullet，font-size 约 7px
+
+**行标题（左侧 46px 列）：** font-size:9px，letter-spacing:.05em
+
+### s-bg-community / s-bg-community2 社区知识转化（已完成 2026-05-23）
+
+**命题：** 昇腾社区的经验知识在 HAI 时代如何渗透进工具，而非消失。
+
+**s-bg-community — 三层内化框架：**
+- L1 训练层：社区帖子/issue/PR 作为训练数据 → HAI 离线感知社区智慧
+- L2 检索层：RAG 实时召回社区片段 → 回答时注入上下文
+- L3 沉淀层：用户交互反馈形成个性化知识库 → 越用越懂算子习惯
+- Before/After 对比：30min 手动社区搜索 vs. <10s HAI 直接给出答案
+
+**s-bg-community2 — 渗透地图：**
+- 5阶段（算子开发5步）× 知识类型（格式规范/调试案例/性能技巧/芯片差异/优化经验）矩阵
+- 每格有 terminal mockup 片段，展示 HAI 如何在该阶段引用社区知识
+- 底部：知识飞轮（Knowledge Flywheel）可视化
 
 ### s-m1c 实体状态灯（已完成 2026-05-23）
 
