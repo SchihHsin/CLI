@@ -748,7 +748,7 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
         </div>
 
         <!-- AFTER -->
-        <div style="background:var(--acc-dim);border:.5px solid var(--acc-b);padding:14px;display:flex;flex-direction:column;gap:10px;flex:1;">
+        <div style="background:var(--acc-dim);border:.5px solid var(--acc-b);padding:14px;display:flex;flex-direction:column;gap:10px;">
           <div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--acc);letter-spacing:.1em;">HAI · 知识自动渗透</div>
           <div style="display:flex;align-items:center;gap:0;flex-wrap:nowrap;">
             <div style="flex:1;text-align:center;display:flex;flex-direction:column;align-items:center;gap:4px;">
@@ -1094,10 +1094,23 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
         <div class="dp-desc">
           <div class="dp-label">核心设计点</div>
           <div class="dp-points">
-            <div class="dpp">长按 Space 激活语音，光标指向 msprof 中任意指标</div>
-            <div class="dpp">AI 自动关联：指标数值 + 对应的 TBE 代码段</div>
-            <div class="dpp">支持指向时间线任意位置，AI 解读该时刻的硬件状态</div>
-            <div class="dpp">转录浮层实时显示，确认无误后松开发送</div>
+            <div class="dpp">长按 Space 激活语音，光标位置自动成为分析上下文</div>
+            <div class="dpp">转录浮层实时显示，松开前可确认内容</div>
+          </div>
+          <div class="dp-label" style="margin-top:8px;">松开后的三种模式</div>
+          <div style="display:flex;flex-direction:column;gap:5px;margin-top:4px;">
+            <div style="display:flex;gap:8px;align-items:flex-start;padding:7px 10px;background:var(--bg);border:.5px solid var(--bdr);">
+              <span style="font-family:'DM Mono',monospace;font-size:7px;color:var(--acc);background:var(--acc-dim);border:.5px solid var(--acc-b);padding:1px 6px;flex-shrink:0;margin-top:1px;white-space:nowrap;">写入</span>
+              <div style="font-size:8.5px;color:var(--tx2);line-height:1.55;">转录文字直接填入终端输入行，光标停在末尾，按 Enter 发送</div>
+            </div>
+            <div style="display:flex;gap:8px;align-items:flex-start;padding:7px 10px;background:var(--bg);border:.5px solid var(--bdr);">
+              <span style="font-family:'DM Mono',monospace;font-size:7px;color:var(--acc);background:var(--acc-dim);border:.5px solid var(--acc-b);padding:1px 6px;flex-shrink:0;margin-top:1px;white-space:nowrap;">发送</span>
+              <div style="font-size:8.5px;color:var(--tx2);line-height:1.55;">识别完成后直接执行，适合短指令场景，无需二次确认</div>
+            </div>
+            <div style="display:flex;gap:8px;align-items:flex-start;padding:7px 10px;background:var(--acc-dim);border:.5px solid var(--acc-b);">
+              <span style="font-family:'DM Mono',monospace;font-size:7px;color:var(--acc);background:var(--acc-dim);border:.5px solid var(--acc-b);padding:1px 6px;flex-shrink:0;margin-top:1px;white-space:nowrap;">编辑</span>
+              <div style="font-size:8.5px;color:var(--tx);line-height:1.55;">弹出浮动编辑面板，可自由修改、批量选中文字后再导入终端——解决终端内文字难以编辑的问题</div>
+            </div>
           </div>
         </div>
         <div class="ba-grid">
@@ -1124,7 +1137,7 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
           <div class="stp-steps">
             <div class="stp-step"><div class="stp-num">1</div><span class="stp-lbl">光标指向 CUBE 指标</span></div>
             <div class="stp-step"><div class="stp-num">2</div><span class="stp-lbl">按住 Space 说话</span></div>
-            <div class="stp-step"><div class="stp-num">3</div><span class="stp-lbl">AI 给出优化建议</span></div>
+            <div class="stp-step"><div class="stp-num">3</div><span class="stp-lbl">松开 → 浮动编辑面板</span></div>
           </div>
         </div>
         <div style="flex:1;display:flex;flex-direction:column;gap:8px;overflow:hidden;">
@@ -1134,8 +1147,8 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
             <div style="background:#111118;padding:6px 14px;border-bottom:.5px solid #1e1e28;font-family:'DM Mono',monospace;font-size:9px;color:#48485C;display:flex;align-items:center;gap:8px;flex-shrink:0;">
               <span style="color:var(--acc);font-weight:500;">msprof</span>
               <span style="color:#C8C8DC;">RMSNorm_forward · 910B · Step 3</span>
-              <span id="space-badge-hint" style="margin-left:auto;font-size:8px;color:#48485C;transition:opacity .3s;">
-                长按 <span style="background:var(--acc);color:white;padding:1px 6px;font-size:8px;font-weight:500;">Space</span> 语音分析
+              <span id="space-badge-hint" style="margin-left:auto;font-size:8px;color:#48485C;transition:opacity .3s;display:flex;align-items:center;gap:5px;">
+                长按 <span style="background:linear-gradient(135deg,#002FA7,#6B38D4);color:white;padding:2px 9px;font-size:7.5px;font-weight:400;border-radius:20px;letter-spacing:.05em;">Space</span> 语音分析
               </span>
             </div>
             <!-- metrics area -->
@@ -1185,28 +1198,194 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
                 </svg>
               </div>
               <!-- voice wave overlay (step 2) -->
-              <div id="voice-wave-bar" style="display:none;position:absolute;bottom:6px;left:50%;transform:translateX(-50%);
-                background:var(--acc);padding:5px 12px;display:flex;align-items:center;gap:8px;z-index:15;white-space:nowrap;">
-                <span style="font-family:'DM Mono',monospace;font-size:8px;color:white;letter-spacing:.08em;">Space</span>
-                <div style="display:flex;align-items:center;gap:2px;height:14px;">
-                  <div style="width:2px;background:rgba(255,255,255,.6);height:4px;animation:ck-wave .4s infinite;animation-delay:0s;"></div>
-                  <div style="width:2px;background:rgba(255,255,255,.9);height:10px;animation:ck-wave .4s infinite;animation-delay:.07s;"></div>
-                  <div style="width:2px;background:white;height:14px;animation:ck-wave .4s infinite;animation-delay:.14s;"></div>
-                  <div style="width:2px;background:rgba(255,255,255,.9);height:10px;animation:ck-wave .4s infinite;animation-delay:.21s;"></div>
-                  <div style="width:2px;background:rgba(255,255,255,.6);height:6px;animation:ck-wave .4s infinite;animation-delay:.28s;"></div>
-                  <div style="width:2px;background:rgba(255,255,255,.8);height:12px;animation:ck-wave .4s infinite;animation-delay:.35s;"></div>
-                  <div style="width:2px;background:rgba(255,255,255,.6);height:4px;animation:ck-wave .4s infinite;animation-delay:.42s;"></div>
+              <div id="voice-wave-bar" style="display:none;position:absolute;bottom:8px;left:50%;transform:translateX(-50%);
+                background:rgba(18,18,26,.92);
+                border:1px solid rgba(255,255,255,.1);
+                box-shadow:0 2px 16px rgba(0,0,0,.5);
+                padding:5px 20px;border-radius:100px;overflow:hidden;
+                display:flex;align-items:center;gap:10px;z-index:15;white-space:nowrap;">
+                <div style="display:flex;align-items:center;gap:1.5px;height:8px;overflow:hidden;">
+                  <div style="width:1px;background:linear-gradient(to top,#002FA7,#6B38D4);border-radius:1px;height:3px;animation:ck-wave .45s infinite;animation-delay:0s;"></div>
+                  <div style="width:1px;background:linear-gradient(to top,#002FA7,#6B38D4);border-radius:1px;height:5px;animation:ck-wave .45s infinite;animation-delay:.04s;"></div>
+                  <div style="width:1px;background:linear-gradient(to top,#002FA7,#6B38D4);border-radius:1px;height:7px;animation:ck-wave .45s infinite;animation-delay:.08s;"></div>
+                  <div style="width:1px;background:linear-gradient(to top,#002FA7,#6B38D4);border-radius:1px;height:8px;animation:ck-wave .45s infinite;animation-delay:.12s;"></div>
+                  <div style="width:1px;background:linear-gradient(to top,#002FA7,#6B38D4);border-radius:1px;height:5px;animation:ck-wave .45s infinite;animation-delay:.16s;"></div>
+                  <div style="width:1px;background:linear-gradient(to top,#002FA7,#6B38D4);border-radius:1px;height:8px;animation:ck-wave .45s infinite;animation-delay:.20s;"></div>
+                  <div style="width:1px;background:linear-gradient(to top,#002FA7,#6B38D4);border-radius:1px;height:4px;animation:ck-wave .45s infinite;animation-delay:.24s;"></div>
+                  <div style="width:1px;background:linear-gradient(to top,#002FA7,#6B38D4);border-radius:1px;height:7px;animation:ck-wave .45s infinite;animation-delay:.28s;"></div>
+                  <div style="width:1px;background:linear-gradient(to top,#002FA7,#6B38D4);border-radius:1px;height:6px;animation:ck-wave .45s infinite;animation-delay:.32s;"></div>
+                  <div style="width:1px;background:linear-gradient(to top,#002FA7,#6B38D4);border-radius:1px;height:8px;animation:ck-wave .45s infinite;animation-delay:.36s;"></div>
+                  <div style="width:1px;background:linear-gradient(to top,#002FA7,#6B38D4);border-radius:1px;height:3px;animation:ck-wave .45s infinite;animation-delay:.40s;"></div>
+                  <div style="width:1px;background:linear-gradient(to top,#002FA7,#6B38D4);border-radius:1px;height:6px;animation:ck-wave .45s infinite;animation-delay:.44s;"></div>
+                  <div style="width:1px;background:linear-gradient(to top,#002FA7,#6B38D4);border-radius:1px;height:8px;animation:ck-wave .45s infinite;animation-delay:.48s;"></div>
+                  <div style="width:1px;background:linear-gradient(to top,#002FA7,#6B38D4);border-radius:1px;height:5px;animation:ck-wave .45s infinite;animation-delay:.52s;"></div>
+                  <div style="width:1px;background:linear-gradient(to top,#002FA7,#6B38D4);border-radius:1px;height:7px;animation:ck-wave .45s infinite;animation-delay:.56s;"></div>
+                  <div style="width:1px;background:linear-gradient(to top,#002FA7,#6B38D4);border-radius:1px;height:4px;animation:ck-wave .45s infinite;animation-delay:.60s;"></div>
+                  <div style="width:1px;background:linear-gradient(to top,#002FA7,#6B38D4);border-radius:1px;height:6px;animation:ck-wave .45s infinite;animation-delay:.64s;"></div>
+                  <div style="width:1px;background:linear-gradient(to top,#002FA7,#6B38D4);border-radius:1px;height:3px;animation:ck-wave .45s infinite;animation-delay:.68s;"></div>
                 </div>
-                <span id="voice-transcript" style="font-family:'DM Mono',monospace;font-size:9px;color:white;min-width:0;"></span>
+                <span id="voice-transcript" style="font-family:'DM Mono',monospace;font-size:8px;color:rgba(255,255,255,.6);min-width:0;letter-spacing:.04em;"></span>
               </div>
             </div>
           </div>
-          <!-- AI answer panel -->
-          <div style="background:var(--acc-dim);border:.5px solid var(--acc-b);padding:10px 14px;flex-shrink:0;min-height:56px;transition:all .4s;" id="voice-ai-output">
-            <div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--acc);letter-spacing:.1em;margin-bottom:5px;">AI · 关联分析</div>
-            <div style="font-size:9px;color:var(--grey-3);font-family:'DM Mono',monospace;line-height:1.6;" id="voice-ai-text">光标指向指标后按住 Space 说话…</div>
+          <!-- floating edit panel (step 3) -->
+          <div id="voice-ai-output" style="display:none;flex-shrink:0;background:#16161f;border:.5px solid rgba(255,255,255,.12);border-radius:10px;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,.5);transition:all .4s;">
+            <!-- panel title bar -->
+            <div style="background:#1e1e2a;padding:7px 12px;display:flex;align-items:center;gap:8px;border-bottom:.5px solid rgba(255,255,255,.08);">
+              <div style="width:6px;height:6px;border-radius:50%;background:linear-gradient(135deg,#002FA7,#6B38D4);"></div>
+              <span style="font-family:'DM Mono',monospace;font-size:8px;color:rgba(255,255,255,.55);letter-spacing:.08em;">语音转录 · 编辑后导入终端</span>
+              <div style="margin-left:auto;display:flex;gap:6px;align-items:center;">
+                <span style="font-family:'DM Mono',monospace;font-size:7px;color:rgba(255,255,255,.25);cursor:pointer;">取消</span>
+                <div style="background:linear-gradient(135deg,#002FA7,#6B38D4);color:white;font-family:'DM Mono',monospace;font-size:7px;padding:2px 10px;border-radius:20px;cursor:pointer;letter-spacing:.05em;">导入终端</div>
+              </div>
+            </div>
+            <!-- editable text area mockup -->
+            <div style="padding:10px 14px;">
+              <div id="voice-ai-text" style="font-family:'DM Mono',monospace;font-size:9px;color:rgba(255,255,255,.85);line-height:1.7;background:rgba(255,255,255,.04);border:.5px solid rgba(255,255,255,.1);border-radius:6px;padding:8px 10px;min-height:36px;cursor:text;"></div>
+              <div style="margin-top:6px;display:flex;gap:10px;align-items:center;">
+                <span style="font-family:'DM Mono',monospace;font-size:7px;color:rgba(255,255,255,.2);">可自由选中 · 编辑 · 删除</span>
+                <div style="margin-left:auto;display:flex;gap:4px;">
+                  <div style="padding:2px 8px;border:.5px solid rgba(255,255,255,.15);border-radius:4px;font-family:'DM Mono',monospace;font-size:7px;color:rgba(255,255,255,.4);">写入</div>
+                  <div style="padding:2px 8px;border:.5px solid rgba(255,255,255,.15);border-radius:4px;font-family:'DM Mono',monospace;font-size:7px;color:rgba(255,255,255,.4);">发送</div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ STAGE 02: 语音模式路由 ══ -->
+<div class="sec" id="s-m2d" style="background:var(--bg);">
+  <div class="slabel">
+    <span class="sub">表达意图 · Stage 02 · 设计点 2/3</span>
+    <span class="main">语音模式路由 — 上下文决定落地方式</span>
+  </div>
+  <div class="inner">
+    <div class="dp-layout">
+      <div class="dp-left">
+        <div class="dp-desc">
+          <div class="dp-label">设计说明</div>
+          <div class="dp-title">同一个语音输入，三种落地路径</div>
+          <div class="dp-body">语音识别完成后，HAI 不是简单地把文字填入终端——它先读取两个信号：<strong style="color:var(--tx);">光标当前位置</strong>和<strong style="color:var(--tx);">话语的长度与置信度</strong>，再决定最合适的落地方式。让开发者在不同场景下都能以最低摩擦完成意图表达。</div>
+        </div>
+        <div class="dp-desc">
+          <div class="dp-label">路由逻辑</div>
+          <div style="display:flex;flex-direction:column;gap:0;border:.5px solid var(--bdr2);overflow:hidden;margin-top:4px;">
+            <!-- header -->
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;background:var(--bg2);border-bottom:.5px solid var(--bdr2);">
+              <div style="padding:5px 10px;font-family:'DM Mono',monospace;font-size:7px;color:var(--tx3);letter-spacing:.08em;">触发信号</div>
+              <div style="padding:5px 10px;font-family:'DM Mono',monospace;font-size:7px;color:var(--tx3);letter-spacing:.08em;border-left:.5px solid var(--bdr2);">匹配模式</div>
+              <div style="padding:5px 10px;font-family:'DM Mono',monospace;font-size:7px;color:var(--tx3);letter-spacing:.08em;border-left:.5px solid var(--bdr2);">适用场景</div>
+            </div>
+            <!-- row 1 -->
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;border-bottom:.5px solid var(--bdr2);">
+              <div style="padding:7px 10px;font-size:8px;color:var(--tx2);line-height:1.55;">光标在终端输入行<br>+ 短句 / 高置信</div>
+              <div style="padding:7px 10px;border-left:.5px solid var(--bdr2);">
+                <span style="font-family:'DM Mono',monospace;font-size:7px;color:#059669;background:rgba(5,150,105,.1);border:.5px solid rgba(5,150,105,.3);padding:1px 7px;">发送</span>
+              </div>
+              <div style="padding:7px 10px;font-size:8px;color:var(--tx3);line-height:1.55;border-left:.5px solid var(--bdr2);">运行测试、清屏、保存等明确短指令</div>
+            </div>
+            <!-- row 2 -->
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;border-bottom:.5px solid var(--bdr2);">
+              <div style="padding:7px 10px;font-size:8px;color:var(--tx2);line-height:1.55;">光标在终端输入行<br>+ 中等长度</div>
+              <div style="padding:7px 10px;border-left:.5px solid var(--bdr2);">
+                <span style="font-family:'DM Mono',monospace;font-size:7px;color:var(--acc);background:var(--acc-dim);border:.5px solid var(--acc-b);padding:1px 7px;">写入</span>
+              </div>
+              <div style="padding:7px 10px;font-size:8px;color:var(--tx3);line-height:1.55;border-left:.5px solid var(--bdr2);">填入输入行，光标停在末尾，自行确认</div>
+            </div>
+            <!-- row 3 -->
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;border-bottom:.5px solid var(--bdr2);">
+              <div style="padding:7px 10px;font-size:8px;color:var(--tx2);line-height:1.55;">光标在 profiler / 代码区<br>+ 任意长度</div>
+              <div style="padding:7px 10px;border-left:.5px solid var(--bdr2);">
+                <span style="font-family:'DM Mono',monospace;font-size:7px;color:#7c3aed;background:rgba(124,58,237,.1);border:.5px solid rgba(124,58,237,.3);padding:1px 7px;">编辑面板</span>
+              </div>
+              <div style="padding:7px 10px;font-size:8px;color:var(--tx3);line-height:1.55;border-left:.5px solid var(--bdr2);">提问 / 描述意图，内容复杂需要确认</div>
+            </div>
+            <!-- row 4 兜底 -->
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;background:rgba(220,38,38,.03);">
+              <div style="padding:7px 10px;font-size:8px;color:var(--tx2);line-height:1.55;">任意上下文<br>+ 置信度低 / 含停顿</div>
+              <div style="padding:7px 10px;border-left:.5px solid var(--bdr2);">
+                <span style="font-family:'DM Mono',monospace;font-size:7px;color:#7c3aed;background:rgba(124,58,237,.1);border:.5px solid rgba(124,58,237,.3);padding:1px 7px;">编辑面板</span>
+              </div>
+              <div style="padding:7px 10px;font-size:8px;color:var(--tx3);line-height:1.55;border-left:.5px solid var(--bdr2);">兜底保护：识别不确定时让用户检查，避免执行错误指令</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="dp-right" style="position:relative;">
+        <div class="mockup-label">三种模式落地示意</div>
+
+        <!-- Three mode previews side by side -->
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;flex:1;min-height:0;">
+
+          <!-- 发送 -->
+          <div style="display:flex;flex-direction:column;gap:6px;">
+            <div style="display:flex;align-items:center;gap:6px;">
+              <span style="font-family:'DM Mono',monospace;font-size:7px;color:#059669;background:rgba(5,150,105,.1);border:.5px solid rgba(5,150,105,.3);padding:1px 8px;">发送</span>
+              <span style="font-size:7px;color:var(--tx3);">自动执行</span>
+            </div>
+            <div style="background:#0a0a0f;border:.5px solid #1e1e28;border-radius:6px;overflow:hidden;flex:1;display:flex;flex-direction:column;">
+              <div style="background:#111118;padding:4px 10px;border-bottom:.5px solid #1e1e28;font-family:'DM Mono',monospace;font-size:7px;color:#48485C;">terminal</div>
+              <div style="padding:8px 10px;flex:1;font-family:'DM Mono',monospace;font-size:7.5px;line-height:1.7;">
+                <div style="color:#48485C;">$ hai run --test</div>
+                <div style="color:#48485C;">$ hai build</div>
+                <div style="color:rgba(255,255,255,.7);">$ <span style="color:#059669;">运行单元测试</span></div>
+                <div style="color:#059669;margin-top:4px;">▶ 识别完成，已执行</div>
+                <div style="color:#48485C;font-size:7px;margin-top:2px;">无需按 Enter</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 写入 -->
+          <div style="display:flex;flex-direction:column;gap:6px;">
+            <div style="display:flex;align-items:center;gap:6px;">
+              <span style="font-family:'DM Mono',monospace;font-size:7px;color:var(--acc);background:var(--acc-dim);border:.5px solid var(--acc-b);padding:1px 8px;">写入</span>
+              <span style="font-size:7px;color:var(--tx3);">填入确认</span>
+            </div>
+            <div style="background:#0a0a0f;border:.5px solid #1e1e28;border-radius:6px;overflow:hidden;flex:1;display:flex;flex-direction:column;">
+              <div style="background:#111118;padding:4px 10px;border-bottom:.5px solid #1e1e28;font-family:'DM Mono',monospace;font-size:7px;color:#48485C;">terminal</div>
+              <div style="padding:8px 10px;flex:1;font-family:'DM Mono',monospace;font-size:7.5px;line-height:1.7;">
+                <div style="color:#48485C;">$ hai run --test</div>
+                <div style="color:#48485C;">$ hai build</div>
+                <div style="color:rgba(255,255,255,.7);">$ <span style="color:var(--acc);border-right:1.5px solid var(--acc);">hai optimize --tile_m 128 --target cube</span></div>
+                <div style="color:#48485C;font-size:7px;margin-top:6px;">文字已填入，按 Enter 执行</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 编辑面板 -->
+          <div style="display:flex;flex-direction:column;gap:6px;">
+            <div style="display:flex;align-items:center;gap:6px;">
+              <span style="font-family:'DM Mono',monospace;font-size:7px;color:#7c3aed;background:rgba(124,58,237,.1);border:.5px solid rgba(124,58,237,.3);padding:1px 8px;">编辑面板</span>
+              <span style="font-size:7px;color:var(--tx3);">改后导入</span>
+            </div>
+            <div style="background:#16161f;border:.5px solid rgba(255,255,255,.12);border-radius:6px;overflow:hidden;flex:1;display:flex;flex-direction:column;box-shadow:0 4px 20px rgba(0,0,0,.4);">
+              <!-- panel titlebar -->
+              <div style="background:#1e1e2a;padding:5px 10px;border-bottom:.5px solid rgba(255,255,255,.08);display:flex;align-items:center;gap:6px;">
+                <div style="width:5px;height:5px;border-radius:50%;background:linear-gradient(135deg,#002FA7,#6B38D4);"></div>
+                <span style="font-family:'DM Mono',monospace;font-size:6.5px;color:rgba(255,255,255,.45);">语音转录 · 编辑后导入</span>
+                <div style="margin-left:auto;background:linear-gradient(135deg,#002FA7,#6B38D4);color:white;font-family:'DM Mono',monospace;font-size:6px;padding:1px 8px;border-radius:20px;">导入终端</div>
+              </div>
+              <!-- editable area -->
+              <div style="padding:8px 10px;flex:1;display:flex;flex-direction:column;gap:6px;">
+                <div style="font-family:'DM Mono',monospace;font-size:7.5px;color:rgba(255,255,255,.8);background:rgba(255,255,255,.05);border:.5px solid rgba(255,255,255,.1);border-radius:4px;padding:6px 8px;line-height:1.6;">这里为什么<span style="background:rgba(124,58,237,.4);border-radius:2px;">这么低</span>？CUBE 利用率看起来有问题</div>
+                <div style="font-family:'DM Mono',monospace;font-size:6.5px;color:rgba(255,255,255,.2);">可选中 · 删改 · 重组</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- bottom note -->
+        <div style="margin-top:8px;padding:8px 12px;background:var(--acc-dim);border:.5px solid var(--acc-b);border-radius:4px;">
+          <span style="font-family:'DM Mono',monospace;font-size:7.5px;color:var(--acc);">◆ 编辑面板存在的意义</span>
+          <span style="font-size:7.5px;color:var(--tx2);margin-left:8px;">终端内文字选中困难、无法批量编辑——浮动面板提供富文本编辑体验，编辑完成后一键导入</span>
+        </div>
+
       </div>
     </div>
   </div>
@@ -2596,31 +2775,12 @@ function setupSlideSteps(secId, stripId, defs) {
       if (transcript) typeText(transcript, '这里为什么这么低？', 90);
     }
     else if (p === 3) {
-      /* wave hides, AI answers, bars update */
+      /* wave hides → show floating edit panel */
       if (wavebar) wavebar.style.display = 'none';
       if (cubeRow) cubeRow.style.background = '';
-
-      /* AI answer types in */
-      if (aiText) {
-        aiText.style.color = 'var(--tx)';
-        typeText(aiText,
-          'CUBE 21% 过低：data_move 占 AI Core 时间 67%。\n建议 tile_m: 64 → 128，预计 CUBE ↑ 至 ~72%，AI Core ↑ 至 ~72.4%',
-          28);
-      }
-      /* bars animate to optimized values */
-      const sec = document.getElementById('s-m2c');
-      if (sec) {
-        const updates = [
-          { fill:'.ms-fill-aicore', val:'.ms-val-aicore', w:'72.4%', c:'var(--ty)', t:'72.4%' },
-          { fill:'.ms-fill-cube',   val:'.ms-val-cube',   w:'71.2%', c:'var(--tg)', t:'71.2%' },
-        ];
-        updates.forEach(u => {
-          const b = sec.querySelector(u.fill);
-          const v = sec.querySelector(u.val);
-          if (b) { b.style.width = u.w; b.style.background = u.c; }
-          if (v) { v.textContent = u.t; v.style.color = u.c; }
-        });
-      }
+      const panel = document.getElementById('voice-ai-output');
+      if (panel) panel.style.display = 'block';
+      if (aiText) typeText(aiText, '这里为什么这么低？CUBE 21% 过低，data_move 可能是瓶颈，建议检查 tile_m 参数', 30);
     }
   }
 
@@ -3364,6 +3524,7 @@ document.head.appendChild(sty);
     { id:'s-m5a',        label:'结果审核' },
     { id:'s-m5b',        label:'AI 推理' },
     { id:'s-m4b',        label:'团队库' },
+    { id:'s-m2d',        label:'语音模式路由' },
     { id:'s-m6a',        label:'光标伴侣' },
     { id:'s-sum',        label:'总结' },
   ];
