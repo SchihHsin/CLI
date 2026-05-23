@@ -335,7 +335,7 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
           </div>
         </div>
         <div style="background:var(--tb);border:.5px solid var(--tbdr);padding:9px 10px;font-family:'DM Mono',monospace;font-size:8px;line-height:1.75;flex:1;min-height:0;overflow:hidden;">
-          <div style="color:var(--tr);">[EZ9999] InnerError: RMSNorm</div>
+          <div style="color:var(--tr);">[RuntimeError] format mismatch · RMSNorm</div>
           <div style="color:var(--td);">  input: NHWC</div>
           <div style="color:var(--tr);">  expected: FRACTAL_NZ</div>
           <div style="color:var(--td);">  at tbe_compile.py:2847</div>
@@ -346,7 +346,7 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
         <div style="display:flex;flex-direction:column;gap:4px;">
           <div style="display:flex;gap:6px;align-items:flex-start;">
             <span style="font-family:'DM Mono',monospace;font-size:8px;color:var(--r);margin-top:1px;">—</span>
-            <span style="font-size:9.5px;color:var(--tx2);line-height:1.5;">EZ9999 映射到框架内部，开发者无法定位是哪行业务代码引发了 Format 不匹配。</span>
+            <span style="font-size:9.5px;color:var(--tx2);line-height:1.5;">CANN 运行时错误往往是 format 不兼容、UB 溢出、shape 推导失败等多种类型混叠，开发者难以快速定位根因。</span>
           </div>
           <div style="display:flex;gap:6px;align-items:flex-start;">
             <span style="font-family:'DM Mono',monospace;font-size:8px;color:var(--r);margin-top:1px;">—</span>
@@ -695,7 +695,7 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
             <div style="font-family:'DM Mono',monospace;font-size:9px;color:var(--acc);flex-shrink:0;margin-top:1px;">L2</div>
             <div>
               <div style="font-family:'DM Mono',monospace;font-size:9px;color:var(--tx);margin-bottom:3px;">检索层 — 运行时召回</div>
-              <div style="font-size:9px;color:var(--tx2);line-height:1.6;">遇到 EZ9999，HAI 实时检索社区知识库，匹配最相似的已解问题，直接给出可用方案——不是让开发者去搜。</div>
+              <div style="font-size:9px;color:var(--tx2);line-height:1.6;">遇到 format 不兼容、UB 溢出等运行时错误，HAI 实时匹配相似已解问题，直接给出可用方案——不是让开发者去搜。</div>
             </div>
           </div>
           <div style="display:flex;gap:10px;align-items:flex-start;padding:10px 12px;background:var(--sur);border:.5px solid var(--grey-2);">
@@ -715,7 +715,7 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
 
       </div>
       <div class="dp-right">
-        <div class="mockup-label">交互模式对比 — 同一个 EZ9999 错误</div>
+        <div class="mockup-label">交互模式对比 — 同一个运行时报错</div>
 
         <!-- BEFORE -->
         <div style="background:var(--sur);border:.5px solid var(--grey-2);padding:14px;display:flex;flex-direction:column;gap:10px;">
@@ -856,7 +856,7 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
       <div style="padding:10px 12px;border-right:.5px solid var(--grey-2);border-bottom:.5px solid var(--grey-2);">
         <div style="font-family:'DM Mono',monospace;font-size:7px;color:var(--y);background:rgba(217,119,6,.1);border:.5px solid rgba(217,119,6,.3);padding:2px 6px;display:inline-block;margin-bottom:5px;">L2 检索层</div>
         <div style="font-size:8.5px;color:var(--tx);line-height:1.5;">错误码实时匹配</div>
-        <div style="font-size:8px;color:var(--tx3);margin-top:2px;line-height:1.5;">EZ9999 → 社区最佳解 3 条 · 按上下文排序</div>
+        <div style="font-size:8px;color:var(--tx3);margin-top:2px;line-height:1.5;">format 不兼容 / UB 溢出 → 匹配相似问题 · 按上下文排序</div>
       </div>
       <div style="padding:10px 12px;border-bottom:.5px solid var(--grey-2);">
         <div style="font-family:'DM Mono',monospace;font-size:7px;color:var(--tg);background:rgba(52,211,153,.1);border:.5px solid rgba(52,211,153,.3);padding:2px 6px;display:inline-block;margin-bottom:5px;">L3 沉淀层</div>
@@ -871,7 +871,7 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
       <div style="padding:10px 12px;border-right:.5px solid var(--grey-2);border-bottom:.5px solid var(--grey-2);background:var(--grey-1);">
         <div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--td);background:var(--tb);padding:6px 10px;line-height:1.7;">
           <div style="color:var(--acc);">hai start RMSNorm</div>
-          <div style="color:var(--tg);">✓ 加载 910B EZ6523 解法 ×3</div>
+          <div style="color:var(--tg);">✓ 加载 910B format 兼容问题解法 ×3</div>
           <div style="color:var(--tg);">✓ tile_m 建议值：64/128</div>
           <div style="color:var(--td);"># 社区知识已就位</div>
         </div>
@@ -894,7 +894,7 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
       </div>
       <div style="padding:10px 12px;border-right:.5px solid var(--grey-2);border-bottom:.5px solid var(--grey-2);background:var(--grey-1);">
         <div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--td);background:var(--tb);padding:6px 10px;line-height:1.7;">
-          <div style="color:var(--tr);">✕ EZ9999: format mismatch</div>
+          <div style="color:var(--tr);">✕ RuntimeError: FRACTAL_NZ / ND 不兼容</div>
           <div style="color:var(--acc);">HAI: 匹配到社区解 ×3</div>
           <div style="color:var(--tg);">→ NZ→ND 转换 · 已验证</div>
           <div style="color:var(--td);"># &lt;10s 不中断心流</div>
@@ -903,7 +903,7 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
       <div style="padding:10px 12px;border-bottom:.5px solid var(--grey-2);background:var(--grey-1);">
         <div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--td);background:var(--tb);padding:6px 10px;line-height:1.7;">
           <div style="color:var(--tg);">✓ 解法写入团队库</div>
-          <div style="color:var(--acc);">tag: 910B · EZ9999 · NZ</div>
+          <div style="color:var(--acc);">tag: 910B · format · NZ→ND</div>
           <div style="color:var(--tw);">下次相同错误 &lt;3s</div>
           <div style="color:var(--td);"># 超越公共社区</div>
         </div>
@@ -1769,7 +1769,7 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
             <div class="ba-label" style="gap:6px;"><span style="font-family:'DM Mono',monospace;font-size:7px;letter-spacing:.1em;background:var(--grey-2);color:var(--tx2);padding:1px 6px;">BEFORE</span>过去的做法</div>
             <div style="background:#0f0f16;border-radius:5px;padding:7px 9px;font-family:'DM Mono',monospace;font-size:8px;border:.5px solid #252530;margin-top:4px;line-height:1.7;">
               <div style="color:var(--td);">[910B] AI Core: 72% ✓</div>
-              <div style="color:var(--tr);">[310P] EZ9999: format error</div>
+              <div style="color:var(--tr);">[310P] RuntimeError: format 不兼容</div>
               <div style="color:var(--td);">[910A] running... (15min left)</div>
               <div style="color:var(--ty);margin-top:4px;">← 3个终端窗口分别监控</div>
             </div>
@@ -2324,8 +2324,8 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
             <div id="lib-debug-col" style="display:flex;flex-direction:column;gap:6px;overflow-y:auto;transition:opacity .3s;">
               <div style="font-family:'DM Mono',monospace;font-size:8.5px;color:var(--acc);letter-spacing:.08em;">调试经验库</div>
               <div style="background:var(--tb);border:.5px solid var(--tbdr);border-radius:6px;padding:8px 10px;">
-                <div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--tr);margin-bottom:4px;">EZ9999 · format 不匹配</div>
-                <div style="font-size:8px;color:var(--td);line-height:1.55;">910B 矩阵类算子需 FRACTAL_NZ，向量类用 ND。混用导致 EZ9999。</div>
+                <div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--tr);margin-bottom:4px;">format 不兼容 / UB 溢出</div>
+                <div style="font-size:8px;color:var(--td);line-height:1.55;">910B 矩阵类算子需 FRACTAL_NZ，向量类用 ND。混用导致运行时报错，堆栈难以定位。</div>
               </div>
               <div style="background:var(--tb);border:.5px solid var(--tbdr);border-radius:6px;padding:8px 10px;">
                 <div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--tr);margin-bottom:4px;">OOM · UB 超限</div>
@@ -2964,7 +2964,7 @@ function setupSlideSteps(secId, stripId, defs) {
       color: '#834DF0' },
     { id: 'hw-310p', name: '昇腾310P', sub: '推理卡', icon: '🔲', status: 'error',
       metrics: [{ k: 'AI Core', v: 0 }, { k: 'CUBE', v: 0 }, { k: 'VECTOR', v: 0 }],
-      error: 'EZ9999: format不支持', color: '#E74C3C' },
+      error: 'RuntimeError: format 不支持', color: '#E74C3C' },
     { id: 'hw-910a', name: '昇腾910A', sub: '旧版训练', icon: '🔲', status: 'done',
       metrics: [{ k: 'AI Core', v: 68 }, { k: 'CUBE', v: 65 }, { k: 'VECTOR', v: 82 }],
       color: '#27AE60' },
