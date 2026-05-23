@@ -1034,7 +1034,7 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
         <div class="dp-desc">
           <div class="dp-label">设计说明</div>
           <div class="dp-title">CANN 算子知识库 × 会话记忆</div>
-          <div class="dp-body">每次打开 CANN 开发环境，AI 自动恢复上次的算子开发上下文：TBE 实现版本、msprof 分析结果、历次性能迭代记录、shape/dtype 约束配置。不需要重新解释"我在做什么"。</div>
+          <div class="dp-body">目前主流 AI 工具将会话上下文存入静态文件（如 CLAUDE.md），依赖人工维护、更新不及时；一旦上下文 compact，当轮已沉淀的决策和分析结果随即丢失。HAI 将算子开发上下文自动结构化写入持久记忆：TBE 实现版本、msprof 分析结果、历次性能迭代记录、shape/dtype 约束配置——每次启动即时恢复，不需要重新解释"我在做什么"。</div>
         </div>
         <div class="dp-desc">
           <div class="dp-label">核心设计点</div>
@@ -1050,12 +1050,15 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
             <div class="ba-label" style="gap:6px;"><span style="font-family:'DM Mono',monospace;font-size:7px;letter-spacing:.1em;background:var(--grey-2);color:var(--tx2);padding:1px 6px;">BEFORE</span>过去的做法</div>
             <div style="display:flex;flex-direction:column;gap:3px;margin-top:4px;">
               <div style="background:var(--bg2);padding:5px 8px;border-left:2px solid var(--grey-2);font-size:8px;color:var(--tx2);">
-                早上重新打开项目…<br>
-                <span style="color:var(--tx3);">「上次 tile_m 调到多少来着？」</span>
+                上下文存 CLAUDE.md，手动维护<br>
+                <span style="color:var(--tx3);">实际开发进展往往比文件超前好几步</span>
               </div>
-              <div style="background:var(--bg2);padding:5px 8px;border-left:2px solid var(--grey-2);font-size:8px;color:var(--tx2);">翻 msprof 日志…找昨天的记录…</div>
-              <div style="background:var(--grey-1);border:.5px solid var(--grey-2);padding:5px 8px;font-size:8px;color:var(--tx2);">重新向 AI 解释算子背景 ~15min</div>
-              <div style="text-align:center;font-size:7.5px;color:var(--tx3);font-family:'DM Mono',monospace;margin-top:2px;">每次启动损耗 15-30 分钟热身时间</div>
+              <div style="background:var(--bg2);padding:5px 8px;border-left:2px solid var(--grey-2);font-size:8px;color:var(--tx2);">
+                上下文 compact 后 AI 遗忘当轮决策<br>
+                <span style="color:var(--tx3);">「20分钟前你说 tile_m 128 更好……」</span>
+              </div>
+              <div style="background:var(--grey-1);border:.5px solid var(--grey-2);padding:5px 8px;font-size:8px;color:var(--tx2);">次日重新向 AI 解释算子背景 ~15min</div>
+              <div style="text-align:center;font-size:7.5px;color:var(--tx3);font-family:'DM Mono',monospace;margin-top:2px;">静态文件 + 有限上下文窗口 → 记忆必然丢失</div>
             </div>
           </div>
           <div class="ba-after">
