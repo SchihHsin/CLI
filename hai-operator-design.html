@@ -666,6 +666,270 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
   </div>
 </div>
 
+<!-- ══ BG-COMMUNITY: 社区知识转化 ══ -->
+<div class="sec" id="s-bg-community" style="background:var(--bg);">
+  <div class="slabel">
+    <span class="sub">范式转变 · 社区知识的角色</span>
+    <span class="main">昇腾社区未消失 — 知识被 AI 内化，从「主动检索」变为「持续渗透」</span>
+  </div>
+  <div class="inner">
+    <div class="dp-layout">
+      <div class="dp-left">
+
+        <div class="mockup-label" style="visibility:hidden;pointer-events:none;" aria-hidden="true">placeholder</div>
+
+        <div style="font-size:10.5px;color:var(--tx2);line-height:1.75;margin-bottom:14px;">
+          开发者曾依赖昇腾社区解决 EZ 错误、查 TBE 语法、找 tile 参数经验——但这个过程是<strong style="color:var(--tx);">拉取式、低信噪比</strong>的。在 HAI 时代，社区知识并未消失，而是以<strong style="color:var(--tx);">三层方式</strong>被内化进 AI 的知识体系，随时随地主动渗透到开发流程中。
+        </div>
+
+        <!-- 三层内化 -->
+        <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:14px;">
+          <div style="display:flex;gap:10px;align-items:flex-start;padding:10px 12px;background:var(--sur);border:.5px solid var(--grey-2);">
+            <div style="font-family:'DM Mono',monospace;font-size:9px;color:var(--acc);flex-shrink:0;margin-top:1px;">L1</div>
+            <div>
+              <div style="font-family:'DM Mono',monospace;font-size:9px;color:var(--tx);margin-bottom:3px;">训练层 — 静态内化</div>
+              <div style="font-size:9px;color:var(--tx2);line-height:1.6;">社区 Q&A、官方文档、错误码解法 → AI 训练数据。开发者问「CUBE 为什么低」，AI 回答来自千万条社区讨论的蒸馏。</div>
+            </div>
+          </div>
+          <div style="display:flex;gap:10px;align-items:flex-start;padding:10px 12px;background:var(--sur);border:.5px solid var(--grey-2);">
+            <div style="font-family:'DM Mono',monospace;font-size:9px;color:var(--acc);flex-shrink:0;margin-top:1px;">L2</div>
+            <div>
+              <div style="font-family:'DM Mono',monospace;font-size:9px;color:var(--tx);margin-bottom:3px;">检索层 — 运行时召回</div>
+              <div style="font-size:9px;color:var(--tx2);line-height:1.6;">遇到 EZ9999，HAI 实时检索社区知识库，匹配最相似的已解问题，直接给出可用方案——不是让开发者去搜。</div>
+            </div>
+          </div>
+          <div style="display:flex;gap:10px;align-items:flex-start;padding:10px 12px;background:var(--sur);border:.5px solid var(--grey-2);">
+            <div style="font-family:'DM Mono',monospace;font-size:9px;color:var(--acc);flex-shrink:0;margin-top:1px;">L3</div>
+            <div>
+              <div style="font-family:'DM Mono',monospace;font-size:9px;color:var(--tx);margin-bottom:3px;">沉淀层 — 私有社区 2.0</div>
+              <div style="font-size:9px;color:var(--tx2);line-height:1.6;">每次解决的问题自动写入团队知识库。团队积累越多，AI 越精准——最终形成超越公共社区的<strong style="color:var(--tx);">私有化、针对性更强</strong>的知识网络。</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 角色转变 -->
+        <div style="background:var(--acc);padding:10px 14px;">
+          <div style="font-family:'DM Mono',monospace;font-size:9px;color:rgba(255,255,255,.6);margin-bottom:4px;">◆ 开发者角色的转变</div>
+          <div style="font-size:10px;color:rgba(255,255,255,.9);line-height:1.6;">过去：社区知识的<strong style="color:#fff;">搜索者与消费者</strong>。HAI 时代：成为 AI 给出方案的<strong style="color:#fff;">裁判员与决策者</strong>——把精力从「找答案」转移到「判断答案」。</div>
+        </div>
+
+      </div>
+      <div class="dp-right">
+        <div class="mockup-label">交互模式对比 — 同一个 EZ9999 错误</div>
+
+        <!-- BEFORE -->
+        <div style="background:var(--sur);border:.5px solid var(--grey-2);padding:14px;display:flex;flex-direction:column;gap:10px;">
+          <div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--r);letter-spacing:.1em;">BEFORE · 手动搜索</div>
+          <div style="display:flex;align-items:center;gap:0;flex-wrap:nowrap;">
+            <div style="flex:1;text-align:center;display:flex;flex-direction:column;align-items:center;gap:4px;">
+              <div style="width:32px;height:32px;border-radius:50%;background:var(--grey-1);border:.5px solid var(--grey-2);display:flex;align-items:center;justify-content:center;font-size:14px;">👤</div>
+              <div style="font-size:7.5px;color:var(--tx3);font-family:'DM Mono',monospace;">开发者</div>
+            </div>
+            <div style="flex:1;text-align:center;">
+              <div style="font-size:7px;color:var(--tx3);">遇到错误</div>
+              <div style="height:1px;background:var(--grey-2);margin:3px 0;"></div>
+              <div style="font-size:7px;color:var(--r);">中断心流</div>
+            </div>
+            <div style="flex:1;text-align:center;display:flex;flex-direction:column;align-items:center;gap:4px;">
+              <div style="width:32px;height:32px;border-radius:50%;background:var(--grey-1);border:.5px solid var(--grey-2);display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:10px;color:var(--tx2);">社区</div>
+              <div style="font-size:7.5px;color:var(--tx3);font-family:'DM Mono',monospace;">搜索 · 筛选</div>
+            </div>
+            <div style="flex:1;text-align:center;">
+              <div style="font-size:7px;color:var(--tx3);">阅读 N 条</div>
+              <div style="height:1px;background:var(--grey-2);margin:3px 0;"></div>
+              <div style="font-size:7px;color:var(--r);">信噪比低</div>
+            </div>
+            <div style="flex:1;text-align:center;display:flex;flex-direction:column;align-items:center;gap:4px;">
+              <div style="width:32px;height:32px;border-radius:50%;background:var(--grey-1);border:.5px solid var(--grey-2);display:flex;align-items:center;justify-content:center;font-size:14px;">⚙️</div>
+              <div style="font-size:7.5px;color:var(--tx3);font-family:'DM Mono',monospace;">手动适配</div>
+            </div>
+          </div>
+          <div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--tx3);background:var(--grey-1);padding:6px 10px;border-left:2px solid var(--r);">平均耗时：30min～2h · 结果不保证适用</div>
+        </div>
+
+        <!-- AFTER -->
+        <div style="background:var(--acc-dim);border:.5px solid var(--acc-b);padding:14px;display:flex;flex-direction:column;gap:10px;flex:1;">
+          <div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--acc);letter-spacing:.1em;">HAI · 知识自动渗透</div>
+          <div style="display:flex;align-items:center;gap:0;flex-wrap:nowrap;">
+            <div style="flex:1;text-align:center;display:flex;flex-direction:column;align-items:center;gap:4px;">
+              <div style="width:32px;height:32px;border-radius:50%;background:var(--acc-dim);border:.5px solid var(--acc-b);display:flex;align-items:center;justify-content:center;font-size:14px;">👤</div>
+              <div style="font-size:7.5px;color:var(--acc);font-family:'DM Mono',monospace;">开发者</div>
+            </div>
+            <div style="flex:1;text-align:center;">
+              <div style="font-size:7px;color:var(--tx3);">遇到错误</div>
+              <div style="height:1px;background:var(--acc-b);margin:3px 0;"></div>
+              <div style="font-size:7px;color:var(--acc);">直接问 HAI</div>
+            </div>
+            <div style="flex:1;text-align:center;display:flex;flex-direction:column;align-items:center;gap:4px;">
+              <div style="width:32px;height:32px;border-radius:50%;background:var(--acc);border:.5px solid var(--acc-b);display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:9px;color:white;">HAI</div>
+              <div style="font-size:7.5px;color:var(--acc);font-family:'DM Mono',monospace;">检索 + 匹配</div>
+            </div>
+            <div style="flex:1;text-align:center;">
+              <div style="font-size:7px;color:var(--tx3);">&lt;10s</div>
+              <div style="height:1px;background:var(--acc-b);margin:3px 0;"></div>
+              <div style="font-size:7px;color:var(--acc);">精准方案</div>
+            </div>
+            <div style="flex:1;text-align:center;display:flex;flex-direction:column;align-items:center;gap:4px;">
+              <div style="width:32px;height:32px;border-radius:50%;background:var(--acc-dim);border:.5px solid var(--acc-b);display:flex;align-items:center;justify-content:center;font-size:14px;">✓</div>
+              <div style="font-size:7.5px;color:var(--acc);font-family:'DM Mono',monospace;">验证沉淀</div>
+            </div>
+          </div>
+          <div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--acc);background:rgba(0,47,167,.06);padding:6px 10px;border-left:2px solid var(--acc);">耗时：&lt;10s · 解法针对当前硬件上下文 · 自动写入团队库</div>
+
+          <!-- 三层知识来源 -->
+          <div style="display:flex;gap:6px;margin-top:4px;">
+            <div style="flex:1;background:var(--sur);border:.5px solid var(--grey-2);padding:6px 8px;text-align:center;">
+              <div style="font-family:'DM Mono',monospace;font-size:7px;color:var(--tx3);margin-bottom:2px;">训练层</div>
+              <div style="font-size:8px;color:var(--tx2);">社区历史数据</div>
+            </div>
+            <div style="flex:1;background:var(--sur);border:.5px solid var(--grey-2);padding:6px 8px;text-align:center;">
+              <div style="font-family:'DM Mono',monospace;font-size:7px;color:var(--tx3);margin-bottom:2px;">检索层</div>
+              <div style="font-size:8px;color:var(--tx2);">实时文档召回</div>
+            </div>
+            <div style="flex:1;background:var(--acc-dim);border:.5px solid var(--acc-b);padding:6px 8px;text-align:center;">
+              <div style="font-family:'DM Mono',monospace;font-size:7px;color:var(--acc);margin-bottom:2px;">沉淀层</div>
+              <div style="font-size:8px;color:var(--acc);">团队私有库</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ BG-COMMUNITY2: 渗透地图 ══ -->
+<div class="sec" id="s-bg-community2" style="background:var(--sur);">
+  <div class="slabel">
+    <span class="sub">范式转变 · 知识渗透地图</span>
+    <span class="main">社区知识在 HAI 5 个阶段的具体渗透方式</span>
+  </div>
+  <div class="inner" style="padding:12px 28px 16px;flex-direction:column;gap:10px;">
+
+    <!-- 5-stage knowledge grid -->
+    <div style="display:grid;grid-template-columns:90px repeat(5,1fr);gap:0;border:.5px solid var(--grey-2);flex:1;min-height:0;">
+
+      <!-- header row -->
+      <div style="background:var(--grey-1);border-right:.5px solid var(--grey-2);border-bottom:.5px solid var(--grey-2);display:flex;align-items:center;justify-content:center;padding:8px;">
+        <span style="font-family:'DM Mono',monospace;font-size:8px;color:var(--tx3);">阶段</span>
+      </div>
+      <div style="background:var(--tx);border-right:.5px solid rgba(255,255,255,.15);border-bottom:.5px solid var(--grey-2);border-bottom:3px solid #fbbf24;padding:10px 12px;display:flex;flex-direction:column;gap:3px;justify-content:center;">
+        <div style="font-family:'DM Mono',monospace;font-size:7px;color:rgba(255,255,255,.35);letter-spacing:.1em;">01</div>
+        <div style="font-size:12px;font-weight:200;font-family:'Inter',sans-serif;color:#fff;">环境启动</div>
+      </div>
+      <div style="background:var(--tx);border-right:.5px solid rgba(255,255,255,.15);border-bottom:.5px solid var(--grey-2);border-bottom:3px solid #4ade80;padding:10px 12px;display:flex;flex-direction:column;gap:3px;justify-content:center;">
+        <div style="font-family:'DM Mono',monospace;font-size:7px;color:rgba(255,255,255,.35);letter-spacing:.1em;">02</div>
+        <div style="font-size:12px;font-weight:200;font-family:'Inter',sans-serif;color:#fff;">表达意图</div>
+      </div>
+      <div style="background:var(--tx);border-right:.5px solid rgba(255,255,255,.15);border-bottom:.5px solid var(--grey-2);border-bottom:3px solid #22d3ee;padding:10px 12px;display:flex;flex-direction:column;gap:3px;justify-content:center;">
+        <div style="font-family:'DM Mono',monospace;font-size:7px;color:rgba(255,255,255,.35);letter-spacing:.1em;">03</div>
+        <div style="font-size:12px;font-weight:200;font-family:'Inter',sans-serif;color:#fff;">定义目标</div>
+      </div>
+      <div style="background:var(--tx);border-right:.5px solid rgba(255,255,255,.15);border-bottom:.5px solid var(--grey-2);border-bottom:3px solid #60a5fa;padding:10px 12px;display:flex;flex-direction:column;gap:3px;justify-content:center;">
+        <div style="font-family:'DM Mono',monospace;font-size:7px;color:rgba(255,255,255,.35);letter-spacing:.1em;">04</div>
+        <div style="font-size:12px;font-weight:200;font-family:'Inter',sans-serif;color:#fff;">协同执行</div>
+      </div>
+      <div style="background:var(--tx);border-bottom:.5px solid var(--grey-2);border-bottom:3px solid #c084fc;padding:10px 12px;display:flex;flex-direction:column;gap:3px;justify-content:center;">
+        <div style="font-family:'DM Mono',monospace;font-size:7px;color:rgba(255,255,255,.35);letter-spacing:.1em;">05</div>
+        <div style="font-size:12px;font-weight:200;font-family:'Inter',sans-serif;color:#fff;">审核沉淀</div>
+      </div>
+
+      <!-- 知识类型 row -->
+      <div style="background:var(--grey-1);border-right:.5px solid var(--grey-2);border-bottom:.5px solid var(--grey-2);display:flex;align-items:center;justify-content:center;padding:8px;">
+        <span style="font-family:'DM Mono',monospace;font-size:7.5px;color:var(--tx3);writing-mode:vertical-lr;letter-spacing:.08em;">知识类型</span>
+      </div>
+      <div style="padding:10px 12px;border-right:.5px solid var(--grey-2);border-bottom:.5px solid var(--grey-2);">
+        <div style="font-family:'DM Mono',monospace;font-size:7px;color:var(--acc);background:var(--acc-dim);border:.5px solid var(--acc-b);padding:2px 6px;display:inline-block;margin-bottom:5px;">L1 训练层</div>
+        <div style="font-size:8.5px;color:var(--tx);line-height:1.5;">同类算子历史问题</div>
+        <div style="font-size:8px;color:var(--tx3);margin-top:2px;line-height:1.5;">EZ 错误记录 · tile 经验值 · format 兼容清单</div>
+      </div>
+      <div style="padding:10px 12px;border-right:.5px solid var(--grey-2);border-bottom:.5px solid var(--grey-2);">
+        <div style="font-family:'DM Mono',monospace;font-size:7px;color:var(--acc);background:var(--acc-dim);border:.5px solid var(--acc-b);padding:2px 6px;display:inline-block;margin-bottom:5px;">L1 训练层</div>
+        <div style="font-size:8.5px;color:var(--tx);line-height:1.5;">指标异常解读</div>
+        <div style="font-size:8px;color:var(--tx3);margin-top:2px;line-height:1.5;">CUBE 低的 N 种常见原因 · data_move 瓶颈诊断逻辑</div>
+      </div>
+      <div style="padding:10px 12px;border-right:.5px solid var(--grey-2);border-bottom:.5px solid var(--grey-2);">
+        <div style="font-family:'DM Mono',monospace;font-size:7px;color:var(--acc);background:var(--acc-dim);border:.5px solid var(--acc-b);padding:2px 6px;display:inline-block;margin-bottom:5px;">L1 训练层</div>
+        <div style="font-size:8.5px;color:var(--tx);line-height:1.5;">社区 Benchmark 参考</div>
+        <div style="font-size:8px;color:var(--tx3);margin-top:2px;line-height:1.5;">910B 典型 cube_util 阈值 · 精度误差行业标准</div>
+      </div>
+      <div style="padding:10px 12px;border-right:.5px solid var(--grey-2);border-bottom:.5px solid var(--grey-2);">
+        <div style="font-family:'DM Mono',monospace;font-size:7px;color:var(--y);background:rgba(217,119,6,.1);border:.5px solid rgba(217,119,6,.3);padding:2px 6px;display:inline-block;margin-bottom:5px;">L2 检索层</div>
+        <div style="font-size:8.5px;color:var(--tx);line-height:1.5;">错误码实时匹配</div>
+        <div style="font-size:8px;color:var(--tx3);margin-top:2px;line-height:1.5;">EZ9999 → 社区最佳解 3 条 · 按上下文排序</div>
+      </div>
+      <div style="padding:10px 12px;border-bottom:.5px solid var(--grey-2);">
+        <div style="font-family:'DM Mono',monospace;font-size:7px;color:var(--tg);background:rgba(52,211,153,.1);border:.5px solid rgba(52,211,153,.3);padding:2px 6px;display:inline-block;margin-bottom:5px;">L3 沉淀层</div>
+        <div style="font-size:8.5px;color:var(--tx);line-height:1.5;">解法写回团队库</div>
+        <div style="font-size:8px;color:var(--tx3);margin-top:2px;line-height:1.5;">私有社区 2.0 · 针对本团队硬件 · 越用越准</div>
+      </div>
+
+      <!-- 具体表现 row -->
+      <div style="background:var(--grey-1);border-right:.5px solid var(--grey-2);border-bottom:.5px solid var(--grey-2);display:flex;align-items:center;justify-content:center;padding:8px;">
+        <span style="font-family:'DM Mono',monospace;font-size:7.5px;color:var(--tx3);writing-mode:vertical-lr;letter-spacing:.08em;">具体表现</span>
+      </div>
+      <div style="padding:10px 12px;border-right:.5px solid var(--grey-2);border-bottom:.5px solid var(--grey-2);background:var(--grey-1);">
+        <div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--td);background:var(--tb);padding:6px 10px;line-height:1.7;">
+          <div style="color:var(--acc);">hai start RMSNorm</div>
+          <div style="color:var(--tg);">✓ 加载 910B EZ6523 解法 ×3</div>
+          <div style="color:var(--tg);">✓ tile_m 建议值：64/128</div>
+          <div style="color:var(--td);"># 社区知识已就位</div>
+        </div>
+      </div>
+      <div style="padding:10px 12px;border-right:.5px solid var(--grey-2);border-bottom:.5px solid var(--grey-2);background:var(--grey-1);">
+        <div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--td);background:var(--tb);padding:6px 10px;line-height:1.7;">
+          <div style="color:var(--tw);">[光标 → CUBE 38%]</div>
+          <div style="color:var(--tw);">「这里为什么这么低？」</div>
+          <div style="color:var(--acc);">HAI: data_move 碎片化</div>
+          <div style="color:var(--td);"># 来自社区 47 条讨论</div>
+        </div>
+      </div>
+      <div style="padding:10px 12px;border-right:.5px solid var(--grey-2);border-bottom:.5px solid var(--grey-2);background:var(--grey-1);">
+        <div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--td);background:var(--tb);padding:6px 10px;line-height:1.7;">
+          <div style="color:var(--acc);">/goal cube_util &gt; 65%</div>
+          <div style="color:var(--tg);">✓ 建议值来自社区基准</div>
+          <div style="color:var(--tw);">910B 同类算子中位数</div>
+          <div style="color:var(--td);"># 有据可依的阈值</div>
+        </div>
+      </div>
+      <div style="padding:10px 12px;border-right:.5px solid var(--grey-2);border-bottom:.5px solid var(--grey-2);background:var(--grey-1);">
+        <div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--td);background:var(--tb);padding:6px 10px;line-height:1.7;">
+          <div style="color:var(--tr);">✕ EZ9999: format mismatch</div>
+          <div style="color:var(--acc);">HAI: 匹配到社区解 ×3</div>
+          <div style="color:var(--tg);">→ NZ→ND 转换 · 已验证</div>
+          <div style="color:var(--td);"># &lt;10s 不中断心流</div>
+        </div>
+      </div>
+      <div style="padding:10px 12px;border-bottom:.5px solid var(--grey-2);background:var(--grey-1);">
+        <div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--td);background:var(--tb);padding:6px 10px;line-height:1.7;">
+          <div style="color:var(--tg);">✓ 解法写入团队库</div>
+          <div style="color:var(--acc);">tag: 910B · EZ9999 · NZ</div>
+          <div style="color:var(--tw);">下次相同错误 &lt;3s</div>
+          <div style="color:var(--td);"># 超越公共社区</div>
+        </div>
+      </div>
+
+      <!-- 飞轮 row -->
+      <div style="background:var(--grey-1);border-right:.5px solid var(--grey-2);display:flex;align-items:center;justify-content:center;padding:8px;">
+        <span style="font-family:'DM Mono',monospace;font-size:7.5px;color:var(--tx3);writing-mode:vertical-lr;letter-spacing:.08em;">知识飞轮</span>
+      </div>
+      <div style="grid-column:span 5;padding:12px 16px;display:flex;align-items:center;gap:0;background:var(--acc-dim);">
+        <div style="flex:1;text-align:center;font-size:8.5px;color:var(--acc);line-height:1.5;font-family:'DM Mono',monospace;">公共社区<br><span style="font-size:7px;color:var(--tx3);">昇腾社区 Q&A · 文档</span></div>
+        <div style="font-size:11px;color:var(--acc-b);">→</div>
+        <div style="flex:1;text-align:center;font-size:8.5px;color:var(--acc);line-height:1.5;font-family:'DM Mono',monospace;">HAI 训练 / 检索<br><span style="font-size:7px;color:var(--tx3);">内化 + 实时召回</span></div>
+        <div style="font-size:11px;color:var(--acc-b);">→</div>
+        <div style="flex:1;text-align:center;font-size:8.5px;color:var(--acc);line-height:1.5;font-family:'DM Mono',monospace;">更快解决问题<br><span style="font-size:7px;color:var(--tx3);">心流不中断</span></div>
+        <div style="font-size:11px;color:var(--acc-b);">→</div>
+        <div style="flex:1;text-align:center;font-size:8.5px;color:var(--acc);line-height:1.5;font-family:'DM Mono',monospace;">团队私有库<br><span style="font-size:7px;color:var(--tx3);">针对本团队硬件 · 持续成长</span></div>
+        <div style="font-size:11px;color:var(--acc-b);">→</div>
+        <div style="flex:1;text-align:center;font-size:8.5px;font-weight:500;color:var(--acc);line-height:1.5;font-family:'DM Mono',monospace;">超越公共社区<br><span style="font-size:7px;color:var(--tx3);font-weight:400;">私有化 · 精准化 · 永续增长</span></div>
+        <div style="font-size:11px;color:var(--acc-b);">↩</div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
 <!-- ══ JOURNEY OVERVIEW ══ -->
 <div class="sec" id="s-j-overview" style="background:var(--sur);">
   <div class="slabel">
@@ -3195,6 +3459,8 @@ document.head.appendChild(sty);
     { id:'s-bg2',        label:'范式演进' },
     { id:'s-bg-signal',   label:'行业验证' },
     { id:'s-bg3',        label:'设计方向' },
+    { id:'s-bg-community',  label:'社区知识转化' },
+    { id:'s-bg-community2', label:'渗透地图' },
     { id:'s-j-overview', label:'开发旅程' },
     { id:'s-m4a',        label:'记忆启动' },
     { id:'s-m2c',        label:'语音查询' },
