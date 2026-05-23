@@ -186,6 +186,7 @@
 | Agent View CSS 前缀 | 全部用 `.agv-*`，旧 `.av-*` 已清除，不要再用 |
 | s-m6a 独立存在 | 光标伴侣是独立设计点，不合并进 Module 2 |
 | s-m2c 不动 | "语音×光标"保留原样，光标伴侣是新增而非替换 |
+| **多窗口必须重叠** | Mockup 中出现两个或以上窗口时，必须用 `position:absolute` 形成遮盖重叠（一个在左上，一个在右下），禁止顺序排列。窗口都要有 `border-radius:8px` 圆角。 |
 
 ---
 
@@ -363,6 +364,7 @@ grep -n "id=\"s-m" file.html | head    # 快速列出所有 section
 | *(2026-05-24)* | s-m2c mockup 重设计：msprof 窗口（左上 78%×72%，圆角8px）+ 终端窗口（右下 56%×52%，圆角8px，step3出现），两窗口重叠；step3改为"发送到终端"模式，终端显示 hai ask 命令+HAI分析结果 |
 | *(2026-05-24)* | top-nav 新增 ↺ 重置按钮：点击重置当前页 stepper 动效+DOM 状态，图标旋转360°反馈 |
 | *(2026-05-24)* | setupSlideSteps 加 generation 计数器（gen++取消旧 setTimeout 链）+ window._stepperRestarts[secId] 注册表；新增 window._sectionDOMResets[secId] 注册表供各 section 注册 DOM 清理函数 |
+| *(2026-05-23)* | s-m2d 动效重设计：3步骤各自独立的流程动画（发送/写入/编辑面板），initRouterDemo IIFE 自驱循环；编辑面板步骤使用 msprof（左上74%×65%）+ 编辑面板（右下60%×56%）重叠双窗口；新增多窗口必须重叠设计约定 |
 
 ### ai-dev-tools-design.html 专项工作（更早）
 
