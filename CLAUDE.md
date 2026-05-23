@@ -21,10 +21,10 @@
 | 项 | 值 |
 |---|---|
 | 文件 | `/Users/hsin/Documents/Coding/CLI/hai-operator-design.html` |
-| 当前大小 | ~204,655 字符（持续增长） |
+| 当前大小 | ~208,955 字符（持续增长） |
 | 场景 | CANN 昇腾算子开发（TBE DSL、EZ9999错误、910B/310P适配） |
 | 技术栈 | `tik.Tensor`、`tik.data_move`、msprof profiler、FRACTAL_NZ格式 |
-| 状态 | 主体完成，s-m3a 待重新设计 |
+| 状态 | 主体完成，s-m3a 已删除 |
 
 ---
 
@@ -92,7 +92,8 @@
 | 1 | `s-cover` | 封面 | ~304 |
 | 2 | `s-bg` | 背景：信号扫描 | ~339 |
 | 3 | `s-bg2` | 背景：范式演进时间轴 | ~431 |
-| 3.5 | `s-bg3` | 代码是过程，结果才是产出物（新增） | ~527 |
+| 3.3 | `s-bg-signal` | 行业验证 — 4个竞品印证设计判断（新增） | ~496 |
+| 3.5 | `s-bg3` | 代码是过程，结果才是产出物 | ~627 |
 | 4 | `s-j-overview` | 用户旅程全景地图（7阶段×6维度） | ~640 |
 | 5 | `s-m4a` | 记忆启动 — 跨会话上下文 | ~1046 |
 | 6 | `s-m2c` | 语音×光标 — 指着说话 | ~818 |
@@ -101,9 +102,8 @@
 | 9 | `s-m3b` | Goal 命令 — 开发者定义完成 | ~967 |
 | 10 | `s-m1a` | Agent View — 多会话统一管理 | ~539 |
 | 11 | `s-m1b` | 并行看板 — 所有 Agent 一屏总览 | ~628 |
-| 11.5 | `s-m1c` | 实体状态灯 — AI Agent 进度跃出屏幕（新增） | 动态定位 |
-| 12 | `s-m3a` | 智能 Fix — 一键上下文修复（待重新设计） | ~1417 |
-| 13 | `s-m5a` | 结果审核 — 多维可视化 | ~1184 |
+| 11.5 | `s-m1c` | 实体状态灯 — AI Agent 进度跃出屏幕 | 动态定位 |
+| 12 | `s-m5a` | 结果审核 — 多维可视化 | 动态定位 |
 | 14 | `s-m5b` | 意图对齐 — AI 决策透明化 | ~1240 |
 | 15 | `s-m4b` | 团队记忆库 — 隐性知识共享 | ~1104 |
 | 16 | `s-m6a` | 光标伴侣 — 贴身 AI 操作引导 | ~1343 |
@@ -274,7 +274,7 @@ grep -n "id=\"s-m" file.html | head    # 快速列出所有 section
 ## Step 步骤指示条系统（2026-05-20 新增）
 
 ### 组件概览
-所有 12 个设计幻灯片（s-m1a / s-m1b / s-m2a / s-m2b / s-m2c / s-m3a / s-m3b / s-m4a / s-m4b / s-m5a / s-m5b / s-m6a）的 dp-right 区域 mockup-label 下方，均新增了一条用户流程步骤指示条。
+所有设计幻灯片（s-m1a / s-m1b / s-m2a / s-m2b / s-m2c / s-m3b / s-m4a / s-m4b / s-m5a / s-m5b / s-m6a，共11个，s-m3a 已删除）的 dp-right 区域 mockup-label 下方均有步骤指示条。
 
 ### HTML 结构
 ```html
@@ -307,7 +307,6 @@ CSS 样式：绝对定位 `bottom:18px;left:50%`，深色键帽风格（`backgro
 - s-m2b 步骤2: `⌘ K`，步骤3: `↵`
 - s-m3b 步骤1: `/`，步骤2: `↵`
 - s-m1b 步骤3: `⌘ K`
-- s-m3a 步骤2: `⌘ K`，步骤3: `↵`
 - s-m6a 步骤1: `/`
 
 ### JS：`initStepper(secId, stripId, ms, onStep)`
@@ -335,6 +334,8 @@ CSS 样式：绝对定位 `bottom:18px;left:50%`，深色键帽风格（`backgro
 | `c76a14d` | s-m1c mockup重设计：desk scene笔记本+USB线+交通灯硬件 |
 | `b3810e3` | s-m1c 笔记本比例修复：flex:1宽度填满，144px屏高，状态芯片 |
 | `f079246` | s-m1c macOS风格笔记本：铝色边框+壁纸+菜单栏+Terminal窗口+Dock |
+| `b244e37` | 删除 s-m3a（出错恢复）：在AI agent循环中自动处理，场景不独特，且与s-m5a结果审核重叠 |
+| `188957e` | 新增 s-bg-signal：行业验证页（4卡：Claude Desktop Buddy / OpenAI×Ive / Devin / Copilot Voice） |
 
 ### ai-dev-tools-design.html 专项工作（更早）
 
@@ -361,15 +362,16 @@ CSS 样式：绝对定位 `bottom:18px;left:50%`，深色键帽风格（`backgro
 
 ### Section 顺序（当前）
 ```
-s-cover → s-bg → s-bg2 → s-bg3 → s-j-overview
+s-cover → s-bg → s-bg2 → s-bg-signal（行业验证）→ s-bg3 → s-j-overview
 → s-m4a（记忆启动）
-→ s-m2c（语音×光标 Stage02·1/3）
-→ s-m6a（光标伴侣 Stage02·2/4）← 已提前
-→ s-m2b（手势调参 Stage02·3/4）
-→ s-m2a（光标上下文 Stage02·4/4）
+→ s-m2c（语音×光标）
+→ s-m6a（光标伴侣）
+→ s-m2b（手势调参）
+→ s-m2a（光标上下文）
 → s-m3b（Goal命令）→ s-m1a → s-m1b → s-m1c（实体状态灯）
-→ s-m3a → s-m5a → s-m5b → s-m4b → s-sum
+→ s-m5a → s-m5b → s-m4b → s-sum
 ```
+> s-m3a（出错恢复）已于 2026-05-23 删除。理由：AI agent 循环会自动重试编译错误，无需人工介入；且"结果驱动"概念已被 s-m5a 覆盖。
 
 ### JS Bug 修复记录（fix_hai_bugs.py）
 - `setupSlideSteps`：`.stp-dot` → `.stp-step`，class名 `active/done` → `stp-active/stp-done`
@@ -456,19 +458,27 @@ box-shadow:0 2px 20px rgba(0,47,167,.10),0 1px 0 rgba(255,255,255,.8) inset,0 0 
 
 **JS IDs：** `tl-red/yellow/green`（灯圈）、`tl-s1..7`（终端行）、`tl-status-chip`、`tl-state-bar/dot/title/desc`
 
-### s-m3a 智能修复（待重新设计）
+### s-bg-signal 行业验证（已完成 2026-05-23）
 
-**核心理念（用户明确）：** 代码只是中间态，开发者不应直接对着代码改。  
-设计应体现「**指着结果说怎么改**」——用户指着运行输出（msprof数据 / 精度误差值 / benchmark结果），用自然语言说出意图，AI自动修改底层TBE代码，结果更新。结果驱动，代码透明。
+2×2 卡片网格，每张卡包含 CSS 绘制的产品示意图 + 文字 + 「→ 印证设计点」标注。
 
-**设计方向待定**，已向用户提出4个方向（A=Copilot inline diff / B=Cursor Composer全屏diff / C=命令面板 / D=终端内联诊断）。等待用户选择或提供竞品参考后再实施。
+| 卡片 | 产品 | 印证 |
+|---|---|---|
+| ① | Claude Desktop Buddy（Anthropic 开源，$30 ESP32-S3，BLE）| s-m1c 实体状态灯 |
+| ② | OpenAI × Jony Ive 设备（$6.5B，无屏幕，H2 2026）| AI 走向实体趋势 |
+| ③ | Devin 2.0（Cognition AI，多 Agent 并行看板）| s-m1b 并行 Agent 看板 |
+| ④ | GitHub Copilot Voice（"Hey GitHub"，VS Code）| s-m2c 语音×光标 |
+
+卡片②用 `background:var(--acc)` IKB 蓝底（白字），其余白底。
+
+> **待改进（用户反馈 2026-05-23）**：用户希望换成实机截图而非 CSS 绘制的插图。需要从官网/YouTube 找截图，写明日期。
 
 ---
 
 ## 待办（按优先级）
 
 ### 高优先级
-- [ ] **s-m3a 重新设计** — 用户明确指出：开发者不应直接对代码改，代码只是中间态。设计核心理念：「指着结果说怎么改」，而非「看着代码改」。Mockup 应展示：用户指着运行结果（如 msprof 输出 / 精度误差数值）说出意图，AI 自动修改底层 TBE 代码 → 结果更新。体现"结果驱动，代码透明"。
+- [ ] **s-bg-signal 换实机截图** — 用户要求从官网/YouTube 找真实截图替换 CSS 插图，并注明日期。4个产品：Claude Desktop Buddy、OpenAI×Ive device、Devin、Copilot Voice。
 
 ### 低优先级
 - [ ] s-m2a cursor demo 最终验证
@@ -486,7 +496,6 @@ box-shadow:0 2px 20px rgba(0,47,167,.10),0 1px 0 rgba(255,255,255,.8) inset,0 0 
 | `window.gestureSetPhase(1/2/3)` | s-m2b | 高亮tile行/更新参数值/验证结果 |
 | `window.goalShowPanel(1/2/3)` | s-m3b | Goal面板显示/+进度/+日志 |
 | `window.dashSetPhase(1/2/3)` | s-m1b | 看板正常/异常高亮/注入指令 |
-| `window.sfSetPhase(1/2/3)` | s-m3a | 错误面板/修复面板/diff高亮 |
 | `window.reasonSetPhase(1/2)` | s-m5b | 推理框/决策badge |
 | `window.memSetPhase(1/2/3)` | s-m4a | hai start命令/会话列表淡入/高亮当前 |
 | `window.cursorSetPhase(0/1/2)` | s-m2a | 光标移动到targets[index] |
