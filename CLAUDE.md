@@ -92,8 +92,9 @@
 | 1 | `s-cover` | 封面 | ~304 |
 | 2 | `s-bg` | 背景：信号扫描 | ~339 |
 | 3 | `s-bg2` | 背景：范式演进时间轴 | ~431 |
-| 3.3 | `s-bg-signal` | 行业验证 — 4个竞品印证设计判断（新增） | ~496 |
-| 3.5 | `s-bg3` | 代码是过程，结果才是产出物 | ~627 |
+| 3.3 | `s-bg-signal` | 行业验证 · 1/2 — AI 走向实体，硬件联动 | ~495 |
+| 3.4 | `s-bg-signal2` | 行业验证 · 2/2 — Agent 编排进化 | ~546 |
+| 3.5 | `s-bg3` | 代码是过程，结果才是产出物 | ~597 |
 | 4 | `s-j-overview` | 用户旅程全景地图（7阶段×6维度） | ~640 |
 | 5 | `s-m4a` | 记忆启动 — 跨会话上下文 | ~1046 |
 | 6 | `s-m2c` | 语音×光标 — 指着说话 | ~818 |
@@ -336,6 +337,7 @@ CSS 样式：绝对定位 `bottom:18px;left:50%`，深色键帽风格（`backgro
 | `f079246` | s-m1c macOS风格笔记本：铝色边框+壁纸+菜单栏+Terminal窗口+Dock |
 | `b244e37` | 删除 s-m3a（出错恢复）：在AI agent循环中自动处理，场景不独特，且与s-m5a结果审核重叠 |
 | `188957e` | 新增 s-bg-signal：行业验证页（4卡：Claude Desktop Buddy / OpenAI×Ive / Devin / Copilot Voice） |
+| `ff4c36d` | 行业验证分2页（实机截图+彩色底色 object-fit:contain）+ s-bg三道墙代码块高度修复（移除flex:1，HAI设计目标栏恢复可见）|
 
 ### ai-dev-tools-design.html 专项工作（更早）
 
@@ -362,7 +364,7 @@ CSS 样式：绝对定位 `bottom:18px;left:50%`，深色键帽风格（`backgro
 
 ### Section 顺序（当前）
 ```
-s-cover → s-bg → s-bg2 → s-bg-signal（行业验证）→ s-bg3 → s-j-overview
+s-cover → s-bg → s-bg2 → s-bg-signal（行业验证1/2）→ s-bg-signal2（行业验证2/2）→ s-bg3 → s-j-overview
 → s-m4a（记忆启动）
 → s-m2c（语音×光标）
 → s-m6a（光标伴侣）
@@ -458,27 +460,32 @@ box-shadow:0 2px 20px rgba(0,47,167,.10),0 1px 0 rgba(255,255,255,.8) inset,0 0 
 
 **JS IDs：** `tl-red/yellow/green`（灯圈）、`tl-s1..7`（终端行）、`tl-status-chip`、`tl-state-bar/dot/title/desc`
 
-### s-bg-signal 行业验证（已完成 2026-05-23）
+### s-bg-signal / s-bg-signal2 行业验证（已完成 2026-05-23）
 
-2×2 卡片网格，每张卡包含 CSS 绘制的产品示意图 + 文字 + 「→ 印证设计点」标注。
+2页，每页 2×2 网格（普通卡 + wide卡 全列），图片左侧（54-58%）+ 文字右侧布局。
+图片用 `object-fit:contain` + 彩色背景色（全图可见，无裁剪）。
 
-| 卡片 | 产品 | 印证 |
-|---|---|---|
-| ① | Claude Desktop Buddy（Anthropic 开源，$30 ESP32-S3，BLE）| s-m1c 实体状态灯 |
-| ② | OpenAI × Jony Ive 设备（$6.5B，无屏幕，H2 2026）| AI 走向实体趋势 |
-| ③ | Devin 2.0（Cognition AI，多 Agent 并行看板）| s-m1b 并行 Agent 看板 |
-| ④ | GitHub Copilot Voice（"Hey GitHub"，VS Code）| s-m2c 语音×光标 |
+**Page 1（行业验证 1/2 — AI 走向实体）：**
+| 卡片 | 产品 | 背景色 | 印证 |
+|---|---|---|---|
+| ① | Claude Desktop Buddy（Anthropic 开源，ESP32-S3）| `#1a1a24` | s-m1c 实体状态灯 |
+| ② | M5Stack Cardputer "Code w/ Claude" 现场活动 | `#eeecea` | AI 走向实体 |
+| ③（wide）| Devin 2.0 多 Agent 并行看板 | `#0d0d14` | s-m1b 并行 Agent 看板 |
 
-卡片②用 `background:var(--acc)` IKB 蓝底（白字），其余白底。
-
-> **待改进（用户反馈 2026-05-23）**：用户希望换成实机截图而非 CSS 绘制的插图。需要从官网/YouTube 找截图，写明日期。
+**Page 2（行业验证 2/2 — Agent 编排进化）：**
+| 卡片 | 产品 | 背景色 | 印证 |
+|---|---|---|---|
+| ④ | Warp ADE 开源（Claude Code / Codex / Gemini CLI 共享上下文）| `#0d0d14` | 终端=Agent编排中心 |
+| ⑤ | GitHub Copilot Agent Mode 跨文件自主编辑 | `#0d0d14` | s-m1a Agent 自主执行 |
+| ⑥（wide）| Claude Code Agent View 多会话统一看板 | `#0a0a10` | s-m1a Agent View |
 
 ---
 
 ## 待办（按优先级）
 
 ### 高优先级
-- [ ] **s-bg-signal 换实机截图** — 用户要求从官网/YouTube 找真实截图替换 CSS 插图，并注明日期。4个产品：Claude Desktop Buddy、OpenAI×Ive device、Devin、Copilot Voice。
+- [ ] **Cardputer 图换清晰图片** — 现有 Espressif WeChat 截图看不清楚设备，需换一张能清晰看到 M5Stack Cardputer 实机的图
+- [ ] **Warp 卡片强调"开源"** — 用户说 Warp 的重点是"开源"这件事，卡片文字可更突出 open source 决定的意义
 
 ### 低优先级
 - [ ] s-m2a cursor demo 最终验证
