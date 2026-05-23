@@ -44,7 +44,7 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
 .ba-before .ba-label{color:var(--tx2);}
 .ba-after .ba-label{color:var(--acc);}
 .ba-text{font-size:10px;color:var(--tx2);line-height:1.6;}
-.mockup-label{font-family:'DM Mono',monospace;font-size:9px;color:var(--acc);letter-spacing:.14em;text-transform:uppercase;font-weight:500;flex-shrink:0;border-bottom:1px solid var(--grey-2);padding-bottom:4px;}
+.mockup-label{font-family:'DM Mono',monospace;font-size:9px;color:var(--acc);letter-spacing:.14em;text-transform:uppercase;font-weight:500;flex-shrink:0;}
 .snav{display:none;}
 .key-badge{
   position:absolute;top:50%;left:50%;
@@ -1331,156 +1331,179 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
       <div class="dp-right" style="position:relative;">
         <div class="mockup-label">三种模式落地示意</div>
 
-        <div class="stp-strip" id="stp-m2d">
-          <div class="stp-bar"><div class="stp-fill"></div></div>
-          <div class="stp-steps">
-            <div class="stp-step"><div class="stp-num">1</div><span class="stp-lbl">发送 — 短句即执行</span></div>
-            <div class="stp-step"><div class="stp-num">2</div><span class="stp-lbl">写入 — 填入确认</span></div>
-            <div class="stp-step"><div class="stp-num">3</div><span class="stp-lbl">编辑面板 — 改后导入</span></div>
+        <!-- 3 columns side-by-side, each with independent animation loop -->
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;flex:1;min-height:0;">
+
+          <!-- ① 发送 -->
+          <div id="m2d-col1" style="display:flex;flex-direction:column;gap:6px;min-height:0;transition:opacity .3s;">
+            <div style="display:flex;align-items:center;gap:6px;flex-shrink:0;">
+              <span style="font-family:'DM Mono',monospace;font-size:7px;color:#059669;background:rgba(5,150,105,.1);border:.5px solid rgba(5,150,105,.3);padding:1px 8px;">发送</span>
+              <span style="font-size:7px;color:var(--tx3);">自动执行</span>
+            </div>
+            <div style="flex:1;min-height:0;position:relative;">
+              <div style="position:absolute;inset:0;background:#0a0a0f;border:.5px solid #1e1e28;border-radius:8px;overflow:hidden;display:flex;flex-direction:column;">
+              <div style="background:#111118;padding:4px 8px;border-bottom:.5px solid #1e1e28;display:flex;align-items:center;gap:3px;flex-shrink:0;">
+                <div style="width:4px;height:4px;border-radius:50%;background:#ff5f57;"></div>
+                <div style="width:4px;height:4px;border-radius:50%;background:#febc2e;"></div>
+                <div style="width:4px;height:4px;border-radius:50%;background:#28c840;"></div>
+                <span style="font-family:'DM Mono',monospace;font-size:6.5px;color:#48485C;margin-left:4px;">terminal</span>
+              </div>
+                <div style="padding:8px 10px;flex:1;font-family:'DM Mono',monospace;font-size:7px;line-height:1.85;overflow:hidden;position:relative;">
+                  <div style="color:#48485C;">$ hai compile cube_rms.py</div>
+                  <div style="color:#48485C;">$ hai run --test</div>
+                  <div style="color:rgba(255,255,255,.7);">$ <span id="m2d-typed1"></span><span id="m2d-cur1" style="display:inline-block;width:4px;height:10px;background:rgba(255,255,255,.65);vertical-align:-2px;animation:bl .8s step-end infinite;"></span></div>
+                  <div id="m2d-result1" style="display:none;font-size:6.5px;margin-top:3px;"></div>
+              <div id="m2d-wave1" style="display:none;position:absolute;bottom:8px;left:50%;transform:translateX(-50%);
+                background:linear-gradient(135deg,rgba(0,47,167,.88),rgba(107,56,212,.88));
+                border:1px solid rgba(255,255,255,.2);
+                box-shadow:0 4px 24px rgba(0,47,167,.5),inset 0 1px 0 rgba(255,255,255,.18);
+                padding:4px 12px;border-radius:100px;overflow:hidden;
+                align-items:center;gap:1px;z-index:10;white-space:nowrap;">
+                <div style="display:flex;align-items:center;gap:1px;height:8px;overflow:hidden;">
+              <div style="width:1px;background:rgba(255,255,255,.9);filter:drop-shadow(0 0 2px rgba(255,255,255,.55));border-radius:1px;height:3px;animation:ck-wave .45s infinite;animation-delay:0.0s;"></div>
+              <div style="width:1px;background:rgba(255,255,255,.9);filter:drop-shadow(0 0 2px rgba(255,255,255,.55));border-radius:1px;height:5px;animation:ck-wave .45s infinite;animation-delay:0.05s;"></div>
+              <div style="width:1px;background:rgba(255,255,255,.9);filter:drop-shadow(0 0 2px rgba(255,255,255,.55));border-radius:1px;height:7px;animation:ck-wave .45s infinite;animation-delay:0.1s;"></div>
+              <div style="width:1px;background:rgba(255,255,255,.9);filter:drop-shadow(0 0 2px rgba(255,255,255,.55));border-radius:1px;height:6px;animation:ck-wave .45s infinite;animation-delay:0.15s;"></div>
+              <div style="width:1px;background:rgba(255,255,255,.9);filter:drop-shadow(0 0 2px rgba(255,255,255,.55));border-radius:1px;height:8px;animation:ck-wave .45s infinite;animation-delay:0.2s;"></div>
+              <div style="width:1px;background:rgba(255,255,255,.9);filter:drop-shadow(0 0 2px rgba(255,255,255,.55));border-radius:1px;height:5px;animation:ck-wave .45s infinite;animation-delay:0.25s;"></div>
+              <div style="width:1px;background:rgba(255,255,255,.9);filter:drop-shadow(0 0 2px rgba(255,255,255,.55));border-radius:1px;height:7px;animation:ck-wave .45s infinite;animation-delay:0.3s;"></div>
+              <div style="width:1px;background:rgba(255,255,255,.9);filter:drop-shadow(0 0 2px rgba(255,255,255,.55));border-radius:1px;height:4px;animation:ck-wave .45s infinite;animation-delay:0.35s;"></div>
+              <div style="width:1px;background:rgba(255,255,255,.9);filter:drop-shadow(0 0 2px rgba(255,255,255,.55));border-radius:1px;height:6px;animation:ck-wave .45s infinite;animation-delay:0.4s;"></div>
+              <div style="width:1px;background:rgba(255,255,255,.9);filter:drop-shadow(0 0 2px rgba(255,255,255,.55));border-radius:1px;height:8px;animation:ck-wave .45s infinite;animation-delay:0.45s;"></div>
+              <div style="width:1px;background:rgba(255,255,255,.9);filter:drop-shadow(0 0 2px rgba(255,255,255,.55));border-radius:1px;height:5px;animation:ck-wave .45s infinite;animation-delay:0.5s;"></div>
+              <div style="width:1px;background:rgba(255,255,255,.9);filter:drop-shadow(0 0 2px rgba(255,255,255,.55));border-radius:1px;height:3px;animation:ck-wave .45s infinite;animation-delay:0.55s;"></div>
+                </div>
+                <span id="m2d-wtext1" style="font-family:'DM Mono',monospace;font-size:6.5px;color:rgba(255,255,255,.7);margin-left:5px;"></span>
+              </div>
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
 
-        <!-- animated mockup area -->
-        <div id="m2d-area" style="flex:1;min-height:0;display:flex;flex-direction:column;gap:6px;">
-
-          <!-- context signal bar -->
-          <div style="display:flex;align-items:center;gap:8px;padding:5px 10px;background:rgba(0,0,0,.05);border:.5px solid var(--bdr2);border-radius:4px;flex-shrink:0;">
-            <span style="font-family:'DM Mono',monospace;font-size:7px;color:var(--tx3);letter-spacing:.06em;">触发信号</span>
-            <span id="m2d-ctx-cursor" style="font-family:'DM Mono',monospace;font-size:7px;color:var(--tx2);"></span>
-            <span style="color:var(--bdr2);">+</span>
-            <span id="m2d-ctx-speech" style="font-family:'DM Mono',monospace;font-size:7px;color:var(--tx2);"></span>
-            <div id="m2d-mode-badge" style="margin-left:auto;font-family:'DM Mono',monospace;font-size:7px;padding:2px 10px;border-radius:20px;transition:all .2s;"></div>
+          <!-- ② 写入 -->
+          <div id="m2d-col2" style="display:flex;flex-direction:column;gap:6px;min-height:0;transition:opacity .3s;">
+            <div style="display:flex;align-items:center;gap:6px;flex-shrink:0;">
+              <span style="font-family:'DM Mono',monospace;font-size:7px;color:var(--acc);background:var(--acc-dim);border:.5px solid var(--acc-b);padding:1px 8px;">写入</span>
+              <span style="font-size:7px;color:var(--tx3);">填入确认</span>
+            </div>
+            <div style="flex:1;min-height:0;position:relative;">
+              <div style="position:absolute;inset:0;background:#0a0a0f;border:.5px solid #1e1e28;border-radius:8px;overflow:hidden;display:flex;flex-direction:column;">
+              <div style="background:#111118;padding:4px 8px;border-bottom:.5px solid #1e1e28;display:flex;align-items:center;gap:3px;flex-shrink:0;">
+                <div style="width:4px;height:4px;border-radius:50%;background:#ff5f57;"></div>
+                <div style="width:4px;height:4px;border-radius:50%;background:#febc2e;"></div>
+                <div style="width:4px;height:4px;border-radius:50%;background:#28c840;"></div>
+                <span style="font-family:'DM Mono',monospace;font-size:6.5px;color:#48485C;margin-left:4px;">terminal</span>
+              </div>
+                <div style="padding:8px 10px;flex:1;font-family:'DM Mono',monospace;font-size:7px;line-height:1.85;overflow:hidden;position:relative;">
+                  <div style="color:#48485C;">$ hai compile cube_rms.py</div>
+                  <div style="color:#48485C;">$ hai run --test</div>
+                  <div style="color:rgba(255,255,255,.7);">$ <span id="m2d-typed2" style="color:var(--acc-l,#A87FF5);"></span><span id="m2d-cur2" style="display:inline-block;width:4px;height:10px;background:rgba(255,255,255,.65);vertical-align:-2px;animation:bl .8s step-end infinite;"></span></div>
+                  <div id="m2d-result2" style="display:none;font-size:6.5px;margin-top:3px;color:#48485C;"></div>
+              <div id="m2d-wave2" style="display:none;position:absolute;bottom:8px;left:50%;transform:translateX(-50%);
+                background:linear-gradient(135deg,rgba(0,47,167,.88),rgba(107,56,212,.88));
+                border:1px solid rgba(255,255,255,.2);
+                box-shadow:0 4px 24px rgba(0,47,167,.5),inset 0 1px 0 rgba(255,255,255,.18);
+                padding:4px 12px;border-radius:100px;overflow:hidden;
+                align-items:center;gap:1px;z-index:10;white-space:nowrap;">
+                <div style="display:flex;align-items:center;gap:1px;height:8px;overflow:hidden;">
+              <div style="width:1px;background:rgba(255,255,255,.9);filter:drop-shadow(0 0 2px rgba(255,255,255,.55));border-radius:1px;height:3px;animation:ck-wave .45s infinite;animation-delay:0.0s;"></div>
+              <div style="width:1px;background:rgba(255,255,255,.9);filter:drop-shadow(0 0 2px rgba(255,255,255,.55));border-radius:1px;height:5px;animation:ck-wave .45s infinite;animation-delay:0.05s;"></div>
+              <div style="width:1px;background:rgba(255,255,255,.9);filter:drop-shadow(0 0 2px rgba(255,255,255,.55));border-radius:1px;height:7px;animation:ck-wave .45s infinite;animation-delay:0.1s;"></div>
+              <div style="width:1px;background:rgba(255,255,255,.9);filter:drop-shadow(0 0 2px rgba(255,255,255,.55));border-radius:1px;height:6px;animation:ck-wave .45s infinite;animation-delay:0.15s;"></div>
+              <div style="width:1px;background:rgba(255,255,255,.9);filter:drop-shadow(0 0 2px rgba(255,255,255,.55));border-radius:1px;height:8px;animation:ck-wave .45s infinite;animation-delay:0.2s;"></div>
+              <div style="width:1px;background:rgba(255,255,255,.9);filter:drop-shadow(0 0 2px rgba(255,255,255,.55));border-radius:1px;height:5px;animation:ck-wave .45s infinite;animation-delay:0.25s;"></div>
+              <div style="width:1px;background:rgba(255,255,255,.9);filter:drop-shadow(0 0 2px rgba(255,255,255,.55));border-radius:1px;height:7px;animation:ck-wave .45s infinite;animation-delay:0.3s;"></div>
+              <div style="width:1px;background:rgba(255,255,255,.9);filter:drop-shadow(0 0 2px rgba(255,255,255,.55));border-radius:1px;height:4px;animation:ck-wave .45s infinite;animation-delay:0.35s;"></div>
+              <div style="width:1px;background:rgba(255,255,255,.9);filter:drop-shadow(0 0 2px rgba(255,255,255,.55));border-radius:1px;height:6px;animation:ck-wave .45s infinite;animation-delay:0.4s;"></div>
+              <div style="width:1px;background:rgba(255,255,255,.9);filter:drop-shadow(0 0 2px rgba(255,255,255,.55));border-radius:1px;height:8px;animation:ck-wave .45s infinite;animation-delay:0.45s;"></div>
+              <div style="width:1px;background:rgba(255,255,255,.9);filter:drop-shadow(0 0 2px rgba(255,255,255,.55));border-radius:1px;height:5px;animation:ck-wave .45s infinite;animation-delay:0.5s;"></div>
+              <div style="width:1px;background:rgba(255,255,255,.9);filter:drop-shadow(0 0 2px rgba(255,255,255,.55));border-radius:1px;height:3px;animation:ck-wave .45s infinite;animation-delay:0.55s;"></div>
+                </div>
+                <span id="m2d-wtext2" style="font-family:'DM Mono',monospace;font-size:6.5px;color:rgba(255,255,255,.7);margin-left:5px;"></span>
+              </div>
+                </div>
+              </div>
+            </div>
           </div>
 
-          <!-- windows container — all children are position:absolute so they overlap -->
-          <div style="flex:1;min-height:0;position:relative;">
-
-            <!-- ① Terminal window — modes 1 & 2 -->
-            <div id="m2d-term-win" style="position:absolute;inset:0;background:#0a0a0f;border:.5px solid #1e1e28;border-radius:8px;overflow:hidden;display:flex;flex-direction:column;">
-              <div style="background:#111118;padding:5px 10px;border-bottom:.5px solid #1e1e28;display:flex;align-items:center;gap:4px;flex-shrink:0;">
-                <div style="width:5px;height:5px;border-radius:50%;background:#ff5f57;"></div>
-                <div style="width:5px;height:5px;border-radius:50%;background:#febc2e;"></div>
-                <div style="width:5px;height:5px;border-radius:50%;background:#28c840;"></div>
-                <span style="font-family:'DM Mono',monospace;font-size:7px;color:#48485C;margin-left:4px;">terminal — RMSNorm workspace</span>
-              </div>
-              <div style="padding:10px 12px;flex:1;font-family:'DM Mono',monospace;font-size:7.5px;line-height:1.85;overflow:hidden;position:relative;">
-                <div style="color:#48485C;">$ hai compile cube_rms.py --target 910B</div>
-                <div style="color:#48485C;">$ hai run --test</div>
-                <div style="color:rgba(255,255,255,.7);">$ <span id="m2d-typed"></span><span id="m2d-cursor-el" style="display:inline-block;width:5px;height:11px;background:rgba(255,255,255,.65);vertical-align:-2px;animation:bl .8s step-end infinite;"></span></div>
-                <div id="m2d-term-result" style="display:none;font-size:7px;margin-top:4px;"></div>
-
-                <!-- voice wave bar inside terminal -->
-                <div id="m2d-wave" style="display:none;position:absolute;bottom:10px;left:50%;transform:translateX(-50%);
-                  background:linear-gradient(135deg,rgba(0,47,167,.88),rgba(107,56,212,.88));
-                  border:1px solid rgba(255,255,255,.2);
-                  box-shadow:0 4px 24px rgba(0,47,167,.5),inset 0 1px 0 rgba(255,255,255,.18);
-                  padding:5px 16px;border-radius:100px;overflow:hidden;
-                  align-items:center;gap:1.5px;z-index:10;white-space:nowrap;">
-                  <div style="display:flex;align-items:center;gap:1.5px;height:8px;overflow:hidden;">
-              <div style="width:1px;background:rgba(255,255,255,.9);filter:drop-shadow(0 0 3px rgba(255,255,255,.6));border-radius:1px;height:3px;animation:ck-wave .45s infinite;animation-delay:0.0s;"></div>
-              <div style="width:1px;background:rgba(255,255,255,.9);filter:drop-shadow(0 0 3px rgba(255,255,255,.6));border-radius:1px;height:5px;animation:ck-wave .45s infinite;animation-delay:0.04s;"></div>
-              <div style="width:1px;background:rgba(255,255,255,.9);filter:drop-shadow(0 0 3px rgba(255,255,255,.6));border-radius:1px;height:7px;animation:ck-wave .45s infinite;animation-delay:0.08s;"></div>
-              <div style="width:1px;background:rgba(255,255,255,.9);filter:drop-shadow(0 0 3px rgba(255,255,255,.6));border-radius:1px;height:8px;animation:ck-wave .45s infinite;animation-delay:0.12s;"></div>
-              <div style="width:1px;background:rgba(255,255,255,.9);filter:drop-shadow(0 0 3px rgba(255,255,255,.6));border-radius:1px;height:5px;animation:ck-wave .45s infinite;animation-delay:0.16s;"></div>
-              <div style="width:1px;background:rgba(255,255,255,.9);filter:drop-shadow(0 0 3px rgba(255,255,255,.6));border-radius:1px;height:8px;animation:ck-wave .45s infinite;animation-delay:0.2s;"></div>
-              <div style="width:1px;background:rgba(255,255,255,.9);filter:drop-shadow(0 0 3px rgba(255,255,255,.6));border-radius:1px;height:4px;animation:ck-wave .45s infinite;animation-delay:0.24s;"></div>
-              <div style="width:1px;background:rgba(255,255,255,.9);filter:drop-shadow(0 0 3px rgba(255,255,255,.6));border-radius:1px;height:7px;animation:ck-wave .45s infinite;animation-delay:0.28s;"></div>
-              <div style="width:1px;background:rgba(255,255,255,.9);filter:drop-shadow(0 0 3px rgba(255,255,255,.6));border-radius:1px;height:6px;animation:ck-wave .45s infinite;animation-delay:0.32s;"></div>
-              <div style="width:1px;background:rgba(255,255,255,.9);filter:drop-shadow(0 0 3px rgba(255,255,255,.6));border-radius:1px;height:8px;animation:ck-wave .45s infinite;animation-delay:0.36s;"></div>
-              <div style="width:1px;background:rgba(255,255,255,.9);filter:drop-shadow(0 0 3px rgba(255,255,255,.6));border-radius:1px;height:3px;animation:ck-wave .45s infinite;animation-delay:0.4s;"></div>
-              <div style="width:1px;background:rgba(255,255,255,.9);filter:drop-shadow(0 0 3px rgba(255,255,255,.6));border-radius:1px;height:6px;animation:ck-wave .45s infinite;animation-delay:0.44s;"></div>
-              <div style="width:1px;background:rgba(255,255,255,.9);filter:drop-shadow(0 0 3px rgba(255,255,255,.6));border-radius:1px;height:8px;animation:ck-wave .45s infinite;animation-delay:0.48s;"></div>
-              <div style="width:1px;background:rgba(255,255,255,.9);filter:drop-shadow(0 0 3px rgba(255,255,255,.6));border-radius:1px;height:5px;animation:ck-wave .45s infinite;animation-delay:0.52s;"></div>
-              <div style="width:1px;background:rgba(255,255,255,.9);filter:drop-shadow(0 0 3px rgba(255,255,255,.6));border-radius:1px;height:7px;animation:ck-wave .45s infinite;animation-delay:0.56s;"></div>
-              <div style="width:1px;background:rgba(255,255,255,.9);filter:drop-shadow(0 0 3px rgba(255,255,255,.6));border-radius:1px;height:4px;animation:ck-wave .45s infinite;animation-delay:0.6s;"></div>
-              <div style="width:1px;background:rgba(255,255,255,.9);filter:drop-shadow(0 0 3px rgba(255,255,255,.6));border-radius:1px;height:6px;animation:ck-wave .45s infinite;animation-delay:0.64s;"></div>
-              <div style="width:1px;background:rgba(255,255,255,.9);filter:drop-shadow(0 0 3px rgba(255,255,255,.6));border-radius:1px;height:3px;animation:ck-wave .45s infinite;animation-delay:0.68s;"></div>
+          <!-- ③ 编辑面板 — two overlapping windows -->
+          <div id="m2d-col3" style="display:flex;flex-direction:column;gap:6px;min-height:0;transition:opacity .3s;">
+            <div style="display:flex;align-items:center;gap:6px;flex-shrink:0;">
+              <span style="font-family:'DM Mono',monospace;font-size:7px;color:#7c3aed;background:rgba(124,58,237,.1);border:.5px solid rgba(124,58,237,.3);padding:1px 8px;">编辑面板</span>
+              <span style="font-size:7px;color:var(--tx3);">改后导入</span>
             </div>
-                  <span id="m2d-wave-text" style="font-family:'DM Mono',monospace;font-size:7px;color:rgba(255,255,255,.7);margin-left:6px;"></span>
+            <div style="flex:1;min-height:0;position:relative;">
+
+              <!-- profiler window — top-left, always visible -->
+              <div id="m2d-prof3" style="position:absolute;top:0;left:0;width:78%;height:63%;background:#0a0a0f;border:.5px solid #1e1e28;border-radius:8px;overflow:hidden;display:flex;flex-direction:column;">
+                <div style="background:#111118;padding:4px 8px;border-bottom:.5px solid #1e1e28;display:flex;align-items:center;gap:3px;flex-shrink:0;">
+                  <div style="width:4px;height:4px;border-radius:50%;background:#ff5f57;"></div>
+                  <div style="width:4px;height:4px;border-radius:50%;background:#febc2e;"></div>
+                  <div style="width:4px;height:4px;border-radius:50%;background:#28c840;"></div>
+                  <span style="font-family:'DM Mono',monospace;font-size:6.5px;color:#48485C;margin-left:4px;">msprof</span>
+                </div>
+                <div style="padding:6px 8px;flex:1;overflow:hidden;position:relative;">
+                  <div style="font-family:'DM Mono',monospace;font-size:6.5px;color:#4E4E5E;margin-bottom:3px;">■ 利用率</div>
+                  <div id="m2d-prof-row3" style="padding:4px 6px;border-radius:3px;border:.5px solid rgba(255,255,255,.04);transition:background .3s;">
+                    <div style="display:flex;justify-content:space-between;font-family:'DM Mono',monospace;font-size:7px;margin-bottom:2px;">
+                      <span style="color:#CECEE0;">CUBE</span><span style="color:#F87171;">21%</span>
+                    </div>
+                    <div style="height:2px;background:rgba(255,255,255,.08);border-radius:1px;overflow:hidden;">
+                      <div style="width:21%;height:100%;background:#F87171;border-radius:1px;"></div>
+                    </div>
+                  </div>
+                  <div style="padding:4px 6px;border-radius:3px;border:.5px solid rgba(255,255,255,.04);margin-top:3px;">
+                    <div style="display:flex;justify-content:space-between;font-family:'DM Mono',monospace;font-size:7px;margin-bottom:2px;">
+                      <span style="color:#CECEE0;">VECTOR</span><span style="color:#34D399;">76%</span>
+                    </div>
+                    <div style="height:2px;background:rgba(255,255,255,.08);border-radius:1px;overflow:hidden;">
+                      <div style="width:76%;height:100%;background:#34D399;border-radius:1px;"></div>
+                    </div>
+                  </div>
+              <div id="m2d-wave3" style="display:none;position:absolute;bottom:8px;left:50%;transform:translateX(-50%);
+                background:linear-gradient(135deg,rgba(0,47,167,.88),rgba(107,56,212,.88));
+                border:1px solid rgba(255,255,255,.2);
+                box-shadow:0 4px 24px rgba(0,47,167,.5),inset 0 1px 0 rgba(255,255,255,.18);
+                padding:4px 12px;border-radius:100px;overflow:hidden;
+                align-items:center;gap:1px;z-index:10;white-space:nowrap;">
+                <div style="display:flex;align-items:center;gap:1px;height:8px;overflow:hidden;">
+              <div style="width:1px;background:rgba(255,255,255,.9);filter:drop-shadow(0 0 2px rgba(255,255,255,.55));border-radius:1px;height:3px;animation:ck-wave .45s infinite;animation-delay:0.0s;"></div>
+              <div style="width:1px;background:rgba(255,255,255,.9);filter:drop-shadow(0 0 2px rgba(255,255,255,.55));border-radius:1px;height:5px;animation:ck-wave .45s infinite;animation-delay:0.05s;"></div>
+              <div style="width:1px;background:rgba(255,255,255,.9);filter:drop-shadow(0 0 2px rgba(255,255,255,.55));border-radius:1px;height:7px;animation:ck-wave .45s infinite;animation-delay:0.1s;"></div>
+              <div style="width:1px;background:rgba(255,255,255,.9);filter:drop-shadow(0 0 2px rgba(255,255,255,.55));border-radius:1px;height:6px;animation:ck-wave .45s infinite;animation-delay:0.15s;"></div>
+              <div style="width:1px;background:rgba(255,255,255,.9);filter:drop-shadow(0 0 2px rgba(255,255,255,.55));border-radius:1px;height:8px;animation:ck-wave .45s infinite;animation-delay:0.2s;"></div>
+              <div style="width:1px;background:rgba(255,255,255,.9);filter:drop-shadow(0 0 2px rgba(255,255,255,.55));border-radius:1px;height:5px;animation:ck-wave .45s infinite;animation-delay:0.25s;"></div>
+              <div style="width:1px;background:rgba(255,255,255,.9);filter:drop-shadow(0 0 2px rgba(255,255,255,.55));border-radius:1px;height:7px;animation:ck-wave .45s infinite;animation-delay:0.3s;"></div>
+              <div style="width:1px;background:rgba(255,255,255,.9);filter:drop-shadow(0 0 2px rgba(255,255,255,.55));border-radius:1px;height:4px;animation:ck-wave .45s infinite;animation-delay:0.35s;"></div>
+              <div style="width:1px;background:rgba(255,255,255,.9);filter:drop-shadow(0 0 2px rgba(255,255,255,.55));border-radius:1px;height:6px;animation:ck-wave .45s infinite;animation-delay:0.4s;"></div>
+              <div style="width:1px;background:rgba(255,255,255,.9);filter:drop-shadow(0 0 2px rgba(255,255,255,.55));border-radius:1px;height:8px;animation:ck-wave .45s infinite;animation-delay:0.45s;"></div>
+              <div style="width:1px;background:rgba(255,255,255,.9);filter:drop-shadow(0 0 2px rgba(255,255,255,.55));border-radius:1px;height:5px;animation:ck-wave .45s infinite;animation-delay:0.5s;"></div>
+              <div style="width:1px;background:rgba(255,255,255,.9);filter:drop-shadow(0 0 2px rgba(255,255,255,.55));border-radius:1px;height:3px;animation:ck-wave .45s infinite;animation-delay:0.55s;"></div>
+                </div>
+                <span id="m2d-wtext3" style="font-family:'DM Mono',monospace;font-size:6.5px;color:rgba(255,255,255,.7);margin-left:5px;"></span>
+              </div>
                 </div>
               </div>
-            </div>
 
-            <!-- ② Profiler window — mode 3, top-left, smaller -->
-            <div id="m2d-prof-win" style="display:none;position:absolute;top:0;left:0;width:74%;height:65%;background:#0a0a0f;border:.5px solid #1e1e28;border-radius:8px;overflow:hidden;flex-direction:column;">
-              <div style="background:#111118;padding:5px 10px;border-bottom:.5px solid #1e1e28;display:flex;align-items:center;gap:4px;flex-shrink:0;">
-                <div style="width:5px;height:5px;border-radius:50%;background:#ff5f57;"></div>
-                <div style="width:5px;height:5px;border-radius:50%;background:#febc2e;"></div>
-                <div style="width:5px;height:5px;border-radius:50%;background:#28c840;"></div>
-                <span style="font-family:'DM Mono',monospace;font-size:7px;color:#48485C;margin-left:4px;">msprof — RMSNorm · 910B</span>
-              </div>
-              <div style="padding:8px 10px;flex:1;overflow:hidden;position:relative;">
-                <div style="font-family:'DM Mono',monospace;font-size:7px;color:#4E4E5E;margin-bottom:4px;">■ 硬件利用率概览</div>
-                <div id="m2d-prof-row" style="padding:5px 8px;border-radius:4px;border:.5px solid rgba(255,255,255,.04);transition:background .3s;">
-                  <div style="display:flex;justify-content:space-between;font-family:'DM Mono',monospace;font-size:7.5px;margin-bottom:3px;">
-                    <span style="color:#CECEE0;">CUBE 利用率</span>
-                    <span style="color:#F87171;">21%</span>
-                  </div>
-                  <div style="height:3px;background:rgba(255,255,255,.08);border-radius:2px;overflow:hidden;">
-                    <div style="width:21%;height:100%;background:#F87171;border-radius:2px;"></div>
-                  </div>
+              <!-- edit panel — bottom-right, overlaps profiler, fades in -->
+              <div id="m2d-edit3" style="display:none;position:absolute;bottom:0;right:0;width:66%;height:56%;
+                background:#16161f;border:.5px solid rgba(255,255,255,.12);border-radius:8px;overflow:hidden;
+                flex-direction:column;z-index:20;opacity:0;transition:opacity .35s ease;
+                box-shadow:-5px -5px 20px rgba(0,0,0,.7),0 0 0 .5px rgba(255,255,255,.06);">
+                <div style="background:#1e1e2a;padding:4px 8px;border-bottom:.5px solid rgba(255,255,255,.08);display:flex;align-items:center;gap:5px;flex-shrink:0;">
+                  <div style="width:4px;height:4px;border-radius:50%;background:linear-gradient(135deg,#002FA7,#6B38D4);"></div>
+                  <span style="font-family:'DM Mono',monospace;font-size:6px;color:rgba(255,255,255,.4);">语音转录</span>
+                  <div style="margin-left:auto;background:linear-gradient(135deg,#002FA7,#6B38D4);color:white;font-family:'DM Mono',monospace;font-size:5.5px;padding:1px 6px;border-radius:20px;">导入终端</div>
                 </div>
-                <div style="padding:5px 8px;border-radius:4px;border:.5px solid rgba(255,255,255,.04);margin-top:4px;">
-                  <div style="display:flex;justify-content:space-between;font-family:'DM Mono',monospace;font-size:7.5px;margin-bottom:3px;">
-                    <span style="color:#CECEE0;">VECTOR 利用率</span>
-                    <span style="color:#34D399;">76%</span>
-                  </div>
-                  <div style="height:3px;background:rgba(255,255,255,.08);border-radius:2px;overflow:hidden;">
-                    <div style="width:76%;height:100%;background:#34D399;border-radius:2px;"></div>
-                  </div>
-                </div>
-
-                <!-- voice wave bar inside profiler -->
-                <div id="m2d-wave2" style="display:none;position:absolute;bottom:10px;left:50%;transform:translateX(-50%);
-                  background:linear-gradient(135deg,rgba(0,47,167,.88),rgba(107,56,212,.88));
-                  border:1px solid rgba(255,255,255,.2);
-                  box-shadow:0 4px 24px rgba(0,47,167,.5),inset 0 1px 0 rgba(255,255,255,.18);
-                  padding:5px 16px;border-radius:100px;overflow:hidden;
-                  align-items:center;gap:1.5px;z-index:10;white-space:nowrap;">
-                  <div style="display:flex;align-items:center;gap:1.5px;height:8px;overflow:hidden;">
-              <div style="width:1px;background:rgba(255,255,255,.9);filter:drop-shadow(0 0 3px rgba(255,255,255,.6));border-radius:1px;height:3px;animation:ck-wave .45s infinite;animation-delay:0.0s;"></div>
-              <div style="width:1px;background:rgba(255,255,255,.9);filter:drop-shadow(0 0 3px rgba(255,255,255,.6));border-radius:1px;height:5px;animation:ck-wave .45s infinite;animation-delay:0.04s;"></div>
-              <div style="width:1px;background:rgba(255,255,255,.9);filter:drop-shadow(0 0 3px rgba(255,255,255,.6));border-radius:1px;height:7px;animation:ck-wave .45s infinite;animation-delay:0.08s;"></div>
-              <div style="width:1px;background:rgba(255,255,255,.9);filter:drop-shadow(0 0 3px rgba(255,255,255,.6));border-radius:1px;height:8px;animation:ck-wave .45s infinite;animation-delay:0.12s;"></div>
-              <div style="width:1px;background:rgba(255,255,255,.9);filter:drop-shadow(0 0 3px rgba(255,255,255,.6));border-radius:1px;height:5px;animation:ck-wave .45s infinite;animation-delay:0.16s;"></div>
-              <div style="width:1px;background:rgba(255,255,255,.9);filter:drop-shadow(0 0 3px rgba(255,255,255,.6));border-radius:1px;height:8px;animation:ck-wave .45s infinite;animation-delay:0.2s;"></div>
-              <div style="width:1px;background:rgba(255,255,255,.9);filter:drop-shadow(0 0 3px rgba(255,255,255,.6));border-radius:1px;height:4px;animation:ck-wave .45s infinite;animation-delay:0.24s;"></div>
-              <div style="width:1px;background:rgba(255,255,255,.9);filter:drop-shadow(0 0 3px rgba(255,255,255,.6));border-radius:1px;height:7px;animation:ck-wave .45s infinite;animation-delay:0.28s;"></div>
-              <div style="width:1px;background:rgba(255,255,255,.9);filter:drop-shadow(0 0 3px rgba(255,255,255,.6));border-radius:1px;height:6px;animation:ck-wave .45s infinite;animation-delay:0.32s;"></div>
-              <div style="width:1px;background:rgba(255,255,255,.9);filter:drop-shadow(0 0 3px rgba(255,255,255,.6));border-radius:1px;height:8px;animation:ck-wave .45s infinite;animation-delay:0.36s;"></div>
-              <div style="width:1px;background:rgba(255,255,255,.9);filter:drop-shadow(0 0 3px rgba(255,255,255,.6));border-radius:1px;height:3px;animation:ck-wave .45s infinite;animation-delay:0.4s;"></div>
-              <div style="width:1px;background:rgba(255,255,255,.9);filter:drop-shadow(0 0 3px rgba(255,255,255,.6));border-radius:1px;height:6px;animation:ck-wave .45s infinite;animation-delay:0.44s;"></div>
-              <div style="width:1px;background:rgba(255,255,255,.9);filter:drop-shadow(0 0 3px rgba(255,255,255,.6));border-radius:1px;height:8px;animation:ck-wave .45s infinite;animation-delay:0.48s;"></div>
-              <div style="width:1px;background:rgba(255,255,255,.9);filter:drop-shadow(0 0 3px rgba(255,255,255,.6));border-radius:1px;height:5px;animation:ck-wave .45s infinite;animation-delay:0.52s;"></div>
-              <div style="width:1px;background:rgba(255,255,255,.9);filter:drop-shadow(0 0 3px rgba(255,255,255,.6));border-radius:1px;height:7px;animation:ck-wave .45s infinite;animation-delay:0.56s;"></div>
-              <div style="width:1px;background:rgba(255,255,255,.9);filter:drop-shadow(0 0 3px rgba(255,255,255,.6));border-radius:1px;height:4px;animation:ck-wave .45s infinite;animation-delay:0.6s;"></div>
-              <div style="width:1px;background:rgba(255,255,255,.9);filter:drop-shadow(0 0 3px rgba(255,255,255,.6));border-radius:1px;height:6px;animation:ck-wave .45s infinite;animation-delay:0.64s;"></div>
-              <div style="width:1px;background:rgba(255,255,255,.9);filter:drop-shadow(0 0 3px rgba(255,255,255,.6));border-radius:1px;height:3px;animation:ck-wave .45s infinite;animation-delay:0.68s;"></div>
-            </div>
-                  <span id="m2d-wave-text2" style="font-family:'DM Mono',monospace;font-size:7px;color:rgba(255,255,255,.7);margin-left:6px;"></span>
+                <div style="padding:6px 8px;flex:1;overflow:hidden;">
+                  <div style="font-family:'DM Mono',monospace;font-size:7px;color:rgba(255,255,255,.75);background:rgba(255,255,255,.05);border:.5px solid rgba(255,255,255,.1);border-radius:3px;padding:5px 7px;line-height:1.6;"><span id="m2d-etext3"></span></div>
                 </div>
               </div>
-            </div>
 
-            <!-- ③ Edit panel — mode 3, bottom-right, overlaps profiler -->
-            <div id="m2d-edit-win" style="display:none;position:absolute;bottom:0;right:0;width:60%;height:56%;
-              background:#16161f;border:.5px solid rgba(255,255,255,.12);border-radius:8px;overflow:hidden;
-              flex-direction:column;
-              box-shadow:-6px -6px 24px rgba(0,0,0,.7),0 0 0 .5px rgba(255,255,255,.06);
-              z-index:20;opacity:0;transition:opacity .35s ease;">
-              <div style="background:#1e1e2a;padding:5px 10px;border-bottom:.5px solid rgba(255,255,255,.08);display:flex;align-items:center;gap:6px;flex-shrink:0;">
-                <div style="width:5px;height:5px;border-radius:50%;background:linear-gradient(135deg,#002FA7,#6B38D4);"></div>
-                <span style="font-family:'DM Mono',monospace;font-size:6.5px;color:rgba(255,255,255,.45);">语音转录 · 编辑后导入</span>
-                <div style="margin-left:auto;background:linear-gradient(135deg,#002FA7,#6B38D4);color:white;font-family:'DM Mono',monospace;font-size:6px;padding:2px 8px;border-radius:20px;">导入终端</div>
-              </div>
-              <div style="padding:8px 10px;flex:1;display:flex;flex-direction:column;gap:6px;overflow:hidden;">
-                <div style="font-family:'DM Mono',monospace;font-size:7.5px;color:rgba(255,255,255,.8);background:rgba(255,255,255,.05);border:.5px solid rgba(255,255,255,.1);border-radius:4px;padding:6px 8px;line-height:1.6;"><span id="m2d-edit-text"></span></div>
-                <div style="font-family:'DM Mono',monospace;font-size:6.5px;color:rgba(255,255,255,.2);">可选中 · 删改 · 重组</div>
-              </div>
             </div>
+          </div>
 
-          </div><!-- end windows container -->
-        </div><!-- end m2d-area -->
+        </div><!-- end grid -->
 
       </div>
     </div>
@@ -2922,24 +2945,22 @@ function setupSlideSteps(secId, stripId, defs) {
 })();
 
 /* ─────────────────────────────────────────────
-   s-m2d: voice router demo IIFE
+   s-m2d: voice router demo — 3 parallel columns
 ───────────────────────────────────────────── */
 (function initRouterDemo() {
   var sec = document.getElementById('s-m2d');
   if (!sec) return;
 
-  var strip = document.getElementById('stp-m2d');
-  var dots  = strip ? strip.querySelectorAll('.stp-step') : [];
-  var fill  = strip ? strip.querySelector('.stp-fill')   : null;
+  var gen = 0;
+  var started = false;
+  var waveActive = [false, false, false];
 
-  function setStepUI(i) {
-    dots.forEach(function(d, di) {
-      d.classList.toggle('stp-active', di === i);
-      d.classList.toggle('stp-done',   di < i);
+  function updateDim() {
+    var anyActive = waveActive[0] || waveActive[1] || waveActive[2];
+    ['m2d-col1','m2d-col2','m2d-col3'].forEach(function(id, i) {
+      var el = document.getElementById(id);
+      if (el) el.style.opacity = (!anyActive || waveActive[i]) ? '1' : '0.35';
     });
-    if (fill && dots.length > 1) {
-      fill.style.width = i < 0 ? '0%' : (i / (dots.length - 1) * 100) + '%';
-    }
   }
 
   function typeText(el, text, speed, cb) {
@@ -2950,188 +2971,162 @@ function setupSlideSteps(secId, stripId, defs) {
     }, speed);
   }
 
-  function els() {
-    return {
-      termWin:   document.getElementById('m2d-term-win'),
-      profWin:   document.getElementById('m2d-prof-win'),
-      editWin:   document.getElementById('m2d-edit-win'),
-      wave:      document.getElementById('m2d-wave'),
-      wave2:     document.getElementById('m2d-wave2'),
-      waveText:  document.getElementById('m2d-wave-text'),
-      waveText2: document.getElementById('m2d-wave-text2'),
-      typed:     document.getElementById('m2d-typed'),
-      cursorEl:  document.getElementById('m2d-cursor-el'),
-      termResult:document.getElementById('m2d-term-result'),
-      editText:  document.getElementById('m2d-edit-text'),
-      ctxCursor: document.getElementById('m2d-ctx-cursor'),
-      ctxSpeech: document.getElementById('m2d-ctx-speech'),
-      modeBadge: document.getElementById('m2d-mode-badge'),
-      profRow:   document.getElementById('m2d-prof-row'),
-    };
+  function resetCol1() {
+    var wave = document.getElementById('m2d-wave1');
+    var typed = document.getElementById('m2d-typed1');
+    var wtext = document.getElementById('m2d-wtext1');
+    var result = document.getElementById('m2d-result1');
+    var cur = document.getElementById('m2d-cur1');
+    if (wave)   wave.style.display   = 'none';
+    if (wtext)  wtext.textContent    = '';
+    if (typed)  typed.textContent    = '';
+    if (result) { result.style.display = 'none'; result.textContent = ''; }
+    if (cur)    cur.style.display    = 'inline-block';
   }
 
-  function resetAll() {
-    var e = els();
-    if (e.termWin)   { e.termWin.style.display   = 'flex'; }
-    if (e.profWin)   { e.profWin.style.display    = 'none'; }
-    if (e.editWin)   { e.editWin.style.display    = 'none'; e.editWin.style.opacity = '0'; }
-    if (e.wave)      { e.wave.style.display       = 'none'; }
-    if (e.wave2)     { e.wave2.style.display      = 'none'; }
-    if (e.waveText)    e.waveText.textContent     = '';
-    if (e.waveText2)   e.waveText2.textContent    = '';
-    if (e.typed)       e.typed.textContent        = '';
-    if (e.cursorEl)    e.cursorEl.style.display   = 'inline-block';
-    if (e.termResult){ e.termResult.style.display = 'none'; e.termResult.textContent = ''; }
-    if (e.editText)    e.editText.textContent     = '';
-    if (e.profRow)     e.profRow.style.background = '';
+  function resetCol2() {
+    var wave = document.getElementById('m2d-wave2');
+    var typed = document.getElementById('m2d-typed2');
+    var wtext = document.getElementById('m2d-wtext2');
+    var result = document.getElementById('m2d-result2');
+    var cur = document.getElementById('m2d-cur2');
+    if (wave)   wave.style.display   = 'none';
+    if (wtext)  wtext.textContent    = '';
+    if (typed)  typed.textContent    = '';
+    if (result) { result.style.display = 'none'; result.textContent = ''; }
+    if (cur)    cur.style.display    = 'inline-block';
   }
 
-  var gen = 0;
+  function resetCol3() {
+    var wave  = document.getElementById('m2d-wave3');
+    var wtext = document.getElementById('m2d-wtext3');
+    var row   = document.getElementById('m2d-prof-row3');
+    var edit  = document.getElementById('m2d-edit3');
+    var etext = document.getElementById('m2d-etext3');
+    if (wave)  wave.style.display  = 'none';
+    if (wtext) wtext.textContent   = '';
+    if (row)   row.style.background= '';
+    if (edit)  { edit.style.display = 'none'; edit.style.opacity = '0'; }
+    if (etext) etext.textContent   = '';
+  }
 
-  function phase1(myGen) {
-    setStepUI(0);
-    resetAll();
-    var e = els();
-    if (e.ctxCursor) e.ctxCursor.textContent = '光标在终端输入行';
-    if (e.ctxSpeech) e.ctxSpeech.textContent = '短句 / 高置信';
-    if (e.modeBadge) {
-      e.modeBadge.textContent        = '发送';
-      e.modeBadge.style.color        = '#059669';
-      e.modeBadge.style.background   = 'rgba(5,150,105,.1)';
-      e.modeBadge.style.border       = '.5px solid rgba(5,150,105,.3)';
-    }
-    // 700ms → voice wave + transcript
+  function resetAll() { resetCol1(); resetCol2(); resetCol3(); waveActive=[false,false,false]; updateDim(); }
+
+  /* ── Column 1: 发送 ── */
+  function animCol1(myGen) {
+    resetCol1();
     setTimeout(function() {
       if (gen !== myGen) return;
-      var e2 = els();
-      if (e2.wave) e2.wave.style.display = 'flex';
-      if (e2.waveText) typeText(e2.waveText, '运行单元测试', 55);
-    }, 700);
-    // 2000ms → wave hides, command executes
+      var wave = document.getElementById('m2d-wave1');
+      var wtext = document.getElementById('m2d-wtext1');
+      waveActive[0] = true; updateDim();
+      if (wave) wave.style.display = 'flex';
+      if (wtext) typeText(wtext, '运行单元测试', 55);
+    }, 800);
     setTimeout(function() {
       if (gen !== myGen) return;
-      var e2 = els();
-      if (e2.wave) e2.wave.style.display = 'none';
-      if (e2.typed) e2.typed.textContent = '运行单元测试';
-      if (e2.cursorEl) e2.cursorEl.style.display = 'none';
-    }, 2000);
-    // 2350ms → result line
+      var wave  = document.getElementById('m2d-wave1');
+      var typed = document.getElementById('m2d-typed1');
+      var cur   = document.getElementById('m2d-cur1');
+      waveActive[0] = false; updateDim();
+      if (wave)  wave.style.display  = 'none';
+      if (typed) typed.textContent   = '运行单元测试';
+      if (cur)   cur.style.display   = 'none';
+    }, 2100);
     setTimeout(function() {
       if (gen !== myGen) return;
-      var e2 = els();
-      if (e2.termResult) {
-        e2.termResult.style.display = 'block';
-        e2.termResult.style.color   = '#059669';
-        e2.termResult.textContent   = '▶ 识别完成，已自动执行 · 无需按 Enter';
+      var result = document.getElementById('m2d-result1');
+      if (result) {
+        result.style.display = 'block';
+        result.style.color   = '#059669';
+        result.textContent   = '▶ 已执行 · 无需 Enter';
       }
-    }, 2350);
-  }
-
-  function phase2(myGen) {
-    setStepUI(1);
-    resetAll();
-    var e = els();
-    if (e.ctxCursor) e.ctxCursor.textContent = '光标在终端输入行';
-    if (e.ctxSpeech) e.ctxSpeech.textContent = '中等长度';
-    if (e.modeBadge) {
-      e.modeBadge.textContent      = '写入';
-      e.modeBadge.style.color      = 'var(--acc)';
-      e.modeBadge.style.background = 'var(--acc-dim)';
-      e.modeBadge.style.border     = '.5px solid var(--acc-b)';
-    }
-    // 700ms → wave + transcript (longer phrase)
+    }, 2450);
     setTimeout(function() {
       if (gen !== myGen) return;
-      var e2 = els();
-      if (e2.wave) e2.wave.style.display = 'flex';
-      if (e2.waveText) typeText(e2.waveText, '优化 tile_m 参数，目标 cube 核', 45);
+      animCol1(myGen);
+    }, 4600);
+  }
+
+  /* ── Column 2: 写入 ── */
+  function animCol2(myGen) {
+    resetCol2();
+    setTimeout(function() {
+      if (gen !== myGen) return;
+      var wave = document.getElementById('m2d-wave2');
+      var wtext = document.getElementById('m2d-wtext2');
+      waveActive[1] = true; updateDim();
+      if (wave) wave.style.display = 'flex';
+      if (wtext) typeText(wtext, '优化 tile_m 参数', 50);
     }, 700);
-    // 2400ms → wave hides, text fills input line
     setTimeout(function() {
       if (gen !== myGen) return;
-      var e2 = els();
-      if (e2.wave) e2.wave.style.display = 'none';
-      if (e2.typed) typeText(e2.typed, 'hai optimize --tile_m 128 --target cube', 28);
-    }, 2400);
-    // 3600ms → confirm note
+      var wave  = document.getElementById('m2d-wave2');
+      var typed = document.getElementById('m2d-typed2');
+      waveActive[1] = false; updateDim();
+      if (wave)  wave.style.display = 'none';
+      if (typed) typeText(typed, 'hai optimize --tile_m 128 --target cube', 28);
+    }, 2300);
     setTimeout(function() {
       if (gen !== myGen) return;
-      var e2 = els();
-      if (e2.termResult) {
-        e2.termResult.style.display = 'block';
-        e2.termResult.style.color   = '#48485C';
-        e2.termResult.textContent   = '文字已填入输入行，光标在末尾 · 按 Enter 执行';
+      var result = document.getElementById('m2d-result2');
+      if (result) {
+        result.style.display = 'block';
+        result.textContent   = '按 Enter 执行';
       }
-    }, 3600);
+    }, 3650);
+    setTimeout(function() {
+      if (gen !== myGen) return;
+      animCol2(myGen);
+    }, 5400);
   }
 
-  function phase3(myGen) {
-    setStepUI(2);
-    resetAll();
-    var e = els();
-    if (e.ctxCursor) e.ctxCursor.textContent = '光标在 profiler 区域';
-    if (e.ctxSpeech) e.ctxSpeech.textContent = '任意长度';
-    if (e.modeBadge) {
-      e.modeBadge.textContent      = '编辑面板';
-      e.modeBadge.style.color      = '#7c3aed';
-      e.modeBadge.style.background = 'rgba(124,58,237,.1)';
-      e.modeBadge.style.border     = '.5px solid rgba(124,58,237,.3)';
-    }
-    // hide terminal, show profiler
-    if (e.termWin) e.termWin.style.display = 'none';
-    if (e.profWin) e.profWin.style.display = 'flex';
-    // 500ms → highlight CUBE row
+  /* ── Column 3: 编辑面板 ── */
+  function animCol3(myGen) {
+    resetCol3();
     setTimeout(function() {
       if (gen !== myGen) return;
-      var e2 = els();
-      if (e2.profRow) e2.profRow.style.background = 'rgba(0,47,167,.15)';
+      var row = document.getElementById('m2d-prof-row3');
+      if (row) row.style.background = 'rgba(0,47,167,.15)';
     }, 500);
-    // 900ms → wave + transcript
     setTimeout(function() {
       if (gen !== myGen) return;
-      var e2 = els();
-      if (e2.wave2) e2.wave2.style.display = 'flex';
-      if (e2.waveText2) typeText(e2.waveText2, '这里为什么这么低？', 60);
+      var wave = document.getElementById('m2d-wave3');
+      var wtext = document.getElementById('m2d-wtext3');
+      waveActive[2] = true; updateDim();
+      if (wave) wave.style.display = 'flex';
+      if (wtext) typeText(wtext, '这里为什么这么低？', 60);
     }, 900);
-    // 2400ms → wave hides, edit panel fades in
     setTimeout(function() {
       if (gen !== myGen) return;
-      var e2 = els();
-      if (e2.wave2) e2.wave2.style.display = 'none';
-      if (e2.editWin) {
-        e2.editWin.style.display = 'flex';
-        void e2.editWin.offsetWidth;
-        e2.editWin.style.opacity = '1';
-        if (e2.editText) typeText(e2.editText, '这里为什么这么低？CUBE 利用率看起来有问题', 32);
+      var wave = document.getElementById('m2d-wave3');
+      var edit = document.getElementById('m2d-edit3');
+      var etext = document.getElementById('m2d-etext3');
+      waveActive[2] = false; updateDim();
+      if (wave) wave.style.display = 'none';
+      if (edit) {
+        edit.style.display = 'flex';
+        void edit.offsetWidth;
+        edit.style.opacity = '1';
+        if (etext) typeText(etext, '这里为什么这么低？CUBE 利用率有问题', 32);
       }
-    }, 2400);
-  }
-
-  var DURS  = [4600, 5200, 5800];
-  var PHASES = [phase1, phase2, phase3];
-
-  function autoPlay(myGen) {
-    var idx = 0;
-    function next() {
+    }, 2500);
+    setTimeout(function() {
       if (gen !== myGen) return;
-      var i = idx;
-      PHASES[i](myGen);
-      var dur = DURS[i];
-      idx = (idx + 1) % PHASES.length;
-      setTimeout(next, dur);
-    }
-    next();
+      animCol3(myGen);
+    }, 6200);
   }
 
-  var started = false;
+  function startAll(myGen) {
+    animCol1(myGen);
+    setTimeout(function() { if (gen === myGen) animCol2(myGen); }, 1500);
+    setTimeout(function() { if (gen === myGen) animCol3(myGen); }, 3000);
+  }
 
   function restart() {
     gen++;
-    var myGen = gen;
     resetAll();
-    dots.forEach(function(d) { d.classList.remove('stp-active', 'stp-done'); });
-    if (fill) fill.style.width = '0%';
-    setTimeout(function() { autoPlay(myGen); }, 300);
+    setTimeout(function() { startAll(gen); }, 400);
   }
 
   window._stepperRestarts = window._stepperRestarts || {};
@@ -3141,18 +3136,15 @@ function setupSlideSteps(secId, stripId, defs) {
   window._sectionDOMResets['s-m2d'] = function() {
     gen++;
     resetAll();
-    dots.forEach(function(d) { d.classList.remove('stp-active', 'stp-done'); });
-    if (fill) fill.style.width = '0%';
   };
 
   new IntersectionObserver(function(entries) {
     if (entries[0].isIntersecting && !started) {
       started = true;
-      setTimeout(function() { autoPlay(gen); }, 600);
+      setTimeout(function() { startAll(gen); }, 600);
     }
   }, { threshold: 0.5 }).observe(sec);
 })();
-
 
 /* ─────────────────────────────────────────────
    s-m2b: Gesture / TBE param demo IIFE
