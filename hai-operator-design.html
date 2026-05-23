@@ -29,7 +29,7 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
 .slabel .main{font-family:'Inter','Helvetica Neue',Helvetica,sans-serif;font-size:28px;font-weight:200;color:var(--tx);line-height:1.1;letter-spacing:-.03em;}
 .dp-layout{display:flex;gap:32px;flex:1;overflow:hidden;}
 .dp-left{width:44%;display:flex;flex-direction:column;gap:10px;overflow-y:auto;padding-right:4px;}
-.dp-right{flex:1;display:flex;flex-direction:column;gap:8px;overflow:hidden;}
+.dp-right{flex:1;display:flex;flex-direction:column;gap:8px;overflow:hidden;position:relative;}
 .dp-desc{display:flex;flex-direction:column;gap:4px;}
 .dp-label{font-family:'DM Mono',monospace;font-size:9px;color:var(--acc);letter-spacing:.16em;text-transform:uppercase;font-weight:500;}
 .dp-title{font-family:'Inter','Helvetica Neue',Helvetica,sans-serif;font-size:15px;font-weight:400;color:var(--tx);letter-spacing:-.01em;}
@@ -48,22 +48,26 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
 .snav{display:none;}
 .key-badge{
   position:absolute;top:50%;left:50%;
-  transform:translate(-50%,-50%) scale(.75);
+  transform:translate(-50%,-50%) scale(.82);
   display:inline-flex;align-items:center;justify-content:center;
-  background:rgba(8,8,14,.68);
-  border:1px solid rgba(255,255,255,.16);
-  box-shadow:0 12px 40px rgba(0,0,0,.55),0 0 0 .5px rgba(0,0,0,.4),0 0 28px rgba(0,47,167,.22);
-  backdrop-filter:blur(14px);
-  border-radius:10px;
-  padding:20px 38px 24px;
+  background:rgba(255,255,255,.13);
+  border:1px solid rgba(255,255,255,.28);
+  box-shadow:0 8px 32px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.25);
+  backdrop-filter:blur(22px) saturate(180%);
+  -webkit-backdrop-filter:blur(22px) saturate(180%);
+  border-radius:12px;
+  padding:18px 40px 22px;
   font-family:'DM Mono',monospace;font-size:54px;font-weight:400;
-  color:rgba(255,255,255,.95);
+  color:rgba(255,255,255,.96);
+  text-shadow:0 1px 8px rgba(0,0,0,.4);
   letter-spacing:.06em;
-  opacity:0;transition:opacity .22s ease,transform .22s ease;
+  opacity:0;
+  transition:opacity .15s ease-in,transform .15s ease-in;
   pointer-events:none;z-index:30;white-space:nowrap;
 }
 .key-badge.kb-show{
   opacity:1;transform:translate(-50%,-50%) scale(1);
+  transition:opacity .28s cubic-bezier(.22,1,.36,1),transform .28s cubic-bezier(.22,1,.36,1);
 }
 
 /* Step strip */
@@ -2223,11 +2227,13 @@ function setupSlideSteps(secId, stripId, defs) {
       dpRight.appendChild(badge);
     }
     if (badge) {
+      clearTimeout(badge._hideTimer);
       if (def.key) {
         badge.textContent = def.key;
         badge.classList.remove('kb-show');
         void badge.offsetWidth;
         badge.classList.add('kb-show');
+        badge._hideTimer = setTimeout(function(){ badge.classList.remove('kb-show'); }, 1200);
       } else {
         badge.classList.remove('kb-show');
       }
