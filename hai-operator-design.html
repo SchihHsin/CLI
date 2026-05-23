@@ -2706,6 +2706,9 @@ function setupSlideSteps(secId, stripId, defs) {
       simCursor.classList.add('click-flash');
     }
 
+    /* immediate callback — fires synchronously when step activates */
+    if (def.immediate) def.immediate();
+
     /* act callback after delay */
     if (def.act) {
       setTimeout(def.act, def.ms || 950);
@@ -3694,6 +3697,18 @@ setupSlideSteps('s-m4a', 'stp-m4a', [
 
 setupSlideSteps('s-m2c', 'stp-m2c', [
   { ms:2000,
+    immediate: function() {
+      var term = document.getElementById('voice-terminal');
+      var wave = document.getElementById('voice-wave-bar');
+      var tr   = document.getElementById('voice-transcript');
+      var ai   = document.getElementById('voice-ai-text');
+      var res  = document.getElementById('voice-ai-result');
+      if (term) term.style.display = 'none';
+      if (wave) wave.style.display = 'none';
+      if (tr)   tr.textContent = '';
+      if (ai)   ai.textContent = '';
+      if (res)  res.style.display = 'none';
+    },
     act: function() { if(window.voiceSetPhase) window.voiceSetPhase(1); } },
   { ms:2600, key:'Space',
     act: function() { if(window.voiceSetPhase) window.voiceSetPhase(2); } },
