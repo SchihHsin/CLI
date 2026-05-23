@@ -229,7 +229,7 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
   <span class="tn-label" id="tn-label">封面</span>
   <div class="tn-arrows">
     <button class="tn-btn" id="tn-reset" title="重置当前页动效">
-      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M10 4A4 4 0 0 0 2 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/><path d="M2 8A4 4 0 0 1 10 8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/><path d="M0 2L2 4L4 2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M8.5 10L10 8L11.5 10" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M10 5.5A4.1 4.1 0 0 0 2.5 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M2 2.5v2h2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 6.5A4.1 4.1 0 0 0 9.5 7.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M10 9.5v-2h-2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </button>
     <button class="tn-btn" id="tn-prev" title="上一页">
       <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M8 2L4 6L8 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/></svg>
@@ -1278,12 +1278,12 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
   <div class="inner">
     <div class="dp-layout" style="flex-direction:column;gap:12px;">
       <div class="dp-left" style="width:100%;flex-direction:row;align-items:flex-start;gap:24px;flex-shrink:0;overflow:visible;">
-        <div class="dp-desc" style="flex:0 0 200px;">
+        <div class="dp-desc" style="flex:0 0 280px;">
           <div class="dp-label">设计说明</div>
           <div class="dp-title">同一个语音输入，三种落地路径</div>
           <div class="dp-body">语音识别完成后，HAI 不是简单地把文字填入终端——它先读取两个信号：<strong style="color:var(--tx);">光标当前位置</strong>和<strong style="color:var(--tx);">话语的长度与置信度</strong>，再决定最合适的落地方式。让开发者在不同场景下都能以最低摩擦完成意图表达。</div>
         </div>
-        <div class="dp-desc" style="flex:1;">
+        <div class="dp-desc" style="flex:0 0 360px;">
           <div class="dp-label">路由逻辑</div>
           <div style="display:flex;flex-direction:column;gap:0;border:.5px solid var(--bdr2);overflow:hidden;margin-top:4px;">
             <!-- header -->
@@ -1294,35 +1294,35 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
             </div>
             <!-- row 1 -->
             <div style="display:grid;grid-template-columns:1fr 1fr 1fr;border-bottom:.5px solid var(--bdr2);">
-              <div style="padding:4px 10px;font-size:8px;color:var(--tx2);line-height:1.55;">光标在终端输入行<br>+ 短句 / 高置信</div>
-              <div style="padding:4px 10px;border-left:.5px solid var(--bdr2);">
+              <div style="padding:3px 8px;font-size:7.5px;color:var(--tx2);">终端输入行 · 短句/高置信</div>
+              <div style="padding:3px 8px;border-left:.5px solid var(--bdr2);">
                 <span style="font-family:'DM Mono',monospace;font-size:7px;color:#059669;background:rgba(5,150,105,.1);border:.5px solid rgba(5,150,105,.3);padding:1px 7px;">发送</span>
               </div>
-              <div style="padding:4px 10px;font-size:8px;color:var(--tx3);line-height:1.55;border-left:.5px solid var(--bdr2);">运行测试、清屏、保存等明确短指令</div>
+              <div style="padding:3px 8px;font-size:7.5px;color:var(--tx3);border-left:.5px solid var(--bdr2);">明确短指令：运行测试、清屏、保存</div>
             </div>
             <!-- row 2 -->
             <div style="display:grid;grid-template-columns:1fr 1fr 1fr;border-bottom:.5px solid var(--bdr2);">
-              <div style="padding:4px 10px;font-size:8px;color:var(--tx2);line-height:1.55;">光标在终端输入行<br>+ 中等长度</div>
-              <div style="padding:4px 10px;border-left:.5px solid var(--bdr2);">
+              <div style="padding:3px 8px;font-size:7.5px;color:var(--tx2);">终端输入行 · 中等长度</div>
+              <div style="padding:3px 8px;border-left:.5px solid var(--bdr2);">
                 <span style="font-family:'DM Mono',monospace;font-size:7px;color:var(--acc);background:var(--acc-dim);border:.5px solid var(--acc-b);padding:1px 7px;">写入</span>
               </div>
-              <div style="padding:4px 10px;font-size:8px;color:var(--tx3);line-height:1.55;border-left:.5px solid var(--bdr2);">填入输入行，光标停在末尾，自行确认</div>
+              <div style="padding:3px 8px;font-size:7.5px;color:var(--tx3);border-left:.5px solid var(--bdr2);">填入输入行，光标停末尾，自行确认</div>
             </div>
             <!-- row 3 -->
             <div style="display:grid;grid-template-columns:1fr 1fr 1fr;border-bottom:.5px solid var(--bdr2);">
-              <div style="padding:4px 10px;font-size:8px;color:var(--tx2);line-height:1.55;">光标在 profiler / 代码区<br>+ 任意长度</div>
-              <div style="padding:4px 10px;border-left:.5px solid var(--bdr2);">
+              <div style="padding:3px 8px;font-size:7.5px;color:var(--tx2);">profiler / 代码区 · 任意长度</div>
+              <div style="padding:3px 8px;border-left:.5px solid var(--bdr2);">
                 <span style="font-family:'DM Mono',monospace;font-size:7px;color:#7c3aed;background:rgba(124,58,237,.1);border:.5px solid rgba(124,58,237,.3);padding:1px 7px;">编辑面板</span>
               </div>
-              <div style="padding:4px 10px;font-size:8px;color:var(--tx3);line-height:1.55;border-left:.5px solid var(--bdr2);">提问 / 描述意图，内容复杂需要确认</div>
+              <div style="padding:3px 8px;font-size:7.5px;color:var(--tx3);border-left:.5px solid var(--bdr2);">提问/描述意图，复杂内容需要确认</div>
             </div>
             <!-- row 4 兜底 -->
             <div style="display:grid;grid-template-columns:1fr 1fr 1fr;background:rgba(220,38,38,.03);">
-              <div style="padding:4px 10px;font-size:8px;color:var(--tx2);line-height:1.55;">任意上下文<br>+ 置信度低 / 含停顿</div>
-              <div style="padding:4px 10px;border-left:.5px solid var(--bdr2);">
+              <div style="padding:3px 8px;font-size:7.5px;color:var(--tx2);">任意上下文 · 低置信/含停顿</div>
+              <div style="padding:3px 8px;border-left:.5px solid var(--bdr2);">
                 <span style="font-family:'DM Mono',monospace;font-size:7px;color:#7c3aed;background:rgba(124,58,237,.1);border:.5px solid rgba(124,58,237,.3);padding:1px 7px;">编辑面板</span>
               </div>
-              <div style="padding:4px 10px;font-size:8px;color:var(--tx3);line-height:1.55;border-left:.5px solid var(--bdr2);">兜底保护：识别不确定时让用户检查，避免执行错误指令</div>
+              <div style="padding:3px 8px;font-size:7.5px;color:var(--tx3);border-left:.5px solid var(--bdr2);">兜底保护：识别不确定时交用户检查</div>
             </div>
           </div>
         </div>
@@ -3057,7 +3057,7 @@ function setupSlideSteps(secId, stripId, defs) {
       var wtext = document.getElementById('m2d-wtext2');
       waveActive[1] = true; updateDim();
       if (wave) wave.style.display = 'flex';
-      if (wtext) typeText(wtext, 'hai optimize --tile_m 128 --target cube', 32);
+      if (wtext) typeText(wtext, '调整 tile_m 参数，目标 cube 利用率 70%', 40);
     }, 700);
     setTimeout(function() {
       if (gen !== myGen) return;
@@ -3066,7 +3066,7 @@ function setupSlideSteps(secId, stripId, defs) {
       var cur   = document.getElementById('m2d-cur2');
       waveActive[1] = false; updateDim();
       if (wave)  wave.style.display = 'none';
-      if (typed) typed.textContent  = 'hai optimize --tile_m 128 --target cube';
+      if (typed) typed.textContent  = '调整 tile_m 参数，目标 cube 利用率 70%';
     }, 2500);
     setTimeout(function() {
       if (gen !== myGen) return;
