@@ -1864,38 +1864,26 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
         <div class="stp-strip" id="stp-m3b">
           <div class="stp-bar"><div class="stp-fill"></div></div>
           <div class="stp-steps">
-            <div class="stp-step"><div class="stp-num">1</div><span class="stp-lbl">输入 /goal 命令</span></div>
-            <div class="stp-step"><div class="stp-num">2</div><span class="stp-lbl">AI 迭代优化</span></div>
-            <div class="stp-step"><div class="stp-num">3</div><span class="stp-lbl">验收条件全部达成</span></div>
+            <div class="stp-step"><div class="stp-num">1</div><span class="stp-lbl">输入 /goal</span></div>
+            <div class="stp-step"><div class="stp-num">2</div><span class="stp-lbl">确认验收条件</span></div>
+            <div class="stp-step"><div class="stp-num">3</div><span class="stp-lbl">AI 迭代优化</span></div>
+            <div class="stp-step"><div class="stp-num">4</div><span class="stp-lbl">全部达成</span></div>
           </div>
         </div>
         <div style="display:flex;flex-direction:column;gap:8px;flex:1;overflow:hidden;">
-          <div class="goal-box" id="goal-box" style="opacity:0;transform:translateY(-8px);transition:opacity .4s,transform .4s;border:.5px solid var(--acc-b);background:var(--acc-dim);padding:12px 16px;">
-            <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--acc);margin-bottom:8px;letter-spacing:.08em;">◆ GOAL · 验收条件</div>
-            <div style="display:flex;flex-direction:column;gap:4px;">
-              <div style="display:flex;align-items:center;gap:6px;">
-                <span style="font-size:9px;width:16px;text-align:center;" id="goal-icon-1">⏳</span>
-                <span style="font-family:'DM Mono',monospace;font-size:8.5px;color:var(--tw);">cube_util <span style="color:var(--tp);">&gt;</span> <span style="color:var(--tg);">70%</span></span>
-                <span style="font-family:'DM Mono',monospace;font-size:8px;color:var(--td);margin-left:auto;" id="goal-val-1">当前 21%</span>
-              </div>
-              <div style="display:flex;align-items:center;gap:6px;">
-                <span style="font-size:9px;width:16px;text-align:center;" id="goal-icon-2">⏳</span>
-                <span style="font-family:'DM Mono',monospace;font-size:8.5px;color:var(--tw);">max_error <span style="color:var(--tp);">&lt;</span> <span style="color:var(--tg);">1e-5</span></span>
-                <span style="font-family:'DM Mono',monospace;font-size:8px;color:var(--td);margin-left:auto;" id="goal-val-2">未测试</span>
-              </div>
-              <div style="display:flex;align-items:center;gap:6px;">
-                <span style="font-size:9px;width:16px;text-align:center;" id="goal-icon-3">⏳</span>
-                <span style="font-family:'DM Mono',monospace;font-size:8.5px;color:var(--tw);">compat<span style="color:var(--tp);">:</span> [<span style="color:var(--ty);">910B</span>, <span style="color:var(--ty);">310P</span>]</span>
-                <span style="font-family:'DM Mono',monospace;font-size:8px;color:var(--td);margin-left:auto;" id="goal-val-3">待验证</span>
-              </div>
-            </div>
-          </div>
           <div class="goal-term" style="flex:1;">
-            <div class="goal-term-hd">HAI Terminal · RMSNorm 算子</div>
+            <div class="goal-term-hd" style="display:flex;align-items:center;gap:7px;"><div style="display:flex;gap:4px;"><div style="width:7px;height:7px;border-radius:50%;background:#FF5F57;"></div><div style="width:7px;height:7px;border-radius:50%;background:#FEBC2E;"></div><div style="width:7px;height:7px;border-radius:50%;background:#28C840;"></div></div>HAI Terminal · RMSNorm 算子</div>
             <div class="goal-term-body" id="goal-log">
-              <div style="font-family:'DM Mono',monospace;font-size:9px;color:var(--td);line-height:1.6;">
-                <span style="color:var(--acc);">$ </span><span style="color:var(--tw);">/goal cube_util &gt; 70% &amp;&amp; max_error &lt; 1e-5 &amp;&amp; compat: [910B, 310P]</span>
+              <div style="font-family:'DM Mono',monospace;font-size:9px;color:var(--td);line-height:1.6;"><span style="color:var(--acc);">$ </span><span style="color:var(--tw);">/goal cube_util &gt; 70% &amp;&amp; max_error &lt; 1e-5 &amp;&amp; compat: [910B, 310P]</span></div>
+              <div id="goal-conditions" style="display:none;margin-top:6px;font-family:'DM Mono',monospace;font-size:8.5px;line-height:1.85;">
+                <div style="color:var(--acc);letter-spacing:.07em;">◆ GOAL · 验收条件</div>
+                <div style="color:rgba(255,255,255,.1);margin:2px 0;">──────────────────────────────────</div>
+                <div style="display:flex;align-items:center;gap:8px;"><span id="goal-icon-1" style="width:12px;color:var(--ty);">⏳</span><span style="color:var(--tw);">cube_util <span style="color:var(--tp);">&gt;</span> <span style="color:var(--tg);">70%</span></span><span id="goal-val-1" style="margin-left:auto;color:var(--td);">当前 21%</span></div>
+                <div style="display:flex;align-items:center;gap:8px;"><span id="goal-icon-2" style="width:12px;color:var(--ty);">⏳</span><span style="color:var(--tw);">max_error <span style="color:var(--tp);">&lt;</span> <span style="color:var(--tg);">1e-5</span></span><span id="goal-val-2" style="margin-left:auto;color:var(--td);">未测试</span></div>
+                <div style="display:flex;align-items:center;gap:8px;"><span id="goal-icon-3" style="width:12px;color:var(--ty);">⏳</span><span style="color:var(--tw);">compat: [<span style="color:var(--ty);">910B</span>, <span style="color:var(--ty);">310P</span>]</span><span id="goal-val-3" style="margin-left:auto;color:var(--td);">待验证</span></div>
+                <div style="color:rgba(255,255,255,.1);margin:2px 0;">──────────────────────────────────</div>
               </div>
+              <div id="goal-iter-log"></div>
             </div>
           </div>
         </div>
@@ -2299,11 +2287,31 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
           </div>
         </div>
         <div style="flex:1;display:flex;align-items:center;justify-content:center;overflow:hidden;">
-          <div id="remote-phone" style="width:185px;height:330px;background:#0a0a14;border-radius:28px;border:2px solid #3a3a4a;box-shadow:0 8px 32px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.06);display:flex;flex-direction:column;overflow:hidden;position:relative;flex-shrink:0;">
-            <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 14px 4px;flex-shrink:0;">
-              <span style="font-family:'DM Mono',monospace;font-size:8px;color:rgba(255,255,255,.5);">9:41</span>
-              <div style="width:32px;height:8px;background:#1a1a2e;border-radius:4px;border:1px solid #333;"></div>
-              <span style="font-family:'DM Mono',monospace;font-size:8px;color:rgba(255,255,255,.5);">4G ▓▓▓</span>
+          <div id="remote-phone" style="width:190px;height:412px;background:#0a0a14;border-radius:38px;border:2.5px solid #3a3a4a;box-shadow:0 12px 40px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.08);display:flex;flex-direction:column;overflow:hidden;position:relative;flex-shrink:0;">
+            <!-- Status bar -->
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 18px 5px;flex-shrink:0;">
+              <span style="font-family:'SF Pro Display','Inter',sans-serif;font-size:9px;font-weight:600;color:rgba(255,255,255,.9);letter-spacing:-.01em;">9:41</span>
+              <!-- Dynamic Island -->
+              <div style="width:72px;height:11px;background:#000;border-radius:6px;"></div>
+              <!-- Right icons -->
+              <div style="display:flex;align-items:center;gap:4px;">
+                <!-- Signal bars -->
+                <div style="display:flex;align-items:flex-end;gap:1px;">
+                  <div style="width:2px;height:4px;background:rgba(255,255,255,.9);border-radius:.5px;"></div>
+                  <div style="width:2px;height:5.5px;background:rgba(255,255,255,.9);border-radius:.5px;"></div>
+                  <div style="width:2px;height:7px;background:rgba(255,255,255,.9);border-radius:.5px;"></div>
+                  <div style="width:2px;height:8.5px;background:rgba(255,255,255,.3);border-radius:.5px;"></div>
+                </div>
+                <!-- WiFi -->
+                <svg width="11" height="8" viewBox="0 0 11 8" fill="none"><path d="M5.5 6.5a1 1 0 100-2 1 1 0 000 2z" fill="rgba(255,255,255,.9)"/><path d="M2.8 4.5a3.8 3.8 0 015.4 0" stroke="rgba(255,255,255,.9)" stroke-width="1" stroke-linecap="round"/><path d="M0.5 2.5a6.4 6.4 0 0110 0" stroke="rgba(255,255,255,.9)" stroke-width="1" stroke-linecap="round"/></svg>
+                <!-- Battery -->
+                <div style="display:flex;align-items:center;gap:1px;">
+                  <div style="width:20px;height:10px;border:1px solid rgba(255,255,255,.7);border-radius:2.5px;padding:1.5px;display:flex;align-items:center;">
+                    <div style="width:80%;height:100%;background:#34D399;border-radius:1px;"></div>
+                  </div>
+                  <div style="width:2px;height:4px;background:rgba(255,255,255,.5);border-radius:0 1px 1px 0;"></div>
+                </div>
+              </div>
             </div>
             <div style="padding:3px 12px 7px;flex-shrink:0;border-bottom:.5px solid rgba(255,255,255,.07);">
               <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--acc);font-weight:700;letter-spacing:.05em;">HAI</div>
@@ -3423,37 +3431,57 @@ function setupSlideSteps(secId, stripId, defs) {
    s-m3b: Goal command demo IIFE
 ───────────────────────────────────────────── */
 (function initGoalDemo() {
-  let goalPhase = 0;
+  var goalPhase = 0;
 
   function showGoalPanel(p) {
     goalPhase = p;
-    const goalBox = document.getElementById('goal-box');
-    const goalLog = document.getElementById('goal-log');
+    var conditions = document.getElementById('goal-conditions');
+    var iterLog    = document.getElementById('goal-iter-log');
+
+    function setIcon(n, icon, color) {
+      var ic = document.getElementById('goal-icon-' + n);
+      if (ic) { ic.textContent = icon; ic.style.color = color; }
+    }
+    function setVal(n, text, color) {
+      var vl = document.getElementById('goal-val-' + n);
+      if (vl) { vl.textContent = text; vl.style.color = color; }
+    }
 
     if (p === 1) {
-      if (goalBox) { goalBox.style.display = 'block'; setTimeout(()=>{ goalBox.style.opacity='1'; goalBox.style.transform='none'; },30); }
+      if (conditions) conditions.style.display = 'block';
+      if (iterLog) iterLog.innerHTML = '';
+      setIcon('1','⏳','var(--ty)'); setVal('1','当前 21%','var(--td)');
+      setIcon('2','⏳','var(--ty)'); setVal('2','未测试','var(--td)');
+      setIcon('3','⏳','var(--ty)'); setVal('3','待验证','var(--td)');
     } else if (p === 2) {
-      /* log lines appear */
-      if (goalLog) {
-        const lines = [
-          { t: '🧪 运行精度验证...', c: '#C0B0F0' },
-          { t: '✓ max_error = 8.3e-6 < 1e-5', c: '#27AE60' },
-          { t: '⚡ 分析CUBE利用率...', c: '#C0B0F0' },
-          { t: '✓ cube_util = 72.4% > 70%', c: '#27AE60' },
-          { t: '🔧 验证多硬件兼容性...', c: '#C0B0F0' },
-          { t: '✓ 910B ✓  310P ✓', c: '#27AE60' },
-          { t: '🎯 所有目标达成', c: '#A78BFA', bold: true },
-        ];
-        goalLog.innerHTML = '';
-        lines.forEach((l, i) => {
-          setTimeout(() => {
-            const d = document.createElement('div');
-            d.style.cssText = `font-size:10px;color:${l.c};margin-bottom:3px;${l.bold?'font-weight:700;':''}`;
+      var lines = [
+        { t: '▸ 生成 TBE 变体 v2 · tile_m 64→128→192…', c: 'var(--acc)' },
+        { t: '  cube_util: 52% → 68% → 72.4%', c: 'var(--tg)' },
+        { t: '▸ 精度验证 · max_error: 8.3e-6 < 1e-5', c: 'var(--acc)' },
+        { t: '▸ 硬件兼容: 910B ✓  310P ✓', c: 'var(--acc)' },
+      ];
+      if (iterLog) {
+        lines.forEach(function(l, i) {
+          setTimeout(function() {
+            var d = document.createElement('div');
+            d.style.cssText = 'font-family:\'DM Mono\',monospace;font-size:8.5px;color:' + l.c + ';line-height:1.65;';
             d.textContent = l.t;
-            goalLog.appendChild(d);
-          }, i * 400);
+            iterLog.appendChild(d);
+          }, i * 500);
         });
       }
+    } else if (p === 3) {
+      setTimeout(function() { setIcon('1','✓','var(--tg)'); setVal('1','72.4% ✓','var(--tg)'); }, 0);
+      setTimeout(function() { setIcon('2','✓','var(--tg)'); setVal('2','8.3e-6 ✓','var(--tg)'); }, 220);
+      setTimeout(function() { setIcon('3','✓','var(--tg)'); setVal('3','双芯片 ✓','var(--tg)'); }, 440);
+      setTimeout(function() {
+        if (iterLog) {
+          var d = document.createElement('div');
+          d.style.cssText = 'font-family:\'DM Mono\',monospace;font-size:9px;color:var(--acc);margin-top:6px;letter-spacing:.07em;';
+          d.textContent = '◆ 达成 · 最优 tile_m=128 · CUBE=72.4%';
+          iterLog.appendChild(d);
+        }
+      }, 700);
     }
   }
 
@@ -3930,11 +3958,13 @@ setupSlideSteps('s-m2b', 'stp-m2b', [
 
 /* s-m3b: goal command */
 setupSlideSteps('s-m3b', 'stp-m3b', [
-  { c:[.50,.72], ms:2400, key:'/' },
-  { c:[.50,.82], click:true, key:'↵', ms:2800,
-    act: function() { if(window.goalShowPanel) window.goalShowPanel(1); } },
-  { c:[.50,.60], ms:3200,
-    act: function() { if(window.goalShowPanel) window.goalShowPanel(2); } },
+  { ms:1800, key:'/', immediate: function() {
+    var c=document.getElementById('goal-conditions'); if(c) c.style.display='none';
+    var il=document.getElementById('goal-iter-log'); if(il) il.innerHTML='';
+  }},
+  { ms:2200, key:'↵', act: function() { if(window.goalShowPanel) window.goalShowPanel(1); } },
+  { ms:2600, act: function() { if(window.goalShowPanel) window.goalShowPanel(2); } },
+  { ms:2400, act: function() { if(window.goalShowPanel) window.goalShowPanel(3); } },
 ]);
 
 /* s-m1a: agent view */
