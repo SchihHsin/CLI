@@ -2390,143 +2390,125 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
 
 <div class="sec" id="s-m5a" style="background:var(--bg);">
   <div class="slabel">
-    <span class="sub">审核结果 · Stage 06 · 设计点 1/2</span>
-    <span class="main">算子交付物审核 — 性能 · 精度 · 约束三维可视化</span>
+    <span class="sub">结果预览 · Stage 06 · 设计点 1/2</span>
+    <span class="main">区域反馈 — 点击运行结果，说出预期，AI 定向迭代</span>
   </div>
   <div class="inner">
     <div class="dp-layout">
       <div class="dp-left">
         <div class="dp-desc">
           <div class="dp-label">设计说明</div>
-          <div class="dp-title">三维验收报告</div>
-          <div class="dp-body">一个算子的交付需要同时满足性能（AI Core 利用率 / 推理延迟）、精度（与参考实现的误差）、约束（支持的 dtype/format/shape 组合）三个维度。AI 生成结构化报告，每个维度可展开查看详细数据，支持一键对比历史基线。</div>
+          <div class="dp-title">看结果，不看 diff</div>
+          <div class="dp-body">AI 执行完成后，终端自动分屏：左侧保留执行日志，右侧渲染运行结果可视化。工程师点击右侧任意指标区域，锚定反馈气泡，语音说出预期；AI 理解「哪里不满足」后定向重新优化。全程单一终端 session，不切窗口，不丢上下文。</div>
         </div>
         <div class="dp-desc">
           <div class="dp-label">核心设计点</div>
           <div class="dp-points">
-            <div class="dpp">🔥 性能 Tab：msprof 关键指标 + 与理论峰值的对比</div>
-            <div class="dpp">✓ 精度 Tab：最大误差 / 均值误差 / 稳定性测试结果</div>
-            <div class="dpp">📋 约束 Tab：dtype × format 支持矩阵（910B / 310P）</div>
-            <div class="dpp">支持与历史基线对比，标注改进幅度</div>
+            <div class="dpp">终端内分屏——单 session，不开新窗口</div>
+            <div class="dpp">右侧渲染运行结果（性能图），不是代码 diff</div>
+            <div class="dpp">点击区域 → 气泡锚定该指标 → 语音 / 文字说预期</div>
+            <div class="dpp">AI 收到区域坐标 + 内容，定向重新优化</div>
           </div>
         </div>
         <div class="ba-grid">
           <div class="ba-before">
             <div class="ba-label" style="gap:6px;"><span style="font-family:'DM Mono',monospace;font-size:7px;letter-spacing:.1em;background:var(--grey-2);color:var(--tx2);padding:1px 6px;">BEFORE</span>过去的做法</div>
             <div style="display:flex;flex-direction:column;gap:3px;margin-top:4px;">
-              <div style="background:var(--tb);padding:5px 8px;border-left:2px solid var(--grey-2);font-family:'DM Mono',monospace;font-size:8px;border:.5px solid var(--tbdr);">
-                <div style="color:var(--td);">msprof 报告: report_0312.html</div>
-                <div style="color:var(--td);">精度对比: compare_0312.txt</div>
-                <div style="color:var(--td);">约束文档: constraint.xlsx</div>
+              <div style="background:var(--tb);padding:5px 8px;border:.5px solid var(--tbdr);font-family:'DM Mono',monospace;font-size:7.5px;">
+                <div style="color:var(--td);">[msprof] AI Core: 72.4%</div>
+                <div style="color:var(--td);">[msprof] CUBE:    71.2%</div>
+                <div style="color:var(--td);">[msprof] VECTOR:  88.1%</div>
+                <div style="color:var(--ty);margin-top:3px;"># 哪里是瓶颈？差多少？</div>
               </div>
-              <div style="text-align:center;font-size:7.5px;color:var(--tx3);font-family:'DM Mono',monospace;">三份文件分散 → 人工汇总 → 容易遗漏</div>
+              <div style="text-align:center;font-size:7.5px;color:var(--tx3);font-family:'DM Mono',monospace;">盯数字猜 → 查文档 → 难说清哪里不对</div>
             </div>
           </div>
           <div class="ba-after">
             <div class="ba-label" style="gap:6px;"><span style="font-family:'DM Mono',monospace;font-size:7px;letter-spacing:.1em;background:var(--acc);color:white;padding:1px 6px;">AFTER</span>新的设计</div>
-            <div class="ba-text">AI 自动聚合性能、精度、约束三维数据，统一展示在交互式审核面板中，一屏看清算子交付状态。</div>
+            <div class="ba-text">点击结果图中 CUBE 区域，说「目标 80%」，AI 直接重算 tile_m，无需描述背景。</div>
           </div>
         </div>
       </div>
-      <div class="dp-right">
-        <div class="mockup-label">动态 Mockup — 算子审核面板</div>
+      <div class="dp-right" style="position:relative;">
+        <div class="mockup-label">动态 Mockup — 终端分屏 + 区域反馈</div>
         <div class="stp-strip" id="stp-m5a">
           <div class="stp-bar"><div class="stp-fill"></div></div>
           <div class="stp-steps">
-            <div class="stp-step"><div class="stp-num">1</div><span class="stp-lbl">查看性能报告</span></div>
-            <div class="stp-step"><div class="stp-num">2</div><span class="stp-lbl">验证精度</span></div>
-            <div class="stp-step"><div class="stp-num">3</div><span class="stp-lbl">确认约束矩阵</span></div>
+            <div class="stp-step"><div class="stp-num">1</div><span class="stp-lbl">分屏渲染结果</span></div>
+            <div class="stp-step"><div class="stp-num">2</div><span class="stp-lbl">点击区域锚定</span></div>
+            <div class="stp-step"><div class="stp-num">3</div><span class="stp-lbl">语音反馈·定向优化</span></div>
           </div>
         </div>
+        <!-- TUI Split Mockup -->
         <div style="flex:1;background:var(--tb);border:.5px solid var(--tbdr);display:flex;flex-direction:column;overflow:hidden;">
-          <div style="background:var(--tbar);padding:0 14px;border-bottom:.5px solid var(--tbdr);display:flex;gap:0;flex-shrink:0;">
-            <div class="review-tab active" id="tab-perf" style="padding:8px 14px;font-family:'DM Mono',monospace;font-size:9px;cursor:pointer;border-bottom:2px solid var(--acc);color:var(--acc);">🔥 性能</div>
-            <div class="review-tab" id="tab-prec" style="padding:8px 14px;font-family:'DM Mono',monospace;font-size:9px;cursor:pointer;border-bottom:2px solid transparent;color:var(--td);">✓ 精度</div>
-            <div class="review-tab" id="tab-cstr" style="padding:8px 14px;font-family:'DM Mono',monospace;font-size:9px;cursor:pointer;border-bottom:2px solid transparent;color:var(--td);">📋 约束</div>
+          <!-- Status bar -->
+          <div style="background:#080810;padding:4px 12px;border-bottom:.5px solid var(--tbdr);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;">
+            <div style="display:flex;align-items:center;gap:8px;">
+              <div style="font-family:'DM Mono',monospace;font-size:7px;color:rgba(255,255,255,.25);background:rgba(0,47,167,.15);border:.5px solid rgba(0,47,167,.2);padding:1px 6px;border-radius:2px;">RMSNorm ⟳</div>
+              <div style="font-family:'DM Mono',monospace;font-size:7px;color:rgba(255,255,255,.18);background:rgba(255,255,255,.04);border:.5px solid rgba(255,255,255,.08);padding:1px 6px;border-radius:2px;">FlashAttn ✓</div>
+            </div>
+            <div style="font-family:'DM Mono',monospace;font-size:7px;color:var(--td);">~/workspace/RMSNorm-910B</div>
+            <div style="font-family:'DM Mono',monospace;font-size:7px;color:var(--acc);">Stage 06 · Preview</div>
           </div>
-          <!-- perf tab -->
-          <div id="review-perf" style="padding:12px 14px;flex:1;overflow-y:auto;">
-            <div style="display:flex;flex-direction:column;gap:8px;">
-              <div style="display:flex;gap:10px;">
-                <div style="flex:1;background:rgba(52,211,153,.08);border:.5px solid rgba(52,211,153,.25);border-radius:6px;padding:8px 10px;">
-                  <div style="font-family:'DM Mono',monospace;font-size:7.5px;color:var(--td);margin-bottom:3px;">AI Core 利用率</div>
-                  <div style="font-family:'Inter','Helvetica Neue',Helvetica,sans-serif;font-size:20px;font-weight:800;color:var(--tg);">72.4%</div>
-                  <div style="font-family:'DM Mono',monospace;font-size:7.5px;color:var(--tg);">↑ +51pt vs 基线</div>
+          <!-- Split area -->
+          <div style="flex:1;display:flex;overflow:hidden;">
+            <!-- Left: execution log -->
+            <div style="flex:0 0 46%;padding:8px 10px;border-right:.5px solid var(--tbdr);overflow:hidden;display:flex;flex-direction:column;gap:2px;">
+              <div style="font-family:'DM Mono',monospace;font-size:6.5px;color:var(--td);margin-bottom:3px;letter-spacing:.06em;">执行日志</div>
+              <div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--acc);line-height:1.6;">▸ tile_m 64→128→192 迭代…</div>
+              <div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--tg);line-height:1.6;">&nbsp;&nbsp;cube_util: 52%→68%→72.4%</div>
+              <div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--acc);line-height:1.6;">▸ 精度验证…</div>
+              <div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--tg);line-height:1.6;">&nbsp;&nbsp;max_error: 8.3e-6 ✓</div>
+              <div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--acc);line-height:1.6;">▸ 兼容: 910B ✓  310P ✓</div>
+              <div style="margin-top:auto;font-family:'DM Mono',monospace;font-size:6.5px;color:rgba(255,255,255,.2);">ESC 收起预览</div>
+            </div>
+            <!-- Right: result panel -->
+            <div style="flex:1;padding:8px 10px;position:relative;display:flex;flex-direction:column;gap:4px;overflow:hidden;">
+              <div style="font-family:'DM Mono',monospace;font-size:6.5px;color:var(--td);letter-spacing:.06em;margin-bottom:1px;">运行结果 · RMSNorm-910B</div>
+              <!-- Metric cards -->
+              <div style="display:flex;gap:5px;flex-shrink:0;">
+                <div style="flex:1;background:rgba(52,211,153,.08);border:.5px solid rgba(52,211,153,.25);border-radius:3px;padding:5px 6px;">
+                  <div style="font-family:'DM Mono',monospace;font-size:6.5px;color:var(--td);">AI Core</div>
+                  <div style="font-size:15px;font-weight:800;color:var(--tg);font-family:'Inter',sans-serif;">72.4%</div>
                 </div>
-                <div style="flex:1;background:rgba(96,165,250,.08);border:.5px solid rgba(96,165,250,.25);border-radius:6px;padding:8px 10px;">
-                  <div style="font-family:'DM Mono',monospace;font-size:7.5px;color:var(--td);margin-bottom:3px;">推理延迟</div>
-                  <div style="font-family:'Inter','Helvetica Neue',Helvetica,sans-serif;font-size:20px;font-weight:800;color:var(--tb2);">38ms</div>
-                  <div style="font-family:'DM Mono',monospace;font-size:7.5px;color:var(--tb2);">↓ −22ms vs 基线</div>
-                </div>
-                <div style="flex:1;background:rgba(167,139,250,.08);border:.5px solid rgba(167,139,250,.25);border-radius:6px;padding:8px 10px;">
-                  <div style="font-family:'DM Mono',monospace;font-size:7.5px;color:var(--td);margin-bottom:3px;">CUBE 利用率</div>
-                  <div style="font-family:'Inter','Helvetica Neue',Helvetica,sans-serif;font-size:20px;font-weight:800;color:var(--tp);">71.2%</div>
-                  <div style="font-family:'DM Mono',monospace;font-size:7.5px;color:var(--tp);">↑ +50pt vs 基线</div>
+                <div style="flex:1;background:rgba(96,165,250,.08);border:.5px solid rgba(96,165,250,.25);border-radius:3px;padding:5px 6px;">
+                  <div style="font-family:'DM Mono',monospace;font-size:6.5px;color:var(--td);">延迟</div>
+                  <div style="font-size:15px;font-weight:800;color:var(--tb2);font-family:'Inter',sans-serif;">38ms</div>
                 </div>
               </div>
-              <div style="display:flex;flex-direction:column;gap:5px;">
-                <div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--td);margin-bottom:2px;">硬件资源明细</div>
-                <div class="ms-metric"><div class="ms-metric-label">AI Core 总利用率</div><div class="ms-bar-track"><div class="ms-bar-fill" style="width:72%;background:var(--tg);"></div></div><div class="ms-pct" style="color:var(--tg);">72%</div></div>
-                <div class="ms-metric"><div class="ms-metric-label">CUBE 单元</div><div class="ms-bar-track"><div class="ms-bar-fill" style="width:71%;background:var(--tp);"></div></div><div class="ms-pct" style="color:var(--tp);">71%</div></div>
-                <div class="ms-metric"><div class="ms-metric-label">VECTOR 单元</div><div class="ms-bar-track"><div class="ms-bar-fill" style="width:88%;background:var(--tg);"></div></div><div class="ms-pct" style="color:var(--tg);">88%</div></div>
+              <!-- Bar chart -->
+              <div style="display:flex;flex-direction:column;gap:4px;">
+                <div style="font-family:'DM Mono',monospace;font-size:6.5px;color:var(--td);">硬件资源利用率</div>
+                <div class="ms-metric"><div class="ms-metric-label">AI Core</div><div class="ms-bar-track"><div class="ms-bar-fill" style="width:72%;background:var(--tg);"></div></div><div class="ms-pct" style="color:var(--tg);">72%</div></div>
+                <div id="rv-cube-bar" class="ms-metric" style="cursor:pointer;border-radius:3px;transition:background .2s;padding:2px 3px;margin:0 -3px;">
+                  <div class="ms-metric-label">CUBE</div>
+                  <div class="ms-bar-track"><div class="ms-bar-fill" style="width:71%;background:var(--tp);"></div></div>
+                  <div class="ms-pct" style="color:var(--tp);">71%</div>
+                </div>
+                <div class="ms-metric"><div class="ms-metric-label">VECTOR</div><div class="ms-bar-track"><div class="ms-bar-fill" style="width:88%;background:var(--tg);"></div></div><div class="ms-pct" style="color:var(--tg);">88%</div></div>
                 <div class="ms-metric"><div class="ms-metric-label">内存带宽</div><div class="ms-bar-track"><div class="ms-bar-fill" style="width:67%;background:var(--tb2);"></div></div><div class="ms-pct" style="color:var(--tb2);">67%</div></div>
               </div>
-              <div style="padding:6px 10px;background:rgba(52,211,153,.06);border:.5px solid rgba(52,211,153,.2);border-radius:5px;">
-                <div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--tg);">✓ 性能验收通过 · cube_util=72.4% &gt; 目标 70%</div>
+              <div id="rv-hint" style="margin-top:auto;font-family:'DM Mono',monospace;font-size:6.5px;color:rgba(255,255,255,.22);">点击任意区域锚定反馈</div>
+              <!-- Annotation bubble -->
+              <div id="rv-annotation" style="display:none;position:absolute;right:4px;top:44%;transform:translateY(-50%);width:128px;background:rgba(8,8,16,.97);border:.5px solid rgba(0,47,167,.55);border-radius:6px;padding:8px 10px;box-shadow:0 4px 20px rgba(0,0,0,.5);">
+                <div style="position:absolute;top:-14px;left:50%;transform:translateX(-50%);width:.5px;height:14px;background:rgba(0,47,167,.45);"></div>
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:5px;">
+                  <div style="font-family:'DM Mono',monospace;font-size:7px;color:var(--acc);">◉ CUBE 71.2%</div>
+                  <div style="font-family:'DM Mono',monospace;font-size:7px;color:var(--td);">✕</div>
+                </div>
+                <div id="rv-voice-row" style="display:flex;align-items:center;gap:5px;margin-bottom:4px;">
+                  <span style="font-size:8px;">🎙</span>
+                  <div id="rv-wave-bars" style="display:flex;align-items:center;gap:1px;height:12px;"></div>
+                </div>
+                <div id="rv-transcript" style="display:none;font-family:'Space Grotesk',sans-serif;font-size:7.5px;color:var(--tw);line-height:1.4;margin-bottom:4px;">CUBE 目标 ≥ 80%</div>
+                <div id="rv-ai-resp" style="display:none;padding:4px 6px;background:rgba(0,47,167,.18);border:.5px solid rgba(0,47,167,.35);border-radius:3px;font-family:'DM Mono',monospace;font-size:7px;color:var(--acc);">◆ 重算 tile_m → 192…</div>
               </div>
             </div>
           </div>
-          <!-- prec tab (hidden initially) -->
-          <div id="review-prec" style="display:none;padding:12px 14px;flex:1;overflow-y:auto;">
-            <div style="display:flex;flex-direction:column;gap:8px;">
-              <div style="display:flex;gap:10px;">
-                <div style="flex:1;background:rgba(52,211,153,.08);border:.5px solid rgba(52,211,153,.25);border-radius:6px;padding:8px 10px;">
-                  <div style="font-family:'DM Mono',monospace;font-size:7.5px;color:var(--td);margin-bottom:3px;">最大相对误差</div>
-                  <div style="font-family:'DM Mono',monospace;font-size:18px;font-weight:700;color:var(--tg);">8.3e-6</div>
-                  <div style="font-family:'DM Mono',monospace;font-size:7.5px;color:var(--tg);">< 目标 1e-5 ✓</div>
-                </div>
-                <div style="flex:1;background:rgba(52,211,153,.08);border:.5px solid rgba(52,211,153,.25);border-radius:6px;padding:8px 10px;">
-                  <div style="font-family:'DM Mono',monospace;font-size:7.5px;color:var(--td);margin-bottom:3px;">均值误差</div>
-                  <div style="font-family:'DM Mono',monospace;font-size:18px;font-weight:700;color:var(--tg);">2.1e-6</div>
-                  <div style="font-family:'DM Mono',monospace;font-size:7.5px;color:var(--tg);">数值稳定 ✓</div>
-                </div>
-              </div>
-              <div style="background:var(--tbar);border-radius:5px;overflow:hidden;">
-                <div style="display:grid;grid-template-columns:80px 1fr 80px 80px;background:rgba(255,255,255,.04);border-bottom:.5px solid var(--tbdr);padding:5px 8px;font-family:'DM Mono',monospace;font-size:7.5px;color:var(--td);">
-                  <span>测试用例</span><span>shape</span><span>dtype</span><span>最大误差</span>
-                </div>
-                <div style="display:grid;grid-template-columns:80px 1fr 80px 80px;padding:4px 8px;font-family:'DM Mono',monospace;font-size:8px;border-bottom:.5px solid rgba(255,255,255,.03);">
-                  <span style="color:var(--tg);">✓ case_0</span><span style="color:var(--td);">[1,1024,4096]</span><span style="color:var(--td);">fp16</span><span style="color:var(--tg);">7.2e-6</span>
-                </div>
-                <div style="display:grid;grid-template-columns:80px 1fr 80px 80px;padding:4px 8px;font-family:'DM Mono',monospace;font-size:8px;border-bottom:.5px solid rgba(255,255,255,.03);">
-                  <span style="color:var(--tg);">✓ case_1</span><span style="color:var(--td);">[4,2048,4096]</span><span style="color:var(--td);">bf16</span><span style="color:var(--tg);">8.3e-6</span>
-                </div>
-                <div style="display:grid;grid-template-columns:80px 1fr 80px 80px;padding:4px 8px;font-family:'DM Mono',monospace;font-size:8px;">
-                  <span style="color:var(--tg);">✓ case_2</span><span style="color:var(--td);">[8,512,8192]</span><span style="color:var(--td);">fp16</span><span style="color:var(--tg);">6.8e-6</span>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- constraint tab (hidden initially) -->
-          <div id="review-cstr" style="display:none;padding:12px 14px;flex:1;overflow-y:auto;">
-            <div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--td);margin-bottom:6px;">支持矩阵 · RMSNorm 算子</div>
-            <div style="background:var(--tbar);border-radius:5px;overflow:hidden;margin-bottom:8px;">
-              <div style="display:grid;grid-template-columns:80px 70px 70px 70px 70px;font-family:'DM Mono',monospace;font-size:8px;padding:5px 8px;border-bottom:.5px solid var(--tbdr);color:var(--td);background:rgba(255,255,255,.04);">
-                <span>format\ dtype</span><span>fp16</span><span>bf16</span><span>fp32</span><span>int8</span>
-              </div>
-              <div style="display:grid;grid-template-columns:80px 70px 70px 70px 70px;font-family:'DM Mono',monospace;font-size:8px;padding:4px 8px;border-bottom:.5px solid rgba(255,255,255,.03);">
-                <span style="color:var(--td);">FRACTAL_NZ</span><span style="color:var(--tg);">910B✓</span><span style="color:var(--tg);">910B✓</span><span style="color:var(--ty);">910B只</span><span style="color:var(--tr);">✗</span>
-              </div>
-              <div style="display:grid;grid-template-columns:80px 70px 70px 70px 70px;font-family:'DM Mono',monospace;font-size:8px;padding:4px 8px;border-bottom:.5px solid rgba(255,255,255,.03);">
-                <span style="color:var(--td);">ND</span><span style="color:var(--tg);">双✓</span><span style="color:var(--tg);">双✓</span><span style="color:var(--tg);">双✓</span><span style="color:var(--tr);">✗</span>
-              </div>
-              <div style="display:grid;grid-template-columns:80px 70px 70px 70px 70px;font-family:'DM Mono',monospace;font-size:8px;padding:4px 8px;">
-                <span style="color:var(--td);">NC1HWC0</span><span style="color:var(--tr);">✗</span><span style="color:var(--tr);">✗</span><span style="color:var(--tr);">✗</span><span style="color:var(--tr);">✗</span>
-              </div>
-            </div>
-            <div style="padding:6px 10px;background:rgba(131,77,240,.06);border:.5px solid var(--acc-b);border-radius:5px;">
-              <div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--acc);">◆ 推荐默认：FRACTAL_NZ + fp16/bf16，910B/310P 均支持</div>
-            </div>
+          <!-- Bottom prompt -->
+          <div style="padding:4px 12px;border-top:.5px solid var(--tbdr);display:flex;align-items:center;gap:6px;flex-shrink:0;">
+            <span style="font-family:'DM Mono',monospace;font-size:9px;color:var(--acc);">❯</span>
+            <span style="font-family:'DM Mono',monospace;font-size:8px;color:var(--td);">_</span>
           </div>
         </div>
       </div>
@@ -3855,25 +3837,45 @@ function setupSlideSteps(secId, stripId, defs) {
 })();
 
 /* ─────────────────────────────────────────────
-   s-m5a: Review tab switcher
+   s-m5a: Result preview + region feedback
 ───────────────────────────────────────────── */
-(function initReviewTabs() {
-  function switchTab(key) {
-    ['perf','prec','cstr'].forEach(function(k) {
-      var tab = document.getElementById('tab-' + k);
-      var pan = document.getElementById('review-' + k);
-      if (tab) { tab.style.borderBottomColor = k===key ? 'var(--acc)' : 'transparent'; tab.style.color = k===key ? 'var(--acc)' : 'var(--td)'; }
-      if (pan) pan.style.display = k===key ? 'block' : 'none';
-    });
-  }
-  ['perf','prec','cstr'].forEach(function(k) {
-    var t = document.getElementById('tab-' + k);
-    if (t) t.addEventListener('click', function() { switchTab(k); });
-  });
+(function initResultPreview() {
   window.reviewSetPhase = function(p) {
-    if (p===1) switchTab('perf');
-    else if (p===2) switchTab('prec');
-    else if (p===3) switchTab('cstr');
+    var cubeBar    = document.getElementById('rv-cube-bar');
+    var annotation = document.getElementById('rv-annotation');
+    var voiceRow   = document.getElementById('rv-voice-row');
+    var transcript = document.getElementById('rv-transcript');
+    var aiResp     = document.getElementById('rv-ai-resp');
+    var waveBars   = document.getElementById('rv-wave-bars');
+    var hint       = document.getElementById('rv-hint');
+    if (p === 1) {
+      if (cubeBar)    cubeBar.style.background = '';
+      if (annotation) annotation.style.display = 'none';
+      if (transcript) transcript.style.display = 'none';
+      if (aiResp)     aiResp.style.display = 'none';
+      if (voiceRow)   voiceRow.style.display = 'flex';
+      if (hint)       hint.style.display = 'block';
+    } else if (p === 2) {
+      if (cubeBar)    cubeBar.style.background = 'rgba(0,47,167,.15)';
+      if (annotation) annotation.style.display = 'block';
+      if (hint)       hint.style.display = 'none';
+      if (voiceRow)   voiceRow.style.display = 'flex';
+      if (transcript) transcript.style.display = 'none';
+      if (aiResp)     aiResp.style.display = 'none';
+      if (waveBars) {
+        waveBars.innerHTML = '';
+        for (var i = 0; i < 10; i++) {
+          var bar = document.createElement('div');
+          var h = (3 + Math.random() * 8).toFixed(1);
+          bar.style.cssText = 'width:2px;height:' + h + 'px;border-radius:1px;background:linear-gradient(to top,#002FA7,#6B38D4);animation:ck-wave .6s ease-in-out infinite;animation-delay:' + (i * 0.07).toFixed(2) + 's;';
+          waveBars.appendChild(bar);
+        }
+      }
+    } else if (p === 3) {
+      if (voiceRow)   voiceRow.style.display = 'none';
+      if (transcript) transcript.style.display = 'block';
+      if (aiResp)     aiResp.style.display = 'block';
+    }
   };
 })();
 
@@ -4077,11 +4079,12 @@ setupSlideSteps('s-remote', 'stp-remote', [
   { ms:3000, act: function() { if(window.remoteSetPhase) window.remoteSetPhase(3); } },
 ]);
 
-/* s-m5a: review panel — tab switching */
+/* s-m5a: result preview + region feedback */
 setupSlideSteps('s-m5a', 'stp-m5a', [
-  { ms:2000, act: function() { if(window.reviewSetPhase) window.reviewSetPhase(1); } },
+  { ms:2000, immediate: function() { if(window.reviewSetPhase) window.reviewSetPhase(1); },
+             act:       function() { if(window.reviewSetPhase) window.reviewSetPhase(1); } },
   { ms:2400, act: function() { if(window.reviewSetPhase) window.reviewSetPhase(2); } },
-  { ms:2400, act: function() { if(window.reviewSetPhase) window.reviewSetPhase(3); } },
+  { ms:2800, act: function() { if(window.reviewSetPhase) window.reviewSetPhase(3); } },
 ]);
 
 /* s-m4b: team library */
