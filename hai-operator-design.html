@@ -3067,8 +3067,16 @@ function setupSlideSteps(secId, stripId, defs) {
       const aiResult = document.getElementById('voice-ai-result');
       if (aiText2) aiText2.textContent = '';
       if (aiResult) aiResult.style.display = 'none';
-      /* cursor glides to CUBE row */
-      if (cursor) { cursor.style.left = '52%'; cursor.style.top = '30%'; }
+      /* cursor glides to CUBE row — compute position from actual DOM rect */
+      if (cursor && cubeRow) {
+        var inner = document.getElementById('msprof-inner');
+        if (inner) {
+          var ir = inner.getBoundingClientRect();
+          var cr = cubeRow.getBoundingClientRect();
+          cursor.style.left = ((cr.left - ir.left + cr.width * 0.22) / ir.width * 100).toFixed(1) + '%';
+          cursor.style.top  = ((cr.top  - ir.top  + cr.height * 0.4 ) / ir.height * 100).toFixed(1) + '%';
+        }
+      }
       /* highlight CUBE row */
       if (cubeRow) cubeRow.style.background = 'rgba(0,47,167,.15)';
       /* timeline cursor moves to the dip */
