@@ -2998,6 +2998,19 @@ function setupSlideSteps(secId, stripId, defs) {
     },
   ];
 
+  window.memSetPhase = function(p) {
+    var ids = ['mem-s1','mem-s2','mem-s3','mem-ready'];
+    if (p === 1) {
+      ids.forEach(function(id){ var e=document.getElementById(id); if(e) e.style.display='none'; });
+    } else if (p === 2) {
+      var s1=document.getElementById('mem-s1'); if(s1) s1.style.display='block';
+      setTimeout(function(){ var e=document.getElementById('mem-s2'); if(e) e.style.display='block'; }, 700);
+      setTimeout(function(){ var e=document.getElementById('mem-s3'); if(e) e.style.display='block'; }, 1400);
+    } else if (p === 3) {
+      var e=document.getElementById('mem-ready'); if(e) e.style.display='block';
+    }
+  };
+
   const container = document.getElementById('mem-sessions');
   const readyBar  = document.getElementById('mem-ready');
   if (!container) return;
@@ -3020,19 +3033,6 @@ function setupSlideSteps(secId, stripId, defs) {
       ).join('');
     container.appendChild(el);
   });
-
-  window.memSetPhase = function(p) {
-    var ids = ['mem-s1','mem-s2','mem-s3','mem-ready'];
-    if (p === 1) {
-      ids.forEach(function(id){ var e=document.getElementById(id); if(e) e.style.display='none'; });
-    } else if (p === 2) {
-      var s1=document.getElementById('mem-s1'); if(s1) s1.style.display='block';
-      setTimeout(function(){ var e=document.getElementById('mem-s2'); if(e) e.style.display='block'; }, 700);
-      setTimeout(function(){ var e=document.getElementById('mem-s3'); if(e) e.style.display='block'; }, 1400);
-    } else if (p === 3) {
-      var e=document.getElementById('mem-ready'); if(e) e.style.display='block';
-    }
-  };
 })();
 
 /* ─────────────────────────────────────────────
