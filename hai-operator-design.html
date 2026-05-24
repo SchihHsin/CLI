@@ -1022,6 +1022,154 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
   </div>
 </div>
 
+<!-- ══ CLI ARCH: 全局架构 ══ -->
+<div class="sec" id="s-cli-arch" style="background:var(--sur);">
+  <div class="slabel">
+    <span class="sub">HAI CLI · 全局架构</span>
+    <span class="main">5 个状态 · 1 个 Session · Status Bar 始终感知路径与阶段</span>
+  </div>
+  <div class="inner" style="padding-top:12px;display:flex;flex-direction:column;gap:10px;">
+
+    <!-- Status bar pattern -->
+    <div style="background:var(--tb);border:.5px solid var(--tbdr);padding:5px 14px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;">
+      <div style="display:flex;align-items:center;gap:6px;">
+        <div style="font-family:'DM Mono',monospace;font-size:7.5px;color:var(--acc);background:rgba(0,47,167,.15);border:.5px solid rgba(0,47,167,.3);padding:1px 8px;border-radius:2px;">RMSNorm ⟳</div>
+        <div style="font-family:'DM Mono',monospace;font-size:7.5px;color:rgba(255,255,255,.3);background:rgba(255,255,255,.04);border:.5px solid rgba(255,255,255,.08);padding:1px 8px;border-radius:2px;">FlashAttn ✓</div>
+        <div style="font-family:'DM Mono',monospace;font-size:7.5px;color:var(--tr);background:rgba(248,113,113,.08);border:.5px solid rgba(248,113,113,.25);padding:1px 8px;border-radius:2px;">RopeEmb ⚠</div>
+        <span style="font-family:'DM Mono',monospace;font-size:7px;color:rgba(255,255,255,.2);margin-left:4px;">Alt+1/2/3 切换</span>
+      </div>
+      <div style="font-family:'DM Mono',monospace;font-size:7.5px;color:var(--td);">~/workspace/RMSNorm-910B</div>
+      <div style="font-family:'DM Mono',monospace;font-size:7.5px;color:var(--acc);">Stage 06 · Preview</div>
+    </div>
+    <div style="font-family:'DM Mono',monospace;font-size:7px;color:var(--tx3);text-align:center;margin-top:-5px;">↑ 全局 Status Bar — 固定不随滚动消失，始终可知当前 session · 路径 · 阶段</div>
+
+    <!-- 5 state terminals -->
+    <div style="display:flex;gap:0;flex:1;min-height:0;align-items:stretch;">
+
+      <!-- State 1: Initial -->
+      <div style="flex:1;display:flex;flex-direction:column;gap:6px;padding:0 8px 0 0;">
+        <div style="font-family:'DM Mono',monospace;font-size:7px;color:var(--tx3);text-align:center;letter-spacing:.06em;">STATE 1</div>
+        <div style="font-size:9px;font-weight:200;color:var(--tx);text-align:center;font-family:'Inter',sans-serif;margin-bottom:3px;">初始</div>
+        <div style="flex:1;background:var(--tb);border:.5px solid var(--tbdr);display:flex;flex-direction:column;overflow:hidden;">
+          <div style="background:#080810;padding:3px 8px;border-bottom:.5px solid var(--tbdr);font-family:'DM Mono',monospace;font-size:6.5px;color:rgba(255,255,255,.3);">新会话 · ~/workspace · 就绪</div>
+          <div style="flex:1;padding:8px 9px;font-family:'DM Mono',monospace;font-size:8px;display:flex;flex-direction:column;gap:5px;">
+            <div style="color:var(--acc);font-size:9px;font-weight:600;">HAI</div>
+            <div style="color:var(--td);font-size:7.5px;line-height:1.55;">昇腾算子开发助手</div>
+            <div style="height:.5px;background:var(--tbdr);"></div>
+            <div style="color:rgba(255,255,255,.3);font-size:7px;line-height:1.6;">长按 Space 语音<br>或直接输入指令</div>
+            <div style="margin-top:auto;color:var(--acc);">❯ <span style="opacity:.5;">_</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Arrow -->
+      <div style="display:flex;align-items:center;padding:20px 0 0;color:rgba(255,255,255,.2);font-size:14px;flex-shrink:0;">→</div>
+
+      <!-- State 2: Working -->
+      <div style="flex:1;display:flex;flex-direction:column;gap:6px;padding:0 8px;">
+        <div style="font-family:'DM Mono',monospace;font-size:7px;color:var(--tx3);text-align:center;letter-spacing:.06em;">STATE 2</div>
+        <div style="font-size:9px;font-weight:200;color:var(--tx);text-align:center;font-family:'Inter',sans-serif;margin-bottom:3px;">执行中</div>
+        <div style="flex:1;background:var(--tb);border:.5px solid var(--tbdr);display:flex;flex-direction:column;overflow:hidden;">
+          <div style="background:#080810;padding:3px 8px;border-bottom:.5px solid var(--tbdr);display:flex;justify-content:space-between;">
+            <div style="font-family:'DM Mono',monospace;font-size:6.5px;color:var(--acc);">RMSNorm ⟳</div>
+            <div style="font-family:'DM Mono',monospace;font-size:6.5px;color:var(--td);">Stage 04 · 执行中</div>
+          </div>
+          <div style="flex:1;padding:8px 9px;font-family:'DM Mono',monospace;font-size:7.5px;display:flex;flex-direction:column;gap:3px;">
+            <div style="color:var(--acc);">▸ tbe-gen: tile_m 迭代…</div>
+            <div style="color:var(--tg);">&nbsp;&nbsp;52% → 68% → 72%</div>
+            <div style="color:var(--acc);">▸ dtype-check: 验证中…</div>
+            <div style="color:var(--acc);">▸ perf-bench: 910B…</div>
+            <div style="margin-top:6px;background:rgba(255,255,255,.06);height:3px;border-radius:1px;">
+              <div style="width:72%;height:100%;background:linear-gradient(90deg,var(--acc),#6B38D4);border-radius:1px;"></div>
+            </div>
+            <div style="margin-top:auto;color:var(--acc);">❯ <span style="opacity:.5;">_</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Arrow with branch -->
+      <div style="display:flex;align-items:center;padding:20px 0 0;color:rgba(255,255,255,.2);font-size:14px;flex-shrink:0;">→</div>
+
+      <!-- State 3: Confirmation -->
+      <div style="flex:1;display:flex;flex-direction:column;gap:6px;padding:0 8px;">
+        <div style="font-family:'DM Mono',monospace;font-size:7px;color:var(--tx3);text-align:center;letter-spacing:.06em;">STATE 3</div>
+        <div style="font-size:9px;font-weight:200;color:var(--tx);text-align:center;font-family:'Inter',sans-serif;margin-bottom:3px;">等待确认</div>
+        <div style="flex:1;background:var(--tb);border:.5px solid rgba(248,113,113,.35);display:flex;flex-direction:column;overflow:hidden;">
+          <div style="background:#080810;padding:3px 8px;border-bottom:.5px solid rgba(248,113,113,.2);display:flex;justify-content:space-between;">
+            <div style="font-family:'DM Mono',monospace;font-size:6.5px;color:var(--tr);">RMSNorm ⚠</div>
+            <div style="font-family:'DM Mono',monospace;font-size:6.5px;color:var(--td);">等待确认</div>
+          </div>
+          <div style="flex:1;padding:8px 9px;font-family:'DM Mono',monospace;font-size:7.5px;display:flex;flex-direction:column;gap:4px;">
+            <div style="color:var(--acc);">◆ format 不兼容</div>
+            <div style="color:var(--td);font-size:7px;line-height:1.5;">310P 不支持<br>FRACTAL_NZ</div>
+            <div style="height:.5px;background:var(--tbdr);margin:2px 0;"></div>
+            <div style="display:flex;gap:4px;font-size:7px;">
+              <div style="background:var(--acc);color:white;padding:2px 6px;border-radius:2px;">Y 继续</div>
+              <div style="background:rgba(255,255,255,.06);color:var(--td);padding:2px 6px;border-radius:2px;">N 暂停</div>
+            </div>
+            <div style="color:rgba(255,255,255,.25);font-size:7px;">📱 已推送手机</div>
+            <div style="margin-top:auto;color:var(--acc);">❯ <span style="opacity:.5;">_</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Arrow -->
+      <div style="display:flex;align-items:center;padding:20px 0 0;color:rgba(255,255,255,.2);font-size:14px;flex-shrink:0;">→</div>
+
+      <!-- State 4: Preview -->
+      <div style="flex:1;display:flex;flex-direction:column;gap:6px;padding:0 8px;">
+        <div style="font-family:'DM Mono',monospace;font-size:7px;color:var(--tx3);text-align:center;letter-spacing:.06em;">STATE 4</div>
+        <div style="font-size:9px;font-weight:200;color:var(--tx);text-align:center;font-family:'Inter',sans-serif;margin-bottom:3px;">结果预览</div>
+        <div style="flex:1;background:var(--tb);border:.5px solid rgba(0,47,167,.4);display:flex;flex-direction:column;overflow:hidden;">
+          <div style="background:#080810;padding:3px 8px;border-bottom:.5px solid var(--tbdr);display:flex;justify-content:space-between;">
+            <div style="font-family:'DM Mono',monospace;font-size:6.5px;color:var(--acc);">RMSNorm ⟳</div>
+            <div style="font-family:'DM Mono',monospace;font-size:6.5px;color:var(--acc);">Stage 06 · Preview</div>
+          </div>
+          <div style="flex:1;display:flex;overflow:hidden;">
+            <div style="flex:0 0 42%;padding:5px 5px;border-right:.5px solid var(--tbdr);font-family:'DM Mono',monospace;font-size:6.5px;display:flex;flex-direction:column;gap:2px;">
+              <div style="color:var(--td);margin-bottom:2px;font-size:6px;">日志</div>
+              <div style="color:var(--acc);">▸ tile_m 128</div>
+              <div style="color:var(--tg);">  72.4% ✓</div>
+              <div style="color:var(--acc);">▸ 精度 ✓</div>
+            </div>
+            <div style="flex:1;padding:5px 5px;font-family:'DM Mono',monospace;font-size:6.5px;display:flex;flex-direction:column;gap:2px;">
+              <div style="color:var(--td);margin-bottom:2px;font-size:6px;">结果</div>
+              <div style="display:flex;gap:3px;align-items:center;"><div style="font-size:6px;color:var(--td);">CUBE</div><div style="flex:1;height:4px;background:rgba(255,255,255,.08);"><div style="width:71%;height:100%;background:var(--tp);"></div></div><div style="color:var(--tp);font-size:6px;">71%</div></div>
+              <div style="display:flex;gap:3px;align-items:center;"><div style="font-size:6px;color:var(--td);">Vec</div><div style="flex:1;height:4px;background:rgba(255,255,255,.08);"><div style="width:88%;height:100%;background:var(--tg);"></div></div><div style="color:var(--tg);font-size:6px;">88%</div></div>
+              <div style="margin-top:2px;font-size:6px;color:rgba(255,255,255,.25);">点击区域反馈</div>
+            </div>
+          </div>
+          <div style="padding:3px 8px;border-top:.5px solid var(--tbdr);font-family:'DM Mono',monospace;font-size:6.5px;color:var(--acc);">❯ <span style="opacity:.5;">_</span></div>
+        </div>
+      </div>
+
+      <!-- Arrow -->
+      <div style="display:flex;align-items:center;padding:20px 0 0;color:rgba(255,255,255,.2);font-size:14px;flex-shrink:0;">→</div>
+
+      <!-- State 5: Completion -->
+      <div style="flex:1;display:flex;flex-direction:column;gap:6px;padding:0 0 0 8px;">
+        <div style="font-family:'DM Mono',monospace;font-size:7px;color:var(--tx3);text-align:center;letter-spacing:.06em;">STATE 5</div>
+        <div style="font-size:9px;font-weight:200;color:var(--tx);text-align:center;font-family:'Inter',sans-serif;margin-bottom:3px;">完成</div>
+        <div style="flex:1;background:var(--tb);border:.5px solid rgba(52,211,153,.3);display:flex;flex-direction:column;overflow:hidden;">
+          <div style="background:#080810;padding:3px 8px;border-bottom:.5px solid rgba(52,211,153,.15);display:flex;justify-content:space-between;">
+            <div style="font-family:'DM Mono',monospace;font-size:6.5px;color:var(--tg);">RMSNorm ✓</div>
+            <div style="font-family:'DM Mono',monospace;font-size:6.5px;color:var(--td);">Stage 06 · 完成</div>
+          </div>
+          <div style="flex:1;padding:8px 9px;font-family:'DM Mono',monospace;font-size:7.5px;display:flex;flex-direction:column;gap:3px;">
+            <div style="color:var(--tg);">✓ cube_util 72.4%</div>
+            <div style="color:var(--tg);">✓ max_error 8.3e-6</div>
+            <div style="color:var(--tg);">✓ 910B / 310P ✓</div>
+            <div style="height:.5px;background:var(--tbdr);margin:3px 0;"></div>
+            <div style="color:var(--acc);font-size:7px;">◆ 已存入记忆</div>
+            <div style="margin-top:auto;color:var(--acc);">❯ <span style="opacity:.5;">_</span></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
 <!-- ══ STAGE 01: 记忆启动 ══ -->
 <div class="sec" id="s-m4a" style="background:var(--bg);">
   <div class="slabel">
@@ -1545,7 +1693,7 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
 <!-- ══ STAGE 08: 光标伴侣 ══ -->
 <div class="sec" id="s-m6a" style="background:var(--sur);">
   <div class="slabel">
-    <span class="sub">表达意图 · Stage 02 · 设计点 2/4</span>
+    <span class="sub">表达意图 · Stage 02 · 设计点 3/3</span>
     <span class="main">光标伴侣 — msprof 分析全程 AI 贴身引导</span>
   </div>
   <div class="inner">
@@ -1652,53 +1800,55 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
 <!-- ══ STAGE 02-2: 手势 Prompt ══ -->
 <div class="sec" id="s-m2b" style="background:var(--bg);">
   <div class="slabel">
-    <span class="sub">表达意图 · Stage 02 · 设计点 3/4</span>
-    <span class="main">圈选 TBE 代码 — 下意识动作触发 AI 优化</span>
+    <span class="sub">表达意图 · Stage 02 · 设计点 3/3</span>
+    <span class="main">代码交互 — 停顿 + 圈选，AI 感知意图</span>
   </div>
   <div class="inner">
     <div class="dp-layout">
       <div class="dp-left">
         <div class="dp-desc">
           <div class="dp-label">设计说明</div>
-          <div class="dp-title">手势意图映射：选中即指令</div>
-          <div class="dp-body">在 TBE 代码中停顿在 UB 分配行、圈选 tile 参数块、划过 data_move 序列——这些直觉动作被解读为优化意图。AI 理解后直接给出带有昇腾硬件数据支撑的优化方案。</div>
+          <div class="dp-title">光标即上下文 · 选中即指令</div>
+          <div class="dp-body">工程师不需要切换工具描述问题——在 TBE 代码中<strong style="color:var(--tx);">停顿 1.5 秒</strong>，AI 自动弹出该行的硬件分析浮层；<strong style="color:var(--tx);">圈选参数块</strong>，AI 感知优化意图并给出最优值建议。两种手势共享同一 TBE 编辑器，互相不打断。</div>
         </div>
         <div class="dp-desc">
-          <div class="dp-label">手势-意图映射表</div>
-          <div style="display:grid;grid-template-columns:auto 1fr;gap:5px 12px;font-size:10.5px;margin-top:4px;">
-            <span style="font-family:'DM Mono',monospace;color:var(--acc);">停顿 1.5s</span><span style="color:var(--tx2);">显示该行的硬件分析卡片</span>
-            <span style="font-family:'DM Mono',monospace;color:var(--acc);">选中代码块</span><span style="color:var(--tx2);">分析选中段，给出重构建议</span>
-            <span style="font-family:'DM Mono',monospace;color:var(--acc);">圈选参数</span><span style="color:var(--tx2);">推荐最优参数值 + 理由</span>
-            <span style="font-family:'DM Mono',monospace;color:var(--acc);">划过 tile 块</span><span style="color:var(--tx2);">计算 UB 占用并给出调整建议</span>
+          <div class="dp-label">两种手势映射</div>
+          <div style="display:flex;flex-direction:column;gap:6px;margin-top:4px;">
+            <div style="padding:7px 10px;background:var(--bg2);border:.5px solid var(--bdr2);">
+              <div style="font-family:'DM Mono',monospace;font-size:7.5px;color:var(--acc);margin-bottom:3px;">停顿 1.5s — 悬停分析</div>
+              <div style="font-size:8.5px;color:var(--tx2);line-height:1.55;">光标停在 data_move / Tensor / set_flag 等关键行，自动浮出昇腾硬件分析卡：内存效率、UB 占用、CUBE 吞吐影响</div>
+            </div>
+            <div style="padding:7px 10px;background:var(--bg2);border:.5px solid var(--bdr2);">
+              <div style="font-family:'DM Mono',monospace;font-size:7.5px;color:var(--acc);margin-bottom:3px;">圈选参数块 — 优化建议</div>
+              <div style="font-size:8.5px;color:var(--tx2);line-height:1.55;">选中 tile_m / ub_size 等参数行，AI 计算当前配置下的 UB 占用与理论利用率，给出最优值 + 理由</div>
+            </div>
           </div>
         </div>
         <div class="ba-grid">
           <div class="ba-before">
             <div class="ba-label" style="gap:6px;"><span style="font-family:'DM Mono',monospace;font-size:7px;letter-spacing:.1em;background:var(--grey-2);color:var(--tx2);padding:1px 6px;">BEFORE</span>过去的做法</div>
             <div style="display:flex;flex-direction:column;gap:3px;margin-top:4px;">
-              <div style="background:var(--tb);padding:6px 8px;font-family:'DM Mono',monospace;font-size:8px;border:.5px solid var(--tbdr);">
-                <span style="color:var(--tp);">tile_m</span> = <span style="color:var(--tg);">64</span> <span style="color:var(--td)"># 经验值</span>
+              <div style="background:var(--tb);padding:5px 8px;font-family:'DM Mono',monospace;font-size:8px;border:.5px solid var(--tbdr);">
+                <span style="color:var(--tp);">tile_m</span> = <span style="color:var(--tg);">64</span> <span style="color:var(--td);"># 经验值？</span>
               </div>
-              <div style="background:var(--bg2);padding:5px 8px;border-left:2px solid var(--grey-2);border:.5px solid var(--bdr2);">
-                <div style="font-size:8px;color:var(--tx2);">「tile_m 设多少合适？」<span style="color:var(--tx3);">（手动输入）</span></div>
-              </div>
-              <div style="text-align:center;font-size:7.5px;color:var(--tx3);font-family:'DM Mono',monospace;">停下来思考 → 切换 → 描述背景</div>
+              <div style="font-size:8px;color:var(--tx3);padding:0 4px;">→ 手动查文档 → 切换工具 → 计算带宽</div>
+              <div style="background:var(--bg2);border:.5px solid var(--bdr2);padding:5px 8px;font-size:8px;color:var(--tx2);">停下来思考 → 描述背景 → 等待回答</div>
             </div>
           </div>
           <div class="ba-after">
             <div class="ba-label" style="gap:6px;"><span style="font-family:'DM Mono',monospace;font-size:7px;letter-spacing:.1em;background:var(--acc);color:white;padding:1px 6px;">AFTER</span>新的设计</div>
-            <div class="ba-text">停顿在 tile_m 参数行，AI 自动计算该配置下的 UB 占用与 AI Core 理论利用率，给出最优值建议。</div>
+            <div class="ba-text">停顿在 data_move 行：自动弹出搬运效率分析。圈选 tile_m：AI 直接给出 64→128 的最优值建议与推导。</div>
           </div>
         </div>
       </div>
       <div class="dp-right">
-        <div class="mockup-label">动态 Mockup — TBE 手势优化</div>
+        <div class="mockup-label">动态 Mockup — TBE 代码感知演示</div>
         <div class="stp-strip" id="stp-m2b">
           <div class="stp-bar"><div class="stp-fill"></div></div>
           <div class="stp-steps">
-            <div class="stp-step"><div class="stp-num">1</div><span class="stp-lbl">选中 tile 参数块</span></div>
-            <div class="stp-step"><div class="stp-num">2</div><span class="stp-lbl">AI 感知优化意图</span></div>
-            <div class="stp-step"><div class="stp-num">3</div><span class="stp-lbl">就地更新配置</span></div>
+            <div class="stp-step"><div class="stp-num">1</div><span class="stp-lbl">光标停在 data_move</span></div>
+            <div class="stp-step"><div class="stp-num">2</div><span class="stp-lbl">浮层显示硬件分析</span></div>
+            <div class="stp-step"><div class="stp-num">3</div><span class="stp-lbl">圈选 tile_m · AI 优化</span></div>
           </div>
         </div>
         <div style="flex:1;background:#1a1a2e;border:.5px solid var(--grey-2);display:flex;flex-direction:column;overflow:hidden;position:relative;" id="tbe-demo">
@@ -1706,30 +1856,35 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
             <div style="width:7px;height:7px;border-radius:50%;background:#FF5F57;"></div>
             <div style="width:7px;height:7px;border-radius:50%;background:#FEBC2E;"></div>
             <div style="width:7px;height:7px;border-radius:50%;background:#28C840;"></div>
-            <span style="font-family:'DM Mono',monospace;font-size:9px;color:var(--td);margin-left:4px;">rmsnorm_tbe.py</span>
+            <span style="font-family:'DM Mono',monospace;font-size:9px;color:var(--td);margin-left:4px;">rmsnorm_tbe.py · 昇腾 910B</span>
           </div>
           <div style="padding:10px 14px;font-family:'DM Mono',monospace;font-size:9.5px;line-height:1.75;flex:1;position:relative;color:var(--tw);" id="tbe-code-area">
-            <div style="color:var(--td);"># RMSNorm TBE 实现</div>
-            <div><span style="color:var(--tp);">def</span> <span style="color:var(--tb2);">rmsnorm_compute</span>(tik_instance, x, gamma, y):</div>
-            <div style="padding-left:16px;">
-              <div class="tbe-line" id="tbe-line-tile" style="transition:background .25s;border-radius:3px;padding:0 4px;margin:0 -4px;">
-                <span style="color:var(--td)"># Tile 配置</span>
-              </div>
-              <div class="tbe-line" id="tbe-line-tm" style="transition:background .25s;border-radius:3px;padding:0 4px;margin:0 -4px;">
-                <span style="color:var(--tp);">tile_m</span> = <span style="color:var(--tg);" id="tile-m-val">64</span>   <span style="color:var(--td);"># 待优化</span>
-              </div>
-              <div class="tbe-line" id="tbe-line-ub" style="transition:background .25s;border-radius:3px;padding:0 4px;margin:0 -4px;">
-                <span style="color:var(--tp);">ub_size</span> = <span style="color:var(--tg);">131072</span> <span style="color:var(--td);"># 128KB</span>
-              </div>
-              <div style="margin-top:6px;color:var(--td);"># UB 分配</div>
-              <div><span style="color:var(--tp);">x_ub</span> = tik_instance.Tensor(<span style="color:var(--ty);">"float16"</span>, (tile_m, <span style="color:var(--tg);">256</span>), ...)</div>
-              <div><span style="color:var(--tp);">gamma_ub</span> = tik_instance.Tensor(<span style="color:var(--ty);">"float16"</span>, (<span style="color:var(--tg);">256</span>,), ...)</div>
+            <div style="color:var(--td);">24  # --- 数据搬运 ---</div>
+            <div id="cd-line-1" style="transition:background .2s;border-radius:3px;padding:0 3px;margin:0 -3px;"><span style="color:var(--td);">25</span>  <span style="color:var(--tb2);">tik.data_move</span>(x_ub, x_gm, <span style="color:var(--tg);">0</span>, <span style="color:var(--tg);">1</span>, burst_len, <span style="color:var(--tg);">0</span>, <span style="color:var(--tg);">0</span>)</div>
+            <div style="color:var(--td);">26  </div>
+            <div style="color:var(--td);">27  # --- Tile 配置 ---</div>
+            <div class="tbe-line" id="tbe-line-tm" style="transition:background .25s;border-radius:3px;padding:0 4px;margin:0 -4px;">
+              <span style="color:var(--td);">28</span>  <span style="color:var(--tp);">tile_m</span> = <span style="color:var(--tg);" id="tile-m-val">64</span>   <span style="color:var(--td);"># 待优化</span>
             </div>
-            <div id="gesture-overlay-tbe" style="position:absolute;inset:0;pointer-events:none;overflow:hidden;"></div>
-          </div>
-          <div id="tbe-ai-bar" style="display:none;background:rgba(131,77,240,.07);border-top:.5px solid rgba(131,77,240,.2);padding:8px 14px;">
-            <div style="font-family:'DM Mono',monospace;font-size:8.5px;color:var(--acc-l);letter-spacing:.08em;margin-bottom:3px;">AI · 检测到 tile 参数优化意图</div>
-            <div id="tbe-ai-text" style="font-size:9px;color:var(--tx2);line-height:1.5;"></div>
+            <div class="tbe-line" id="tbe-line-ub" style="transition:background .25s;border-radius:3px;padding:0 4px;margin:0 -4px;">
+              <span style="color:var(--td);">29</span>  <span style="color:var(--tp);">ub_size</span> = <span style="color:var(--tg);">131072</span> <span style="color:var(--td);"># 128KB</span>
+            </div>
+            <div style="color:var(--td);">30  </div>
+            <div><span style="color:var(--td);">31</span>  <span style="color:var(--tp);">x_ub</span> = tik_instance.Tensor(<span style="color:var(--ty);">"float16"</span>, (tile_m, <span style="color:var(--tg);">256</span>), ...)</div>
+            <!-- Cursor -->
+            <div class="cd-cursor" id="cd-cursor" style="left:10%;top:20%;"><svg width="14" height="18" viewBox="0 0 12 16" fill="none"><path d="M2 1L2 13L5.2 10.3L7.5 15L9.2 14.2L6.9 9.5H11.5Z" fill="white" stroke="#1A1A2E" stroke-width=".8" stroke-linejoin="round"/></svg></div>
+            <!-- Hover popup (step 2) -->
+            <div id="cd-popup-tbe" style="display:none;position:absolute;z-index:10;left:18%;top:4%;">
+              <div style="background:var(--tbar);border:.5px solid var(--acc-b);border-radius:8px;padding:10px 13px;font-family:'DM Mono',monospace;color:var(--tw);max-width:240px;box-shadow:0 8px 24px rgba(0,0,0,.4);animation:fadeIn .25s ease;">
+                <div style="font-size:8px;color:var(--acc);letter-spacing:.1em;margin-bottom:5px;" id="cd-popup-label-tbe">data_move · 搬运分析</div>
+                <div style="font-size:9px;color:var(--tw);line-height:1.55;" id="cd-popup-text-tbe">HBM→UB burst_len=256<br>带宽效率 84% · 无 bank conflict<br>建议：保持当前搬运粒度</div>
+              </div>
+            </div>
+            <!-- Selection + AI bar (step 3) -->
+            <div id="tbe-ai-bar" style="display:none;position:absolute;bottom:0;left:0;right:0;background:rgba(0,47,167,.09);border-top:.5px solid rgba(0,47,167,.25);padding:8px 14px;">
+              <div style="font-family:'DM Mono',monospace;font-size:8.5px;color:var(--acc);letter-spacing:.08em;margin-bottom:3px;">AI · tile_m 优化建议</div>
+              <div id="tbe-ai-text" style="font-size:9px;color:var(--tx2);line-height:1.5;">UB 容量 256KB ÷ fp16×2 = 65536 元素<br>CUBE 粒度 16×16 → tile_m = <strong style="color:var(--tg);">128</strong> 最优（↑ CUBE 21%→72%）</div>
+            </div>
           </div>
         </div>
       </div>
@@ -1737,87 +1892,6 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
   </div>
 </div>
 
-<!-- ══ STAGE 02-3: 光标感知 ══ -->
-<div class="sec" id="s-m2a" style="background:var(--sur);">
-  <div class="slabel">
-    <span class="sub">表达意图 · Stage 02 · 设计点 4/4</span>
-    <span class="main">光标即上下文 — 停留在 TBE 代码行触发硬件分析</span>
-  </div>
-  <div class="inner">
-    <div class="dp-layout">
-      <div class="dp-left">
-        <div class="dp-desc">
-          <div class="dp-label">设计说明</div>
-          <div class="dp-title">代码感知 × 硬件映射</div>
-          <div class="dp-body">AI 持续监测光标在 TBE 代码中的位置。当工程师在 <code style="font-family:'DM Mono',monospace;color:var(--acc);font-size:11px;">data_move</code>、<code style="font-family:'DM Mono',monospace;color:var(--acc);font-size:11px;">tik.Tensor</code>、<code style="font-family:'DM Mono',monospace;color:var(--acc);font-size:11px;">set_flag</code> 等关键行停留超过 1.5 秒，自动浮出对应的昇腾硬件分析卡：内存层次访问效率、bank conflict 风险、CUBE 吞吐影响。</div>
-        </div>
-        <div class="dp-desc">
-          <div class="dp-label">核心设计点</div>
-          <div class="dp-points">
-            <div class="dpp">停顿检测阈值 1.5s，自动识别光标所在 TBE API 类型</div>
-            <div class="dpp">data_move 行：显示 UB→L1→L2→HBM 搬运效率分析</div>
-            <div class="dpp">Tensor 声明行：显示 UB 占用计算 + 剩余空间</div>
-            <div class="dpp">非侵入式浮层，ESC 或移走光标即关闭</div>
-          </div>
-        </div>
-        <div class="ba-grid">
-          <div class="ba-before">
-            <div class="ba-label" style="gap:6px;"><span style="font-family:'DM Mono',monospace;font-size:7px;letter-spacing:.1em;background:var(--grey-2);color:var(--tx2);padding:1px 6px;">BEFORE</span>过去的做法</div>
-            <div style="display:flex;flex-direction:column;gap:3px;margin-top:4px;">
-              <div style="background:var(--tb);padding:5px 8px;border-left:2px solid var(--grey-2);font-family:'DM Mono',monospace;font-size:8px;border:.5px solid var(--tbdr);">
-                <span style="color:var(--tw);">tik.data_move(x_ub, x_gm, ...)</span>
-              </div>
-              <div style="font-size:8px;color:var(--tx3);padding:0 4px;">↓ 不确定搬运效率</div>
-              <div style="background:var(--bg2);padding:5px 8px;border-left:2px solid var(--grey-2);font-size:8px;color:var(--tx2);">查文档 → 手动计算带宽 → 反复 msprof 测</div>
-              <div style="text-align:center;font-size:7.5px;color:var(--tx3);font-family:'DM Mono',monospace;">每次都要重新推算</div>
-            </div>
-          </div>
-          <div class="ba-after">
-            <div class="ba-label" style="gap:6px;"><span style="font-family:'DM Mono',monospace;font-size:7px;letter-spacing:.1em;background:var(--acc);color:white;padding:1px 6px;">AFTER</span>新的设计</div>
-            <div class="ba-text">光标悬停在 data_move 行 1.5s，AI 自动计算该搬运操作的带宽效率和昇腾内存层次命中情况，给出优化提示。</div>
-          </div>
-        </div>
-      </div>
-      <div class="dp-right">
-        <div class="mockup-label">动态 Mockup — TBE 代码感知演示</div>
-        <div class="stp-strip" id="stp-m2a">
-          <div class="stp-bar"><div class="stp-fill"></div></div>
-          <div class="stp-steps">
-            <div class="stp-step"><div class="stp-num">1</div><span class="stp-lbl">光标悬停代码行</span></div>
-            <div class="stp-step"><div class="stp-num">2</div><span class="stp-lbl">AI 感知停顿</span></div>
-            <div class="stp-step"><div class="stp-num">3</div><span class="stp-lbl">硬件分析浮现</span></div>
-          </div>
-        </div>
-        <div style="flex:1;background:#1a1a2e;border:.5px solid var(--grey-2);display:flex;flex-direction:column;overflow:hidden;position:relative;" id="cursor-demo-tbe">
-          <div style="background:#12121e;padding:5px 12px;border-bottom:.5px solid #242430;display:flex;align-items:center;gap:6px;flex-shrink:0;">
-            <div style="width:7px;height:7px;border-radius:50%;background:#FF5F57;"></div>
-            <div style="width:7px;height:7px;border-radius:50%;background:#FEBC2E;"></div>
-            <div style="width:7px;height:7px;border-radius:50%;background:#28C840;"></div>
-            <span style="font-family:'DM Mono',monospace;font-size:9px;color:var(--td);margin-left:4px;">rmsnorm_tbe.py · 昇腾 910B</span>
-          </div>
-          <div style="padding:10px 14px;font-family:'DM Mono',monospace;font-size:9.5px;line-height:1.85;flex:1;position:relative;color:var(--tw);">
-            <div style="color:var(--td);">25  # --- 数据搬运 ---</div>
-            <div id="cd-line-1" style="transition:background .2s;border-radius:3px;padding:0 3px;margin:0 -3px;"><span style="color:var(--td);">26</span>  <span style="color:var(--tb2);">tik.data_move</span>(x_ub, x_gm, <span style="color:var(--tg);">0</span>, <span style="color:var(--tg);">1</span>, burst_len, <span style="color:var(--tg);">0</span>, <span style="color:var(--tg);">0</span>)</div>
-            <div style="color:var(--td);">27  </div>
-            <div id="cd-line-2" style="transition:background .2s;border-radius:3px;padding:0 3px;margin:0 -3px;"><span style="color:var(--td);">28</span>  <span style="color:var(--tb2);">tik.data_move</span>(gamma_ub, gamma_gm, <span style="color:var(--tg);">0</span>, <span style="color:var(--tg);">1</span>, gamma_len, <span style="color:var(--tg);">0</span>, <span style="color:var(--tg);">0</span>)</div>
-            <div style="color:var(--td);">29  </div>
-            <div style="color:var(--td);">30  # --- 计算 ---</div>
-            <div id="cd-line-3" style="transition:background .2s;border-radius:3px;padding:0 3px;margin:0 -3px;"><span style="color:var(--td);">31</span>  <span style="color:var(--tb2);">tik.vmul</span>(x_ub, x_ub, x_ub, <span style="color:var(--tg);">64</span>)  <span style="color:var(--td);"># x²</span></div>
-            <div style="color:var(--td);">32  tik.vmean(...) </div>
-            <div style="color:var(--td);">33  tik.vmul(x_ub, x_ub, gamma_ub, ...)</div>
-            <div class="cd-cursor" id="cd-cursor" style="left:10%;top:25%;"><svg width="14" height="18" viewBox="0 0 12 16" fill="none"><path d="M2 1L2 13L5.2 10.3L7.5 15L9.2 14.2L6.9 9.5H11.5Z" fill="white" stroke="#1A1A2E" stroke-width=".8" stroke-linejoin="round"/></svg></div>
-            <div id="cd-popup-tbe" style="display:none;position:absolute;z-index:10;left:20%;top:5%;">
-              <div style="background:var(--tbar);border:.5px solid var(--acc-b);border-radius:8px;padding:10px 13px;font-family:'DM Mono',monospace;color:var(--tw);max-width:260px;box-shadow:0 8px 24px rgba(0,0,0,.4);animation:fadeIn .25s ease;">
-                <div style="font-size:8px;color:var(--acc);letter-spacing:.1em;margin-bottom:5px;" id="cd-popup-label-tbe">AI 分析</div>
-                <div style="font-size:9px;color:var(--tw);line-height:1.55;" id="cd-popup-text-tbe"></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
 
 <!-- ══ STAGE 03: Goal 命令 ══ -->
 <div class="sec" id="s-m3b" style="background:var(--bg);">
@@ -1892,59 +1966,122 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
   </div>
 </div>
 
-<!-- ══ STAGE 04-1: Agent View ══ -->
+<!-- ══ STAGE 04-1: 多任务管理 ══ -->
 <div class="sec" id="s-m1a" style="background:var(--sur);">
   <div class="slabel">
     <span class="sub">委托执行 · Stage 04 · 设计点 1/2</span>
-    <span class="main">Agent View — 算子开发专项 Agent 统一视图</span>
+    <span class="main">多任务管理 — Status Bar 时刻告知身在何处</span>
   </div>
   <div class="inner">
     <div class="dp-layout">
       <div class="dp-left">
         <div class="dp-desc">
           <div class="dp-label">设计说明</div>
-          <div class="dp-title">多 Agent 并行 · 专项分工</div>
-          <div class="dp-body">一个算子的完整验证需要多个维度并行进行：TBE 代码生成与优化、shape 推导验证、dtype/format 约束检查、多硬件性能基准测试。每个维度由独立 Agent 负责，统一视图实时展示所有进度。</div>
+          <div class="dp-title">多项目并行 · 永不丢失上下文</div>
+          <div class="dp-body">同时维护 RMSNorm、FlashAttn、RopeEmb 三个算子的优化任务，开发者无需打开多个终端窗口。所有 session 的进度和状态始终显示在固定 status bar，<strong style="color:var(--acc);">Alt+1/2/3</strong> 即时切换，切回后上下文完整保留。⚠ 任务标签主动闪烁，无需逐个检查。</div>
         </div>
         <div class="dp-desc">
-          <div class="dp-label">昇腾算子开发 Agent 分工</div>
+          <div class="dp-label">核心设计点</div>
           <div class="dp-points">
-            <div class="dpp"><strong style="color:var(--acc);">tbe-gen</strong> — TBE 代码生成 + 迭代优化</div>
-            <div class="dpp"><strong style="color:var(--acc);">shape-infer</strong> — shape 推导函数验证</div>
-            <div class="dpp"><strong style="color:var(--acc);">dtype-check</strong> — dtype/format 约束矩阵验证</div>
-            <div class="dpp"><strong style="color:var(--acc);">perf-bench</strong> — 910B / 310P 性能基准并行测试</div>
+            <div class="dpp">Status bar 显示所有 session：名称 + 状态图标（⟳运行 / ✓完成 / ⚠需确认）</div>
+            <div class="dpp">⚠ 标签闪烁主动提示，不需要进入每个 session 才能发现问题</div>
+            <div class="dpp">Alt+1/2/3 切换，路径 + 阶段状态即时更新</div>
+            <div class="dpp">手机同步推送 ⚠ 任务通知，离开工位也不漏看</div>
           </div>
         </div>
         <div class="ba-grid">
           <div class="ba-before">
             <div class="ba-label" style="gap:6px;"><span style="font-family:'DM Mono',monospace;font-size:7px;letter-spacing:.1em;background:var(--grey-2);color:var(--tx2);padding:1px 6px;">BEFORE</span>过去的做法</div>
             <div style="background:#0f0f16;border-radius:5px;padding:7px 9px;font-family:'DM Mono',monospace;font-size:8px;border:.5px solid #252530;margin-top:4px;line-height:1.7;">
-              <div style="color:var(--td);">[08:30] 提交 TBE 代码</div>
-              <div style="color:var(--td);">[09:15] shape 推导报错 → 修复</div>
-              <div style="color:var(--td);">[10:00] dtype 约束失败 → 修复</div>
-              <div style="color:var(--td);">[11:30] 等待 910B 测试完成...</div>
-              <div style="color:var(--ty);">← 串行等待，全天都在等</div>
+              <div style="color:var(--td);">Terminal 1: ssh user@server1  ← RMSNorm</div>
+              <div style="color:var(--td);">Terminal 2: ssh user@server2  ← FlashAttn</div>
+              <div style="color:var(--td);">Terminal 3: ssh user@server3  ← RopeEmb</div>
+              <div style="color:var(--ty);margin-top:3px;"># 3个窗口混着操作，错了还不知道</div>
             </div>
           </div>
           <div class="ba-after">
             <div class="ba-label" style="gap:6px;"><span style="font-family:'DM Mono',monospace;font-size:7px;letter-spacing:.1em;background:var(--acc);color:white;padding:1px 6px;">AFTER</span>新的设计</div>
-            <div class="ba-text">4 个 Agent 并行执行，shape/dtype/性能同步验证，任何异常即时浮出，开发者只需在关键节点确认决策。</div>
+            <div class="ba-text">单一终端窗口，status bar 展示所有任务进度，Alt+1/2/3 切换 session，⚠ 标签主动闪烁，再也不会操作错任务。</div>
           </div>
         </div>
       </div>
-      <div class="dp-right">
-        <div class="mockup-label">动态 Mockup — Agent 统一视图</div>
+      <div class="dp-right" style="position:relative;">
+        <div class="mockup-label">动态 Mockup — 多 session 切换</div>
         <div class="stp-strip" id="stp-m1a">
           <div class="stp-bar"><div class="stp-fill"></div></div>
           <div class="stp-steps">
-            <div class="stp-step"><div class="stp-num">1</div><span class="stp-lbl">TBE 生成中</span></div>
-            <div class="stp-step"><div class="stp-num">2</div><span class="stp-lbl">验证 Agent 介入</span></div>
-            <div class="stp-step"><div class="stp-num">3</div><span class="stp-lbl">全部完成</span></div>
+            <div class="stp-step"><div class="stp-num">1</div><span class="stp-lbl">RMSNorm 运行中</span></div>
+            <div class="stp-step"><div class="stp-num">2</div><span class="stp-lbl">RopeEmb 需确认</span></div>
+            <div class="stp-step"><div class="stp-num">3</div><span class="stp-lbl">切换处理确认</span></div>
           </div>
         </div>
-        <div class="agv-root" style="flex:1;" id="agv-root">
-          <div class="agv-list" id="agv-list"></div>
-          <div class="agv-peek" id="agv-peek"></div>
+        <!-- macOS terminal window -->
+        <div style="flex:1;display:flex;flex-direction:column;min-height:0;">
+          <div style="flex:1;background:#0C0C11;border-radius:10px;border:.5px solid #2a2a38;box-shadow:0 8px 32px rgba(0,0,0,.55);display:flex;flex-direction:column;overflow:hidden;">
+            <!-- macOS title bar -->
+            <div style="background:#181820;padding:5px 10px;border-bottom:.5px solid #252530;display:flex;align-items:center;gap:5px;flex-shrink:0;">
+              <div style="width:8px;height:8px;border-radius:50%;background:#FF5F57;flex-shrink:0;"></div>
+              <div style="width:8px;height:8px;border-radius:50%;background:#FEBC2E;flex-shrink:0;"></div>
+              <div style="width:8px;height:8px;border-radius:50%;background:#28C840;flex-shrink:0;"></div>
+              <span style="flex:1;text-align:center;font-family:'DM Mono',monospace;font-size:7.5px;color:rgba(255,255,255,.3);">hai</span>
+            </div>
+            <!-- HAI Status bar -->
+            <div style="background:#080810;padding:3px 10px;border-bottom:.5px solid var(--tbdr);display:flex;align-items:center;gap:6px;flex-shrink:0;">
+              <div id="ms-tab-1" style="font-family:'DM Mono',monospace;font-size:7px;padding:1px 7px;border-radius:2px;transition:all .3s;color:rgba(255,255,255,.9);background:rgba(0,47,167,.3);border:.5px solid rgba(0,47,167,.45);">RMSNorm ⟳</div>
+              <div id="ms-tab-2" style="font-family:'DM Mono',monospace;font-size:7px;padding:1px 7px;border-radius:2px;transition:all .3s;color:rgba(255,255,255,.35);background:rgba(255,255,255,.03);border:.5px solid rgba(255,255,255,.07);">FlashAttn ✓</div>
+              <div id="ms-tab-3" style="font-family:'DM Mono',monospace;font-size:7px;padding:1px 7px;border-radius:2px;transition:all .3s;color:rgba(255,255,255,.35);background:rgba(255,255,255,.03);border:.5px solid rgba(255,255,255,.07);">RopeEmb ⚠</div>
+              <div style="margin-left:auto;display:flex;align-items:center;gap:8px;">
+                <span id="ms-path" style="font-family:'DM Mono',monospace;font-size:7px;color:var(--td);">~/workspace/RMSNorm</span>
+                <span id="ms-stage" style="font-family:'DM Mono',monospace;font-size:7px;color:var(--acc);">Stage 02 · 运行中</span>
+              </div>
+            </div>
+            <!-- Content area -->
+            <div style="flex:1;overflow:hidden;position:relative;">
+              <!-- Screen 1: RMSNorm running -->
+              <div id="ms-screen-1" style="position:absolute;inset:0;padding:10px 12px;display:flex;flex-direction:column;gap:3px;">
+                <div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--acc);line-height:1.7;">▸ tbe-gen: tile_m 64→128→192 迭代中…</div>
+                <div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--tg);line-height:1.7;">&nbsp;&nbsp;cube_util: 52% → 68% → 72.4%</div>
+                <div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--acc);line-height:1.7;">▸ shape-infer: 所有 shape 推导通过</div>
+                <div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--td);line-height:1.7;">&nbsp;&nbsp;dtype-check: 运行中…</div>
+                <div style="margin-top:auto;padding-top:6px;border-top:.5px solid rgba(255,255,255,.06);">
+                  <div style="font-family:'DM Mono',monospace;font-size:7px;color:rgba(255,255,255,.2);">Alt+1 RMSNorm  Alt+2 FlashAttn  Alt+3 RopeEmb</div>
+                </div>
+              </div>
+              <!-- Screen 2: same content, RopeEmb ⚠ more prominent -->
+              <div id="ms-screen-2" style="position:absolute;inset:0;padding:10px 12px;display:none;flex-direction:column;gap:3px;">
+                <div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--acc);line-height:1.7;">▸ tbe-gen: tile_m 128 收敛…</div>
+                <div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--tg);line-height:1.7;">&nbsp;&nbsp;cube_util: 72.4% ✓</div>
+                <div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--td);line-height:1.7;">▸ dtype-check: 检验中…</div>
+                <div style="margin-top:8px;padding:6px 8px;background:rgba(251,191,36,.07);border:.5px solid rgba(251,191,36,.25);border-radius:4px;">
+                  <div style="font-family:'DM Mono',monospace;font-size:7.5px;color:var(--ty);">⚠ RopeEmb · 需要你的决策</div>
+                  <div style="font-family:'DM Mono',monospace;font-size:7px;color:rgba(255,255,255,.4);margin-top:2px;">shape 推导发现维度不匹配 — Alt+3 切换处理</div>
+                </div>
+                <div style="margin-top:auto;padding-top:6px;border-top:.5px solid rgba(255,255,255,.06);">
+                  <div style="font-family:'DM Mono',monospace;font-size:7px;color:rgba(255,255,255,.2);">Alt+1 RMSNorm  Alt+2 FlashAttn  <span style="color:rgba(251,191,36,.6);">Alt+3 RopeEmb ⚠</span></div>
+                </div>
+              </div>
+              <!-- Screen 3: switched to RopeEmb -->
+              <div id="ms-screen-3" style="position:absolute;inset:0;padding:10px 12px;display:none;flex-direction:column;gap:3px;">
+                <div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--ty);line-height:1.7;">◆ shape 推导 · broadcast 维度不匹配</div>
+                <div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--td);line-height:1.7;">&nbsp;&nbsp;输入 (1, 4096, 128)</div>
+                <div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--td);line-height:1.7;">&nbsp;&nbsp;期望 (1, 4096, 64) ← 不匹配</div>
+                <div style="margin-top:6px;font-family:'DM Mono',monospace;font-size:7.5px;color:rgba(255,255,255,.55);">建议方案：截断第三维 128 → 64</div>
+                <div style="margin-top:6px;display:flex;gap:6px;">
+                  <div style="padding:4px 10px;background:var(--acc);border-radius:3px;font-family:'DM Mono',monospace;font-size:7.5px;color:white;">Y · 截断继续</div>
+                  <div style="padding:4px 10px;background:rgba(255,255,255,.06);border:.5px solid rgba(255,255,255,.12);border-radius:3px;font-family:'DM Mono',monospace;font-size:7.5px;color:rgba(255,255,255,.45);">N · 保留</div>
+                  <div style="padding:4px 10px;background:rgba(255,255,255,.06);border:.5px solid rgba(255,255,255,.12);border-radius:3px;font-family:'DM Mono',monospace;font-size:7.5px;color:rgba(255,255,255,.45);">Space 语音</div>
+                </div>
+                <div style="margin-top:auto;padding-top:6px;border-top:.5px solid rgba(255,255,255,.06);">
+                  <div style="font-family:'DM Mono',monospace;font-size:7px;color:rgba(255,255,255,.2);">Alt+1 返回 RMSNorm  Alt+2 FlashAttn</div>
+                </div>
+              </div>
+            </div>
+            <!-- Bottom prompt — fixed, bordered top and bottom -->
+            <div style="padding:4px 12px;border-top:.5px solid var(--tbdr);border-bottom:.5px solid rgba(255,255,255,.04);display:flex;align-items:center;gap:6px;flex-shrink:0;">
+              <span style="font-family:'DM Mono',monospace;font-size:9px;color:var(--acc);">❯</span>
+              <span style="font-family:'DM Mono',monospace;font-size:8px;color:var(--td);">_</span>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -2282,29 +2419,24 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
           <div class="stp-bar"><div class="stp-fill"></div></div>
           <div class="stp-steps">
             <div class="stp-step"><div class="stp-num">1</div><span class="stp-lbl">查看 Agent 进度</span></div>
-            <div class="stp-step"><div class="stp-num">2</div><span class="stp-lbl">收到决策推送</span></div>
-            <div class="stp-step"><div class="stp-num">3</div><span class="stp-lbl">语音批准 · 继续</span></div>
+            <div class="stp-step"><div class="stp-num">2</div><span class="stp-lbl">锁屏收到通知</span></div>
+            <div class="stp-step"><div class="stp-num">3</div><span class="stp-lbl">进入详情·语音批准</span></div>
           </div>
         </div>
         <div style="flex:1;display:flex;align-items:center;justify-content:center;overflow:hidden;">
           <div id="remote-phone" style="width:190px;height:412px;background:#0a0a14;border-radius:38px;border:2.5px solid #3a3a4a;box-shadow:0 12px 40px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.08);display:flex;flex-direction:column;overflow:hidden;position:relative;flex-shrink:0;">
-            <!-- Status bar -->
-            <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 18px 5px;flex-shrink:0;">
-              <span style="font-family:'SF Pro Display','Inter',sans-serif;font-size:9px;font-weight:600;color:rgba(255,255,255,.9);letter-spacing:-.01em;">9:41</span>
-              <!-- Dynamic Island -->
+            <!-- Status bar (always visible) -->
+            <div id="remote-status-bar" style="display:flex;justify-content:space-between;align-items:center;padding:10px 18px 5px;flex-shrink:0;">
+              <span id="remote-time" style="font-family:'SF Pro Display','Inter',sans-serif;font-size:9px;font-weight:600;color:rgba(255,255,255,.9);letter-spacing:-.01em;">9:41</span>
               <div style="width:72px;height:11px;background:#000;border-radius:6px;"></div>
-              <!-- Right icons -->
               <div style="display:flex;align-items:center;gap:4px;">
-                <!-- Signal bars -->
                 <div style="display:flex;align-items:flex-end;gap:1px;">
                   <div style="width:2px;height:4px;background:rgba(255,255,255,.9);border-radius:.5px;"></div>
                   <div style="width:2px;height:5.5px;background:rgba(255,255,255,.9);border-radius:.5px;"></div>
                   <div style="width:2px;height:7px;background:rgba(255,255,255,.9);border-radius:.5px;"></div>
                   <div style="width:2px;height:8.5px;background:rgba(255,255,255,.3);border-radius:.5px;"></div>
                 </div>
-                <!-- WiFi -->
                 <svg width="11" height="8" viewBox="0 0 11 8" fill="none"><path d="M5.5 6.5a1 1 0 100-2 1 1 0 000 2z" fill="rgba(255,255,255,.9)"/><path d="M2.8 4.5a3.8 3.8 0 015.4 0" stroke="rgba(255,255,255,.9)" stroke-width="1" stroke-linecap="round"/><path d="M0.5 2.5a6.4 6.4 0 0110 0" stroke="rgba(255,255,255,.9)" stroke-width="1" stroke-linecap="round"/></svg>
-                <!-- Battery -->
                 <div style="display:flex;align-items:center;gap:1px;">
                   <div style="width:20px;height:10px;border:1px solid rgba(255,255,255,.7);border-radius:2.5px;padding:1.5px;display:flex;align-items:center;">
                     <div style="width:80%;height:100%;background:#34D399;border-radius:1px;"></div>
@@ -2313,71 +2445,111 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
                 </div>
               </div>
             </div>
-            <div style="padding:3px 12px 7px;flex-shrink:0;border-bottom:.5px solid rgba(255,255,255,.07);">
-              <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--acc);font-weight:700;letter-spacing:.05em;">HAI</div>
-              <div style="font-family:'DM Mono',monospace;font-size:7px;color:rgba(255,255,255,.35);margin-top:1px;">RMSNorm-910B · 4 Agents 运行中</div>
-            </div>
-            <div style="flex:1;padding:8px 10px;display:flex;flex-direction:column;gap:5px;overflow:hidden;position:relative;">
-              <div style="background:rgba(255,255,255,.04);border:.5px solid rgba(255,255,255,.08);border-radius:6px;padding:6px 8px;">
-                <div style="display:flex;justify-content:space-between;align-items:center;">
-                  <span style="font-family:'DM Mono',monospace;font-size:8px;color:rgba(255,255,255,.85);">tbe-gen</span>
-                  <span style="font-family:'DM Mono',monospace;font-size:7px;color:var(--tg);">● 运行中</span>
-                </div>
-                <div style="margin-top:3px;background:rgba(255,255,255,.08);border-radius:2px;height:2px;"><div style="width:62%;height:100%;background:linear-gradient(90deg,var(--acc),#6B38D4);border-radius:2px;"></div></div>
-                <div style="font-family:'DM Mono',monospace;font-size:7px;color:rgba(255,255,255,.3);margin-top:2px;">tile_m=128 · 迭代 3/5</div>
+
+            <!-- Screen 1: App overview (step 1) -->
+            <div id="remote-screen-app" style="flex:1;display:flex;flex-direction:column;overflow:hidden;">
+              <div style="padding:3px 12px 7px;flex-shrink:0;border-bottom:.5px solid rgba(255,255,255,.07);">
+                <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--acc);font-weight:700;letter-spacing:.05em;">HAI</div>
+                <div style="font-family:'DM Mono',monospace;font-size:7px;color:rgba(255,255,255,.35);margin-top:1px;">RMSNorm-910B · 4 Agents 运行中</div>
               </div>
-              <div style="background:rgba(255,255,255,.04);border:.5px solid rgba(52,211,153,.2);border-radius:6px;padding:6px 8px;">
-                <div style="display:flex;justify-content:space-between;align-items:center;">
-                  <span style="font-family:'DM Mono',monospace;font-size:8px;color:rgba(255,255,255,.85);">shape-infer</span>
-                  <span style="font-family:'DM Mono',monospace;font-size:7px;color:var(--tg);">✓ 完成</span>
-                </div>
-                <div style="font-family:'DM Mono',monospace;font-size:7px;color:rgba(255,255,255,.3);margin-top:2px;">所有 shape 推导通过</div>
-              </div>
-              <div id="remote-dtype-card" style="background:rgba(255,255,255,.04);border:.5px solid rgba(255,255,255,.08);border-radius:6px;padding:6px 8px;transition:border-color .3s;">
-                <div style="display:flex;justify-content:space-between;align-items:center;">
-                  <span style="font-family:'DM Mono',monospace;font-size:8px;color:rgba(255,255,255,.85);">dtype-check</span>
-                  <span id="remote-dtype-status" style="font-family:'DM Mono',monospace;font-size:7px;color:var(--ty);">● 运行中</span>
-                </div>
-                <div id="remote-dtype-sub" style="font-family:'DM Mono',monospace;font-size:7px;color:rgba(255,255,255,.3);margin-top:2px;">检查 format 约束矩阵…</div>
-              </div>
-              <div style="background:rgba(255,255,255,.04);border:.5px solid rgba(255,255,255,.08);border-radius:6px;padding:6px 8px;">
-                <div style="display:flex;justify-content:space-between;align-items:center;">
-                  <span style="font-family:'DM Mono',monospace;font-size:8px;color:rgba(255,255,255,.85);">perf-bench</span>
-                  <span style="font-family:'DM Mono',monospace;font-size:7px;color:var(--tb2);">● 910B 测试</span>
-                </div>
-                <div style="margin-top:3px;background:rgba(255,255,255,.08);border-radius:2px;height:2px;"><div style="width:35%;height:100%;background:var(--tb2);border-radius:2px;"></div></div>
-              </div>
-              <!-- Push notification overlay -->
-              <div id="remote-push" style="display:none;position:absolute;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.6);backdrop-filter:blur(4px);border-radius:0;align-items:flex-start;justify-content:center;padding-top:16px;">
-                <div style="background:#1a1a28;border:.5px solid rgba(248,113,113,.4);border-radius:10px;padding:11px 12px;margin:0 4px;">
-                  <div style="display:flex;align-items:center;gap:6px;margin-bottom:5px;">
-                    <div style="width:14px;height:14px;border-radius:3px;background:var(--acc);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:'DM Mono',monospace;font-size:8px;color:white;font-weight:700;">H</div>
-                    <span style="font-family:'DM Mono',monospace;font-size:7px;color:rgba(255,255,255,.4);">HAI · 刚刚</span>
+              <div style="flex:1;padding:8px 10px;display:flex;flex-direction:column;gap:5px;overflow:hidden;">
+                <div style="background:rgba(255,255,255,.04);border:.5px solid rgba(255,255,255,.08);border-radius:6px;padding:6px 8px;">
+                  <div style="display:flex;justify-content:space-between;align-items:center;">
+                    <span style="font-family:'DM Mono',monospace;font-size:8px;color:rgba(255,255,255,.85);">tbe-gen</span>
+                    <span style="font-family:'DM Mono',monospace;font-size:7px;color:var(--tg);">● 运行中</span>
                   </div>
-                  <div style="font-family:'DM Mono',monospace;font-size:8.5px;color:rgba(255,255,255,.9);line-height:1.5;margin-bottom:3px;">dtype-check 发现 format 不兼容</div>
-                  <div style="font-family:'DM Mono',monospace;font-size:7.5px;color:var(--tr);line-height:1.5;margin-bottom:8px;">310P 不支持 FRACTAL_NZ 格式<br>→ 建议切换为 ND 格式继续</div>
-                  <div style="display:flex;gap:6px;">
-                    <div style="flex:1;background:var(--acc);border-radius:5px;padding:5px 0;text-align:center;font-family:'DM Mono',monospace;font-size:7.5px;color:white;">切换 ND · 继续</div>
-                    <div style="flex:1;background:rgba(255,255,255,.07);border-radius:5px;padding:5px 0;text-align:center;font-family:'DM Mono',monospace;font-size:7.5px;color:rgba(255,255,255,.4);">暂停</div>
+                  <div style="margin-top:3px;background:rgba(255,255,255,.08);border-radius:2px;height:2px;"><div style="width:62%;height:100%;background:linear-gradient(90deg,var(--acc),#6B38D4);border-radius:2px;"></div></div>
+                  <div style="font-family:'DM Mono',monospace;font-size:7px;color:rgba(255,255,255,.3);margin-top:2px;">tile_m=128 · 迭代 3/5</div>
+                </div>
+                <div style="background:rgba(255,255,255,.04);border:.5px solid rgba(52,211,153,.2);border-radius:6px;padding:6px 8px;">
+                  <div style="display:flex;justify-content:space-between;align-items:center;">
+                    <span style="font-family:'DM Mono',monospace;font-size:8px;color:rgba(255,255,255,.85);">shape-infer</span>
+                    <span style="font-family:'DM Mono',monospace;font-size:7px;color:var(--tg);">✓ 完成</span>
                   </div>
+                  <div style="font-family:'DM Mono',monospace;font-size:7px;color:rgba(255,255,255,.3);margin-top:2px;">所有 shape 推导通过</div>
+                </div>
+                <div style="background:rgba(255,255,255,.04);border:.5px solid rgba(255,255,255,.08);border-radius:6px;padding:6px 8px;">
+                  <div style="display:flex;justify-content:space-between;align-items:center;">
+                    <span style="font-family:'DM Mono',monospace;font-size:8px;color:rgba(255,255,255,.85);">dtype-check</span>
+                    <span style="font-family:'DM Mono',monospace;font-size:7px;color:var(--ty);">● 运行中</span>
+                  </div>
+                  <div style="font-family:'DM Mono',monospace;font-size:7px;color:rgba(255,255,255,.3);margin-top:2px;">检查 format 约束矩阵…</div>
+                </div>
+                <div style="background:rgba(255,255,255,.04);border:.5px solid rgba(255,255,255,.08);border-radius:6px;padding:6px 8px;">
+                  <div style="display:flex;justify-content:space-between;align-items:center;">
+                    <span style="font-family:'DM Mono',monospace;font-size:8px;color:rgba(255,255,255,.85);">perf-bench</span>
+                    <span style="font-family:'DM Mono',monospace;font-size:7px;color:var(--tb2);">● 910B 测试</span>
+                  </div>
+                  <div style="margin-top:3px;background:rgba(255,255,255,.08);border-radius:2px;height:2px;"><div style="width:35%;height:100%;background:var(--tb2);border-radius:2px;"></div></div>
                 </div>
               </div>
             </div>
-            <!-- Voice bar step 3 -->
-            <div id="remote-voice" style="display:none;flex-shrink:0;padding:7px 10px;border-top:.5px solid rgba(255,255,255,.07);background:rgba(0,47,167,.15);">
-              <div style="display:flex;align-items:center;gap:8px;">
-                <div style="width:20px;height:20px;border-radius:50%;background:var(--acc);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-                  <svg width="9" height="11" viewBox="0 0 9 11" fill="none"><rect x="2.5" y="0" width="4" height="6" rx="2" fill="white"/><path d="M0.5 5.5a4 4 0 008 0" stroke="white" stroke-width="1.1" stroke-linecap="round"/><line x1="4.5" y1="9.5" x2="4.5" y2="11" stroke="white" stroke-width="1.1" stroke-linecap="round"/></svg>
+
+            <!-- Screen 2: Lock screen with notification (step 2) -->
+            <div id="remote-screen-lock" style="flex:1;display:none;flex-direction:column;overflow:hidden;background:linear-gradient(160deg,#0d1a3a 0%,#0a0a14 60%,#1a0a2a 100%);">
+              <!-- Lock screen time -->
+              <div style="text-align:center;padding:18px 0 10px;">
+                <div style="font-family:'SF Pro Display','Inter',sans-serif;font-size:36px;font-weight:200;color:rgba(255,255,255,.95);line-height:1;letter-spacing:-.02em;">9:41</div>
+                <div style="font-family:'SF Pro Display','Inter',sans-serif;font-size:9px;color:rgba(255,255,255,.55);margin-top:4px;letter-spacing:.02em;">Monday, May 25</div>
+              </div>
+              <!-- Notification banner -->
+              <div id="remote-push" style="display:none;margin:0 8px;background:rgba(22,22,36,.92);backdrop-filter:blur(20px);border:.5px solid rgba(248,113,113,.35);border-radius:12px;padding:10px 12px;">
+                <div style="display:flex;align-items:center;gap:6px;margin-bottom:5px;">
+                  <div style="width:16px;height:16px;border-radius:4px;background:var(--acc);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:'DM Mono',monospace;font-size:9px;color:white;font-weight:700;">H</div>
+                  <span style="font-family:'DM Mono',monospace;font-size:7px;color:rgba(255,255,255,.4);">HAI</span>
+                  <span style="margin-left:auto;font-family:'DM Mono',monospace;font-size:7px;color:rgba(255,255,255,.3);">刚刚</span>
                 </div>
-                <div style="flex:1;">
-                  <div style="font-family:'DM Mono',monospace;font-size:7.5px;color:rgba(255,255,255,.85);">「切 ND 格式，继续验证」</div>
-                  <div style="display:flex;gap:2px;margin-top:3px;">
-                    <div style="width:2px;height:7px;background:var(--acc);border-radius:1px;animation:ck-wave .6s ease-in-out infinite;animation-delay:0s;"></div>
-                    <div style="width:2px;height:11px;background:var(--acc);border-radius:1px;animation:ck-wave .6s ease-in-out infinite;animation-delay:.1s;"></div>
-                    <div style="width:2px;height:5px;background:var(--acc);border-radius:1px;animation:ck-wave .6s ease-in-out infinite;animation-delay:.2s;"></div>
-                    <div style="width:2px;height:9px;background:var(--acc);border-radius:1px;animation:ck-wave .6s ease-in-out infinite;animation-delay:.15s;"></div>
-                    <div style="width:2px;height:7px;background:var(--acc);border-radius:1px;animation:ck-wave .6s ease-in-out infinite;animation-delay:.05s;"></div>
+                <div style="font-family:'DM Mono',monospace;font-size:8.5px;color:rgba(255,255,255,.9);font-weight:500;line-height:1.4;margin-bottom:3px;">dtype-check 需要确认</div>
+                <div style="font-family:'DM Mono',monospace;font-size:7.5px;color:var(--tr);line-height:1.5;margin-bottom:8px;">310P format 不兼容<br>→ 建议切换为 ND 格式</div>
+                <div style="display:flex;gap:6px;">
+                  <div style="flex:1;background:var(--acc);border-radius:6px;padding:5px 0;text-align:center;font-family:'DM Mono',monospace;font-size:7.5px;color:white;">切换继续</div>
+                  <div style="flex:1;background:rgba(255,255,255,.1);border-radius:6px;padding:5px 0;text-align:center;font-family:'DM Mono',monospace;font-size:7.5px;color:rgba(255,255,255,.4);">暂停</div>
+                </div>
+              </div>
+              <!-- Lock screen home bar -->
+              <div style="margin-top:auto;display:flex;justify-content:center;padding:8px;">
+                <div style="width:80px;height:3px;background:rgba(255,255,255,.3);border-radius:2px;"></div>
+              </div>
+            </div>
+
+            <!-- Screen 3: Task detail + voice (step 3) -->
+            <div id="remote-screen-detail" style="flex:1;display:none;flex-direction:column;overflow:hidden;">
+              <!-- Navigation header -->
+              <div style="padding:4px 10px 5px;border-bottom:.5px solid rgba(255,255,255,.07);display:flex;align-items:center;gap:6px;flex-shrink:0;">
+                <svg width="8" height="12" viewBox="0 0 8 12" fill="none"><path d="M6 1L1 6L6 11" stroke="rgba(0,47,167,.8)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <span style="font-family:'DM Mono',monospace;font-size:7.5px;color:rgba(255,255,255,.35);">RMSNorm-910B</span>
+                <span style="font-family:'DM Mono',monospace;font-size:7.5px;color:rgba(255,255,255,.25);">/</span>
+                <span style="font-family:'DM Mono',monospace;font-size:7.5px;color:rgba(255,255,255,.85);">dtype-check</span>
+              </div>
+              <!-- Task detail content -->
+              <div style="flex:1;padding:8px 10px;display:flex;flex-direction:column;gap:6px;overflow:hidden;">
+                <div style="display:flex;align-items:center;gap:5px;">
+                  <span style="font-family:'DM Mono',monospace;font-size:8px;color:var(--tr);">⚠</span>
+                  <span style="font-family:'DM Mono',monospace;font-size:8px;color:rgba(255,255,255,.9);font-weight:500;">等待确认</span>
+                </div>
+                <div style="background:rgba(248,113,113,.06);border:.5px solid rgba(248,113,113,.25);border-radius:6px;padding:8px 9px;">
+                  <div style="font-family:'DM Mono',monospace;font-size:7.5px;color:var(--tr);margin-bottom:4px;">format 不兼容</div>
+                  <div style="font-family:'DM Mono',monospace;font-size:7px;color:rgba(255,255,255,.65);line-height:1.6;">310P 不支持 FRACTAL_NZ 格式</div>
+                  <div style="font-family:'DM Mono',monospace;font-size:7px;color:rgba(255,255,255,.4);margin-top:2px;">建议 → 切换为 ND 格式继续</div>
+                </div>
+                <div style="background:rgba(255,255,255,.03);border:.5px solid rgba(255,255,255,.07);border-radius:5px;padding:7px 9px;">
+                  <div style="font-family:'DM Mono',monospace;font-size:6.5px;color:rgba(255,255,255,.3);margin-bottom:3px;">影响范围</div>
+                  <div style="font-family:'DM Mono',monospace;font-size:7px;color:rgba(255,255,255,.55);line-height:1.55;">所有 310P 目标编译任务<br>无精度损失，仅 format 转换</div>
+                </div>
+              </div>
+              <!-- Voice input bar (fixed bottom, bordered top + bottom) -->
+              <div id="remote-voice" style="display:none;flex-shrink:0;padding:7px 10px;border-top:.5px solid rgba(255,255,255,.12);border-bottom:.5px solid rgba(255,255,255,.04);">
+                <div style="display:flex;align-items:center;gap:8px;padding:5px 10px;border-radius:100px;background:linear-gradient(135deg,rgba(0,47,167,.88),rgba(107,56,212,.88));border:1px solid rgba(255,255,255,.2);box-shadow:0 2px 10px rgba(0,47,167,.4);">
+                  <div style="display:flex;align-items:center;gap:1.5px;height:8px;">
+                    <div style="width:1px;height:3px;background:rgba(255,255,255,.9);border-radius:1px;animation:ck-wave .45s infinite;animation-delay:0s;"></div>
+                    <div style="width:1px;height:6px;background:rgba(255,255,255,.9);border-radius:1px;animation:ck-wave .45s infinite;animation-delay:.04s;"></div>
+                    <div style="width:1px;height:8px;background:rgba(255,255,255,.9);border-radius:1px;animation:ck-wave .45s infinite;animation-delay:.08s;"></div>
+                    <div style="width:1px;height:5px;background:rgba(255,255,255,.9);border-radius:1px;animation:ck-wave .45s infinite;animation-delay:.12s;"></div>
+                    <div style="width:1px;height:7px;background:rgba(255,255,255,.9);border-radius:1px;animation:ck-wave .45s infinite;animation-delay:.16s;"></div>
+                    <div style="width:1px;height:4px;background:rgba(255,255,255,.9);border-radius:1px;animation:ck-wave .45s infinite;animation-delay:.20s;"></div>
+                    <div style="width:1px;height:8px;background:rgba(255,255,255,.9);border-radius:1px;animation:ck-wave .45s infinite;animation-delay:.24s;"></div>
                   </div>
+                  <span style="font-family:'DM Mono',monospace;font-size:7.5px;color:rgba(255,255,255,.9);flex:1;">切 ND 格式，继续验证</span>
                 </div>
               </div>
             </div>
@@ -2439,76 +2611,89 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
             <div class="stp-step"><div class="stp-num">3</div><span class="stp-lbl">语音反馈·定向优化</span></div>
           </div>
         </div>
-        <!-- TUI Split Mockup -->
-        <div style="flex:1;background:var(--tb);border:.5px solid var(--tbdr);display:flex;flex-direction:column;overflow:hidden;">
-          <!-- Status bar -->
-          <div style="background:#080810;padding:4px 12px;border-bottom:.5px solid var(--tbdr);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;">
-            <div style="display:flex;align-items:center;gap:8px;">
-              <div style="font-family:'DM Mono',monospace;font-size:7px;color:rgba(255,255,255,.25);background:rgba(0,47,167,.15);border:.5px solid rgba(0,47,167,.2);padding:1px 6px;border-radius:2px;">RMSNorm ⟳</div>
-              <div style="font-family:'DM Mono',monospace;font-size:7px;color:rgba(255,255,255,.18);background:rgba(255,255,255,.04);border:.5px solid rgba(255,255,255,.08);padding:1px 6px;border-radius:2px;">FlashAttn ✓</div>
+        <!-- TUI Split Mockup — macOS terminal window -->
+        <div style="flex:1;display:flex;flex-direction:column;min-height:0;">
+          <div style="flex:1;background:#0C0C11;border-radius:10px;border:.5px solid #2a2a38;box-shadow:0 8px 32px rgba(0,0,0,.55);display:flex;flex-direction:column;overflow:hidden;">
+            <!-- macOS title bar -->
+            <div style="background:#181820;padding:5px 10px;border-bottom:.5px solid #252530;display:flex;align-items:center;gap:5px;flex-shrink:0;">
+              <div style="width:8px;height:8px;border-radius:50%;background:#FF5F57;flex-shrink:0;"></div>
+              <div style="width:8px;height:8px;border-radius:50%;background:#FEBC2E;flex-shrink:0;"></div>
+              <div style="width:8px;height:8px;border-radius:50%;background:#28C840;flex-shrink:0;"></div>
+              <span style="flex:1;text-align:center;font-family:'DM Mono',monospace;font-size:7.5px;color:rgba(255,255,255,.3);">hai — RMSNorm-910B</span>
             </div>
-            <div style="font-family:'DM Mono',monospace;font-size:7px;color:var(--td);">~/workspace/RMSNorm-910B</div>
-            <div style="font-family:'DM Mono',monospace;font-size:7px;color:var(--acc);">Stage 06 · Preview</div>
-          </div>
-          <!-- Split area -->
-          <div style="flex:1;display:flex;overflow:hidden;">
-            <!-- Left: execution log -->
-            <div style="flex:0 0 46%;padding:8px 10px;border-right:.5px solid var(--tbdr);overflow:hidden;display:flex;flex-direction:column;gap:2px;">
-              <div style="font-family:'DM Mono',monospace;font-size:6.5px;color:var(--td);margin-bottom:3px;letter-spacing:.06em;">执行日志</div>
-              <div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--acc);line-height:1.6;">▸ tile_m 64→128→192 迭代…</div>
-              <div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--tg);line-height:1.6;">&nbsp;&nbsp;cube_util: 52%→68%→72.4%</div>
-              <div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--acc);line-height:1.6;">▸ 精度验证…</div>
-              <div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--tg);line-height:1.6;">&nbsp;&nbsp;max_error: 8.3e-6 ✓</div>
-              <div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--acc);line-height:1.6;">▸ 兼容: 910B ✓  310P ✓</div>
-              <div style="margin-top:auto;font-family:'DM Mono',monospace;font-size:6.5px;color:rgba(255,255,255,.2);">ESC 收起预览</div>
+            <!-- HAI Status bar -->
+            <div style="background:#080810;padding:3px 12px;border-bottom:.5px solid var(--tbdr);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;">
+              <div style="display:flex;align-items:center;gap:8px;">
+                <div style="font-family:'DM Mono',monospace;font-size:7px;color:rgba(255,255,255,.25);background:rgba(0,47,167,.15);border:.5px solid rgba(0,47,167,.2);padding:1px 6px;border-radius:2px;">RMSNorm ⟳</div>
+                <div style="font-family:'DM Mono',monospace;font-size:7px;color:rgba(255,255,255,.18);background:rgba(255,255,255,.04);border:.5px solid rgba(255,255,255,.08);padding:1px 6px;border-radius:2px;">FlashAttn ✓</div>
+              </div>
+              <div style="font-family:'DM Mono',monospace;font-size:7px;color:var(--td);">~/workspace/RMSNorm-910B</div>
+              <div style="font-family:'DM Mono',monospace;font-size:7px;color:var(--acc);">Stage 06 · Preview</div>
             </div>
-            <!-- Right: result panel -->
-            <div style="flex:1;padding:8px 10px;position:relative;display:flex;flex-direction:column;gap:4px;overflow:hidden;">
-              <div style="font-family:'DM Mono',monospace;font-size:6.5px;color:var(--td);letter-spacing:.06em;margin-bottom:1px;">运行结果 · RMSNorm-910B</div>
-              <!-- Metric cards -->
-              <div style="display:flex;gap:5px;flex-shrink:0;">
-                <div style="flex:1;background:rgba(52,211,153,.08);border:.5px solid rgba(52,211,153,.25);border-radius:3px;padding:5px 6px;">
-                  <div style="font-family:'DM Mono',monospace;font-size:6.5px;color:var(--td);">AI Core</div>
-                  <div style="font-size:15px;font-weight:800;color:var(--tg);font-family:'Inter',sans-serif;">72.4%</div>
-                </div>
-                <div style="flex:1;background:rgba(96,165,250,.08);border:.5px solid rgba(96,165,250,.25);border-radius:3px;padding:5px 6px;">
-                  <div style="font-family:'DM Mono',monospace;font-size:6.5px;color:var(--td);">延迟</div>
-                  <div style="font-size:15px;font-weight:800;color:var(--tb2);font-family:'Inter',sans-serif;">38ms</div>
-                </div>
+            <!-- Split area -->
+            <div style="flex:1;display:flex;overflow:hidden;">
+              <!-- Left: execution log -->
+              <div style="flex:0 0 46%;padding:8px 10px;border-right:.5px solid var(--tbdr);overflow:hidden;display:flex;flex-direction:column;gap:2px;">
+                <div style="font-family:'DM Mono',monospace;font-size:6.5px;color:var(--td);margin-bottom:3px;letter-spacing:.06em;">执行日志</div>
+                <div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--acc);line-height:1.6;">▸ tile_m 64→128→192 迭代…</div>
+                <div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--tg);line-height:1.6;">&nbsp;&nbsp;cube_util: 52%→68%→72.4%</div>
+                <div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--acc);line-height:1.6;">▸ 精度验证…</div>
+                <div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--tg);line-height:1.6;">&nbsp;&nbsp;max_error: 8.3e-6 ✓</div>
+                <div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--acc);line-height:1.6;">▸ 兼容: 910B ✓  310P ✓</div>
+                <div style="margin-top:auto;font-family:'DM Mono',monospace;font-size:6.5px;color:rgba(255,255,255,.2);">ESC 收起预览</div>
               </div>
-              <!-- Bar chart -->
-              <div style="display:flex;flex-direction:column;gap:4px;">
-                <div style="font-family:'DM Mono',monospace;font-size:6.5px;color:var(--td);">硬件资源利用率</div>
-                <div class="ms-metric"><div class="ms-metric-label">AI Core</div><div class="ms-bar-track"><div class="ms-bar-fill" style="width:72%;background:var(--tg);"></div></div><div class="ms-pct" style="color:var(--tg);">72%</div></div>
-                <div id="rv-cube-bar" class="ms-metric" style="cursor:pointer;border-radius:3px;transition:background .2s;padding:2px 3px;margin:0 -3px;">
-                  <div class="ms-metric-label">CUBE</div>
-                  <div class="ms-bar-track"><div class="ms-bar-fill" style="width:71%;background:var(--tp);"></div></div>
-                  <div class="ms-pct" style="color:var(--tp);">71%</div>
+              <!-- Right: result panel -->
+              <div id="rv-right-panel" style="flex:1;padding:8px 10px;position:relative;display:flex;flex-direction:column;gap:4px;overflow:hidden;">
+                <div style="font-family:'DM Mono',monospace;font-size:6.5px;color:var(--td);letter-spacing:.06em;margin-bottom:1px;">运行结果 · RMSNorm-910B</div>
+                <!-- Metric cards -->
+                <div style="display:flex;gap:5px;flex-shrink:0;">
+                  <div style="flex:1;background:rgba(52,211,153,.08);border:.5px solid rgba(52,211,153,.25);border-radius:3px;padding:5px 6px;">
+                    <div style="font-family:'DM Mono',monospace;font-size:6.5px;color:var(--td);">AI Core</div>
+                    <div style="font-size:15px;font-weight:800;color:var(--tg);font-family:'Inter',sans-serif;">72.4%</div>
+                  </div>
+                  <div style="flex:1;background:rgba(96,165,250,.08);border:.5px solid rgba(96,165,250,.25);border-radius:3px;padding:5px 6px;">
+                    <div style="font-family:'DM Mono',monospace;font-size:6.5px;color:var(--td);">延迟</div>
+                    <div style="font-size:15px;font-weight:800;color:var(--tb2);font-family:'Inter',sans-serif;">38ms</div>
+                  </div>
                 </div>
-                <div class="ms-metric"><div class="ms-metric-label">VECTOR</div><div class="ms-bar-track"><div class="ms-bar-fill" style="width:88%;background:var(--tg);"></div></div><div class="ms-pct" style="color:var(--tg);">88%</div></div>
-                <div class="ms-metric"><div class="ms-metric-label">内存带宽</div><div class="ms-bar-track"><div class="ms-bar-fill" style="width:67%;background:var(--tb2);"></div></div><div class="ms-pct" style="color:var(--tb2);">67%</div></div>
-              </div>
-              <div id="rv-hint" style="margin-top:auto;font-family:'DM Mono',monospace;font-size:6.5px;color:rgba(255,255,255,.22);">点击任意区域锚定反馈</div>
-              <!-- Annotation bubble -->
-              <div id="rv-annotation" style="display:none;position:absolute;right:4px;top:44%;transform:translateY(-50%);width:128px;background:rgba(8,8,16,.97);border:.5px solid rgba(0,47,167,.55);border-radius:6px;padding:8px 10px;box-shadow:0 4px 20px rgba(0,0,0,.5);">
-                <div style="position:absolute;top:-14px;left:50%;transform:translateX(-50%);width:.5px;height:14px;background:rgba(0,47,167,.45);"></div>
-                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:5px;">
-                  <div style="font-family:'DM Mono',monospace;font-size:7px;color:var(--acc);">◉ CUBE 71.2%</div>
-                  <div style="font-family:'DM Mono',monospace;font-size:7px;color:var(--td);">✕</div>
+                <!-- Bar chart -->
+                <div style="display:flex;flex-direction:column;gap:4px;">
+                  <div style="font-family:'DM Mono',monospace;font-size:6.5px;color:var(--td);">硬件资源利用率</div>
+                  <div class="ms-metric"><div class="ms-metric-label">AI Core</div><div class="ms-bar-track"><div class="ms-bar-fill" style="width:72%;background:var(--tg);"></div></div><div class="ms-pct" style="color:var(--tg);">72%</div></div>
+                  <div id="rv-cube-bar" class="ms-metric" style="cursor:pointer;border-radius:3px;transition:background .2s;padding:2px 3px;margin:0 -3px;">
+                    <div class="ms-metric-label">CUBE</div>
+                    <div class="ms-bar-track"><div class="ms-bar-fill" style="width:71%;background:var(--tp);"></div></div>
+                    <div class="ms-pct" style="color:var(--tp);">71%</div>
+                  </div>
+                  <div class="ms-metric"><div class="ms-metric-label">VECTOR</div><div class="ms-bar-track"><div class="ms-bar-fill" style="width:88%;background:var(--tg);"></div></div><div class="ms-pct" style="color:var(--tg);">88%</div></div>
+                  <div class="ms-metric"><div class="ms-metric-label">内存带宽</div><div class="ms-bar-track"><div class="ms-bar-fill" style="width:67%;background:var(--tb2);"></div></div><div class="ms-pct" style="color:var(--tb2);">67%</div></div>
                 </div>
-                <div id="rv-voice-row" style="display:flex;align-items:center;gap:5px;margin-bottom:4px;">
-                  <span style="font-size:8px;">🎙</span>
-                  <div id="rv-wave-bars" style="display:flex;align-items:center;gap:1px;height:12px;"></div>
+                <div id="rv-hint" style="margin-top:auto;font-family:'DM Mono',monospace;font-size:6.5px;color:rgba(255,255,255,.22);">点击任意区域锚定反馈</div>
+                <!-- Annotation bubble -->
+                <div id="rv-annotation" style="display:none;position:absolute;right:4px;top:44%;transform:translateY(-50%);width:128px;background:rgba(8,8,16,.97);border:.5px solid rgba(0,47,167,.55);border-radius:6px;padding:8px 10px;box-shadow:0 4px 20px rgba(0,0,0,.5);">
+                  <div style="position:absolute;top:-14px;left:50%;transform:translateX(-50%);width:.5px;height:14px;background:rgba(0,47,167,.45);"></div>
+                  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:5px;">
+                    <div style="font-family:'DM Mono',monospace;font-size:7px;color:var(--acc);">◉ CUBE 71.2%</div>
+                    <div style="font-family:'DM Mono',monospace;font-size:7px;color:var(--td);">✕</div>
+                  </div>
+                  <div id="rv-voice-row" style="display:flex;align-items:center;margin-bottom:4px;">
+                    <div style="display:inline-flex;align-items:center;padding:4px 10px;border-radius:100px;background:linear-gradient(135deg,rgba(0,47,167,.88),rgba(107,56,212,.88));border:1px solid rgba(255,255,255,.2);box-shadow:0 2px 10px rgba(0,47,167,.4),inset 0 1px 0 rgba(255,255,255,.15);">
+                      <div id="rv-wave-bars" style="display:flex;align-items:center;gap:1.5px;height:8px;overflow:hidden;"></div>
+                      <span style="font-family:'DM Mono',monospace;font-size:6.5px;color:rgba(255,255,255,.6);margin-left:6px;white-space:nowrap;">聆听…</span>
+                    </div>
+                  </div>
+                  <div id="rv-transcript" style="display:none;font-family:'Space Grotesk',sans-serif;font-size:7.5px;color:var(--tw);line-height:1.4;margin-bottom:4px;">CUBE 目标 ≥ 80%</div>
+                  <div id="rv-ai-resp" style="display:none;padding:4px 6px;background:rgba(0,47,167,.18);border:.5px solid rgba(0,47,167,.35);border-radius:3px;font-family:'DM Mono',monospace;font-size:7px;color:var(--acc);">◆ 重算 tile_m → 192…</div>
                 </div>
-                <div id="rv-transcript" style="display:none;font-family:'Space Grotesk',sans-serif;font-size:7.5px;color:var(--tw);line-height:1.4;margin-bottom:4px;">CUBE 目标 ≥ 80%</div>
-                <div id="rv-ai-resp" style="display:none;padding:4px 6px;background:rgba(0,47,167,.18);border:.5px solid rgba(0,47,167,.35);border-radius:3px;font-family:'DM Mono',monospace;font-size:7px;color:var(--acc);">◆ 重算 tile_m → 192…</div>
+                <!-- White cursor pointer -->
+                <div id="rv-cursor" style="position:absolute;width:14px;height:18px;pointer-events:none;transform:translate(-2px,-2px);transition:left .5s cubic-bezier(.4,0,.2,1),top .5s cubic-bezier(.4,0,.2,1);filter:drop-shadow(0 1px 3px rgba(0,0,0,.7));left:20%;top:10%;opacity:0;z-index:30;"><svg width="14" height="18" viewBox="0 0 12 16" fill="none"><path d="M2 1L2 13L5.2 10.3L7.5 15L9.2 14.2L6.9 9.5H11.5Z" fill="white" stroke="#0a0a0f" stroke-width=".8" stroke-linejoin="round"/></svg></div>
               </div>
             </div>
-          </div>
-          <!-- Bottom prompt -->
-          <div style="padding:4px 12px;border-top:.5px solid var(--tbdr);display:flex;align-items:center;gap:6px;flex-shrink:0;">
-            <span style="font-family:'DM Mono',monospace;font-size:9px;color:var(--acc);">❯</span>
-            <span style="font-family:'DM Mono',monospace;font-size:8px;color:var(--td);">_</span>
+            <!-- Bottom prompt — fixed, bordered top and bottom -->
+            <div style="padding:4px 12px;border-top:.5px solid var(--tbdr);border-bottom:.5px solid rgba(255,255,255,.04);display:flex;align-items:center;gap:6px;flex-shrink:0;">
+              <span style="font-family:'DM Mono',monospace;font-size:9px;color:var(--acc);">❯</span>
+              <span style="font-family:'DM Mono',monospace;font-size:8px;color:var(--td);">_</span>
+            </div>
           </div>
         </div>
       </div>
@@ -3473,81 +3658,46 @@ function setupSlideSteps(secId, stripId, defs) {
 /* ─────────────────────────────────────────────
    s-m1a: Agent view IIFE
 ───────────────────────────────────────────── */
-(function initAgentView() {
-  const agents = [
-    { id:'ag-tbe-gen',    name:'tbe-gen',     status:'running', task:'RMSNorm TBE 代码生成 · tile_m 迭代中' },
-    { id:'ag-shape-infer',name:'shape-infer', status:'running', task:'输出 shape 推导验证' },
-    { id:'ag-dtype-check',name:'dtype-check', status:'done',    task:'fp16 / bf16 约束矩阵 ✓' },
-    { id:'ag-perf-bench', name:'perf-bench',  status:'waiting', task:'等待 tbe-gen 完成' },
-  ];
-  const statusColors = { running:'var(--acc)', done:'var(--tg)', waiting:'rgba(255,255,255,.2)' };
-  const statusLabels = { running:'运行中', done:'完成', waiting:'等待' };
+(function initMultiSession() {
+  window.msSetPhase = function(p) {
+    var tab1 = document.getElementById('ms-tab-1');
+    var tab2 = document.getElementById('ms-tab-2');
+    var tab3 = document.getElementById('ms-tab-3');
+    var path = document.getElementById('ms-path');
+    var stage = document.getElementById('ms-stage');
+    var s1 = document.getElementById('ms-screen-1');
+    var s2 = document.getElementById('ms-screen-2');
+    var s3 = document.getElementById('ms-screen-3');
 
-  const list = document.getElementById('agv-list');
-  const peek = document.getElementById('agv-peek');
-  if (!list) return;
+    var tabNorm = 'font-family:\'DM Mono\',monospace;font-size:7px;padding:1px 7px;border-radius:2px;transition:all .3s;color:rgba(255,255,255,.35);background:rgba(255,255,255,.03);border:.5px solid rgba(255,255,255,.07);';
+    var tabAct  = 'font-family:\'DM Mono\',monospace;font-size:7px;padding:1px 7px;border-radius:2px;transition:all .3s;color:rgba(255,255,255,.9);background:rgba(0,47,167,.3);border:.5px solid rgba(0,47,167,.45);';
+    var tabWarn = 'font-family:\'DM Mono\',monospace;font-size:7px;padding:1px 7px;border-radius:2px;transition:all .3s;color:var(--ty);background:rgba(251,191,36,.1);border:.5px solid rgba(251,191,36,.3);';
 
-  agents.forEach((ag, i) => {
-    const sc = statusColors[ag.status];
-    const sl = statusLabels[ag.status];
-    const el = document.createElement('div');
-    el.id = ag.id;
-    el.style.cssText = 'padding:9px 12px;border-bottom:.5px solid var(--tbdr);cursor:pointer;display:flex;flex-direction:column;gap:4px;transition:background .15s;';
-    if (i === 0) el.style.background = 'rgba(0,47,167,.12)';
-    el.innerHTML =
-      '<div style="display:flex;align-items:center;justify-content:space-between;">' +
-        '<span style="font-family:\'DM Mono\',monospace;font-size:9px;color:var(--tw);">' + ag.name + '</span>' +
-        '<span style="display:flex;align-items:center;gap:4px;">' +
-          '<span style="width:5px;height:5px;background:' + sc + ';' + (ag.status==='running'?'animation:pulse 1.2s infinite;':'') + 'flex-shrink:0;"></span>' +
-          '<span style="font-family:\'DM Mono\',monospace;font-size:7.5px;color:' + sc + ';">' + sl + '</span>' +
-        '</span>' +
-      '</div>' +
-      '<div style="font-size:8px;color:var(--td);line-height:1.4;">' + ag.task + '</div>' +
-      (ag.status==='running' ? '<div style="height:2px;background:rgba(255,255,255,.06);margin-top:2px;"><div style="height:100%;background:var(--acc);animation:agentProgress 2s linear infinite;width:40%;"></div></div>' : '');
-    el.addEventListener('click', () => {
-      list.querySelectorAll('[id^=ag-]').forEach(e => e.style.background = '');
-      el.style.background = 'rgba(0,47,167,.12)';
-      if (peek) peek.innerHTML =
-        '<div style="padding:12px 14px;border-bottom:.5px solid var(--tbdr);font-family:\'DM Mono\',monospace;font-size:8.5px;color:var(--acc);">' + ag.name + '</div>' +
-        '<div style="padding:10px 14px;font-size:8.5px;color:var(--td);line-height:1.6;">' + ag.task + '<br><br>' +
-        '<span style="color:var(--tw);">状态：' + sl + '</span></div>';
-    });
-    list.appendChild(el);
-  });
-
-  // init peek with first agent
-  if (peek) peek.innerHTML =
-    '<div style="padding:12px 14px;border-bottom:.5px solid var(--tbdr);font-family:\'DM Mono\',monospace;font-size:8.5px;color:var(--acc);">tbe-gen</div>' +
-    '<div style="padding:10px 14px;font-size:8.5px;color:var(--td);line-height:1.6;">RMSNorm TBE 代码生成中<br>当前 tile_m=64 → 正在评估 128<br><br>' +
-    '<span style="color:var(--tg);">✓ dtype: fp16 / bf16</span><br>' +
-    '<span style="color:var(--ty);">⏳ CUBE 利用率: 38% → 目标 &gt;70%</span></div>';
-
-  window.agvSetPhase = function(p) {
-    if (!list || !peek) return;
-    const items = { tbe:'ag-tbe-gen', shape:'ag-shape-infer', dtype:'ag-dtype-check', perf:'ag-perf-bench' };
-    Object.values(items).forEach(id => {
-      const el = document.getElementById(id);
-      if (el) { el.style.background = ''; el.style.opacity = '1'; }
-    });
     if (p === 1) {
-      /* tbe-gen highlighted, others dim */
-      const tbe = document.getElementById(items.tbe);
-      if (tbe) tbe.style.background = 'rgba(0,47,167,.12)';
-      ['ag-shape-infer','ag-dtype-check','ag-perf-bench'].forEach(id => {
-        const el = document.getElementById(id); if (el) el.style.opacity = '0.5';
-      });
-      peek.innerHTML = '<div style="padding:10px 14px;border-bottom:.5px solid var(--tbdr);font-family:\'DM Mono\',monospace;font-size:8px;color:var(--acc);">tbe-gen · 运行中</div>' +
-        '<div style="padding:8px 14px;font-family:\'DM Mono\',monospace;font-size:8px;color:var(--td);line-height:1.75;">生成 RMSNorm TBE 实现<br>tile_m: 64 → 测试 128<br><span style="color:var(--ty);">CUBE 38% → 目标 >70%</span></div>';
+      if (tab1) tab1.style.cssText = tabAct;
+      if (tab2) tab2.style.cssText = tabNorm;
+      if (tab3) tab3.style.cssText = tabNorm;
+      if (path)  path.textContent  = '~/workspace/RMSNorm';
+      if (stage) stage.textContent = 'Stage 02 · 运行中';
+      if (s1) s1.style.display = 'flex';
+      if (s2) s2.style.display = 'none';
+      if (s3) s3.style.display = 'none';
     } else if (p === 2) {
-      /* shape-infer found issue */
-      const shape = document.getElementById(items.shape);
-      if (shape) { shape.style.background = 'rgba(251,191,36,.08)'; shape.style.borderColor = 'rgba(251,191,36,.4)'; }
-      peek.innerHTML = '<div style="padding:10px 14px;border-bottom:.5px solid var(--tbdr);font-family:\'DM Mono\',monospace;font-size:8px;color:var(--ty);">shape-infer · 发现问题</div>' +
-        '<div style="padding:8px 14px;font-family:\'DM Mono\',monospace;font-size:8px;color:var(--td);line-height:1.75;">shape [B,S,H] 当 S=4096<br><span style="color:var(--ty);">⚠ UB 超限风险 tile_m=128</span><br>建议改用 double buffer 策略</div>';
+      if (tab1) tab1.style.cssText = tabNorm;
+      if (tab2) tab2.style.cssText = tabNorm;
+      if (tab3) tab3.style.cssText = tabWarn;
+      if (s1) s1.style.display = 'none';
+      if (s2) s2.style.display = 'flex';
+      if (s3) s3.style.display = 'none';
     } else if (p === 3) {
-      /* all complete */
-      peek.innerHTML = '<div style="padding:10px 14px;border-bottom:.5px solid var(--tbdr);font-family:\'DM Mono\',monospace;font-size:8px;color:var(--tg);">全部 Agent 完成</div>' +
-        '<div style="padding:8px 14px;font-family:\'DM Mono\',monospace;font-size:8px;color:var(--td);line-height:1.75;"><span style="color:var(--tg);">✓ TBE 代码生成</span><br><span style="color:var(--tg);">✓ shape 推导验证</span><br><span style="color:var(--tg);">✓ dtype/format 约束</span><br><span style="color:var(--ty);">⏳ perf-bench 测试中…</span></div>';
+      if (tab1) tab1.style.cssText = tabNorm;
+      if (tab2) tab2.style.cssText = tabNorm;
+      if (tab3) tab3.style.cssText = tabAct.replace('(0,47,167,.3)', '(251,191,36,.15)').replace('(0,47,167,.45)', '(251,191,36,.4)').replace('rgba(255,255,255,.9)', 'var(--ty)');
+      if (path)  path.textContent  = '~/workspace/RopeEmb';
+      if (stage) { stage.textContent = 'Stage 03 · 等待确认'; stage.style.color = 'var(--ty)'; }
+      if (s1) s1.style.display = 'none';
+      if (s2) s2.style.display = 'none';
+      if (s3) s3.style.display = 'flex';
     }
   };
 })();
@@ -3848,6 +3998,8 @@ function setupSlideSteps(secId, stripId, defs) {
     var aiResp     = document.getElementById('rv-ai-resp');
     var waveBars   = document.getElementById('rv-wave-bars');
     var hint       = document.getElementById('rv-hint');
+    var cursor     = document.getElementById('rv-cursor');
+    var panel      = document.getElementById('rv-right-panel');
     if (p === 1) {
       if (cubeBar)    cubeBar.style.background = '';
       if (annotation) annotation.style.display = 'none';
@@ -3855,6 +4007,7 @@ function setupSlideSteps(secId, stripId, defs) {
       if (aiResp)     aiResp.style.display = 'none';
       if (voiceRow)   voiceRow.style.display = 'flex';
       if (hint)       hint.style.display = 'block';
+      if (cursor)     cursor.style.opacity = '0';
     } else if (p === 2) {
       if (cubeBar)    cubeBar.style.background = 'rgba(0,47,167,.15)';
       if (annotation) annotation.style.display = 'block';
@@ -3864,12 +4017,19 @@ function setupSlideSteps(secId, stripId, defs) {
       if (aiResp)     aiResp.style.display = 'none';
       if (waveBars) {
         waveBars.innerHTML = '';
-        for (var i = 0; i < 10; i++) {
+        var heights = [3,5,7,8,5,8,4,7,6,8,3,6,8,5,7];
+        for (var i = 0; i < heights.length; i++) {
           var bar = document.createElement('div');
-          var h = (3 + Math.random() * 8).toFixed(1);
-          bar.style.cssText = 'width:2px;height:' + h + 'px;border-radius:1px;background:linear-gradient(to top,#002FA7,#6B38D4);animation:ck-wave .6s ease-in-out infinite;animation-delay:' + (i * 0.07).toFixed(2) + 's;';
+          bar.style.cssText = 'width:1px;height:' + heights[i] + 'px;border-radius:1px;background:rgba(255,255,255,.9);filter:drop-shadow(0 0 3px rgba(255,255,255,.6));animation:ck-wave .45s infinite;animation-delay:' + (i * 0.04).toFixed(2) + 's;';
           waveBars.appendChild(bar);
         }
+      }
+      if (cursor && cubeBar && panel) {
+        var cRect = cubeBar.getBoundingClientRect();
+        var pRect = panel.getBoundingClientRect();
+        cursor.style.left = (cRect.left - pRect.left + 4) + 'px';
+        cursor.style.top  = (cRect.top  - pRect.top  + cRect.height * 0.3) + 'px';
+        cursor.style.opacity = '1';
       }
     } else if (p === 3) {
       if (voiceRow)   voiceRow.style.display = 'none';
@@ -3888,28 +4048,27 @@ function setupSlideSteps(secId, stripId, defs) {
 ───────────────────────────────────────────── */
 (function initRemoteDemo() {
   window.remoteSetPhase = function(p) {
-    var push = document.getElementById('remote-push');
-    var voice = document.getElementById('remote-voice');
-    var ds = document.getElementById('remote-dtype-status');
-    var dd = document.getElementById('remote-dtype-sub');
-    var dc = document.getElementById('remote-dtype-card');
+    var push   = document.getElementById('remote-push');
+    var voice  = document.getElementById('remote-voice');
+    var sApp   = document.getElementById('remote-screen-app');
+    var sLock  = document.getElementById('remote-screen-lock');
+    var sDet   = document.getElementById('remote-screen-detail');
     if (p === 1) {
-      if (push) push.style.display = 'none';
+      if (sApp)  sApp.style.display  = 'flex';
+      if (sLock) sLock.style.display = 'none';
+      if (sDet)  sDet.style.display  = 'none';
+      if (push)  push.style.display  = 'none';
       if (voice) voice.style.display = 'none';
-      if (ds) { ds.textContent = '● 运行中'; ds.style.color = 'var(--ty)'; }
-      if (dd) dd.textContent = '检查 format 约束矩阵…';
-      if (dc) dc.style.borderColor = 'rgba(255,255,255,.08)';
     } else if (p === 2) {
-      if (dc) dc.style.borderColor = 'rgba(248,113,113,.4)';
-      if (ds) { ds.textContent = '⚠ 需确认'; ds.style.color = 'var(--tr)'; }
-      if (dd) dd.textContent = 'format 不兼容 — 待决策';
-      if (push) push.style.display = 'flex';
+      if (sApp)  sApp.style.display  = 'none';
+      if (sLock) sLock.style.display = 'flex';
+      if (sDet)  sDet.style.display  = 'none';
+      if (push)  push.style.display  = 'block';
     } else if (p === 3) {
-      if (push) push.style.display = 'none';
-      if (ds) { ds.textContent = '● 继续中'; ds.style.color = 'var(--tg)'; }
-      if (dd) dd.textContent = '切换 ND 格式 · 重新验证…';
-      if (dc) dc.style.borderColor = 'rgba(52,211,153,.2)';
-      if (voice) voice.style.display = 'flex';
+      if (sApp)  sApp.style.display  = 'none';
+      if (sLock) sLock.style.display = 'none';
+      if (sDet)  sDet.style.display  = 'flex';
+      if (voice) voice.style.display = 'block';
     }
   };
 })();
@@ -3969,11 +4128,11 @@ setupSlideSteps('s-m3b', 'stp-m3b', [
   { ms:2400, act: function() { if(window.goalShowPanel) window.goalShowPanel(3); } },
 ]);
 
-/* s-m1a: agent view */
+/* s-m1a: multi-session management */
 setupSlideSteps('s-m1a', 'stp-m1a', [
-  { ms:2000, act: function() { if(window.agvSetPhase) window.agvSetPhase(1); } },
-  { ms:2200, act: function() { if(window.agvSetPhase) window.agvSetPhase(2); } },
-  { ms:2400, act: function() { if(window.agvSetPhase) window.agvSetPhase(3); } },
+  { ms:2000, act: function() { if(window.msSetPhase) window.msSetPhase(1); } },
+  { ms:2600, act: function() { if(window.msSetPhase) window.msSetPhase(2); } },
+  { ms:2400, key:'Alt+3', act: function() { if(window.msSetPhase) window.msSetPhase(3); } },
 ]);
 
 /* s-m1b: multi-hardware dashboard */
@@ -4133,12 +4292,12 @@ document.head.appendChild(sty);
     { id:'s-bg3',        label:'设计方向' },
     { id:'s-bg-community', label:'社区知识转化' },
     { id:'s-j-overview', label:'开发旅程' },
+    { id:'s-cli-arch',    label:'CLI 架构' },
     { id:'s-m4a',        label:'记忆启动' },
     { id:'s-m2c',        label:'语音查询' },
-    { id:'s-m2b',        label:'手势调参' },
-    { id:'s-m2a',        label:'光标上下文' },
+    { id:'s-m2b',        label:'代码交互' },
     { id:'s-m3b',        label:'Goal 命令' },
-    { id:'s-m1a',        label:'Agent 视图' },
+    { id:'s-m1a',        label:'多任务管理' },
     { id:'s-m1b',        label:'多硬件看板' },
     { id:'s-m1c',        label:'实体状态灯' },
     { id:'s-remote',      label:'移动监控' },
