@@ -1073,11 +1073,40 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
           <div class="stp-bar"><div class="stp-fill"></div></div>
           <div class="stp-steps">
             <div class="stp-step"><div class="stp-num">1</div><span class="stp-lbl">启动开发环境</span></div>
-            <div class="stp-step"><div class="stp-num">2</div><span class="stp-lbl">加载历史会话</span></div>
-            <div class="stp-step"><div class="stp-num">3</div><span class="stp-lbl">记忆全部就绪</span></div>
+            <div class="stp-step"><div class="stp-num">2</div><span class="stp-lbl">加载历史记忆</span></div>
+            <div class="stp-step"><div class="stp-num">3</div><span class="stp-lbl">就绪 · 从断点继续</span></div>
           </div>
         </div>
-        <div id="mem-startup" style="background:var(--tb);border:.5px solid var(--tbdr);padding:10px 14px;font-family:'DM Mono',monospace;font-size:9px;line-height:1.85;flex-shrink:0;"><span style="color:var(--td);">$ </span><span style="color:var(--tw);">hai start</span> <span style="color:var(--td);">--workspace RMSNorm-910B</span></div><div class="mem-sessions" id="mem-sessions" style="grid-template-columns:1fr;opacity:0;transition:opacity .4s;"></div><div id="mem-ready" style="display:none;padding:6px 10px;background:rgba(0,47,167,.08);border:.5px solid var(--acc-b);font-family:'DM Mono',monospace;font-size:8px;color:var(--acc);">◆ 记忆加载完成 — 直接从上次断点继续</div>
+        <div style="flex:1;background:var(--tb);border:.5px solid var(--tbdr);display:flex;flex-direction:column;overflow:hidden;">
+          <div style="background:var(--tbar);padding:5px 12px;border-bottom:.5px solid var(--tbdr);display:flex;align-items:center;gap:6px;flex-shrink:0;">
+            <div style="width:7px;height:7px;border-radius:50%;background:#FF5F57;"></div>
+            <div style="width:7px;height:7px;border-radius:50%;background:#FEBC2E;"></div>
+            <div style="width:7px;height:7px;border-radius:50%;background:#28C840;"></div>
+            <span style="font-family:'DM Mono',monospace;font-size:9px;color:var(--td);margin-left:4px;">Terminal — RMSNorm-910B</span>
+          </div>
+          <div style="flex:1;padding:10px 14px;font-family:'DM Mono',monospace;font-size:9px;line-height:1.85;display:flex;flex-direction:column;overflow:hidden;">
+            <div><span style="color:var(--td);">$ </span><span style="color:var(--tw);">hai start</span><span style="color:var(--td);"> --workspace RMSNorm-910B</span></div>
+            <div id="mem-s1" style="display:none;margin-top:7px;">
+              <div style="color:var(--acc);font-size:8px;letter-spacing:.07em;margin-bottom:3px;">▸ 会话上下文 · · · · · · · · · · · · · · ✓</div>
+              <div style="color:var(--td);">&nbsp;&nbsp;FlashAttention v2&nbsp;&nbsp;&nbsp;<span style="color:var(--tg);">tile_m=128 · CUBE=74.3%</span></div>
+              <div style="color:var(--td);">&nbsp;&nbsp;RopeEmbedding&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:var(--ty);">FRACTAL_NZ · 310P ⏳</span></div>
+              <div style="color:var(--td);">&nbsp;&nbsp;RMSNorm&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:var(--acc);">CUBE 38% → 目标 70% ⟶</span></div>
+            </div>
+            <div id="mem-s2" style="display:none;margin-top:7px;">
+              <div style="color:var(--acc);font-size:8px;letter-spacing:.07em;margin-bottom:3px;">▸ 性能基线 · · · · · · · · · · · · · · · ✓</div>
+              <div style="color:var(--td);">&nbsp;&nbsp;msprof&nbsp;&nbsp;AI Core=61% · Vec=38% · BW=84%</div>
+              <div style="color:var(--td);">&nbsp;&nbsp;迭代路径&nbsp;&nbsp;tile_m 32→64→<span style="color:var(--tg);">128×64 最优</span></div>
+            </div>
+            <div id="mem-s3" style="display:none;margin-top:7px;">
+              <div style="color:var(--acc);font-size:8px;letter-spacing:.07em;margin-bottom:3px;">▸ 硬件约束矩阵 · · · · · · · · · · · · ✓</div>
+              <div style="color:var(--td);">&nbsp;&nbsp;910B&nbsp;&nbsp;fp16/bf16 <span style="color:var(--tg);">✓</span>&nbsp;&nbsp;FRACTAL_NZ <span style="color:var(--tg);">✓</span></div>
+              <div style="color:var(--td);">&nbsp;&nbsp;310P&nbsp;&nbsp;bf16 <span style="color:var(--ty);">待验证</span>&nbsp;&nbsp;ND→FRACTAL_NZ 转换</div>
+            </div>
+            <div id="mem-ready" style="display:none;margin-top:8px;border-top:.5px solid var(--tbdr);padding-top:7px;">
+              <span style="color:var(--acc);">◆ 记忆加载完成 — 直接从上次断点继续</span>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -2218,6 +2247,139 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
 
 <!-- ══ STAGE 05: Smart Fix ══ -->
 <!-- ══ STAGE 06-1: 结果审核 ══ -->
+<!-- ══ STAGE 05: 移动监控 ══ -->
+<div class="sec" id="s-remote" style="background:var(--sur);">
+  <div class="slabel">
+    <span class="sub">随时介入 · Stage 05 · 设计点 1/1</span>
+    <span class="main">移动监控 — AI 在跑任务，手机随时介入</span>
+  </div>
+  <div class="inner">
+    <div class="dp-layout">
+      <div class="dp-left">
+        <div class="dp-desc">
+          <div class="dp-label">设计说明</div>
+          <div class="dp-title">离席不离控 — 手机即控制台</div>
+          <div class="dp-body">Agent 并行跑 shape 验证、性能基准时，工程师无需守在屏幕前。HAI 在关键决策点主动推送手机通知——format 不兼容、精度超限——开发者语音批准或一键确认，Agent 继续执行，全程不需要打开 SSH 客户端。Claude Code 官方 Remote Control（2026）已验证此模式：手机连接桌面 AI 会话，推送通知在 Claude 需要决策时触达。</div>
+        </div>
+        <div class="dp-desc">
+          <div class="dp-label">核心设计点</div>
+          <div class="dp-points">
+            <div class="dpp">推送决策：Agent 遇 format 不兼容 / 精度超限时主动推送，手机一键批准</div>
+            <div class="dpp">语音指令：说出调参命令，直接注入运行中的终端会话，无需键盘</div>
+            <div class="dpp">实时看板：手机端简化 Agent 状态视图，切换 WiFi/4G 不断连</div>
+          </div>
+        </div>
+        <div class="ba-grid">
+          <div class="ba-before">
+            <div class="ba-label" style="gap:6px;"><span style="font-family:'DM Mono',monospace;font-size:7px;letter-spacing:.1em;background:var(--grey-2);color:var(--tx2);padding:1px 6px;">BEFORE</span>过去的做法</div>
+            <div style="display:flex;flex-direction:column;gap:3px;margin-top:4px;">
+              <div style="background:#0f0f16;border:.5px solid #252530;padding:6px 9px;font-family:'DM Mono',monospace;font-size:8px;line-height:1.7;">
+                <div style="color:var(--ty);">$ ssh root@192.168.1.10</div>
+                <div style="color:var(--td);">虚拟键盘打 Ctrl+C…</div>
+                <div style="color:var(--tr);">Connection reset by peer</div>
+                <div style="color:var(--td);">← 切 WiFi 即断连</div>
+              </div>
+              <div style="text-align:center;font-size:7.5px;color:var(--tx3);font-family:'DM Mono',monospace;margin-top:2px;">SSH on phone = 拇指地狱 + 随时掉线</div>
+            </div>
+          </div>
+          <div class="ba-after">
+            <div class="ba-label" style="gap:6px;"><span style="font-family:'DM Mono',monospace;font-size:7px;letter-spacing:.1em;background:var(--acc);color:white;padding:1px 6px;">AFTER</span>新的设计</div>
+            <div class="ba-text">推送决策到手机，语音批准，Agent 继续执行。不需要 SSH，切网不断连，离开工位照样掌控全局。</div>
+          </div>
+        </div>
+      </div>
+      <div class="dp-right" style="position:relative;">
+        <div class="mockup-label">动态 Mockup — 手机端监控视图</div>
+        <div class="stp-strip" id="stp-remote">
+          <div class="stp-bar"><div class="stp-fill"></div></div>
+          <div class="stp-steps">
+            <div class="stp-step"><div class="stp-num">1</div><span class="stp-lbl">查看 Agent 进度</span></div>
+            <div class="stp-step"><div class="stp-num">2</div><span class="stp-lbl">收到决策推送</span></div>
+            <div class="stp-step"><div class="stp-num">3</div><span class="stp-lbl">语音批准 · 继续</span></div>
+          </div>
+        </div>
+        <div style="flex:1;display:flex;align-items:center;justify-content:center;overflow:hidden;">
+          <div id="remote-phone" style="width:185px;height:330px;background:#0a0a14;border-radius:28px;border:2px solid #3a3a4a;box-shadow:0 8px 32px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.06);display:flex;flex-direction:column;overflow:hidden;position:relative;flex-shrink:0;">
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 14px 4px;flex-shrink:0;">
+              <span style="font-family:'DM Mono',monospace;font-size:8px;color:rgba(255,255,255,.5);">9:41</span>
+              <div style="width:32px;height:8px;background:#1a1a2e;border-radius:4px;border:1px solid #333;"></div>
+              <span style="font-family:'DM Mono',monospace;font-size:8px;color:rgba(255,255,255,.5);">4G ▓▓▓</span>
+            </div>
+            <div style="padding:3px 12px 7px;flex-shrink:0;border-bottom:.5px solid rgba(255,255,255,.07);">
+              <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--acc);font-weight:700;letter-spacing:.05em;">HAI</div>
+              <div style="font-family:'DM Mono',monospace;font-size:7px;color:rgba(255,255,255,.35);margin-top:1px;">RMSNorm-910B · 4 Agents 运行中</div>
+            </div>
+            <div style="flex:1;padding:8px 10px;display:flex;flex-direction:column;gap:5px;overflow:hidden;position:relative;">
+              <div style="background:rgba(255,255,255,.04);border:.5px solid rgba(255,255,255,.08);border-radius:6px;padding:6px 8px;">
+                <div style="display:flex;justify-content:space-between;align-items:center;">
+                  <span style="font-family:'DM Mono',monospace;font-size:8px;color:rgba(255,255,255,.85);">tbe-gen</span>
+                  <span style="font-family:'DM Mono',monospace;font-size:7px;color:var(--tg);">● 运行中</span>
+                </div>
+                <div style="margin-top:3px;background:rgba(255,255,255,.08);border-radius:2px;height:2px;"><div style="width:62%;height:100%;background:linear-gradient(90deg,var(--acc),#6B38D4);border-radius:2px;"></div></div>
+                <div style="font-family:'DM Mono',monospace;font-size:7px;color:rgba(255,255,255,.3);margin-top:2px;">tile_m=128 · 迭代 3/5</div>
+              </div>
+              <div style="background:rgba(255,255,255,.04);border:.5px solid rgba(52,211,153,.2);border-radius:6px;padding:6px 8px;">
+                <div style="display:flex;justify-content:space-between;align-items:center;">
+                  <span style="font-family:'DM Mono',monospace;font-size:8px;color:rgba(255,255,255,.85);">shape-infer</span>
+                  <span style="font-family:'DM Mono',monospace;font-size:7px;color:var(--tg);">✓ 完成</span>
+                </div>
+                <div style="font-family:'DM Mono',monospace;font-size:7px;color:rgba(255,255,255,.3);margin-top:2px;">所有 shape 推导通过</div>
+              </div>
+              <div id="remote-dtype-card" style="background:rgba(255,255,255,.04);border:.5px solid rgba(255,255,255,.08);border-radius:6px;padding:6px 8px;transition:border-color .3s;">
+                <div style="display:flex;justify-content:space-between;align-items:center;">
+                  <span style="font-family:'DM Mono',monospace;font-size:8px;color:rgba(255,255,255,.85);">dtype-check</span>
+                  <span id="remote-dtype-status" style="font-family:'DM Mono',monospace;font-size:7px;color:var(--ty);">● 运行中</span>
+                </div>
+                <div id="remote-dtype-sub" style="font-family:'DM Mono',monospace;font-size:7px;color:rgba(255,255,255,.3);margin-top:2px;">检查 format 约束矩阵…</div>
+              </div>
+              <div style="background:rgba(255,255,255,.04);border:.5px solid rgba(255,255,255,.08);border-radius:6px;padding:6px 8px;">
+                <div style="display:flex;justify-content:space-between;align-items:center;">
+                  <span style="font-family:'DM Mono',monospace;font-size:8px;color:rgba(255,255,255,.85);">perf-bench</span>
+                  <span style="font-family:'DM Mono',monospace;font-size:7px;color:var(--tb2);">● 910B 测试</span>
+                </div>
+                <div style="margin-top:3px;background:rgba(255,255,255,.08);border-radius:2px;height:2px;"><div style="width:35%;height:100%;background:var(--tb2);border-radius:2px;"></div></div>
+              </div>
+              <!-- Push notification overlay -->
+              <div id="remote-push" style="display:none;position:absolute;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.6);backdrop-filter:blur(4px);border-radius:0;align-items:flex-start;justify-content:center;padding-top:16px;">
+                <div style="background:#1a1a28;border:.5px solid rgba(248,113,113,.4);border-radius:10px;padding:11px 12px;margin:0 4px;">
+                  <div style="display:flex;align-items:center;gap:6px;margin-bottom:5px;">
+                    <div style="width:14px;height:14px;border-radius:3px;background:var(--acc);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:'DM Mono',monospace;font-size:8px;color:white;font-weight:700;">H</div>
+                    <span style="font-family:'DM Mono',monospace;font-size:7px;color:rgba(255,255,255,.4);">HAI · 刚刚</span>
+                  </div>
+                  <div style="font-family:'DM Mono',monospace;font-size:8.5px;color:rgba(255,255,255,.9);line-height:1.5;margin-bottom:3px;">dtype-check 发现 format 不兼容</div>
+                  <div style="font-family:'DM Mono',monospace;font-size:7.5px;color:var(--tr);line-height:1.5;margin-bottom:8px;">310P 不支持 FRACTAL_NZ 格式<br>→ 建议切换为 ND 格式继续</div>
+                  <div style="display:flex;gap:6px;">
+                    <div style="flex:1;background:var(--acc);border-radius:5px;padding:5px 0;text-align:center;font-family:'DM Mono',monospace;font-size:7.5px;color:white;">切换 ND · 继续</div>
+                    <div style="flex:1;background:rgba(255,255,255,.07);border-radius:5px;padding:5px 0;text-align:center;font-family:'DM Mono',monospace;font-size:7.5px;color:rgba(255,255,255,.4);">暂停</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Voice bar step 3 -->
+            <div id="remote-voice" style="display:none;flex-shrink:0;padding:7px 10px;border-top:.5px solid rgba(255,255,255,.07);background:rgba(0,47,167,.15);">
+              <div style="display:flex;align-items:center;gap:8px;">
+                <div style="width:20px;height:20px;border-radius:50%;background:var(--acc);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                  <svg width="9" height="11" viewBox="0 0 9 11" fill="none"><rect x="2.5" y="0" width="4" height="6" rx="2" fill="white"/><path d="M0.5 5.5a4 4 0 008 0" stroke="white" stroke-width="1.1" stroke-linecap="round"/><line x1="4.5" y1="9.5" x2="4.5" y2="11" stroke="white" stroke-width="1.1" stroke-linecap="round"/></svg>
+                </div>
+                <div style="flex:1;">
+                  <div style="font-family:'DM Mono',monospace;font-size:7.5px;color:rgba(255,255,255,.85);">「切 ND 格式，继续验证」</div>
+                  <div style="display:flex;gap:2px;margin-top:3px;">
+                    <div style="width:2px;height:7px;background:var(--acc);border-radius:1px;animation:ck-wave .6s ease-in-out infinite;animation-delay:0s;"></div>
+                    <div style="width:2px;height:11px;background:var(--acc);border-radius:1px;animation:ck-wave .6s ease-in-out infinite;animation-delay:.1s;"></div>
+                    <div style="width:2px;height:5px;background:var(--acc);border-radius:1px;animation:ck-wave .6s ease-in-out infinite;animation-delay:.2s;"></div>
+                    <div style="width:2px;height:9px;background:var(--acc);border-radius:1px;animation:ck-wave .6s ease-in-out infinite;animation-delay:.15s;"></div>
+                    <div style="width:2px;height:7px;background:var(--acc);border-radius:1px;animation:ck-wave .6s ease-in-out infinite;animation-delay:.05s;"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="sec" id="s-m5a" style="background:var(--bg);">
   <div class="slabel">
     <span class="sub">审核结果 · Stage 06 · 设计点 1/2</span>
@@ -2860,24 +3022,15 @@ function setupSlideSteps(secId, stripId, defs) {
   });
 
   window.memSetPhase = function(p) {
+    var ids = ['mem-s1','mem-s2','mem-s3','mem-ready'];
     if (p === 1) {
-      /* hai start typed — nothing extra yet */
+      ids.forEach(function(id){ var e=document.getElementById(id); if(e) e.style.display='none'; });
     } else if (p === 2) {
-      /* sessions fade in */
-      container.style.opacity = '1';
+      var s1=document.getElementById('mem-s1'); if(s1) s1.style.display='block';
+      setTimeout(function(){ var e=document.getElementById('mem-s2'); if(e) e.style.display='block'; }, 700);
+      setTimeout(function(){ var e=document.getElementById('mem-s3'); if(e) e.style.display='block'; }, 1400);
     } else if (p === 3) {
-      /* highlight active (RMSNorm) */
-      sessions.forEach(s => {
-        const el = document.getElementById(s.id);
-        if (!el) return;
-        if (s.status === 'active') {
-          el.style.borderColor = 'var(--acc)';
-          el.style.boxShadow = '0 0 0 1px rgba(0,47,167,.2)';
-        } else {
-          el.style.opacity = '0.45';
-        }
-      });
-      if (readyBar) readyBar.style.display = 'block';
+      var e=document.getElementById('mem-ready'); if(e) e.style.display='block';
     }
   };
 })();
@@ -3691,6 +3844,38 @@ function setupSlideSteps(secId, stripId, defs) {
 /* ─────────────────────────────────────────────
    setupSlideSteps calls for all sections
 ───────────────────────────────────────────── */
+
+/* ─────────────────────────────────────────────
+   s-remote: 移动监控 IIFE
+───────────────────────────────────────────── */
+(function initRemoteDemo() {
+  window.remoteSetPhase = function(p) {
+    var push = document.getElementById('remote-push');
+    var voice = document.getElementById('remote-voice');
+    var ds = document.getElementById('remote-dtype-status');
+    var dd = document.getElementById('remote-dtype-sub');
+    var dc = document.getElementById('remote-dtype-card');
+    if (p === 1) {
+      if (push) push.style.display = 'none';
+      if (voice) voice.style.display = 'none';
+      if (ds) { ds.textContent = '● 运行中'; ds.style.color = 'var(--ty)'; }
+      if (dd) dd.textContent = '检查 format 约束矩阵…';
+      if (dc) dc.style.borderColor = 'rgba(255,255,255,.08)';
+    } else if (p === 2) {
+      if (dc) dc.style.borderColor = 'rgba(248,113,113,.4)';
+      if (ds) { ds.textContent = '⚠ 需确认'; ds.style.color = 'var(--tr)'; }
+      if (dd) dd.textContent = 'format 不兼容 — 待决策';
+      if (push) push.style.display = 'flex';
+    } else if (p === 3) {
+      if (push) push.style.display = 'none';
+      if (ds) { ds.textContent = '● 继续中'; ds.style.color = 'var(--tg)'; }
+      if (dd) dd.textContent = '切换 ND 格式 · 重新验证…';
+      if (dc) dc.style.borderColor = 'rgba(52,211,153,.2)';
+      if (voice) voice.style.display = 'flex';
+    }
+  };
+})();
+
 /* s-m2c: msprof voice query */
 setupSlideSteps('s-m4a', 'stp-m4a', [
   { ms:1800, key:'↵', act: function() { if(window.memSetPhase) window.memSetPhase(1); } },
@@ -3847,6 +4032,13 @@ setupSlideSteps('s-m1c', 'stp-m1c', [
   { ms:2600, act: function() { if(window.trafficSetPhase) window.trafficSetPhase(3); } },
 ]);
 
+/* s-remote: 移动监控 */
+setupSlideSteps('s-remote', 'stp-remote', [
+  { ms:2200, act: function() { if(window.remoteSetPhase) window.remoteSetPhase(1); } },
+  { ms:2600, act: function() { if(window.remoteSetPhase) window.remoteSetPhase(2); } },
+  { ms:3000, act: function() { if(window.remoteSetPhase) window.remoteSetPhase(3); } },
+]);
+
 /* s-m5a: review panel — tab switching */
 setupSlideSteps('s-m5a', 'stp-m5a', [
   { ms:2000, act: function() { if(window.reviewSetPhase) window.reviewSetPhase(1); } },
@@ -3908,6 +4100,7 @@ document.head.appendChild(sty);
     { id:'s-m1a',        label:'Agent 视图' },
     { id:'s-m1b',        label:'多硬件看板' },
     { id:'s-m1c',        label:'实体状态灯' },
+    { id:'s-remote',      label:'移动监控' },
     { id:'s-m5a',        label:'结果审核' },
     { id:'s-m5b',        label:'AI 推理' },
     { id:'s-m4b',        label:'团队库' },

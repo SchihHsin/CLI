@@ -1908,13 +1908,13 @@ buildNavs();
     item.style.cssText = 'display:flex;align-items:flex-start;gap:0;position:relative;flex:1;';
     item.innerHTML = `
       <div style="width:72px;flex-shrink:0;text-align:right;padding-right:14px;padding-top:2px;">
-        <span style="font-family:'DM Mono',monospace;font-size:9px;color:var(--tx3);">${date}</span>
+        <span style="font-family:"DM Mono",monospace;font-size:9px;color:var(--tx3);">${date}</span>
       </div>
       <div style="width:10px;height:10px;border-radius:50%;background:${color};border:2px solid white;flex-shrink:0;margin-top:3px;z-index:1;box-shadow:0 0 0 2px ${color}44;"></div>
       <div style="flex:1;padding-left:10px;padding-bottom:4px;">
         <div style="display:flex;align-items:center;gap:6px;margin-bottom:2px;">
           <span style="font-family:'Syne',sans-serif;font-size:11px;font-weight:700;color:var(--tx);">${product}</span>
-          <span style="font-family:'DM Mono',monospace;font-size:8px;padding:1px 6px;border-radius:3px;background:${color}18;color:${color};border:.5px solid ${color}44;">${tag}</span>
+          <span style="font-family:"DM Mono",monospace;font-size:8px;padding:1px 6px;border-radius:3px;background:${color}18;color:${color};border:.5px solid ${color}44;">${tag}</span>
         </div>
         <div style="font-size:11px;color:var(--tx2);line-height:1.45;">${desc}</div>
       </div>`;
@@ -1992,7 +1992,7 @@ buildNavs();
   function mkDimLabel(text) {
     const d = document.createElement('div');
     d.style.cssText = `width:${DIM_W};flex-shrink:0;display:flex;align-items:center;justify-content:center;border-right:.5px solid var(--bdr2);`;
-    d.innerHTML = `<span style="font-family:'DM Mono',monospace;font-size:8px;color:var(--tx3);letter-spacing:.08em;writing-mode:vertical-rl;white-space:nowrap;">${text}</span>`;
+    d.innerHTML = `<span style="font-family:"DM Mono",monospace;font-size:8px;color:var(--tx3);letter-spacing:.08em;writing-mode:vertical-rl;white-space:nowrap;">${text}</span>`;
     return d;
   }
 
@@ -2024,7 +2024,7 @@ buildNavs();
     cell.innerHTML = `
       <div style="width:32px;height:32px;border-radius:50%;background:${s.color};display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:11px;font-weight:800;color:white;flex-shrink:0;box-shadow:0 2px 6px ${s.color}55;">${s.num}</div>
       <div style="font-family:'Syne',sans-serif;font-size:10.5px;font-weight:700;color:var(--tx);text-align:center;line-height:1.2;">${s.name}</div>
-      <div style="font-family:'DM Mono',monospace;font-size:7.5px;color:${s.color};letter-spacing:.04em;text-align:center;opacity:.85;">${s.trigger}</div>`;
+      <div style="font-family:"DM Mono",monospace;font-size:7.5px;color:${s.color};letter-spacing:.04em;text-align:center;opacity:.85;">${s.trigger}</div>`;
     headerRow.appendChild(cell);
   });
   container.appendChild(headerRow);
@@ -2431,40 +2431,40 @@ function setupSlideSteps(secId, stripId, defs) {
       const dotAnim = isErr ? 'animation:pulse 1s ease-in-out infinite' : (a.status === 'run' ? 'animation:pulse 1.5s ease-in-out infinite' : '');
       const card = document.createElement('div');
       card.style.cssText = 'background:var(--tb);border-radius:8px;border:.5px solid ' + bc + ';overflow:hidden;display:flex;flex-direction:column;transition:all .4s ease;opacity:' + (dimmed ? '.45' : '1') + ';' + (isErr ? 'box-shadow:0 0 14px rgba(248,113,113,.25);' : '');
-      const errBadge = isErr ? '<div style="font-size:7.5px;padding:1px 5px;border-radius:3px;background:rgba(248,113,113,.18);color:#F87171;font-family:'DM Mono',monospace;margin-right:2px;">⚠ 异常</div>' : '';
+      const errBadge = isErr ? '<div style="font-size:7.5px;padding:1px 5px;border-radius:3px;background:rgba(248,113,113,.18);color:#F87171;font-family:"DM Mono",monospace;margin-right:2px;">⚠ 异常</div>' : '';
       const footerRow = (dashPhase >= 3 && isErr)
         ? '<div style="padding:5px 11px;border-top:.5px solid rgba(248,113,113,.3);background:rgba(131,77,240,.06);">'
           + '<div style="display:flex;align-items:center;gap:5px;background:rgba(131,77,240,.12);border:.5px solid rgba(131,77,240,.3);border-radius:4px;padding:4px 8px;">'
-          + '<span style="font-size:8px;color:var(--acc-l);font-family:'DM Mono',monospace;flex-shrink:0;">⌘ K</span>'
-          + '<div style="font-family:'DM Mono',monospace;font-size:7.5px;color:var(--tw);flex:1;">fix: add null check before reading props</div>'
+          + '<span style="font-size:8px;color:var(--acc-l);font-family:"DM Mono",monospace;flex-shrink:0;">⌘ K</span>'
+          + '<div style="font-family:"DM Mono",monospace;font-size:7.5px;color:var(--tw);flex:1;">fix: add null check before reading props</div>'
           + '<div style="font-size:9px;color:var(--acc);flex-shrink:0;">↵</div>'
           + '</div></div>'
         : '<div style="padding:5px 11px;border-top:.5px solid var(--tbdr);display:flex;gap:5px;">'
-          + (a.status !== 'done' ? '<button style="font-family:'DM Mono',monospace;font-size:8.5px;padding:2px 7px;border:none;border-radius:3px;background:rgba(255,255,255,.06);color:var(--td);cursor:pointer;">pause</button>' : '')
-          + '<button style="font-family:'DM Mono',monospace;font-size:8.5px;padding:2px 7px;border:none;border-radius:3px;background:rgba(248,113,113,.1);color:#F87171;cursor:pointer;">cancel</button>'
-          + '<button style="font-family:'DM Mono',monospace;font-size:8.5px;padding:2px 7px;border:none;border-radius:3px;background:rgba(131,77,240,.1);color:#A78BFA;cursor:pointer;margin-left:auto;">view →</button>'
+          + (a.status !== 'done' ? '<button style="font-family:"DM Mono",monospace;font-size:8.5px;padding:2px 7px;border:none;border-radius:3px;background:rgba(255,255,255,.06);color:var(--td);cursor:pointer;">pause</button>' : '')
+          + '<button style="font-family:"DM Mono",monospace;font-size:8.5px;padding:2px 7px;border:none;border-radius:3px;background:rgba(248,113,113,.1);color:#F87171;cursor:pointer;">cancel</button>'
+          + '<button style="font-family:"DM Mono",monospace;font-size:8.5px;padding:2px 7px;border:none;border-radius:3px;background:rgba(131,77,240,.1);color:#A78BFA;cursor:pointer;margin-left:auto;">view →</button>'
           + '</div>';
       card.innerHTML =
         '<div style="background:' + (isErr ? 'rgba(248,113,113,.08)' : 'var(--tbar)') + ';padding:7px 11px;border-bottom:.5px solid ' + bc + ';display:flex;align-items:center;gap:6px;">'
           + '<div style="width:7px;height:7px;border-radius:50%;background:' + sc + ';flex-shrink:0;' + dotAnim + '"></div>'
-          + '<div style="font-family:'DM Mono',monospace;font-size:9.5px;color:' + (isErr ? '#F87171' : 'var(--tw)') + ';flex:1;">' + a.name + '</div>'
+          + '<div style="font-family:"DM Mono",monospace;font-size:9.5px;color:' + (isErr ? '#F87171' : 'var(--tw)') + ';flex:1;">' + a.name + '</div>'
           + errBadge
-          + '<div style="font-family:'DM Mono',monospace;font-size:8.5px;color:var(--td);">' + a.time + '</div>'
+          + '<div style="font-family:"DM Mono",monospace;font-size:8.5px;color:var(--td);">' + a.time + '</div>'
         + '</div>'
         + '<div style="padding:8px 11px;flex:1;">'
-          + '<div style="font-family:'DM Mono',monospace;font-size:8.5px;color:' + (isErr ? '#F87171' : 'var(--td)') + ';margin-bottom:4px;">' + a.task + ' · ' + a.step + '</div>'
+          + '<div style="font-family:"DM Mono",monospace;font-size:8.5px;color:' + (isErr ? '#F87171' : 'var(--td)') + ';margin-bottom:4px;">' + a.task + ' · ' + a.step + '</div>'
           + '<div style="height:4px;background:rgba(255,255,255,.08);border-radius:2px;overflow:hidden;margin-bottom:5px;">'
             + '<div style="height:100%;border-radius:2px;background:' + sc + ';width:' + a.pct + '%;transition:width 1s ease;"></div>'
           + '</div>'
-          + '<div style="display:flex;justify-content:space-between;font-family:'DM Mono',monospace;font-size:8px;color:var(--td);margin-bottom:5px;">'
+          + '<div style="display:flex;justify-content:space-between;font-family:"DM Mono",monospace;font-size:8px;color:var(--td);margin-bottom:5px;">'
             + '<span>' + a.pct + '%</span><span>' + a.tokens + ' tokens</span>'
           + '</div>'
           + '<div style="display:flex;align-items:center;gap:4px;">'
-            + '<div style="font-size:7.5px;color:' + ctxColor(a.ctx) + ';font-family:'DM Mono',monospace;">ctx</div>'
+            + '<div style="font-size:7.5px;color:' + ctxColor(a.ctx) + ';font-family:"DM Mono",monospace;">ctx</div>'
             + '<div style="flex:1;height:3px;background:rgba(255,255,255,.08);border-radius:2px;overflow:hidden;">'
               + '<div style="height:100%;width:' + a.ctx + '%;background:' + ctxColor(a.ctx) + ';border-radius:2px;"></div>'
             + '</div>'
-            + '<div style="font-size:7.5px;color:' + ctxColor(a.ctx) + ';font-family:'DM Mono',monospace;">' + a.ctx + '%</div>'
+            + '<div style="font-size:7.5px;color:' + ctxColor(a.ctx) + ';font-family:"DM Mono",monospace;">' + a.ctx + '%</div>'
           + '</div>'
         + '</div>'
         + footerRow;
@@ -2711,7 +2711,7 @@ function runGestureDemo() {
 
     const overlay = document.getElementById('gesture-overlay');
     if (overlay) {
-      overlay.innerHTML = `<div style="position:absolute;top:8px;right:8px;background:rgba(131,77,240,.2);border:.5px solid rgba(131,77,240,.4);border-radius:5px;font-family:'DM Mono',monospace;font-size:9px;color:#A78BFA;padding:3px 8px;animation:fadeIn .2s ease;">${state.action}</div>`;
+      overlay.innerHTML = `<div style="position:absolute;top:8px;right:8px;background:rgba(131,77,240,.2);border:.5px solid rgba(131,77,240,.4);border-radius:5px;font-family:"DM Mono",monospace;font-size:9px;color:#A78BFA;padding:3px 8px;animation:fadeIn .2s ease;">${state.action}</div>`;
     }
     gestureIdx++;
   }, 1200);
@@ -2736,7 +2736,7 @@ window.gestureSetPhase = function(phase) {
   } else if (phase === 2) {
     const r3 = document.getElementById('g-row-3');
     if (r3) { r3.style.background = 'rgba(131,77,240,.15)'; r3.style.borderLeft = '2px solid #834DF0'; }
-    if (overlay) overlay.innerHTML = '<div style="position:absolute;top:8px;right:8px;background:rgba(131,77,240,.2);border:.5px solid rgba(131,77,240,.4);border-radius:5px;font-family:'DM Mono',monospace;font-size:9px;color:#A78BFA;padding:3px 8px;animation:fadeIn .2s ease;">检测到停顿：Q3 数据行</div>';
+    if (overlay) overlay.innerHTML = '<div style="position:absolute;top:8px;right:8px;background:rgba(131,77,240,.2);border:.5px solid rgba(131,77,240,.4);border-radius:5px;font-family:"DM Mono",monospace;font-size:9px;color:#A78BFA;padding:3px 8px;animation:fadeIn .2s ease;">检测到停顿：Q3 数据行</div>';
     if (bar && aiText) {
       bar.style.display = 'block';
       aiText.style.color = 'var(--tx2)';
@@ -2804,7 +2804,7 @@ function runFixDemo() {
         div.style.cssText = `animation:fadeIn .15s ease;`;
         div.innerHTML = item.html;
       } else {
-        div.style.cssText = `font-family:'DM Mono',monospace;font-size:10.5px;color:${item.color};line-height:1.8;animation:fadeIn .15s ease;`;
+        div.style.cssText = `font-family:"DM Mono",monospace;font-size:10.5px;color:${item.color};line-height:1.8;animation:fadeIn .15s ease;`;
         div.textContent = item.text;
       }
       terminal.appendChild(div);
@@ -2979,7 +2979,7 @@ function runMemLoad() {
   memLoadLines.forEach(({delay, color, text}) => {
     setTimeout(() => {
       const div = document.createElement('div');
-      div.style.cssText = `font-family:'DM Mono',monospace;font-size:10px;color:${color};line-height:1.8;animation:fadeIn .15s ease;`;
+      div.style.cssText = `font-family:"DM Mono",monospace;font-size:10px;color:${color};line-height:1.8;animation:fadeIn .15s ease;`;
       div.textContent = text;
       el.appendChild(div);
     }, delay);
@@ -3021,8 +3021,8 @@ function selectMemLayer(layer) {
   if (!content) return;
   const items = memLayerContent[layer] || [];
   content.innerHTML = `
-    <div style="font-family:'DM Mono',monospace;font-size:9px;color:var(--td);letter-spacing:.1em;margin-bottom:8px;">${{personal:'PERSONAL PREFS',project:'PROJECT MEMORY',team:'TEAM SHARED'}[layer]}</div>
-    ${items.map(item => `<div style="display:flex;gap:8px;margin-bottom:6px;animation:fadeIn .2s ease;"><span style="font-size:11px;">${item.icon}</span><span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--tw);line-height:1.6;">${item.text}</span></div>`).join('')}`;
+    <div style="font-family:"DM Mono",monospace;font-size:9px;color:var(--td);letter-spacing:.1em;margin-bottom:8px;">${{personal:'PERSONAL PREFS',project:'PROJECT MEMORY',team:'TEAM SHARED'}[layer]}</div>
+    ${items.map(item => `<div style="display:flex;gap:8px;margin-bottom:6px;animation:fadeIn .2s ease;"><span style="font-size:11px;">${item.icon}</span><span style="font-family:"DM Mono",monospace;font-size:10px;color:var(--tw);line-height:1.6;">${item.text}</span></div>`).join('')}`;
 }
 selectMemLayer('personal');
 
@@ -3034,24 +3034,24 @@ const rrPanels = {
       <!-- 左侧：终端 -->
       <div class="mt" style="display:flex;flex-direction:column;overflow:hidden;">
         <div class="mtbar"><div class="mdt r"></div><div class="mdt y"></div><div class="mdt g2"></div><span class="mtt">claude · review</span></div>
-        <div style="padding:8px 10px;flex:1;overflow:hidden;font-family:'DM Mono',monospace;font-size:10px;line-height:1.8;" id="ui-term"></div>
+        <div style="padding:8px 10px;flex:1;overflow:hidden;font-family:"DM Mono",monospace;font-size:10px;line-height:1.8;" id="ui-term"></div>
       </div>
       <!-- 右侧：浏览器 -->
       <div style="display:flex;flex-direction:column;gap:0;overflow:hidden;">
         <!-- 浏览器顶栏 -->
         <div style="background:#22223a;border-radius:8px 8px 0 0;padding:7px 12px;display:flex;align-items:center;gap:8px;border:.5px solid rgba(131,77,240,.35);border-bottom:none;">
           <div style="display:flex;gap:5px;"><div style="width:10px;height:10px;border-radius:50%;background:#FF5F57;"></div><div style="width:10px;height:10px;border-radius:50%;background:#FEBC2E;"></div><div style="width:10px;height:10px;border-radius:50%;background:#28C840;"></div></div>
-          <div style="flex:1;background:rgba(255,255,255,.07);border-radius:5px;height:22px;display:flex;align-items:center;padding:0 10px;font-family:'DM Mono',monospace;font-size:10px;color:rgba(255,255,255,.45);">localhost:3000/components/button</div>
-          <div style="font-family:'DM Mono',monospace;font-size:9px;padding:3px 8px;border-radius:4px;background:rgba(131,77,240,.2);color:#A78BFA;border:.5px solid rgba(131,77,240,.35);" id="ui-live-badge">● LIVE</div>
-          <div style="font-family:'DM Mono',monospace;font-size:9px;padding:3px 8px;border-radius:4px;background:rgba(251,191,36,.12);color:#FBBF24;border:.5px solid rgba(251,191,36,.3);cursor:pointer;" id="ui-diff-toggle" onclick="toggleUIDiff()">DIFF ON</div>
+          <div style="flex:1;background:rgba(255,255,255,.07);border-radius:5px;height:22px;display:flex;align-items:center;padding:0 10px;font-family:"DM Mono",monospace;font-size:10px;color:rgba(255,255,255,.45);">localhost:3000/components/button</div>
+          <div style="font-family:"DM Mono",monospace;font-size:9px;padding:3px 8px;border-radius:4px;background:rgba(131,77,240,.2);color:#A78BFA;border:.5px solid rgba(131,77,240,.35);" id="ui-live-badge">● LIVE</div>
+          <div style="font-family:"DM Mono",monospace;font-size:9px;padding:3px 8px;border-radius:4px;background:rgba(251,191,36,.12);color:#FBBF24;border:.5px solid rgba(251,191,36,.3);cursor:pointer;" id="ui-diff-toggle" onclick="toggleUIDiff()">DIFF ON</div>
         </div>
         <!-- 浏览器内容区 -->
         <div style="background:#f8f8fc;border-radius:0 0 8px 8px;flex:1;padding:20px 24px;border:.5px solid rgba(131,77,240,.35);border-top:none;position:relative;overflow:hidden;" id="ui-browser-content">
-          <div style="font-size:11px;color:#666;font-family:'DM Mono',monospace;margin-bottom:14px;letter-spacing:.06em;">BUTTON COMPONENT · STORYBOOK</div>
+          <div style="font-size:11px;color:#666;font-family:"DM Mono",monospace;margin-bottom:14px;letter-spacing:.06em;">BUTTON COMPONENT · STORYBOOK</div>
 
           <!-- size 行 -->
           <div style="margin-bottom:16px;">
-            <div style="font-size:10px;color:#999;font-family:'DM Mono',monospace;margin-bottom:8px;">size variants</div>
+            <div style="font-size:10px;color:#999;font-family:"DM Mono",monospace;margin-bottom:8px;">size variants</div>
             <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;" id="ui-size-row">
               <!-- injected -->
             </div>
@@ -3059,7 +3059,7 @@ const rrPanels = {
 
           <!-- variant 行 -->
           <div style="margin-bottom:16px;">
-            <div style="font-size:10px;color:#999;font-family:'DM Mono',monospace;margin-bottom:8px;">variants</div>
+            <div style="font-size:10px;color:#999;font-family:"DM Mono",monospace;margin-bottom:8px;">variants</div>
             <div style="display:flex;gap:10px;align-items:center;" id="ui-variant-row">
               <!-- injected -->
             </div>
@@ -3067,7 +3067,7 @@ const rrPanels = {
 
           <!-- 被意外修改的组件 -->
           <div style="margin-top:10px;padding-top:12px;border-top:1px dashed #ddd;">
-            <div style="font-size:10px;color:#999;font-family:'DM Mono',monospace;margin-bottom:8px;">related · LoginButton</div>
+            <div style="font-size:10px;color:#999;font-family:"DM Mono",monospace;margin-bottom:8px;">related · LoginButton</div>
             <div style="display:flex;gap:10px;align-items:center;" id="ui-login-row">
               <!-- injected -->
             </div>
@@ -3076,7 +3076,7 @@ const rrPanels = {
           <!-- 刷新遮罩 -->
           <div id="ui-refresh-overlay" style="display:none;position:absolute;inset:0;background:rgba(248,248,252,.85);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:6px;">
             <div style="width:24px;height:24px;border:2px solid #834DF0;border-top-color:transparent;border-radius:50%;animation:spin .7s linear infinite;"></div>
-            <div style="font-family:'DM Mono',monospace;font-size:10px;color:#834DF0;">刷新预览中...</div>
+            <div style="font-family:"DM Mono",monospace;font-size:10px;color:#834DF0;">刷新预览中...</div>
           </div>
         </div>
       </div>
@@ -3091,7 +3091,7 @@ const rrPanels = {
 
   data: () => `
     <div style="background:var(--tb);border-radius:8px;border:.5px solid var(--tbdr);overflow:hidden;flex:1;">
-      <div style="background:var(--tbar);padding:7px 12px;border-bottom:.5px solid var(--tbdr);font-family:'DM Mono',monospace;font-size:9px;color:var(--td);display:flex;gap:12px;">
+      <div style="background:var(--tbar);padding:7px 12px;border-bottom:.5px solid var(--tbdr);font-family:"DM Mono",monospace;font-size:9px;color:var(--td);display:flex;gap:12px;">
         <span style="color:#F87171;">table: users</span>
         <span class="diff-badge diff-add">+2 rows</span>
         <span class="diff-badge diff-del">-1 row</span>
@@ -3108,7 +3108,7 @@ const rrPanels = {
 
   perf: () => `
     <div style="background:var(--tb);border-radius:8px;border:.5px solid var(--tbdr);padding:14px;flex:1;display:flex;flex-direction:column;gap:12px;">
-      <div style="font-family:'DM Mono',monospace;font-size:9px;color:var(--td);letter-spacing:.1em;">PERFORMANCE DELTA · build #2841 vs #2840</div>
+      <div style="font-family:"DM Mono",monospace;font-size:9px;color:var(--td);letter-spacing:.1em;">PERFORMANCE DELTA · build #2841 vs #2840</div>
       <div id="perf-metrics"></div>
     </div>
     <div style="display:flex;gap:6px;flex-shrink:0;"><span class="diff-badge diff-add">Bundle −18%</span><span class="diff-badge diff-add">FCP −340ms</span><span class="diff-badge diff-mod">TTI +20ms</span></div>`,
@@ -3116,8 +3116,8 @@ const rrPanels = {
   api: () => `
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;flex:1;overflow:hidden;">
       <div>
-        <div style="font-family:'DM Mono',monospace;font-size:9px;color:#F87171;letter-spacing:.1em;margin-bottom:6px;">BEFORE · GET /api/user/42</div>
-        <div style="background:var(--tb);border-radius:8px;border:.5px solid var(--tbdr);padding:10px;height:calc(100% - 22px);overflow:auto;font-family:'DM Mono',monospace;font-size:10px;line-height:1.8;color:var(--tw);">
+        <div style="font-family:"DM Mono",monospace;font-size:9px;color:#F87171;letter-spacing:.1em;margin-bottom:6px;">BEFORE · GET /api/user/42</div>
+        <div style="background:var(--tb);border-radius:8px;border:.5px solid var(--tbdr);padding:10px;height:calc(100% - 22px);overflow:auto;font-family:"DM Mono",monospace;font-size:10px;line-height:1.8;color:var(--tw);">
           <div>{</div>
           <div style="padding-left:14px;"><span style="color:#60A5FA;">"id"</span>: <span style="color:#FBBF24;">42</span>,</div>
           <div style="padding-left:14px;"><span style="color:#60A5FA;">"name"</span>: <span style="color:#98c379;">"Alice"</span>,</div>
@@ -3127,8 +3127,8 @@ const rrPanels = {
         </div>
       </div>
       <div>
-        <div style="font-family:'DM Mono',monospace;font-size:9px;color:#34D399;letter-spacing:.1em;margin-bottom:6px;">AFTER · <span style="color:#A78BFA;">4 字段变更</span></div>
-        <div style="background:var(--tb);border-radius:8px;border:.5px solid rgba(131,77,240,.4);padding:10px;height:calc(100% - 22px);overflow:auto;font-family:'DM Mono',monospace;font-size:10px;line-height:1.8;color:var(--tw);">
+        <div style="font-family:"DM Mono",monospace;font-size:9px;color:#34D399;letter-spacing:.1em;margin-bottom:6px;">AFTER · <span style="color:#A78BFA;">4 字段变更</span></div>
+        <div style="background:var(--tb);border-radius:8px;border:.5px solid rgba(131,77,240,.4);padding:10px;height:calc(100% - 22px);overflow:auto;font-family:"DM Mono",monospace;font-size:10px;line-height:1.8;color:var(--tw);">
           <div>{</div>
           <div style="padding-left:14px;"><span style="color:#60A5FA;">"id"</span>: <span style="color:#FBBF24;">42</span>,</div>
           <div style="padding-left:14px;"><span style="color:#60A5FA;">"name"</span>: <span style="color:#98c379;">"Alice"</span>,</div>
@@ -3197,7 +3197,7 @@ function initUIPreview() {
 function mkDiffPin(text, color) {
   const pin = document.createElement('div');
   pin.className = 'ui-diff-overlay';
-  pin.style.cssText = `position:absolute;top:-18px;left:50%;transform:translateX(-50%);white-space:nowrap;font-family:'DM Mono',monospace;font-size:8px;padding:1px 5px;border-radius:3px;background:${color}22;color:${color};border:.5px solid ${color}66;pointer-events:none;transition:opacity .3s;`;
+  pin.style.cssText = `position:absolute;top:-18px;left:50%;transform:translateX(-50%);white-space:nowrap;font-family:"DM Mono",monospace;font-size:8px;padding:1px 5px;border-radius:3px;background:${color}22;color:${color};border:.5px solid ${color}66;pointer-events:none;transition:opacity .3s;`;
   pin.textContent = text;
   return pin;
 }
@@ -3216,7 +3216,7 @@ function buildUIBrowser(sizeRow, variantRow, loginRow) {
       const wrap = document.createElement('div');
       wrap.style.cssText = 'position:relative;display:inline-flex;flex-direction:column;align-items:center;gap:14px;';
       const btn = document.createElement('div');
-      btn.style.cssText = `background:#7C3AED;color:white;padding:${pad};border-radius:6px;font-size:${fs};font-family:'DM Mono',monospace;box-shadow:0 2px 6px rgba(124,58,237,.35);cursor:default;position:relative;transition:outline .3s;`;
+      btn.style.cssText = `background:#7C3AED;color:white;padding:${pad};border-radius:6px;font-size:${fs};font-family:"DM Mono",monospace;box-shadow:0 2px 6px rgba(124,58,237,.35);cursor:default;position:relative;transition:outline .3s;`;
       btn.textContent = label;
       if (isNew) {
         btn.style.outline = '2px solid #34D399';
@@ -3243,7 +3243,7 @@ function buildUIBrowser(sizeRow, variantRow, loginRow) {
       const wrap = document.createElement('div');
       wrap.style.cssText = 'position:relative;display:inline-flex;flex-direction:column;align-items:center;gap:14px;';
       const btn = document.createElement('div');
-      btn.style.cssText = `font-family:'DM Mono',monospace;cursor:default;outline:2px solid #A78BFA;outline-offset:3px;position:relative;${style}`;
+      btn.style.cssText = `font-family:"DM Mono",monospace;cursor:default;outline:2px solid #A78BFA;outline-offset:3px;position:relative;${style}`;
       btn.textContent = label;
       wrap.appendChild(mkDiffPin(note, '#A78BFA'));
       wrap.appendChild(btn);
@@ -3258,7 +3258,7 @@ function buildUIBrowser(sizeRow, variantRow, loginRow) {
     const wrap = document.createElement('div');
     wrap.style.cssText = 'position:relative;display:inline-flex;flex-direction:column;align-items:center;gap:14px;';
     const btn = document.createElement('div');
-    btn.style.cssText = `background:#7C3AED;color:white;padding:7px 18px;border-radius:6px;font-size:12px;font-family:'DM Mono',monospace;cursor:default;outline:2px solid #FBBF24;outline-offset:3px;`;
+    btn.style.cssText = `background:#7C3AED;color:white;padding:7px 18px;border-radius:6px;font-size:12px;font-family:"DM Mono",monospace;cursor:default;outline:2px solid #FBBF24;outline-offset:3px;`;
     btn.textContent = 'Login';
     const pin = mkDiffPin('⚠ 意外修改', '#FBBF24');
     wrap.appendChild(pin);
@@ -3327,11 +3327,11 @@ function switchRR(type) {
         <div style="flex:1;display:flex;flex-direction:column;gap:3px;">
           <div style="display:flex;align-items:center;gap:6px;">
             <div style="width:${bw}px;height:10px;border-radius:2px;background:rgba(248,113,113,.35);transition:width .6s ease;"></div>
-            <span style="font-family:'DM Mono',monospace;font-size:9px;color:var(--td);">${before}${unit}</span>
+            <span style="font-family:"DM Mono",monospace;font-size:9px;color:var(--td);">${before}${unit}</span>
           </div>
           <div style="display:flex;align-items:center;gap:6px;">
             <div style="width:${aw}px;height:10px;border-radius:2px;background:${good?'rgba(52,211,153,.5)':'rgba(251,191,36,.4)'};transition:width .6s ease;"></div>
-            <span style="font-family:'DM Mono',monospace;font-size:9px;color:${color};">${after}${unit} <span style="font-size:8px;">${sign}${Math.abs(delta)}%</span></span>
+            <span style="font-family:"DM Mono",monospace;font-size:9px;color:${color};">${after}${unit} <span style="font-size:8px;">${sign}${Math.abs(delta)}%</span></span>
           </div>
         </div>`;
       container.appendChild(row);
@@ -3366,7 +3366,7 @@ function buildIVR() {
       const div = document.createElement('div');
       div.className = 'ivr-item';
       div.style.animation = 'fadeIn .2s ease';
-      div.innerHTML = `<div class="ivr-item-icon" style="color:${color};">${icon}</div><div style="color:var(--tw);font-family:'DM Mono',monospace;font-size:10px;line-height:1.55;">${text}</div>`;
+      div.innerHTML = `<div class="ivr-item-icon" style="color:${color};">${icon}</div><div style="color:var(--tw);font-family:"DM Mono",monospace;font-size:10px;line-height:1.55;">${text}</div>`;
       expEl.appendChild(div);
     }, i * 220);
   });
@@ -3377,10 +3377,10 @@ function buildIVR() {
       div.style.animation = 'fadeIn .2s ease';
       if (warn) {
         div.className = 'warn-box';
-        div.innerHTML = `<span style="font-size:12px;flex-shrink:0;">${icon}</span><span style="font-family:'DM Mono',monospace;font-size:10px;line-height:1.55;">${text}</span>`;
+        div.innerHTML = `<span style="font-size:12px;flex-shrink:0;">${icon}</span><span style="font-family:"DM Mono",monospace;font-size:10px;line-height:1.55;">${text}</span>`;
       } else {
         div.className = 'ivr-item';
-        div.innerHTML = `<div class="ivr-item-icon" style="color:${color};">${icon}</div><div style="color:var(--tw);font-family:'DM Mono',monospace;font-size:10px;line-height:1.55;">${text}</div>`;
+        div.innerHTML = `<div class="ivr-item-icon" style="color:${color};">${icon}</div><div style="color:var(--tw);font-family:"DM Mono",monospace;font-size:10px;line-height:1.55;">${text}</div>`;
       }
       unexpEl.appendChild(div);
     }, ivrExpected.length * 220 + i * 280);
@@ -3471,12 +3471,12 @@ function rrDecision(action) {
           <div style="background:#15151C;border:.5px solid rgba(131,77,240,.5);border-radius:8px;padding:8px 12px;box-shadow:0 6px 20px rgba(0,0,0,.5);animation:fadeIn .2s ease;">
             <div style="display:flex;align-items:center;gap:6px;margin-bottom:5px;">
               <div style="width:8px;height:8px;border-radius:50%;background:#F87171;animation:pulse 1s ease-in-out infinite;"></div>
-              <span style="font-family:'DM Mono',monospace;font-size:9px;color:#F87171;letter-spacing:.1em;">录音中</span>
+              <span style="font-family:"DM Mono",monospace;font-size:9px;color:#F87171;letter-spacing:.1em;">录音中</span>
             </div>
             <div id="waveform" style="display:flex;align-items:center;gap:2px;height:20px;">
               ${Array.from({length:18},(_,i)=>`<div class="wv-bar" style="width:2px;border-radius:1px;background:#834DF0;height:${4+Math.random()*14}px;animation:pulse ${0.4+Math.random()*.4}s ease-in-out infinite alternate;"></div>`).join('')}
             </div>
-            <div style="font-family:'DM Mono',monospace;font-size:9px;color:#CECEE0;margin-top:5px;" id="voice-transcript"></div>
+            <div style="font-family:"DM Mono",monospace;font-size:9px;color:#CECEE0;margin-top:5px;" id="voice-transcript"></div>
           </div>`;
         // typewriter transcript
         const words = '这块数据为什么这么低？';
