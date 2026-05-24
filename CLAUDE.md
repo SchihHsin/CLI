@@ -373,6 +373,11 @@ grep -n "id=\"s-m" file.html | head    # 快速列出所有 section
 | *(2026-05-24)* | s-m2d col2（写入模式）语音识别和终端输入均改为中文："调整 tile_m 参数，目标 cube 利用率 70%" |
 | *(2026-05-24)* | s-m2d 布局：文字列与表格列各 flex:1（50/50），间距 48px；表格第一列去除 `<br>` 改用 `·` 分隔（单行），cell padding 3px，font-size 7.5px |
 | *(2026-05-24)* | setupSlideSteps 新增 `immediate` 回调（步骤切换时同步触发）；s-m2c step1 用 `immediate` 即时清空终端窗口和语音条，修复循环回到第1步时终端先于语音条出现的 bug |
+| *(2026-05-25)* | 第8页（s-m4a）记忆启动 dp-body 补充 CLAUDE.md + context compact 真实痛点；BEFORE 面板改为"静态文件维护滞后 + compact 后遗忘当轮决策"两条具体场景 |
+| *(2026-05-25)* | 第8页（s-m4a）mockup 重设计：从不清晰的卡片堆叠改为结构化终端加载序列——`hai start` 后三块记忆（会话上下文/性能基线/硬件约束矩阵）逐段出现，step 标签同步更新 |
+| *(2026-05-25)* | 新增第16页 s-remote（移动监控）：Stage 05 · 随时介入。手机 mockup 展示 4 个 Agent 实时状态，步骤2收到 dtype-check format 不兼容推送，步骤3语音批准继续；引用 Claude Code Remote Control 2026 官方验证 |
+| *(2026-05-25)* | 第9页（s-m2c）光标定位修复：改用 `getBoundingClientRect()` 动态计算 CUBE 行坐标，消除硬编码 52%/30% 在不同屏幕尺寸下偏差 |
+| *(2026-05-25)* | ai-dev-tools-design.html：修复 JS 字符串中 48 处 `font-family:'DM Mono'` 单引号破坏外层字符串的语法错误，恢复旅程图和所有 Mockup 渲染 |
 
 ### ai-dev-tools-design.html 专项工作（更早）
 
