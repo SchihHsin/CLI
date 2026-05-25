@@ -1,0 +1,61 @@
+/*
+ * HAI Design System — Shared Color Tokens
+ * Swiss International Style · IKB 克莱因蓝
+ *
+ * WCAG AA contrast ratios (tested on respective backgrounds):
+ *   --td #828296 on #0C0C11  : 5.27:1  ✓ AA
+ *   --tx2 #3d3d3d on #fafaf8 : 10.4:1  ✓ AAA
+ *   --tx3 #737373 on #fafaf8 :  4.6:1  ✓ AA
+ *   --tw  #C8C8DC on #0C0C11 : 12.3:1  ✓ AAA
+ */
+
+:root {
+  /* ── Accent: IKB Klein Blue ── */
+  --acc:     #002FA7;
+  --acc2:    #001F80;
+  --acc-l:   #4A7FE8;
+  --acc-dim: rgba(0,47,167,.06);
+  --acc-b:   rgba(0,47,167,.16);
+
+  /* ── Light theme surfaces ── */
+  --bg:   #fafaf8;
+  --bg2:  #f0f0ee;
+  --sur:  #ffffff;
+
+  /* ── Light theme text ── */
+  --tx:  #0a0a0a;
+  --tx2: #3d3d3d;
+  --tx3: #737373;
+
+  /* ── Light theme borders ── */
+  --bdr:  rgba(0,0,0,.09);
+  --bdr2: rgba(0,0,0,.18);
+
+  /* ── Neutral grays ── */
+  --grey-1: #f0f0ee;
+  --grey-2: #d4d4d2;
+  --grey-3: #737373;
+
+  /* ── Semantic status colors ── */
+  --g:  #059669;   /* success green */
+  --r:  #DC2626;   /* error red     */
+  --y:  #b45309;   /* warning amber */
+  --tl: #0D9488;   /* teal          */
+
+  /* ── Terminal chrome ── */
+  --tb:   #0C0C11;  /* background */
+  --tbar: #181820;  /* title bar  */
+  --tbdr: #252530;  /* border     */
+
+  /* ── Terminal text ── */
+  --tw: #C8C8DC;  /* bright — WCAG AAA 12.3:1 on --tb */
+  --td: #828296;  /* dim    — WCAG AA  5.27:1 on --tb */
+
+  /* ── Terminal syntax / accent colors ── */
+  --tg:  #34D399;  /* green  */
+  --tb2: #60A5FA;  /* blue   */
+  --tp:  #A78BFA;  /* purple */
+  --ty:  #F59E0B;  /* amber  */
+  --tr:  #F87171;  /* red    */
+  --tc:  #2DD4BF;  /* cyan   */
+}

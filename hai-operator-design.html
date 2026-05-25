@@ -8,17 +8,8 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
 :root{
-  /* Swiss International · IKB 克莱因蓝 */
-  --acc:#002FA7;--acc2:#001F80;--acc-l:#4A7FE8;
-  --acc-dim:rgba(0,47,167,.06);--acc-b:rgba(0,47,167,.16);
-  --bg:#fafaf8;--bg2:#f0f0ee;--sur:#ffffff;
-  --tx:#0a0a0a;--tx2:#3d3d3d;--tx3:#737373;
-  --bdr:rgba(0,0,0,.09);--bdr2:rgba(0,0,0,.18);
-  --grey-1:#f0f0ee;--grey-2:#d4d4d2;--grey-3:#737373;
-  --g:#059669;--r:#DC2626;--y:#b45309;--bl:#002FA7;--tl:#0D9488;
-  --tb:#0C0C11;--tbar:#181820;--tbdr:#252530;
-  --tw:#C8C8DC;--td:#48485C;
-  --tg:#34D399;--tb2:#60A5FA;--tp:#4A7FE8;--ty:#F59E0B;--tr:#F87171;--tc:#2DD4BF;
+  /* File-specific overrides — shared tokens in colors.css */
+  --tp:#4A7FE8; /* operator uses IKB-blue for terminal purple slot */
 }
 html{scroll-snap-type:y mandatory;overflow-y:scroll;height:100%;}
 body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;background:var(--bg);color:var(--tx);height:100%;}
@@ -220,6 +211,7 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
 #top-nav .tn-btn:hover{color:var(--acc);}
 #nav-tooltip{position:fixed;background:var(--tx);color:rgba(255,255,255,.9);font-family:'DM Mono',monospace;font-size:7.5px;letter-spacing:.06em;padding:4px 9px;pointer-events:none;opacity:0;transition:opacity .15s;z-index:10001;white-space:nowrap;}
 </style>
+<link rel="stylesheet" href="colors.css">
 </head>
 <body>
 
@@ -1355,7 +1347,7 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
           <!-- msprof profiler window — top-left, full area -->
           <div id="msprof-demo" style="position:absolute;top:0;left:0;width:78%;height:72%;background:#0C0C11;border:.5px solid #252530;border-radius:8px;overflow:hidden;display:flex;flex-direction:column;">
             <!-- toolbar -->
-            <div style="background:#181820;padding:6px 14px;border-bottom:.5px solid #252530;font-family:'DM Mono',monospace;font-size:9px;color:#48485C;display:flex;align-items:center;gap:8px;flex-shrink:0;">
+            <div style="background:#181820;padding:6px 14px;border-bottom:.5px solid #252530;font-family:'DM Mono',monospace;font-size:9px;color:#828296;display:flex;align-items:center;gap:8px;flex-shrink:0;">
               <div style="display:flex;gap:5px;flex-shrink:0;">
                 <div style="width:8px;height:8px;border-radius:50%;background:#FF5F57;"></div>
                 <div style="width:8px;height:8px;border-radius:50%;background:#FEBC2E;"></div>
@@ -1363,7 +1355,7 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
               </div>
               <span style="color:var(--acc);font-weight:500;">msprof</span>
               <span style="color:#C8C8DC;">RMSNorm_forward · 910B · Step 3</span>
-              <span id="space-badge-hint" style="margin-left:auto;font-size:8px;color:#48485C;transition:opacity .3s;display:flex;align-items:center;gap:5px;">
+              <span id="space-badge-hint" style="margin-left:auto;font-size:8px;color:#828296;transition:opacity .3s;display:flex;align-items:center;gap:5px;">
                 长按 <span style="background:linear-gradient(135deg,#002FA7,#6B38D4);color:white;padding:2px 9px;font-size:7.5px;font-weight:400;border-radius:20px;letter-spacing:.05em;">Space</span> 语音分析
               </span>
             </div>
@@ -1390,7 +1382,7 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
                 <div class="ms-pct" style="color:var(--tp);">62%</div>
               </div>
               <!-- timeline -->
-              <div style="font-family:'DM Mono',monospace;font-size:7.5px;color:#48485C;margin:8px 0 3px;">Timeline · CUBE Utilization</div>
+              <div style="font-family:'DM Mono',monospace;font-size:7.5px;color:#828296;margin:8px 0 3px;">Timeline · CUBE Utilization</div>
               <div style="height:24px;background:rgba(255,255,255,.03);overflow:hidden;position:relative;">
                 <div style="position:absolute;inset:0;display:flex;align-items:flex-end;padding:2px 4px;gap:1px;">
                   <div style="flex:1;height:55%;background:#4A7FE8;opacity:.5;"></div>
@@ -1457,15 +1449,15 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
                 <div style="width:7px;height:7px;border-radius:50%;background:#FEBC2E;"></div>
                 <div style="width:7px;height:7px;border-radius:50%;background:#28C840;"></div>
               </div>
-              <span style="font-family:'DM Mono',monospace;font-size:7.5px;color:#48485C;">terminal</span>
+              <span style="font-family:'DM Mono',monospace;font-size:7.5px;color:#828296;">terminal</span>
               <span style="margin-left:auto;font-family:'DM Mono',monospace;font-size:7px;
                 color:var(--acc);background:var(--acc-dim);border:.5px solid var(--acc-b);
                 padding:1px 7px;">HAI 已发送指令</span>
             </div>
             <!-- terminal content -->
             <div style="padding:10px 14px;flex:1;overflow:hidden;font-family:'DM Mono',monospace;font-size:8px;line-height:1.8;color:#C8C8DC;">
-              <div style="color:#48485C;">$ msprof --op RMSNorm_forward</div>
-              <div style="color:#48485C;margin-bottom:6px;">  CUBE: 21%  Vector: 87%  data_move: 62%</div>
+              <div style="color:#828296;">$ msprof --op RMSNorm_forward</div>
+              <div style="color:#828296;margin-bottom:6px;">  CUBE: 21%  Vector: 87%  data_move: 62%</div>
               <div style="border-top:.5px solid rgba(255,255,255,.35);border-bottom:.5px solid rgba(255,255,255,.35);padding:3px 0;margin:3px 0;color:rgba(255,255,255,.5);">$ <span id="voice-ai-text" style="color:var(--acc);"></span></div>
               <div id="voice-ai-result" style="display:none;margin-top:4px;">
                 <div style="color:var(--tg);">[HAI] CUBE 利用率低 → tile_m=64 偏小，data_move 占主导</div>
@@ -1557,11 +1549,11 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
                 <div style="width:4px;height:4px;border-radius:50%;background:#ff5f57;"></div>
                 <div style="width:4px;height:4px;border-radius:50%;background:#febc2e;"></div>
                 <div style="width:4px;height:4px;border-radius:50%;background:#28c840;"></div>
-                <span style="font-family:'DM Mono',monospace;font-size:6.5px;color:#48485C;margin-left:4px;">terminal</span>
+                <span style="font-family:'DM Mono',monospace;font-size:6.5px;color:#828296;margin-left:4px;">terminal</span>
               </div>
                 <div style="padding:8px 10px;flex:1;font-family:'DM Mono',monospace;font-size:7px;line-height:1.85;overflow:hidden;position:relative;">
-                  <div style="color:#48485C;">$ hai compile cube_rms.py</div>
-                  <div style="color:#48485C;">$ hai run --test</div>
+                  <div style="color:#828296;">$ hai compile cube_rms.py</div>
+                  <div style="color:#828296;">$ hai run --test</div>
                   <div style="border-top:.5px solid rgba(255,255,255,.35);border-bottom:.5px solid rgba(255,255,255,.35);padding:3px 0;margin:3px 0;color:rgba(255,255,255,.7);">$ <span id="m2d-typed1"></span><span id="m2d-cur1" style="display:inline-block;width:4px;height:10px;background:rgba(255,255,255,.65);vertical-align:-2px;animation:bl .8s step-end infinite;"></span></div>
                   <div id="m2d-result1" style="display:none;font-size:6.5px;margin-top:3px;"></div>
               <div id="m2d-wave1" style="display:none;position:absolute;bottom:8px;left:50%;transform:translateX(-50%);
@@ -1603,13 +1595,13 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
                 <div style="width:4px;height:4px;border-radius:50%;background:#ff5f57;"></div>
                 <div style="width:4px;height:4px;border-radius:50%;background:#febc2e;"></div>
                 <div style="width:4px;height:4px;border-radius:50%;background:#28c840;"></div>
-                <span style="font-family:'DM Mono',monospace;font-size:6.5px;color:#48485C;margin-left:4px;">terminal</span>
+                <span style="font-family:'DM Mono',monospace;font-size:6.5px;color:#828296;margin-left:4px;">terminal</span>
               </div>
                 <div style="padding:8px 10px;flex:1;font-family:'DM Mono',monospace;font-size:7px;line-height:1.85;overflow:hidden;position:relative;">
-                  <div style="color:#48485C;">$ hai compile cube_rms.py</div>
-                  <div style="color:#48485C;">$ hai run --test</div>
+                  <div style="color:#828296;">$ hai compile cube_rms.py</div>
+                  <div style="color:#828296;">$ hai run --test</div>
                   <div style="border-top:.5px solid rgba(255,255,255,.35);border-bottom:.5px solid rgba(255,255,255,.35);padding:3px 0;margin:3px 0;color:rgba(255,255,255,.7);">$ <span id="m2d-typed2" style="color:var(--acc-l,#A87FF5);"></span><span id="m2d-cur2" style="display:inline-block;width:4px;height:10px;background:rgba(255,255,255,.65);vertical-align:-2px;animation:bl .8s step-end infinite;"></span></div>
-                  <div id="m2d-result2" style="display:none;font-size:6.5px;margin-top:3px;color:#48485C;"></div>
+                  <div id="m2d-result2" style="display:none;font-size:6.5px;margin-top:3px;color:#828296;"></div>
               <div id="m2d-wave2" style="display:none;position:absolute;bottom:8px;left:50%;transform:translateX(-50%);
                 background:linear-gradient(135deg,rgba(0,47,167,.88),rgba(107,56,212,.88));
                 border:1px solid rgba(255,255,255,.2);
@@ -1651,10 +1643,10 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
                   <div style="width:4px;height:4px;border-radius:50%;background:#ff5f57;"></div>
                   <div style="width:4px;height:4px;border-radius:50%;background:#febc2e;"></div>
                   <div style="width:4px;height:4px;border-radius:50%;background:#28c840;"></div>
-                  <span style="font-family:'DM Mono',monospace;font-size:6.5px;color:#48485C;margin-left:4px;">msprof</span>
+                  <span style="font-family:'DM Mono',monospace;font-size:6.5px;color:#828296;margin-left:4px;">msprof</span>
                 </div>
                 <div style="padding:6px 8px;flex:1;overflow:hidden;position:relative;">
-                  <div style="font-family:'DM Mono',monospace;font-size:6.5px;color:#4E4E5E;margin-bottom:3px;">■ 利用率</div>
+                  <div style="font-family:'DM Mono',monospace;font-size:6.5px;color:#828296;margin-bottom:3px;">■ 利用率</div>
                   <div id="m2d-prof-row3" style="padding:4px 6px;border-radius:3px;border:.5px solid rgba(255,255,255,.04);transition:background .3s;">
                     <div style="display:flex;justify-content:space-between;font-family:'DM Mono',monospace;font-size:7px;margin-bottom:2px;">
                       <span style="color:#CECEE0;">CUBE</span><span style="color:#F87171;">21%</span>
@@ -2283,7 +2275,7 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
                       <div style="flex:1;padding:5px 8px;font-family:'DM Mono',monospace;font-size:6.5px;line-height:1.8;overflow:hidden;">
                         <div id="tl-s1" style="border-top:.5px solid rgba(255,255,255,.35);border-bottom:.5px solid rgba(255,255,255,.35);padding:3px 0;margin:3px 0;color:#c8c8d0;">$ hai run RMSNorm --hw 910B --goal <span style="color:#a8d8a8;">"cube_util &gt; 70%"</span></div>
                         <div id="tl-s2" style="color:#8888a8;opacity:0;transition:opacity .4s;">◆ Agent 启动 · tbe-gen + shape-infer + perf-bench</div>
-                        <div id="tl-s3" style="color:#666680;opacity:0;transition:opacity .45s 0.12s;">  分析 msprof · CUBE 38% → 评估 tile_m 64/96/128</div>
+                        <div id="tl-s3" style="color:#828296;opacity:0;transition:opacity .45s 0.12s;">  分析 msprof · CUBE 38% → 评估 tile_m 64/96/128</div>
                         <div id="tl-s4" style="color:#e8c060;opacity:0;transition:opacity .4s;">▶ tile_m=128 超 UB，确认策略：96 还是双缓冲？</div>
                         <div id="tl-s5" style="color:#6090e0;opacity:0;transition:opacity .4s 0.1s;">  [等待开发者选择…]</div>
                         <div id="tl-s6" style="color:#50d080;opacity:0;transition:opacity .4s;">✓ RMSNorm TBE 生成完成</div>
