@@ -4,11 +4,11 @@
  *
  * ⚠️ 两套主题严格分离：
  *   PPT 主题  — --acc #002FA7 只用于浅色背景（幻灯片边框/标签/按钮填充）
- *   终端主题  — --ta  #60A5FA 用于深色终端内的强调色文字
+ *   终端主题  — --ta  #A78BFA 用于深色终端内的强调色文字（紫色，区别于PPT蓝）
  *   #002FA7 在 #0C0C11 上对比度仅 1.87:1，严禁在终端内做文字颜色
  *
  * WCAG AA contrast ratios:
- *   --ta  #60A5FA on #0C0C11  :  9.0:1  ✓ AAA
+ *   --ta  #A78BFA on #0C0C11  :  7.7:1  ✓ AAA
  *   --td  #828296 on #0C0C11  :  5.27:1 ✓ AA
  *   --tw  #C8C8DC on #0C0C11  : 12.3:1  ✓ AAA
  *   --tx2 #3d3d3d on #fafaf8  : 10.4:1  ✓ AAA
@@ -59,7 +59,7 @@
   --td: #828296;  /* dim    — WCAG AA  5.27:1 on --tb */
 
   /* ── Terminal accent (深色背景专用，严禁与 --acc 互换) ── */
-  --ta:  #60A5FA;  /* terminal accent 亮蓝 — WCAG AAA 9:1 on --tb */
+  --ta:  #A78BFA;  /* terminal accent 紫 — WCAG AAA 7.7:1 on --tb */
 
   /* ── Terminal syntax / accent colors ── */
   --tg:  #34D399;  /* green  */

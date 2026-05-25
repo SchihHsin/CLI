@@ -1008,104 +1008,152 @@ body{background:var(--bg);color:var(--tx);font-family:'Noto Sans SC',sans-serif;
 <div class="sec" id="s-session" style="background:var(--sur);">
   <div class="slabel">
     <span class="sub">HAI CLI · 多会话 · 设计点 9/12</span>
-    <span class="main">并行会话 — <strong>Alt+1/2/3 瞬间切换，⚠ 即时告警</strong></span>
+    <span class="main">并行会话 — <strong>页签直达 · Cmd+G 全文检索</strong></span>
   </div>
   <div class="inner">
     <div class="dp-layout">
       <div class="dp-left">
         <div class="dp-desc">
           <div class="dp-label">设计原则</div>
-          <div class="dp-title">多任务不等于多窗口</div>
-          <div class="dp-body">在一个终端内并行运行多个 AI 任务，Status Bar 顶部的 Session Tabs 是全局导航中枢。切换会话不开新窗口。</div>
+          <div class="dp-title">切换不只靠记编号</div>
+          <div class="dp-body">Status Bar 页签 + <code>Alt+N</code> 处理日常 2–5 个并行任务。当 session 变多或记不清编号时，<code>Cmd+G</code> 打开全文检索——搜索范围覆盖 <strong>session 标题和完整对话内容</strong>，输入任何关键词（命令、错误信息、文件名）即可定位历史 session。</div>
         </div>
         <div style="display:flex;flex-direction:column;gap:6px;margin-top:4px;">
           <div style="padding:7px 10px;border:.5px solid var(--grey-2);background:var(--grey-1);">
-            <div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--tx3);letter-spacing:.1em;margin-bottom:4px;">SESSION TABS — Status Bar 左侧</div>
-            <div style="display:flex;gap:6px;flex-wrap:wrap;">
-              <div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--ta);padding:2px 8px;border-bottom:1.5px solid var(--acc);">RMSNorm ⟳</div>
-              <div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--tx3);padding:2px 8px;">FlashAttn ✓</div>
-              <div style="font-family:'DM Mono',monospace;font-size:8px;color:#b45309;padding:2px 8px;animation:blink 1s step-end infinite;">RopeEmb ⚠</div>
+            <div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--tx3);letter-spacing:.1em;margin-bottom:4px;">两路切换</div>
+            <div style="display:flex;flex-direction:column;gap:4px;">
+              <div style="display:flex;gap:8px;align-items:baseline;">
+                <code style="background:var(--grey-2);padding:1px 6px;font-family:'DM Mono',monospace;font-size:8px;white-space:nowrap;flex-shrink:0;">Alt+1/2/3</code>
+                <span style="font-size:9px;color:var(--tx2);">按编号直跳（≤5个session，最快路径）</span>
+              </div>
+              <div style="display:flex;gap:8px;align-items:baseline;">
+                <code style="background:var(--grey-2);padding:1px 6px;font-family:'DM Mono',monospace;font-size:8px;white-space:nowrap;flex-shrink:0;">Cmd+G</code>
+                <span style="font-size:9px;color:var(--tx2);">模糊搜索 — 标题 + 对话内容全文</span>
+              </div>
+              <div style="display:flex;gap:8px;align-items:baseline;">
+                <code style="background:var(--grey-2);padding:1px 6px;font-family:'DM Mono',monospace;font-size:8px;white-space:nowrap;flex-shrink:0;">↑↓ + ↵</code>
+                <span style="font-size:9px;color:var(--tx2);">导航结果并跳转</span>
+              </div>
             </div>
           </div>
-          <div style="display:flex;flex-direction:column;gap:4px;padding:7px 10px;border:.5px solid var(--grey-2);background:var(--grey-1);">
-            <div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--tx3);letter-spacing:.1em;margin-bottom:2px;">快捷键</div>
-            <div style="display:flex;gap:8px;align-items:center;font-size:9px;"><code style="background:var(--grey-2);padding:1px 6px;font-family:'DM Mono',monospace;font-size:8px;">Alt+1/2/3</code><span style="color:var(--tx2);">切换到对应 session</span></div>
-            <div style="display:flex;gap:8px;align-items:center;font-size:9px;"><code style="background:var(--grey-2);padding:1px 6px;font-family:'DM Mono',monospace;font-size:8px;">hai new</code><span style="color:var(--tx2);">开启新 session</span></div>
-            <div style="display:flex;gap:8px;align-items:center;font-size:9px;"><code style="background:var(--grey-2);padding:1px 6px;font-family:'DM Mono',monospace;font-size:8px;">hai list</code><span style="color:var(--tx2);">列出所有活跃 session</span></div>
+          <div style="padding:7px 10px;border:.5px solid var(--grey-2);background:var(--grey-1);">
+            <div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--tx3);letter-spacing:.1em;margin-bottom:3px;">Cmd+G 搜索范围</div>
+            <div style="display:flex;flex-direction:column;gap:2px;font-size:8.5px;color:var(--tx2);">
+              <div>◆ Session 名称 / 工作目录</div>
+              <div>◆ 所有历史对话消息</div>
+              <div>◆ 执行过的命令与输出</div>
+              <div style="color:var(--tx3);font-size:7.5px;margin-top:2px;">↳ 搜 "FRACTAL" 能找到三个月前讨论过该格式的任意 session</div>
+            </div>
           </div>
           <div style="padding:7px 10px;border:.5px solid rgba(245,158,11,.35);background:rgba(245,158,11,.05);">
-            <div style="font-family:'DM Mono',monospace;font-size:8px;color:#b45309;letter-spacing:.1em;margin-bottom:3px;">⚠ 确认告警机制</div>
-            <div style="font-size:9px;color:var(--tx2);line-height:1.6;">需要确认的 session 标签闪烁橙色 ⚠；同时触发桌面通知；不阻塞其他 session 继续执行。</div>
+            <div style="font-family:'DM Mono',monospace;font-size:8px;color:#b45309;letter-spacing:.1em;margin-bottom:3px;">⚠ 告警机制不变</div>
+            <div style="font-size:9px;color:var(--tx2);line-height:1.6;">需要确认的 session 标签闪烁橙色 ⚠ + 桌面通知，不阻塞其他 session。</div>
           </div>
         </div>
         <div class="ba-grid" style="margin-top:auto;">
           <div class="ba-before">
-            <div class="ba-label"><span style="background:var(--grey-2);color:var(--tx2);font-family:'DM Mono',monospace;font-size:7px;padding:1px 6px;">BEFORE</span>多窗口方案</div>
-            <div style="font-size:9px;color:var(--tx2);line-height:1.6;">开多个 tmux pane<br>状态分散难统览<br>告警容易被忽视</div>
+            <div class="ba-label"><span style="background:var(--grey-2);color:var(--tx2);font-family:'DM Mono',monospace;font-size:7px;padding:1px 6px;">BEFORE</span>只能靠编号</div>
+            <div style="font-size:9px;color:var(--tx2);line-height:1.6;">Alt+3 是哪个项目？<br>记不住只能 hai list<br>对话内容无法检索</div>
           </div>
           <div class="ba-after">
-            <div class="ba-label"><span style="background:var(--acc);color:white;font-family:'DM Mono',monospace;font-size:7px;padding:1px 6px;">AFTER</span>HAI Session Tabs</div>
-            <div class="ba-text">单终端多 session · Status Bar 统一导航 · ⚠ 闪烁 + 推送双告警</div>
+            <div class="ba-label"><span style="background:var(--acc);color:white;font-family:'DM Mono',monospace;font-size:7px;padding:1px 6px;">AFTER</span>全文检索</div>
+            <div class="ba-text">输入任意关键词（命令/错误/文件名），秒定位历史 session</div>
           </div>
         </div>
       </div>
-      <div class="dp-right">
-        <div class="mockup-label">动态 Mockup — 多会话切换演示</div>
+      <div class="dp-right" style="position:relative;">
+        <div class="mockup-label">动态 Mockup — 页签切换 + Cmd+G 全文检索</div>
         <div class="stp-strip" id="stp-session">
           <div class="stp-bar"><div class="stp-fill"></div></div>
           <div class="stp-steps">
-            <div class="stp-step"><div class="stp-num">1</div><span class="stp-lbl">Session 1 运行中</span></div>
-            <div class="stp-step"><div class="stp-num">2</div><span class="stp-lbl">切换到 Session 3</span></div>
-            <div class="stp-step"><div class="stp-num">3</div><span class="stp-lbl">处理 ⚠ 确认请求</span></div>
+            <div class="stp-step"><div class="stp-num">1</div><span class="stp-lbl">Alt+2 切到 FlashAttn</span></div>
+            <div class="stp-step"><div class="stp-num">2</div><span class="stp-lbl">Cmd+G 打开搜索</span></div>
+            <div class="stp-step"><div class="stp-num">3</div><span class="stp-lbl">搜 "FRACTAL" 找历史</span></div>
           </div>
         </div>
         <div style="flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;">
           <div class="mac-win" style="box-shadow:0 8px 32px rgba(0,0,0,.25);">
-            <!-- Session status bar -->
-            <div id="sess-sbar" style="background:#0d0d14;padding:0 10px;height:22px;display:flex;align-items:center;gap:0;border-bottom:.5px solid #252530;font-family:'DM Mono',monospace;font-size:7.5px;overflow:hidden;">
-              <span id="sess-t1" style="color:var(--ta);padding:0 8px;border-bottom:1.5px solid var(--acc);height:100%;display:flex;align-items:center;">RMSNorm ⟳</span>
-              <span id="sess-t2" style="color:#828296;padding:0 8px;height:100%;display:flex;align-items:center;">FlashAttn ✓</span>
-              <span id="sess-t3" style="color:#828296;padding:0 8px;height:100%;display:flex;align-items:center;">RopeEmb ⚠</span>
-              <div style="flex:1;text-align:center;color:#828296;">~/workspace</div>
+            <!-- HAI Status bar -->
+            <div style="background:#0d0d14;padding:0 10px;height:22px;display:flex;align-items:center;gap:0;border-bottom:.5px solid #252530;font-family:'DM Mono',monospace;font-size:7.5px;overflow:hidden;flex-shrink:0;">
+              <span id="sess-t1" style="padding:0 8px;border-bottom:1.5px solid var(--acc);height:100%;display:flex;align-items:center;color:var(--ta);">RMSNorm ⟳</span>
+              <span id="sess-t2" style="padding:0 8px;height:100%;display:flex;align-items:center;color:#828296;">FlashAttn ✓</span>
+              <span id="sess-t3" style="padding:0 8px;height:100%;display:flex;align-items:center;color:#828296;">RopeEmb ⚠</span>
+              <div style="flex:1;text-align:center;color:#828296;" id="sess-path">~/workspace/RMSNorm</div>
               <span id="sess-stage" style="color:var(--ta);">Stage 04 · 执行中</span>
             </div>
+            <!-- macOS title bar -->
             <div class="mac-bar">
-              <div class="mac-dots"><div class="mac-dot" style="background:#FF5F57;"></div><div class="mac-dot" style="background:#FEBC2E;"></div><div class="mac-dot" style="background:#28C840;"></div></div>
+              <div class="mac-dots">
+                <div class="mac-dot" style="background:#FF5F57;"></div>
+                <div class="mac-dot" style="background:#FEBC2E;"></div>
+                <div class="mac-dot" style="background:#28C840;"></div>
+              </div>
               <span class="mac-title" id="sess-title">hai — RMSNorm-910B</span>
             </div>
-            <div id="sess-body" style="padding:10px 14px;font-family:'DM Mono',monospace;font-size:8px;min-height:175px;display:flex;flex-direction:column;gap:3px;">
-              <!-- S1 content -->
+            <!-- Terminal body -->
+            <div id="sess-body" style="padding:10px 14px;font-family:'DM Mono',monospace;font-size:8px;min-height:172px;position:relative;display:flex;flex-direction:column;gap:3px;overflow:hidden;">
+              <!-- Session 1: RMSNorm -->
               <div id="sess-c1">
                 <div style="color:var(--td);">$ hai optimize --op RMSNorm</div>
-                <div style="color:var(--tb2);margin-top:3px;">▸ tile_m: 迭代中…</div>
+                <div style="color:var(--ta);margin-top:3px;">▸ tile_m: 迭代中…</div>
                 <div style="color:var(--td);">▸ perf-bench: 运行基准测试…</div>
                 <div style="margin-top:6px;display:flex;gap:8px;align-items:center;">
                   <div style="flex:1;height:3px;background:#252530;border-radius:2px;overflow:hidden;"><div style="width:60%;height:100%;background:var(--acc);"></div></div>
                   <span style="color:var(--td);font-size:7.5px;">3/5 步</span>
                 </div>
+                <div style="margin-top:8px;color:rgba(255,255,255,.16);font-size:7px;">Alt+1 RMSNorm ⟳  Alt+2 FlashAttn ✓  Alt+3 RopeEmb ⚠  Cmd+G 搜索</div>
               </div>
-              <!-- S3 content -->
-              <div id="sess-c3" style="display:none;">
-                <div style="color:var(--td);">$ hai optimize --op RopeEmb</div>
-                <div style="border:.5px solid rgba(245,158,11,.5);background:rgba(245,158,11,.05);padding:7px 10px;border-radius:2px;margin-top:4px;">
-                  <div style="font-size:8px;color:#b45309;margin-bottom:3px;">◆ 需要确认 — shape 推导失败</div>
-                  <div style="font-size:7.5px;color:var(--td);">RopeEmb 在 310P 上 shape 不匹配，是否忽略并仅针对 910B 优化？</div>
-                  <div style="display:flex;gap:6px;margin-top:5px;">
-                    <div style="font-family:'DM Mono',monospace;font-size:7px;background:var(--acc);color:white;padding:2px 8px;">确认</div>
-                    <div style="font-family:'DM Mono',monospace;font-size:7px;border:.5px solid var(--grey-2);color:var(--tx2);padding:2px 8px;">取消</div>
+              <!-- Session 2: FlashAttn done -->
+              <div id="sess-c2" style="display:none;">
+                <div style="color:var(--td);">$ hai optimize --op FlashAttn</div>
+                <div style="color:var(--tg);margin-top:3px;">✓ tile_m=128 收敛，cube_util 74.2%</div>
+                <div style="color:var(--tg);">✓ 精度验证通过，max_error 6.1e-6</div>
+                <div style="color:var(--tg);">✓ 兼容 910B / 310P</div>
+                <div style="color:var(--td);margin-top:4px;">◆ 最优参数已存入团队库</div>
+                <div style="margin-top:8px;color:rgba(255,255,255,.16);font-size:7px;">Alt+1 RMSNorm ⟳  Alt+2 FlashAttn ✓  Alt+3 RopeEmb ⚠  Cmd+G 搜索</div>
+              </div>
+              <!-- Cmd+G search overlay -->
+              <div id="sess-search" style="display:none;position:absolute;top:0;left:6%;right:6%;background:#13131a;border:.5px solid #3a3a52;box-shadow:0 8px 32px rgba(0,0,0,.7);z-index:5;">
+                <div style="display:flex;align-items:center;gap:8px;padding:7px 10px;border-bottom:.5px solid #252530;">
+                  <span style="font-family:'DM Mono',monospace;font-size:7px;color:var(--ta);background:#252530;padding:1px 5px;border-radius:3px;">⌘G</span>
+                  <span id="sess-sq" style="font-family:'DM Mono',monospace;font-size:8px;color:var(--tw);flex:1;border-bottom:.5px solid rgba(167,139,250,.4);padding-bottom:1px;"></span>
+                  <span style="font-size:7px;color:var(--td);">标题 + 对话内容</span>
+                </div>
+                <!-- Empty state -->
+                <div id="sess-s-empty" style="padding:10px;">
+                  <div style="font-size:7.5px;color:var(--td);margin-bottom:5px;">最近 session</div>
+                  <div style="display:flex;flex-direction:column;gap:2px;">
+                    <div style="display:flex;justify-content:space-between;padding:3px 6px;background:rgba(167,139,250,.08);border-left:1.5px solid var(--ta);">
+                      <span style="font-family:'DM Mono',monospace;font-size:8px;color:var(--tw);">FlashAttn-v2</span><span style="font-size:7px;color:var(--td);">当前</span>
+                    </div>
+                    <div style="display:flex;justify-content:space-between;padding:3px 6px;">
+                      <span style="font-family:'DM Mono',monospace;font-size:8px;color:var(--td);">RMSNorm-910B</span><span style="font-size:7px;color:var(--td);">5h</span>
+                    </div>
+                    <div style="display:flex;justify-content:space-between;padding:3px 6px;">
+                      <span style="font-family:'DM Mono',monospace;font-size:8px;color:var(--td);">RopeEmb-310P</span><span style="font-size:7px;color:var(--td);">2d</span>
+                    </div>
+                  </div>
+                </div>
+                <!-- Results -->
+                <div id="sess-s-results" style="display:none;padding:4px 0;">
+                  <div style="padding:2px 10px;font-size:7px;color:var(--td);letter-spacing:.08em;">搜索结果 (2)</div>
+                  <div style="padding:5px 10px;background:rgba(167,139,250,.08);border-left:2px solid var(--ta);">
+                    <div style="display:flex;justify-content:space-between;margin-bottom:2px;">
+                      <span style="font-family:'DM Mono',monospace;font-size:8px;color:var(--ta);">RMSNorm-910B</span>
+                      <span style="font-size:7px;color:var(--td);">5h ago</span>
+                    </div>
+                    <div style="font-size:7px;color:var(--td);line-height:1.5;">…format 不兼容 <span style="background:rgba(167,139,250,.28);color:var(--ta);padding:0 2px;">FRACTAL</span>_NZ → ND，已切换并验证…</div>
+                  </div>
+                  <div style="padding:5px 10px;">
+                    <div style="display:flex;justify-content:space-between;margin-bottom:2px;">
+                      <span style="font-family:'DM Mono',monospace;font-size:8px;color:var(--tw);">FlashAttn-v2</span>
+                      <span style="font-size:7px;color:var(--td);">当前</span>
+                    </div>
+                    <div style="font-size:7px;color:var(--td);line-height:1.5;">…<span style="background:rgba(167,139,250,.28);color:var(--ta);padding:0 2px;">FRACTAL</span>_NZ reshape 完成，精度验证 ✓…</div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-          <!-- Desktop notification (shown in step 1) -->
-          <div id="sess-notif" style="display:none;background:var(--sur);border:.5px solid var(--grey-2);border-radius:10px;padding:8px 12px;box-shadow:0 4px 16px rgba(0,0,0,.12);font-size:8px;">
-            <div style="display:flex;align-items:center;gap:6px;margin-bottom:3px;">
-              <div style="width:16px;height:16px;background:var(--acc);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:white;font-family:'DM Mono',monospace;">H</div>
-              <span style="font-weight:500;color:var(--tx);">HAI 需要确认</span>
-              <span style="margin-left:auto;color:var(--tx3);font-size:7px;">刚刚</span>
-            </div>
-            <div style="color:var(--tx2);">RopeEmb — shape 推导失败，需要您的决策</div>
           </div>
         </div>
       </div>
@@ -1675,57 +1723,69 @@ setupSlideSteps('s-review', 'stp-review', [
 // ──────────────────────────────────────────────
 setupSlideSteps('s-session', 'stp-session', [
   {
-    ms: 2400,
+    ms: 2000,
+    key: 'Alt+2',
     immediate: function() {
       var t1 = document.getElementById('sess-t1');
-      var t3 = document.getElementById('sess-t3');
+      var t2 = document.getElementById('sess-t2');
       var c1 = document.getElementById('sess-c1');
-      var c3 = document.getElementById('sess-c3');
-      var title = document.getElementById('sess-title');
+      var c2 = document.getElementById('sess-c2');
+      var search = document.getElementById('sess-search');
+      var path = document.getElementById('sess-path');
       var stage = document.getElementById('sess-stage');
-      var notif = document.getElementById('sess-notif');
+      var title = document.getElementById('sess-title');
       if (t1) { t1.style.color = 'var(--ta)'; t1.style.borderBottom = '1.5px solid var(--acc)'; }
-      if (t3) { t3.style.color = '#828296'; t3.style.borderBottom = 'none'; }
+      if (t2) { t2.style.color = '#828296'; t2.style.borderBottom = 'none'; }
       if (c1) c1.style.display = 'block';
-      if (c3) c3.style.display = 'none';
-      if (title) title.textContent = 'hai — RMSNorm-910B';
+      if (c2) c2.style.display = 'none';
+      if (search) search.style.display = 'none';
+      if (path) path.textContent = '~/workspace/RMSNorm';
       if (stage) { stage.textContent = 'Stage 04 · 执行中'; stage.style.color = 'var(--ta)'; }
-      if (notif) notif.style.display = 'none';
+      if (title) title.textContent = 'hai — RMSNorm-910B';
     },
-    act: null
-  },
-  {
-    ms: 2400,
     act: function() {
       var t1 = document.getElementById('sess-t1');
-      var t3 = document.getElementById('sess-t3');
+      var t2 = document.getElementById('sess-t2');
       var c1 = document.getElementById('sess-c1');
-      var c3 = document.getElementById('sess-c3');
-      var title = document.getElementById('sess-title');
+      var c2 = document.getElementById('sess-c2');
+      var path = document.getElementById('sess-path');
       var stage = document.getElementById('sess-stage');
-      var notif = document.getElementById('sess-notif');
+      var title = document.getElementById('sess-title');
       if (t1) { t1.style.color = '#828296'; t1.style.borderBottom = 'none'; }
-      if (t3) { t3.style.color = '#b45309'; t3.style.borderBottom = '1.5px solid #b45309'; }
+      if (t2) { t2.style.color = 'var(--ta)'; t2.style.borderBottom = '1.5px solid var(--acc)'; }
       if (c1) c1.style.display = 'none';
-      if (c3) c3.style.display = 'block';
-      if (title) title.textContent = 'hai — RopeEmb-910B';
-      if (stage) { stage.textContent = 'Stage 04 · 等待确认'; stage.style.color = '#b45309'; }
-      if (notif) notif.style.display = 'block';
+      if (c2) c2.style.display = 'block';
+      if (path) path.textContent = '~/workspace/FlashAttn';
+      if (stage) { stage.textContent = 'Stage 06 · 完成'; stage.style.color = 'var(--tg)'; }
+      if (title) title.textContent = 'hai — FlashAttn-v2';
+    }
+  },
+  {
+    ms: 2200,
+    key: '⌘G',
+    act: function() {
+      var search = document.getElementById('sess-search');
+      var sq = document.getElementById('sess-sq');
+      var empt = document.getElementById('sess-s-empty');
+      var res = document.getElementById('sess-s-results');
+      if (search) search.style.display = 'block';
+      if (sq) sq.textContent = '';
+      if (empt) empt.style.display = 'block';
+      if (res) res.style.display = 'none';
     }
   },
   {
     ms: 2000,
     act: function() {
-      var notif = document.getElementById('sess-notif');
-      if (notif) notif.style.display = 'none';
-      var t3 = document.getElementById('sess-t3');
-      if (t3) t3.textContent = 'RopeEmb ✓';
-      var stage = document.getElementById('sess-stage');
-      if (stage) { stage.textContent = 'Stage 04 · 继续执行中'; stage.style.color = 'var(--ta)'; }
+      var sq = document.getElementById('sess-sq');
+      var empt = document.getElementById('sess-s-empty');
+      var res = document.getElementById('sess-s-results');
+      if (sq) sq.textContent = 'FRACTAL';
+      if (empt) empt.style.display = 'none';
+      if (res) res.style.display = 'block';
     }
   }
 ]);
-
 // ──────────────────────────────────────────────
 // S-CONTEXT: context meter demo
 // ──────────────────────────────────────────────

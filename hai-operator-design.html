@@ -2001,7 +2001,7 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
         <div class="dp-desc">
           <div class="dp-label">设计说明</div>
           <div class="dp-title">多项目并行 · 永不丢失上下文</div>
-          <div class="dp-body">同时维护 RMSNorm、FlashAttn、RopeEmb 三个算子的优化任务，开发者无需打开多个终端窗口。所有 session 的进度和状态始终显示在固定 status bar，<strong style="color:var(--ta);">Alt+1/2/3</strong> 即时切换，切回后上下文完整保留。⚠ 任务标签主动闪烁，无需逐个检查。</div>
+          <div class="dp-body">所有 session 的进度始终显示在固定 status bar，<strong style="color:var(--ta);">Alt+1/2/3</strong> 直跳最快。session 过多或记不清编号时，<strong style="color:var(--ta);">Cmd+G</strong> 全文检索——搜索范围覆盖 session 标题 + 完整对话内容，输入任何关键词（命令、错误信息、文件名）即可定位历史 session。</div>
         </div>
         <div class="dp-desc">
           <div class="dp-label">核心设计点</div>
@@ -2035,7 +2035,7 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
           <div class="stp-steps">
             <div class="stp-step"><div class="stp-num">1</div><span class="stp-lbl">RMSNorm 运行中</span></div>
             <div class="stp-step"><div class="stp-num">2</div><span class="stp-lbl">RopeEmb 需确认</span></div>
-            <div class="stp-step"><div class="stp-num">3</div><span class="stp-lbl">切换处理确认</span></div>
+            <div class="stp-step"><div class="stp-num">3</div><span class="stp-lbl">Cmd+G 检索 'shape'</span></div>
           </div>
         </div>
         <!-- macOS terminal window -->
@@ -2077,25 +2077,34 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
                 <div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--td);line-height:1.7;">▸ dtype-check: 检验中…</div>
                 <div style="margin-top:8px;padding:6px 8px;background:rgba(251,191,36,.07);border:.5px solid rgba(251,191,36,.25);border-radius:4px;">
                   <div style="font-family:'DM Mono',monospace;font-size:7.5px;color:var(--ty);">⚠ RopeEmb · 需要你的决策</div>
-                  <div style="font-family:'DM Mono',monospace;font-size:7px;color:rgba(255,255,255,.4);margin-top:2px;">shape 推导发现维度不匹配 — Alt+3 切换处理</div>
+                  <div style="font-family:'DM Mono',monospace;font-size:7px;color:rgba(255,255,255,.4);margin-top:2px;">shape 推导发现维度不匹配 — Cmd+G 搜索 'shape' 定位 session</div>
                 </div>
                 <div style="margin-top:auto;padding-top:6px;border-top:.5px solid rgba(255,255,255,.06);">
                   <div style="font-family:'DM Mono',monospace;font-size:7px;color:rgba(255,255,255,.2);">Alt+1 RMSNorm  Alt+2 FlashAttn  <span style="color:rgba(251,191,36,.6);">Alt+3 RopeEmb ⚠</span></div>
                 </div>
               </div>
-              <!-- Screen 3: switched to RopeEmb -->
+              <!-- Screen 3: Cmd+G search for 'shape' -->
               <div id="ms-screen-3" style="position:absolute;inset:0;padding:10px 12px;display:none;flex-direction:column;gap:3px;">
-                <div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--ty);line-height:1.7;">◆ shape 推导 · broadcast 维度不匹配</div>
-                <div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--td);line-height:1.7;">&nbsp;&nbsp;输入 (1, 4096, 128)</div>
-                <div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--td);line-height:1.7;">&nbsp;&nbsp;期望 (1, 4096, 64) ← 不匹配</div>
-                <div style="margin-top:6px;font-family:'DM Mono',monospace;font-size:7.5px;color:rgba(255,255,255,.55);">建议方案：截断第三维 128 → 64</div>
-                <div style="margin-top:6px;display:flex;gap:6px;">
-                  <div style="padding:4px 10px;background:var(--acc);border-radius:3px;font-family:'DM Mono',monospace;font-size:7.5px;color:white;">Y · 截断继续</div>
-                  <div style="padding:4px 10px;background:rgba(255,255,255,.06);border:.5px solid rgba(255,255,255,.12);border-radius:3px;font-family:'DM Mono',monospace;font-size:7.5px;color:rgba(255,255,255,.45);">N · 保留</div>
-                  <div style="padding:4px 10px;background:rgba(255,255,255,.06);border:.5px solid rgba(255,255,255,.12);border-radius:3px;font-family:'DM Mono',monospace;font-size:7.5px;color:rgba(255,255,255,.45);">Space 语音</div>
+                <div style="font-family:'DM Mono',monospace;font-size:7px;color:rgba(255,255,255,.18);margin-bottom:6px;">Cmd+G — 全文检索</div>
+                <div style="background:#13131a;border:.5px solid #3a3a52;box-shadow:0 4px 20px rgba(0,0,0,.6);">
+                  <div style="display:flex;align-items:center;gap:8px;padding:6px 10px;border-bottom:.5px solid #252530;">
+                    <span style="font-family:'DM Mono',monospace;font-size:7px;color:var(--ta);background:#252530;padding:1px 5px;border-radius:3px;">⌘G</span>
+                    <span style="font-family:'DM Mono',monospace;font-size:8px;color:var(--tw);flex:1;border-bottom:.5px solid rgba(167,139,250,.4);padding-bottom:1px;">shape</span>
+                    <span style="font-size:7px;color:var(--td);">标题 + 对话内容</span>
+                  </div>
+                  <div style="padding:3px 0;">
+                    <div style="padding:2px 10px;font-size:7px;color:var(--td);letter-spacing:.08em;">搜索结果 (1)</div>
+                    <div style="padding:5px 10px;background:rgba(167,139,250,.08);border-left:2px solid var(--ta);">
+                      <div style="display:flex;justify-content:space-between;margin-bottom:2px;">
+                        <span style="font-family:'DM Mono',monospace;font-size:8px;color:var(--ta);">RopeEmb-910B</span>
+                        <span style="font-size:7px;color:var(--ty);">⚠ 需确认</span>
+                      </div>
+                      <div style="font-size:7px;color:var(--td);line-height:1.5;">…<span style="background:rgba(167,139,250,.28);color:var(--ta);padding:0 2px;">shape</span> 推导失败：broadcast 维度不匹配 (1,4096,128) vs (1,4096,64)…</div>
+                    </div>
+                  </div>
                 </div>
                 <div style="margin-top:auto;padding-top:6px;border-top:.5px solid rgba(255,255,255,.06);">
-                  <div style="font-family:'DM Mono',monospace;font-size:7px;color:rgba(255,255,255,.2);">Alt+1 返回 RMSNorm  Alt+2 FlashAttn</div>
+                  <div style="font-family:'DM Mono',monospace;font-size:7px;color:rgba(255,255,255,.18);">↵ 跳转到 RopeEmb session · Esc 关闭</div>
                 </div>
               </div>
             </div>
@@ -4160,7 +4169,7 @@ setupSlideSteps('s-m3b', 'stp-m3b', [
 setupSlideSteps('s-m1a', 'stp-m1a', [
   { ms:2000, act: function() { if(window.msSetPhase) window.msSetPhase(1); } },
   { ms:2600, act: function() { if(window.msSetPhase) window.msSetPhase(2); } },
-  { ms:2400, key:'Alt+3', act: function() { if(window.msSetPhase) window.msSetPhase(3); } },
+  { ms:2400, key:'⌘G', act: function() { if(window.msSetPhase) window.msSetPhase(3); } },
 ]);
 
 /* s-m1b: multi-hardware dashboard */
