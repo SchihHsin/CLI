@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>ORCA CLI · 界面与交互设计体系</title>
+<title>HAI CLI · 界面与交互设计体系</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600&family=DM+Mono:wght@300;400;500&family=Noto+Sans+SC:wght@300;400;500&family=Syne:wght@700;800&display=swap" rel="stylesheet">
 <style>
@@ -126,7 +126,7 @@ body{background:var(--bg);color:var(--tx);font-family:'Noto Sans SC',sans-serif;
   <div class="cover-stripe"></div>
   <div class="cover-body">
     <div class="c-left">
-      <div class="c-eyebrow">ORCA CLI · 2026</div>
+      <div class="c-eyebrow">HAI CLI · 2026</div>
       <h1 class="c-title">界面<br>与交互<br><span>设计体系</span></h1>
       <p class="c-sub">从全局架构到每个交互细节 — 固定三层布局 / 轻量 Block 输出 / Context Chips / 语音输入 / 多会话管理 / 安全自主确认流</p>
       <div class="c-stats">
@@ -207,7 +207,7 @@ body{background:var(--bg);color:var(--tx);font-family:'Noto Sans SC',sans-serif;
         <div class="dp-desc">
           <div class="dp-label">设计说明</div>
           <div class="dp-title">物理分离的三层结构</div>
-          <div class="dp-body">ORCA CLI 将屏幕划分为三个职责明确的层：顶部固定 Status Bar 始终传达"我在哪里"；中间滚动输出流展示"发生了什么"；底部固定输入区提供"我能做什么"。三层位置永远不变，消除视线跳跃。</div>
+          <div class="dp-body">HAI CLI 将屏幕划分为三个职责明确的层：顶部固定 Status Bar 始终传达"我在哪里"；中间滚动输出流展示"发生了什么"；底部固定输入区提供"我能做什么"。三层位置永远不变，消除视线跳跃。</div>
         </div>
         <div class="dp-desc">
           <div class="dp-label">核心设计点</div>
@@ -224,7 +224,7 @@ body{background:var(--bg);color:var(--tx);font-family:'Noto Sans SC',sans-serif;
             <tr><td class="td-label">Claude Code</td><td>固定底部</td><td>无</td><td>线性文字流</td></tr>
             <tr><td class="td-label">Warp</td><td>底部</td><td>持久状态栏</td><td>Block 单元</td></tr>
             <tr><td class="td-label">Gemini CLI</td><td>随输出滚动</td><td>状态嵌入行内</td><td>线性对话流</td></tr>
-            <tr><td class="td-label td-hai">ORCA</td><td class="td-hai">固定底部</td><td class="td-hai">固定顶部</td><td class="td-hai">Block + 折叠</td></tr>
+            <tr><td class="td-label td-hai">HAI</td><td class="td-hai">固定底部</td><td class="td-hai">固定顶部</td><td class="td-hai">Block + 折叠</td></tr>
           </table>
         </div>
         <div class="ba-grid" style="margin-top:auto;">
@@ -233,7 +233,7 @@ body{background:var(--bg);color:var(--tx);font-family:'Noto Sans SC',sans-serif;
             <div style="font-size:9px;color:var(--tx2);line-height:1.6;">输入框跟随输出流末尾滚动，Agent 执行时无法输入；无全局状态栏；错误/进度信息与普通输出视觉相同</div>
           </div>
           <div class="ba-after">
-            <div class="ba-label"><span style="background:var(--acc);color:white;font-family:'DM Mono',monospace;font-size:7px;padding:1px 6px;">AFTER</span>ORCA 三层设计</div>
+            <div class="ba-label"><span style="background:var(--acc);color:white;font-family:'DM Mono',monospace;font-size:7px;padding:1px 6px;">AFTER</span>HAI 三层设计</div>
             <div class="ba-text">输入框永远在底部，可随时输入；Status Bar 始终显示会话状态；输出流层次分明，写入操作即时可辨</div>
           </div>
         </div>
@@ -336,7 +336,7 @@ body{background:var(--bg);color:var(--tx);font-family:'Noto Sans SC',sans-serif;
         <div class="dp-desc">
           <div class="dp-label">设计说明</div>
           <div class="dp-title">三段式信息架构</div>
-          <div class="dp-body">Status Bar 是 ORCA 的"永久地图"：左侧所有 Session 标签一眼看出谁在运行、谁完成、谁需要确认；中间是当前 Session 的工作路径；右侧是当前 Stage 与状态描述。任何时刻用户都能回答"我在哪里"。</div>
+          <div class="dp-body">Status Bar 是 HAI 的"永久地图"：左侧所有 Session 标签一眼看出谁在运行、谁完成、谁需要确认；中间是当前 Session 的工作路径；右侧是当前 Stage 与状态描述。任何时刻用户都能回答"我在哪里"。</div>
         </div>
         <div class="dp-desc">
           <div class="dp-label">Session 标签状态</div>
@@ -482,7 +482,7 @@ body{background:var(--bg);color:var(--tx);font-family:'Noto Sans SC',sans-serif;
             <div style="font-size:9px;color:var(--tx2);line-height:1.6;">纯文本输入框，无 @file 结构化引用，无费用感知，无模式指示，无语音</div>
           </div>
           <div class="ba-after">
-            <div class="ba-label"><span style="background:var(--acc);color:white;font-family:'DM Mono',monospace;font-size:7px;padding:1px 6px;">AFTER</span>ORCA 输入区</div>
+            <div class="ba-label"><span style="background:var(--acc);color:white;font-family:'DM Mono',monospace;font-size:7px;padding:1px 6px;">AFTER</span>HAI 输入区</div>
             <div class="ba-text">Context Chips 管理上下文范围；费用角标实时可见；Space 语音填入；三种模式边框区分</div>
           </div>
         </div>
@@ -576,7 +576,7 @@ body{background:var(--bg);color:var(--tx);font-family:'Noto Sans SC',sans-serif;
 <!-- ========== s-output: OUTPUT STREAM / BLOCK SYSTEM ========== -->
 <div class="sec" id="s-output" style="background:var(--sur);">
   <div class="slabel">
-    <span class="sub">ORCA CLI · 输出流 · 设计点 5/12</span>
+    <span class="sub">HAI CLI · 输出流 · 设计点 5/12</span>
     <span class="main">工具调用块 — <strong>读取折叠，写入高亮</strong></span>
   </div>
   <div class="inner">
@@ -611,7 +611,7 @@ body{background:var(--bg);color:var(--tx);font-family:'Noto Sans SC',sans-serif;
             <div style="font-size:9px;color:var(--tx2);line-height:1.6;font-family:'DM Mono',monospace;">所有 Tool Call 平铺输出<br>JSON + 换行，无区分<br>Read 和 Write 混在一起</div>
           </div>
           <div class="ba-after">
-            <div class="ba-label"><span style="background:var(--acc);color:white;font-family:'DM Mono',monospace;font-size:7px;padding:1px 6px;">AFTER</span>ORCA 输出流</div>
+            <div class="ba-label"><span style="background:var(--acc);color:white;font-family:'DM Mono',monospace;font-size:7px;padding:1px 6px;">AFTER</span>HAI 输出流</div>
             <div class="ba-text">READ 折叠计数 · WRITE 橙色展开 · THINK 单行摘要 · EXEC 红色必确认</div>
           </div>
         </div>
@@ -679,7 +679,7 @@ body{background:var(--bg);color:var(--tx);font-family:'Noto Sans SC',sans-serif;
 <!-- ========== s-exec: EXECUTION STATE (5 STATES) ========== -->
 <div class="sec" id="s-exec" style="background:var(--bg);">
   <div class="slabel">
-    <span class="sub">ORCA CLI · 执行流 · 设计点 6/12</span>
+    <span class="sub">HAI CLI · 执行流 · 设计点 6/12</span>
     <span class="main">五状态模型 — <strong>任务全生命周期可见</strong></span>
   </div>
   <div class="inner">
@@ -688,7 +688,7 @@ body{background:var(--bg);color:var(--tx);font-family:'Noto Sans SC',sans-serif;
         <div class="dp-desc">
           <div class="dp-label">核心设计</div>
           <div class="dp-title">用户永远知道 AI 在哪一步</div>
-          <div class="dp-body">ORCA 把每个任务分解为 5 个状态，Status Bar 右侧始终显示当前状态，不会"黑屏执行"。</div>
+          <div class="dp-body">HAI 把每个任务分解为 5 个状态，Status Bar 右侧始终显示当前状态，不会"黑屏执行"。</div>
         </div>
         <div style="display:flex;flex-direction:column;gap:5px;margin-top:4px;">
           <div style="padding:6px 10px;border:.5px solid var(--grey-2);background:var(--sur);display:flex;gap:10px;align-items:flex-start;">
@@ -718,7 +718,7 @@ body{background:var(--bg);color:var(--tx);font-family:'Noto Sans SC',sans-serif;
             <div style="font-size:9px;color:var(--tx2);line-height:1.6;">命令执行 = 黑盒<br>不知道执行到哪一步<br>不知道需要多久</div>
           </div>
           <div class="ba-after">
-            <div class="ba-label"><span style="background:var(--acc);color:white;font-family:'DM Mono',monospace;font-size:7px;padding:1px 6px;">AFTER</span>ORCA 五状态</div>
+            <div class="ba-label"><span style="background:var(--acc);color:white;font-family:'DM Mono',monospace;font-size:7px;padding:1px 6px;">AFTER</span>HAI 五状态</div>
             <div class="ba-text">Status Bar 右侧始终显示 Stage · 任务状态完全可见</div>
           </div>
         </div>
@@ -797,7 +797,7 @@ body{background:var(--bg);color:var(--tx);font-family:'Noto Sans SC',sans-serif;
 <!-- ========== s-confirm: CONFIRMATION FLOW ========== -->
 <div class="sec" id="s-confirm" style="background:var(--sur);">
   <div class="slabel">
-    <span class="sub">ORCA CLI · 权限确认 · 设计点 7/12</span>
+    <span class="sub">HAI CLI · 权限确认 · 设计点 7/12</span>
     <span class="main">颜色编码风险 — <strong>三档授权 + 修改后执行</strong></span>
   </div>
   <div class="inner">
@@ -837,7 +837,7 @@ body{background:var(--bg);color:var(--tx);font-family:'Noto Sans SC',sans-serif;
             <div style="font-size:9px;color:var(--tx2);line-height:1.6;">二选一：Allow / Deny<br>不传递风险等级<br>无"修改后执行"选项</div>
           </div>
           <div class="ba-after">
-            <div class="ba-label"><span style="background:var(--acc);color:white;font-family:'DM Mono',monospace;font-size:7px;padding:1px 6px;">AFTER</span>ORCA 权限确认</div>
+            <div class="ba-label"><span style="background:var(--acc);color:white;font-family:'DM Mono',monospace;font-size:7px;padding:1px 6px;">AFTER</span>HAI 权限确认</div>
             <div class="ba-text">颜色编码风险 · 三档授权 · 第四选项"修改后执行"</div>
           </div>
         </div>
@@ -905,7 +905,7 @@ body{background:var(--bg);color:var(--tx);font-family:'Noto Sans SC',sans-serif;
 <!-- ========== s-review: RESULT REVIEW / DIFF VIEW ========== -->
 <div class="sec" id="s-review" style="background:var(--bg);">
   <div class="slabel">
-    <span class="sub">ORCA CLI · 结果审查 · 设计点 8/12</span>
+    <span class="sub">HAI CLI · 结果审查 · 设计点 8/12</span>
     <span class="main">变更摘要行 — <strong>Accept All · By File · Ask AI</strong></span>
   </div>
   <div class="inner">
@@ -945,7 +945,7 @@ body{background:var(--bg);color:var(--tx);font-family:'Noto Sans SC',sans-serif;
             <div style="font-size:9px;color:var(--tx2);line-height:1.6;">原始 diff 输出<br>无 Accept/Reject 工作流<br>无摘要，无操作引导</div>
           </div>
           <div class="ba-after">
-            <div class="ba-label"><span style="background:var(--acc);color:white;font-family:'DM Mono',monospace;font-size:7px;padding:1px 6px;">AFTER</span>ORCA 审查流</div>
+            <div class="ba-label"><span style="background:var(--acc);color:white;font-family:'DM Mono',monospace;font-size:7px;padding:1px 6px;">AFTER</span>HAI 审查流</div>
             <div class="ba-text">摘要行默认折叠 · Accept All 主路径 · Ask AI 内嵌 · ≥3 文件触发 Review Panel</div>
           </div>
         </div>
@@ -1010,7 +1010,7 @@ body{background:var(--bg);color:var(--tx);font-family:'Noto Sans SC',sans-serif;
 <!-- ========== s-session: MULTI-SESSION MANAGEMENT ========== -->
 <div class="sec" id="s-session" style="background:var(--sur);">
   <div class="slabel">
-    <span class="sub">ORCA CLI · 多会话 · 设计点 9/12</span>
+    <span class="sub">HAI CLI · 多会话 · 设计点 9/12</span>
     <span class="main">并行会话 — <strong>页签直达 · Cmd+G 全文检索</strong></span>
   </div>
   <div class="inner">
@@ -1168,7 +1168,7 @@ body{background:var(--bg);color:var(--tx);font-family:'Noto Sans SC',sans-serif;
 <!-- ========== s-context: CONTEXT MANAGEMENT ========== -->
 <div class="sec" id="s-context" style="background:var(--bg);">
   <div class="slabel">
-    <span class="sub">ORCA CLI · 上下文管理 · 设计点 10/12</span>
+    <span class="sub">HAI CLI · 上下文管理 · 设计点 10/12</span>
     <span class="main">上下文仪表盘 — <strong>/fork 快照 · /compact 压缩 · /clear 全清</strong></span>
   </div>
   <div class="inner">
@@ -1177,7 +1177,7 @@ body{background:var(--bg);color:var(--tx);font-family:'Noto Sans SC',sans-serif;
         <div class="dp-desc">
           <div class="dp-label">设计原则</div>
           <div class="dp-title">上下文用量始终可见，渐进式管理</div>
-          <div class="dp-body">上下文消耗是开发者最担忧的隐性问题。ORCA 把用量仪表盘常驻在 Chips 区，并提供三级渐进清理策略。</div>
+          <div class="dp-body">上下文消耗是开发者最担忧的隐性问题。HAI 把用量仪表盘常驻在 Chips 区，并提供三级渐进清理策略。</div>
         </div>
         <div style="display:flex;flex-direction:column;gap:5px;margin-top:4px;">
           <div style="padding:6px 10px;border:.5px solid var(--grey-2);background:var(--sur);">
@@ -1209,7 +1209,7 @@ body{background:var(--bg);color:var(--tx);font-family:'Noto Sans SC',sans-serif;
             <div style="font-size:9px;color:var(--tx2);line-height:1.6;">突然报错"上下文超限"<br>不知道还剩多少余量<br>只能 /clear 全部清空</div>
           </div>
           <div class="ba-after">
-            <div class="ba-label"><span style="background:var(--acc);color:white;font-family:'DM Mono',monospace;font-size:7px;padding:1px 6px;">AFTER</span>ORCA 三级策略</div>
+            <div class="ba-label"><span style="background:var(--acc);color:white;font-family:'DM Mono',monospace;font-size:7px;padding:1px 6px;">AFTER</span>HAI 三级策略</div>
             <div class="ba-text">仪表盘常驻 · 颜色预警 · /fork 快照 + /compact 轻压缩 + /clear 全清</div>
           </div>
         </div>
@@ -1267,7 +1267,7 @@ body{background:var(--bg);color:var(--tx);font-family:'Noto Sans SC',sans-serif;
 <!-- ========== s-error: ERROR HANDLING ========== -->
 <div class="sec" id="s-error" style="background:var(--sur);">
   <div class="slabel">
-    <span class="sub">ORCA CLI · 错误处理 · 设计点 11/12</span>
+    <span class="sub">HAI CLI · 错误处理 · 设计点 11/12</span>
     <span class="main">错误分类 — <strong>自动重试 · 透明上报 · 升级路径</strong></span>
   </div>
   <div class="inner">
@@ -1276,7 +1276,7 @@ body{background:var(--bg);color:var(--tx);font-family:'Noto Sans SC',sans-serif;
         <div class="dp-desc">
           <div class="dp-label">设计原则</div>
           <div class="dp-title">错误是信息，不是墙</div>
-          <div class="dp-body">ORCA 对错误进行分类，根据类型决定是自动重试、上报给用户还是升级到人工介入。</div>
+          <div class="dp-body">HAI 对错误进行分类，根据类型决定是自动重试、上报给用户还是升级到人工介入。</div>
         </div>
         <div style="display:flex;flex-direction:column;gap:5px;margin-top:4px;">
           <div style="padding:6px 10px;border-left:3px solid var(--g);background:rgba(5,150,105,.04);">
@@ -1302,7 +1302,7 @@ body{background:var(--bg);color:var(--tx);font-family:'Noto Sans SC',sans-serif;
             <div style="font-size:9px;color:var(--tx2);line-height:1.6;">任意错误中止任务<br>无状态保存<br>需要重新开始</div>
           </div>
           <div class="ba-after">
-            <div class="ba-label"><span style="background:var(--acc);color:white;font-family:'DM Mono',monospace;font-size:7px;padding:1px 6px;">AFTER</span>ORCA 三级错误流</div>
+            <div class="ba-label"><span style="background:var(--acc);color:white;font-family:'DM Mono',monospace;font-size:7px;padding:1px 6px;">AFTER</span>HAI 三级错误流</div>
             <div class="ba-text">自动重试 · 类型化上报 · 升级路径 · 现场保存</div>
           </div>
         </div>
@@ -1358,7 +1358,7 @@ body{background:var(--bg);color:var(--tx);font-family:'Noto Sans SC',sans-serif;
 <!-- ========== s-summary: SESSION SUMMARY ========== -->
 <div class="sec" id="s-summary" style="background:var(--bg);">
   <div class="slabel">
-    <span class="sub">ORCA CLI · 会话摘要 · 设计点 12/12</span>
+    <span class="sub">HAI CLI · 会话摘要 · 设计点 12/12</span>
     <span class="main">退出摘要卡 — <strong>任务 · 文件 · Token · 费用 · 用时</strong></span>
   </div>
   <div class="inner">
@@ -1392,7 +1392,7 @@ body{background:var(--bg);color:var(--tx);font-family:'Noto Sans SC',sans-serif;
             <div style="font-size:9px;color:var(--tx2);line-height:1.6;">关闭终端后什么都不剩<br>不知道花了多少钱<br>不知道改了哪些文件</div>
           </div>
           <div class="ba-after">
-            <div class="ba-label"><span style="background:var(--acc);color:white;font-family:'DM Mono',monospace;font-size:7px;padding:1px 6px;">AFTER</span>ORCA 摘要卡</div>
+            <div class="ba-label"><span style="background:var(--acc);color:white;font-family:'DM Mono',monospace;font-size:7px;padding:1px 6px;">AFTER</span>HAI 摘要卡</div>
             <div class="ba-text">退出自动弹出 · 任务归因明细 · 可复制分享</div>
           </div>
         </div>
