@@ -21,10 +21,20 @@
 | 项 | 值 |
 |---|---|
 | 文件 | `/Users/hsin/Documents/Coding/CLI/hai-operator-design.html` |
-| 当前大小 | ~234,789 字符（持续增长） |
+| 当前大小 | ~303,755 字符（持续增长） |
 | 场景 | CANN 昇腾算子开发（TBE DSL、format 不兼容、UB 溢出、910B/310P适配） |
 | 技术栈 | `tik.Tensor`、`tik.data_move`、msprof profiler、FRACTAL_NZ格式 |
-| 状态 | 主体完成，s-m3a 已删除；新增社区知识转化 2 页 |
+| 状态 | 主体完成，s-m3a 已删除；全局终端 Chrome 已标准化（2026-05-25） |
+
+### 第三份材料（HAI CLI 全流程设计体系）
+
+| 项 | 值 |
+|---|---|
+| 文件 | `/Users/hsin/Documents/Coding/CLI/hai-cli-design.html` |
+| 当前大小 | ~134,625 字符 |
+| 内容 | 12 个设计点：架构·Status Bar·输入区·输出流·五状态·权限确认·变更审查·多会话·上下文管理·错误处理·会话摘要 |
+| 风格 | IKB 克莱因蓝 #002FA7 · Swiss International Style · macOS 终端 Chrome |
+| 参考文档 | `cli-analysis-key-findings.md`（从 cli-analysis-report.html 提炼） |
 
 > **⚠️ 禁止使用假错误码**：原文件中 EZ9999/EZ6523 均已于 2026-05-23 清除，替换为具体错误类型描述（format 不兼容、UB 溢出、shape 推导失败等）。今后不得再创造假编号。
 
@@ -481,6 +491,7 @@ grep -n "id=\"s-m" file.html | head    # 快速列出所有 section
 | *(2026-05-25)* | 新增第16页 s-remote（移动监控）：Stage 05 · 随时介入。手机 mockup 展示 4 个 Agent 实时状态，步骤2收到 dtype-check format 不兼容推送，步骤3语音批准继续；引用 Claude Code Remote Control 2026 官方验证 |
 | *(2026-05-25)* | 第9页（s-m2c）光标定位修复：改用 `getBoundingClientRect()` 动态计算 CUBE 行坐标，消除硬编码 52%/30% 在不同屏幕尺寸下偏差 |
 | *(2026-05-25)* | ai-dev-tools-design.html：修复 JS 字符串中 48 处 `font-family:'DM Mono'` 单引号破坏外层字符串的语法错误，恢复旅程图和所有 Mockup 渲染 |
+| `c9cad4c` | 新增 hai-cli-design.html（HAI CLI 完整设计体系，12 个设计点，134KB）+ cli-analysis-key-findings.md（核心结论速查 Markdown） |
 
 ### ai-dev-tools-design.html 专项工作（更早）
 
