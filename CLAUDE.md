@@ -31,7 +31,7 @@
 | 项 | 值 |
 |---|---|
 | 文件 | `/Users/hsin/Documents/Coding/CLI/hai-cli-design.html` |
-| 当前大小 | ~134,625 字符 |
+| 当前大小 | ~134,625 字符（WCAG 修复后，所有 #48485C 已替换） |
 | 内容 | 12 个设计点：架构·Status Bar·输入区·输出流·五状态·权限确认·变更审查·多会话·上下文管理·错误处理·会话摘要 |
 | 风格 | IKB 克莱因蓝 #002FA7 · Swiss International Style · macOS 终端 Chrome |
 | 参考文档 | `cli-analysis-key-findings.md`（从 cli-analysis-report.html 提炼） |
@@ -492,6 +492,8 @@ grep -n "id=\"s-m" file.html | head    # 快速列出所有 section
 | *(2026-05-25)* | 第9页（s-m2c）光标定位修复：改用 `getBoundingClientRect()` 动态计算 CUBE 行坐标，消除硬编码 52%/30% 在不同屏幕尺寸下偏差 |
 | *(2026-05-25)* | ai-dev-tools-design.html：修复 JS 字符串中 48 处 `font-family:'DM Mono'` 单引号破坏外层字符串的语法错误，恢复旅程图和所有 Mockup 渲染 |
 | `c9cad4c` | 新增 hai-cli-design.html（HAI CLI 完整设计体系，12 个设计点，134KB）+ cli-analysis-key-findings.md（核心结论速查 Markdown） |
+| `255949f` | **WCAG AA 对比度修复**：`--td` #48485C（2:1）→ #828296（5.27:1）；修复两个 HTML 文件中共 200+ 处暗色终端文字；新增 **colors.css** 共用色表，两个 HTML 均 `<link>` 引入，各自 `:root{}` 只保留文件级覆盖 |
+| `266dcd1` | s-cli-arch（第8页）：5状态终端行 `flex:1` → `height:185px`，恢复正常终端宽高比；s-m6a（光标伴侣）：`.clicky-app` 从浅灰 #F6F6FA 改为暗色 var(--tb)，msprof 标签/tab/气泡全部适配暗色主题 |
 
 ### ai-dev-tools-design.html 专项工作（更早）
 
@@ -503,6 +505,27 @@ grep -n "id=\"s-m" file.html | head    # 快速列出所有 section
 ---
 
 ## hai-operator-design.html 关键设计说明
+
+### 共用色表（colors.css）— 2026-05-25 新增
+
+所有颜色令牌集中在 `/Users/hsin/Documents/Coding/CLI/colors.css`，两个 HTML 文件均通过 `<link rel="stylesheet" href="colors.css">` 引入。
+
+**修改颜色只改 colors.css 一处，所有文件自动生效。**
+
+| 变量 | 值 | 用途 | WCAG（on --tb） |
+|---|---|---|---|
+| `--acc` | `#002FA7` | IKB 克莱因蓝主色 | — |
+| `--td` | `#828296` | 终端次要文字 | **5.27:1 ✓ AA** |
+| `--tw` | `#C8C8DC` | 终端主要文字 | 12.3:1 ✓ AAA |
+| `--tb` | `#0C0C11` | 终端背景 | — |
+| `--tbar` | `#181820` | 终端标题栏 | — |
+| `--tbdr` | `#252530` | 终端边框 | — |
+
+**文件级覆盖（各 HTML 自己的 `:root{}`）：**
+- `hai-operator-design.html`：`--tp:#4A7FE8`（用 IKB 蓝替代终端紫色槽位）
+- `hai-cli-design.html`：无覆盖，全部使用 colors.css 默认值
+
+> ⚠️ `--td` 旧值 `#48485C` 对比度仅 2:1，禁止再使用。终端内暗色文字统一用 `color:var(--td)`，不得硬编码 `#48485C`。
 
 ### 视觉风格（guizang 瑞士国际主义 Style B · IKB）
 | 变量 | 值 | 说明 |
