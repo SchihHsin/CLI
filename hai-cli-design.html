@@ -212,9 +212,9 @@ body{background:var(--bg);color:var(--tx);font-family:'Noto Sans SC',sans-serif;
         <div class="dp-desc">
           <div class="dp-label">核心设计点</div>
           <div style="display:flex;flex-direction:column;gap:4px;margin-top:4px;">
-            <div class="dpp"><strong style="color:var(--acc);">Status Bar（固定顶部）</strong> — 多 Session 标签 + 当前路径 + Stage，始终可见，不随输出滚动消失</div>
-            <div class="dpp"><strong style="color:var(--acc);">输出流（可滚动）</strong> — 工具调用 Block + 进度 + 结果，写入操作加 badge，读取自动折叠</div>
-            <div class="dpp"><strong style="color:var(--acc);">输入区（固定底部）</strong> — Context Chips + 主输入框 + 模式/费用/语音，永远在底部 20%</div>
+            <div class="dpp"><strong style="color:var(--ta);">Status Bar（固定顶部）</strong> — 多 Session 标签 + 当前路径 + Stage，始终可见，不随输出滚动消失</div>
+            <div class="dpp"><strong style="color:var(--ta);">输出流（可滚动）</strong> — 工具调用 Block + 进度 + 结果，写入操作加 badge，读取自动折叠</div>
+            <div class="dpp"><strong style="color:var(--ta);">输入区（固定底部）</strong> — Context Chips + 主输入框 + 模式/费用/语音，永远在底部 20%</div>
           </div>
         </div>
         <div class="dp-desc" style="margin-top:4px;">
@@ -255,24 +255,24 @@ body{background:var(--bg);color:var(--tx);font-family:'Noto Sans SC',sans-serif;
             <div style="background:#111118;padding:5px 14px;display:flex;align-items:center;justify-content:space-between;border-bottom:.5px solid #252530;flex-shrink:0;position:relative;">
               <div style="position:absolute;left:-2px;top:0;bottom:0;width:2px;background:var(--acc);"></div>
               <div style="display:flex;gap:5px;align-items:center;">
-                <span style="font-family:'DM Mono',monospace;font-size:7.5px;color:var(--acc);background:rgba(0,47,167,.15);border:.5px solid rgba(0,47,167,.3);padding:1px 8px;">RMSNorm ⟳</span>
+                <span style="font-family:'DM Mono',monospace;font-size:7.5px;color:var(--ta);background:rgba(0,47,167,.15);border:.5px solid rgba(0,47,167,.3);padding:1px 8px;">RMSNorm ⟳</span>
                 <span style="font-family:'DM Mono',monospace;font-size:7.5px;color:rgba(255,255,255,.3);background:rgba(255,255,255,.04);border:.5px solid rgba(255,255,255,.08);padding:1px 8px;">FlashAttn ✓</span>
                 <span style="font-family:'DM Mono',monospace;font-size:7.5px;color:#F87171;background:rgba(248,113,113,.08);border:.5px solid rgba(248,113,113,.25);padding:1px 8px;">RopeEmb ⚠</span>
                 <span style="font-size:7px;color:rgba(255,255,255,.2);font-family:'DM Mono',monospace;">Alt+1/2/3</span>
               </div>
               <span style="font-family:'DM Mono',monospace;font-size:7.5px;color:#828296;">~/workspace/RMSNorm-910B</span>
-              <span style="font-family:'DM Mono',monospace;font-size:7.5px;color:var(--acc);">Stage 04 · 运行中</span>
+              <span style="font-family:'DM Mono',monospace;font-size:7.5px;color:var(--ta);">Stage 04 · 运行中</span>
             </div>
             <!-- Zone label A -->
             <div style="background:rgba(0,47,167,.06);padding:3px 14px;border-bottom:.5px solid rgba(0,47,167,.15);flex-shrink:0;display:flex;align-items:center;gap:8px;">
-              <span style="font-family:'DM Mono',monospace;font-size:7px;color:var(--acc);letter-spacing:.1em;">▲ ZONE A · STATUS BAR · 固定 · 不随滚动消失</span>
+              <span style="font-family:'DM Mono',monospace;font-size:7px;color:var(--ta);letter-spacing:.1em;">▲ ZONE A · STATUS BAR · 固定 · 不随滚动消失</span>
             </div>
             <!-- Zone B: Output stream -->
             <div style="flex:1;padding:10px 14px;overflow:hidden;display:flex;flex-direction:column;gap:5px;min-height:0;">
               <div style="font-family:'DM Mono',monospace;font-size:8.5px;">
                 <span style="color:#828296;">$ </span><span style="color:#C8C8DC;">hai optimize --op RMSNorm --target cube_util &gt; 0.70</span>
               </div>
-              <div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--acc);">▸ 读取 msprof 报告...</div>
+              <div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--ta);">▸ 读取 msprof 报告...</div>
               <!-- Read tool call - collapsed -->
               <div style="background:rgba(255,255,255,.03);border:.5px solid rgba(255,255,255,.08);padding:4px 8px;display:flex;align-items:center;gap:6px;font-family:'DM Mono',monospace;font-size:7.5px;">
                 <span style="color:#828296;">READ</span>
@@ -284,12 +284,12 @@ body{background:var(--bg);color:var(--tx);font-family:'Noto Sans SC',sans-serif;
               <!-- Write tool call - expanded -->
               <div style="background:rgba(0,47,167,.06);border:.5px solid rgba(0,47,167,.2);border-left:2px solid var(--acc);padding:5px 8px;font-family:'DM Mono',monospace;font-size:7.5px;">
                 <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;">
-                  <span style="color:var(--acc);">WRITE</span>
+                  <span style="color:var(--ta);">WRITE</span>
                   <span style="color:#C8C8DC;">rmsnorm_tbe.py</span>
                   <div style="margin-left:auto;width:50px;height:3px;background:rgba(255,255,255,.1);">
                     <div style="width:65%;height:100%;background:var(--acc);"></div>
                   </div>
-                  <span style="color:var(--acc);">65%</span>
+                  <span style="color:var(--ta);">65%</span>
                 </div>
                 <div style="color:#828296;font-size:7px;">tile_m: 64 → 128 · UB 优化 · CUBE 提升 ~21%</div>
               </div>
@@ -302,12 +302,12 @@ body{background:var(--bg);color:var(--tx);font-family:'Noto Sans SC',sans-serif;
             <!-- Zone C: Input area -->
             <div style="border-top:.5px solid #252530;border-bottom:.5px solid rgba(255,255,255,.04);flex-shrink:0;">
               <div style="padding:4px 12px;display:flex;gap:5px;align-items:center;background:rgba(255,255,255,.02);border-bottom:.5px solid rgba(255,255,255,.04);">
-                <span style="font-family:'DM Mono',monospace;font-size:7.5px;color:var(--acc);background:rgba(0,47,167,.1);border:.5px solid rgba(0,47,167,.2);padding:1px 8px;border-radius:2px;">@rmsnorm.py ×</span>
+                <span style="font-family:'DM Mono',monospace;font-size:7.5px;color:var(--ta);background:rgba(0,47,167,.1);border:.5px solid rgba(0,47,167,.2);padding:1px 8px;border-radius:2px;">@rmsnorm.py ×</span>
                 <span style="font-family:'DM Mono',monospace;font-size:7px;color:#828296;">+ @file  + @url  上下文 42%</span>
                 <span style="margin-left:auto;font-family:'DM Mono',monospace;font-size:7px;color:#F59E0B;">$0.031</span>
               </div>
               <div style="padding:7px 12px;display:flex;align-items:center;gap:8px;">
-                <span style="color:var(--acc);font-size:11px;">❯</span>
+                <span style="color:var(--ta);font-size:11px;">❯</span>
                 <span style="font-family:'DM Mono',monospace;font-size:9px;color:#C8C8DC;flex:1;">分析 CUBE 利用率低的根本原因<span style="animation:bl .9s step-end infinite;">▌</span></span>
                 <span style="font-family:'DM Mono',monospace;font-size:7px;color:#828296;border:.5px solid #252530;padding:1px 6px;">Auto</span>
                 <span style="font-family:'DM Mono',monospace;font-size:7px;color:rgba(255,255,255,.3);">Space 语音</span>
@@ -315,7 +315,7 @@ body{background:var(--bg);color:var(--tx);font-family:'Noto Sans SC',sans-serif;
             </div>
             <!-- Zone label C -->
             <div style="background:rgba(0,47,167,.06);padding:3px 14px;border-top:.5px solid rgba(0,47,167,.1);flex-shrink:0;">
-              <span style="font-family:'DM Mono',monospace;font-size:7px;color:var(--acc);letter-spacing:.1em;">▲ ZONE C · INPUT AREA · 固定底部 · Chips + 输入框 + 费用</span>
+              <span style="font-family:'DM Mono',monospace;font-size:7px;color:var(--ta);letter-spacing:.1em;">▲ ZONE C · INPUT AREA · 固定底部 · Chips + 输入框 + 费用</span>
             </div>
           </div>
         </div>
@@ -342,7 +342,7 @@ body{background:var(--bg);color:var(--tx);font-family:'Noto Sans SC',sans-serif;
           <div class="dp-label">Session 标签状态</div>
           <div style="display:flex;flex-direction:column;gap:5px;margin-top:4px;">
             <div style="display:flex;gap:8px;align-items:center;padding:5px 8px;background:var(--bg2);border:.5px solid var(--bdr2);">
-              <span style="font-family:'DM Mono',monospace;font-size:8px;color:var(--acc);background:rgba(0,47,167,.1);border:.5px solid rgba(0,47,167,.2);padding:1px 7px;">RMSNorm ⟳</span>
+              <span style="font-family:'DM Mono',monospace;font-size:8px;color:var(--ta);background:rgba(0,47,167,.1);border:.5px solid rgba(0,47,167,.2);padding:1px 7px;">RMSNorm ⟳</span>
               <span style="font-size:9px;color:var(--tx2);">运行中 — 蓝色高亮，慢速旋转</span>
             </div>
             <div style="display:flex;gap:8px;align-items:center;padding:5px 8px;background:var(--bg2);border:.5px solid var(--bdr2);">
@@ -394,21 +394,21 @@ body{background:var(--bg);color:var(--tx);font-family:'Noto Sans SC',sans-serif;
             <!-- Status bar area -->
             <div id="sb-bar" style="background:#111118;padding:5px 14px;display:flex;align-items:center;justify-content:space-between;border-bottom:.5px solid #252530;flex-shrink:0;">
               <div id="sb-tabs" style="display:flex;gap:5px;align-items:center;">
-                <span id="sb-t1" style="font-family:'DM Mono',monospace;font-size:7.5px;color:var(--acc);background:rgba(0,47,167,.15);border:.5px solid rgba(0,47,167,.3);padding:1px 8px;">RMSNorm ⟳</span>
+                <span id="sb-t1" style="font-family:'DM Mono',monospace;font-size:7.5px;color:var(--ta);background:rgba(0,47,167,.15);border:.5px solid rgba(0,47,167,.3);padding:1px 8px;">RMSNorm ⟳</span>
                 <span id="sb-t2" style="font-family:'DM Mono',monospace;font-size:7.5px;color:rgba(255,255,255,.3);background:rgba(255,255,255,.04);border:.5px solid rgba(255,255,255,.08);padding:1px 8px;">FlashAttn ✓</span>
                 <span id="sb-t3" style="font-family:'DM Mono',monospace;font-size:7.5px;color:#F87171;background:rgba(248,113,113,.08);border:.5px solid rgba(248,113,113,.25);padding:1px 8px;">RopeEmb</span>
               </div>
               <span id="sb-path" style="font-family:'DM Mono',monospace;font-size:7.5px;color:#828296;">~/workspace/RMSNorm-910B</span>
-              <span id="sb-stage" style="font-family:'DM Mono',monospace;font-size:7.5px;color:var(--acc);">Stage 04 · 运行中</span>
+              <span id="sb-stage" style="font-family:'DM Mono',monospace;font-size:7.5px;color:var(--ta);">Stage 04 · 运行中</span>
             </div>
             <!-- Terminal content -->
             <div style="flex:1;padding:12px 14px;overflow:hidden;display:flex;flex-direction:column;gap:5px;">
               <!-- Screen 1 -->
               <div id="sb-s1" style="display:flex;flex-direction:column;gap:5px;">
                 <div style="font-family:'DM Mono',monospace;font-size:8.5px;color:#828296;">$ hai optimize --op RMSNorm</div>
-                <div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--acc);">▸ tbe-gen: tile_m 迭代中...</div>
+                <div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--ta);">▸ tbe-gen: tile_m 迭代中...</div>
                 <div style="background:rgba(0,47,167,.06);border:.5px solid rgba(0,47,167,.2);border-left:2px solid var(--acc);padding:5px 8px;font-family:'DM Mono',monospace;font-size:7.5px;">
-                  <div style="display:flex;justify-content:space-between;"><span style="color:var(--acc);">WRITE</span><span style="color:#828296;">Stage 04/06</span></div>
+                  <div style="display:flex;justify-content:space-between;"><span style="color:var(--ta);">WRITE</span><span style="color:#828296;">Stage 04/06</span></div>
                   <div style="margin-top:4px;width:100%;height:3px;background:rgba(255,255,255,.1);"><div style="width:68%;height:100%;background:var(--acc);"></div></div>
                 </div>
                 <div style="font-family:'DM Mono',monospace;font-size:8px;color:#C8C8DC;">❯ <span style="animation:bl .9s step-end infinite;">▌</span></div>
@@ -429,7 +429,7 @@ body{background:var(--bg);color:var(--tx);font-family:'Noto Sans SC',sans-serif;
             </div>
             <!-- Input -->
             <div style="border-top:.5px solid #252530;padding:6px 12px;display:flex;align-items:center;gap:8px;flex-shrink:0;">
-              <span style="color:var(--acc);">❯</span>
+              <span style="color:var(--ta);">❯</span>
               <span style="font-family:'DM Mono',monospace;font-size:9px;color:rgba(255,255,255,.35);">输入指令...</span>
             </div>
           </div>
@@ -459,19 +459,19 @@ body{background:var(--bg);color:var(--tx);font-family:'Noto Sans SC',sans-serif;
           <div class="dp-label">组件详解</div>
           <div style="display:flex;flex-direction:column;gap:5px;margin-top:4px;">
             <div style="padding:6px 9px;background:var(--bg2);border:.5px solid var(--bdr2);">
-              <div style="font-family:'DM Mono',monospace;font-size:7.5px;color:var(--acc);margin-bottom:2px;">Context Chips</div>
+              <div style="font-family:'DM Mono',monospace;font-size:7.5px;color:var(--ta);margin-bottom:2px;">Context Chips</div>
               <div style="font-size:9px;color:var(--tx2);line-height:1.5;">@file 引用以 chip 形式展示，点 × 移除；超过 3 个折叠为 "+N"；上下文用量 Chip 颜色随百分比变化（绿/黄/红）</div>
             </div>
             <div style="padding:6px 9px;background:var(--bg2);border:.5px solid var(--bdr2);">
-              <div style="font-family:'DM Mono',monospace;font-size:7.5px;color:var(--acc);margin-bottom:2px;">费用角标</div>
+              <div style="font-family:'DM Mono',monospace;font-size:7.5px;color:var(--ta);margin-bottom:2px;">费用角标</div>
               <div style="font-size:9px;color:var(--tx2);line-height:1.5;">黄色累计费用常驻右侧，实时更新；点击展开按任务归因的明细列表；不出现在每条输出中（不切碎内容）</div>
             </div>
             <div style="padding:6px 9px;background:var(--bg2);border:.5px solid var(--bdr2);">
-              <div style="font-family:'DM Mono',monospace;font-size:7.5px;color:var(--acc);margin-bottom:2px;">语音输入（Space）</div>
+              <div style="font-family:'DM Mono',monospace;font-size:7.5px;color:var(--ta);margin-bottom:2px;">语音输入（Space）</div>
               <div style="font-size:9px;color:var(--tx2);line-height:1.5;">长按 Space 激活；光标位置自动成为分析上下文；松开后三种模式：写入 / 发送 / 浮动编辑面板</div>
             </div>
             <div style="padding:6px 9px;background:var(--bg2);border:.5px solid var(--bdr2);">
-              <div style="font-family:'DM Mono',monospace;font-size:7.5px;color:var(--acc);margin-bottom:2px;">模式切换（Cmd+I）</div>
+              <div style="font-family:'DM Mono',monospace;font-size:7.5px;color:var(--ta);margin-bottom:2px;">模式切换（Cmd+I）</div>
               <div style="font-size:9px;color:var(--tx2);line-height:1.5;">Auto（自主执行）/ Plan（提案后确认）/ Manual（逐步确认）；边框颜色随模式改变：Auto=蓝 / Plan=橙 / Manual=灰</div>
             </div>
           </div>
@@ -517,8 +517,8 @@ body{background:var(--bg);color:var(--tx);font-family:'Noto Sans SC',sans-serif;
             <div id="inp-container" style="border-top:.5px solid #252530;border-bottom:.5px solid rgba(255,255,255,.04);">
               <!-- Row 1: Chips -->
               <div id="inp-chips-row" style="padding:4px 12px;display:flex;gap:5px;align-items:center;background:rgba(255,255,255,.02);border-bottom:.5px solid rgba(255,255,255,.05);min-height:24px;flex-wrap:wrap;">
-                <span id="chip-1" style="display:none;font-family:'DM Mono',monospace;font-size:7.5px;color:var(--acc);background:rgba(0,47,167,.1);border:.5px solid rgba(0,47,167,.2);padding:1px 8px;border-radius:2px;cursor:pointer;">@rmsnorm.py ×</span>
-                <span id="chip-2" style="display:none;font-family:'DM Mono',monospace;font-size:7.5px;color:var(--acc);background:rgba(0,47,167,.1);border:.5px solid rgba(0,47,167,.2);padding:1px 8px;border-radius:2px;">@constraints.yaml ×</span>
+                <span id="chip-1" style="display:none;font-family:'DM Mono',monospace;font-size:7.5px;color:var(--ta);background:rgba(0,47,167,.1);border:.5px solid rgba(0,47,167,.2);padding:1px 8px;border-radius:2px;cursor:pointer;">@rmsnorm.py ×</span>
+                <span id="chip-2" style="display:none;font-family:'DM Mono',monospace;font-size:7.5px;color:var(--ta);background:rgba(0,47,167,.1);border:.5px solid rgba(0,47,167,.2);padding:1px 8px;border-radius:2px;">@constraints.yaml ×</span>
                 <span id="chip-add" style="font-family:'DM Mono',monospace;font-size:7px;color:#828296;cursor:pointer;">+ @file</span>
                 <span id="chip-url" style="font-family:'DM Mono',monospace;font-size:7px;color:#828296;cursor:pointer;">+ @url</span>
                 <span id="ctx-meter" style="margin-left:auto;font-family:'DM Mono',monospace;font-size:7px;color:#828296;">上下文 28%</span>
@@ -526,7 +526,7 @@ body{background:var(--bg);color:var(--tx);font-family:'Noto Sans SC',sans-serif;
               </div>
               <!-- Row 2: Main input -->
               <div style="padding:7px 12px;display:flex;align-items:center;gap:8px;">
-                <span style="color:var(--acc);font-size:12px;flex-shrink:0;">❯</span>
+                <span style="color:var(--ta);font-size:12px;flex-shrink:0;">❯</span>
                 <div id="inp-main" style="flex:1;font-family:'DM Mono',monospace;font-size:9px;color:#C8C8DC;position:relative;">
                   <span id="inp-text"></span><span id="inp-cursor" style="animation:bl .9s step-end infinite;">▌</span>
                 </div>
@@ -554,15 +554,15 @@ body{background:var(--bg);color:var(--tx);font-family:'Noto Sans SC',sans-serif;
           <!-- Component labels -->
           <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;">
             <div style="padding:6px 8px;background:var(--bg2);border:.5px solid var(--bdr2);text-align:center;">
-              <div style="font-family:'DM Mono',monospace;font-size:7.5px;color:var(--acc);margin-bottom:2px;">Row 1</div>
+              <div style="font-family:'DM Mono',monospace;font-size:7.5px;color:var(--ta);margin-bottom:2px;">Row 1</div>
               <div style="font-size:9px;color:var(--tx2);">Chips · 用量 · 费用</div>
             </div>
             <div style="padding:6px 8px;background:var(--bg2);border:.5px solid var(--bdr2);text-align:center;">
-              <div style="font-family:'DM Mono',monospace;font-size:7.5px;color:var(--acc);margin-bottom:2px;">Row 2</div>
+              <div style="font-family:'DM Mono',monospace;font-size:7.5px;color:var(--ta);margin-bottom:2px;">Row 2</div>
               <div style="font-size:9px;color:var(--tx2);">提示符 · 输入 · 语音</div>
             </div>
             <div style="padding:6px 8px;background:var(--bg2);border:.5px solid var(--bdr2);text-align:center;">
-              <div style="font-family:'DM Mono',monospace;font-size:7.5px;color:var(--acc);margin-bottom:2px;">Row 3</div>
+              <div style="font-family:'DM Mono',monospace;font-size:7.5px;color:var(--ta);margin-bottom:2px;">Row 3</div>
               <div style="font-size:9px;color:var(--tx2);">模式 · 快捷键</div>
             </div>
           </div>
@@ -597,7 +597,7 @@ body{background:var(--bg);color:var(--tx);font-family:'Noto Sans SC',sans-serif;
             <div style="font-size:10px;color:var(--tx2);line-height:1.6;">写入类操作（Edit / Write / Delete）展开显示，加橙色边框 + WRITE badge，变更前需确认。</div>
           </div>
           <div style="padding:8px 10px;border:.5px solid rgba(0,47,167,.25);background:rgba(0,47,167,.04);">
-            <div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--acc);letter-spacing:.1em;margin-bottom:4px;">THINKING — 默认一行摘要</div>
+            <div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--ta);letter-spacing:.1em;margin-bottom:4px;">THINKING — 默认一行摘要</div>
             <div style="font-size:10px;color:var(--tx2);line-height:1.6;">AI 推理过程折叠为单行摘要，点击展开完整思考链，不污染主输出流。</div>
           </div>
           <div style="padding:8px 10px;border:.5px solid var(--grey-2);background:var(--grey-1);">
@@ -637,8 +637,8 @@ body{background:var(--bg);color:var(--tx);font-family:'Noto Sans SC',sans-serif;
               <div style="color:var(--td);">$ hai optimize --op RMSNorm --target 910B</div>
               <div id="out-think" style="margin:2px 0;border:.5px solid rgba(0,47,167,.2);background:rgba(0,47,167,.04);padding:4px 8px;border-radius:2px;">
                 <div style="display:flex;align-items:center;gap:6px;cursor:pointer;">
-                  <span style="color:var(--acc);font-size:7px;">▶</span>
-                  <span style="font-family:'DM Mono',monospace;font-size:7.5px;color:var(--acc);">THINKING</span>
+                  <span style="color:var(--ta);font-size:7px;">▶</span>
+                  <span style="font-family:'DM Mono',monospace;font-size:7.5px;color:var(--ta);">THINKING</span>
                   <span id="out-think-summary" style="font-size:7.5px;color:var(--td);">分析 RMSNorm tile 策略，目标 910B AICore 利用率 &gt;70%…</span>
                 </div>
                 <div id="out-think-detail" style="display:none;margin-top:4px;font-size:7px;color:var(--td);line-height:1.7;padding-left:14px;">需考虑：UB 大小 192KB / tile_m 候选 [64,128,192] / FRACTAL_NZ 对齐约束 / 910B vs 310P 兼容性</div>
@@ -696,7 +696,7 @@ body{background:var(--bg);color:var(--tx);font-family:'Noto Sans SC',sans-serif;
             <div><div style="font-size:10px;font-weight:500;color:var(--tx);margin-bottom:2px;">Initial — 就绪</div><div style="font-size:9px;color:var(--tx2);">欢迎画面 · 自动加载工作区记忆 · 显示上次任务摘要</div></div>
           </div>
           <div style="padding:6px 10px;border:.5px solid rgba(0,47,167,.3);background:rgba(0,47,167,.04);display:flex;gap:10px;align-items:flex-start;">
-            <span style="font-family:'DM Mono',monospace;font-size:9px;color:var(--acc);flex-shrink:0;width:24px;">S2</span>
+            <span style="font-family:'DM Mono',monospace;font-size:9px;color:var(--ta);flex-shrink:0;width:24px;">S2</span>
             <div><div style="font-size:10px;font-weight:500;color:var(--tx);margin-bottom:2px;">Working — 执行中</div><div style="font-size:9px;color:var(--tx2);">步骤计数 + 用时 + Esc 浮动按钮 · 可插话追加指令</div></div>
           </div>
           <div style="padding:6px 10px;border:.5px solid rgba(245,158,11,.4);background:rgba(245,158,11,.05);display:flex;gap:10px;align-items:flex-start;">
@@ -704,7 +704,7 @@ body{background:var(--bg);color:var(--tx);font-family:'Noto Sans SC',sans-serif;
             <div><div style="font-size:10px;font-weight:500;color:var(--tx);margin-bottom:2px;">Confirmation — 等待确认</div><div style="font-size:9px;color:var(--tx2);">颜色编码风险 · 三档授权 · 标签 ⚠ 闪烁 · 手机推送</div></div>
           </div>
           <div style="padding:6px 10px;border:.5px solid rgba(0,47,167,.3);background:rgba(0,47,167,.04);display:flex;gap:10px;align-items:flex-start;">
-            <span style="font-family:'DM Mono',monospace;font-size:9px;color:var(--acc);flex-shrink:0;width:24px;">S4</span>
+            <span style="font-family:'DM Mono',monospace;font-size:9px;color:var(--ta);flex-shrink:0;width:24px;">S4</span>
             <div><div style="font-size:10px;font-weight:500;color:var(--tx);margin-bottom:2px;">Preview — 结果预览</div><div style="font-size:9px;color:var(--tx2);">默认摘要行 · 点击展开完整 diff · ≥3 文件触发 Review Panel</div></div>
           </div>
           <div style="padding:6px 10px;border:.5px solid rgba(5,150,105,.3);background:rgba(5,150,105,.04);display:flex;gap:10px;align-items:flex-start;">
@@ -737,10 +737,10 @@ body{background:var(--bg);color:var(--tx);font-family:'Noto Sans SC',sans-serif;
           <div class="mac-win" style="box-shadow:0 8px 32px rgba(0,0,0,.25);">
             <!-- Status Bar -->
             <div id="exec-sbar" style="background:#0d0d14;padding:0 12px;height:22px;display:flex;align-items:center;gap:8px;border-bottom:.5px solid #252530;font-family:'DM Mono',monospace;font-size:7.5px;">
-              <span style="color:var(--acc);padding:0 6px;border-bottom:1.5px solid var(--acc);">RMSNorm ⟳</span>
+              <span style="color:var(--ta);padding:0 6px;border-bottom:1.5px solid var(--acc);">RMSNorm ⟳</span>
               <span style="color:#828296;">FlashAttn ✓</span>
               <div style="flex:1;text-align:center;color:#828296;">~/workspace/RMSNorm-910B</div>
-              <span id="exec-stage-label" style="color:var(--acc);">Stage 04 · Agent 运行中</span>
+              <span id="exec-stage-label" style="color:var(--ta);">Stage 04 · Agent 运行中</span>
             </div>
             <div class="mac-bar">
               <div class="mac-dots"><div class="mac-dot" style="background:#FF5F57;"></div><div class="mac-dot" style="background:#FEBC2E;"></div><div class="mac-dot" style="background:#28C840;"></div></div>
@@ -825,7 +825,7 @@ body{background:var(--bg);color:var(--tx);font-family:'Noto Sans SC',sans-serif;
             <div style="display:flex;gap:8px;align-items:center;font-size:9px;color:var(--tx2);"><span style="font-family:'DM Mono',monospace;color:var(--tx);width:56px;flex-shrink:0;">仅此次</span>本次操作有效，下次重新确认</div>
             <div style="display:flex;gap:8px;align-items:center;font-size:9px;color:var(--tx2);"><span style="font-family:'DM Mono',monospace;color:var(--tx);width:56px;flex-shrink:0;">会话级</span>本次 session 内自动批准同类操作</div>
             <div style="display:flex;gap:8px;align-items:center;font-size:9px;color:var(--tx2);"><span style="font-family:'DM Mono',monospace;color:var(--tx);width:56px;flex-shrink:0;">永久级</span>写入 settings.json，后续不再询问</div>
-            <div style="display:flex;gap:8px;align-items:center;font-size:9px;color:var(--acc);border-top:.5px solid var(--grey-2);padding-top:3px;margin-top:2px;"><span style="font-family:'DM Mono',monospace;width:56px;flex-shrink:0;">修改执行</span>打开编辑器修改命令参数后再执行</div>
+            <div style="display:flex;gap:8px;align-items:center;font-size:9px;color:var(--ta);border-top:.5px solid var(--grey-2);padding-top:3px;margin-top:2px;"><span style="font-family:'DM Mono',monospace;width:56px;flex-shrink:0;">修改执行</span>打开编辑器修改命令参数后再执行</div>
           </div>
         </div>
         <div class="ba-grid" style="margin-top:auto;">
@@ -859,7 +859,7 @@ body{background:var(--bg);color:var(--tx);font-family:'Noto Sans SC',sans-serif;
             <div style="font-family:'DM Mono',monospace;font-size:7.5px;color:var(--td);margin-bottom:6px;">hai → ls -la src/ && cat rmsnorm.py</div>
             <div style="display:flex;gap:5px;">
               <div style="font-family:'DM Mono',monospace;font-size:7px;background:var(--acc);color:white;padding:2px 8px;">仅此次</div>
-              <div style="font-family:'DM Mono',monospace;font-size:7px;border:.5px solid rgba(0,47,167,.3);color:var(--acc);padding:2px 8px;">会话级</div>
+              <div style="font-family:'DM Mono',monospace;font-size:7px;border:.5px solid rgba(0,47,167,.3);color:var(--ta);padding:2px 8px;">会话级</div>
               <div style="font-family:'DM Mono',monospace;font-size:7px;border:.5px solid var(--grey-2);color:var(--tx2);padding:2px 8px;">永久级</div>
             </div>
           </div>
@@ -875,7 +875,7 @@ body{background:var(--bg);color:var(--tx);font-family:'Noto Sans SC',sans-serif;
               <div style="font-family:'DM Mono',monospace;font-size:7px;background:#b45309;color:white;padding:2px 8px;">仅此次</div>
               <div style="font-family:'DM Mono',monospace;font-size:7px;border:.5px solid rgba(245,158,11,.4);color:#b45309;padding:2px 8px;">会话级</div>
               <div style="font-family:'DM Mono',monospace;font-size:7px;border:.5px solid var(--grey-2);color:var(--tx2);padding:2px 8px;">永久级</div>
-              <div style="font-family:'DM Mono',monospace;font-size:7px;border:.5px solid var(--acc);color:var(--acc);padding:2px 8px;">修改后执行 ›</div>
+              <div style="font-family:'DM Mono',monospace;font-size:7px;border:.5px solid var(--acc);color:var(--ta);padding:2px 8px;">修改后执行 ›</div>
             </div>
           </div>
           <!-- EXEC confirm (hidden) -->
@@ -889,7 +889,7 @@ body{background:var(--bg);color:var(--tx);font-family:'Noto Sans SC',sans-serif;
             <div style="display:flex;gap:5px;">
               <div style="font-family:'DM Mono',monospace;font-size:7px;background:var(--r);color:white;padding:2px 8px;">确认执行</div>
               <div style="font-family:'DM Mono',monospace;font-size:7px;border:.5px solid var(--grey-2);color:var(--tx2);padding:2px 8px;">拒绝</div>
-              <div style="font-family:'DM Mono',monospace;font-size:7px;border:.5px solid var(--acc);color:var(--acc);padding:2px 8px;">修改后执行 ›</div>
+              <div style="font-family:'DM Mono',monospace;font-size:7px;border:.5px solid var(--acc);color:var(--ta);padding:2px 8px;">修改后执行 ›</div>
             </div>
           </div>
         </div>
@@ -972,7 +972,7 @@ body{background:var(--bg);color:var(--tx);font-family:'Noto Sans SC',sans-serif;
                 <span style="color:var(--tg);">+18</span>
                 <span style="color:var(--tr);">-6</span>
                 <span style="color:#828296;">· $0.023</span>
-                <span id="rev-expand-btn" style="margin-left:auto;color:var(--acc);cursor:pointer;font-size:7.5px;">展开 diff ▾</span>
+                <span id="rev-expand-btn" style="margin-left:auto;color:var(--ta);cursor:pointer;font-size:7.5px;">展开 diff ▾</span>
               </div>
               <!-- Diff (hidden) -->
               <div id="rev-diff" style="display:none;font-size:7.5px;line-height:1.6;border:.5px solid #252530;padding:6px 8px;border-radius:2px;background:rgba(255,255,255,.02);">
@@ -987,13 +987,13 @@ body{background:var(--bg);color:var(--tx);font-family:'Noto Sans SC',sans-serif;
               <div id="rev-actions" style="display:flex;gap:6px;flex-wrap:wrap;margin-top:4px;">
                 <div id="rev-accept-all" style="font-family:'DM Mono',monospace;font-size:7.5px;background:var(--acc);color:white;padding:3px 12px;cursor:pointer;">Accept All ↵</div>
                 <div style="font-family:'DM Mono',monospace;font-size:7.5px;border:.5px solid var(--grey-2);color:var(--tx2);padding:3px 10px;cursor:pointer;">By File</div>
-                <div style="font-family:'DM Mono',monospace;font-size:7.5px;border:.5px solid var(--acc);color:var(--acc);padding:3px 10px;cursor:pointer;">Ask AI ›</div>
+                <div style="font-family:'DM Mono',monospace;font-size:7.5px;border:.5px solid var(--acc);color:var(--ta);padding:3px 10px;cursor:pointer;">Ask AI ›</div>
                 <div style="font-family:'DM Mono',monospace;font-size:7.5px;border:.5px solid var(--grey-2);color:var(--tx2);padding:3px 10px;cursor:pointer;">Reject All</div>
               </div>
               <!-- Accepted state -->
               <div id="rev-done" style="display:none;color:var(--tg);margin-top:4px;">✓ 全部变更已接受 · 可输入下一目标</div>
               <!-- Review panel hint -->
-              <div style="margin-top:auto;padding:4px 6px;background:rgba(0,47,167,.06);border:.5px solid rgba(0,47,167,.2);font-size:7.5px;color:var(--acc);">💡 3 文件变更 — 建议打开 Review Panel 详细审查 · <span style="cursor:pointer;text-decoration:underline;">打开</span> · <span style="cursor:pointer;color:#828296;">忽略</span></div>
+              <div style="margin-top:auto;padding:4px 6px;background:rgba(0,47,167,.06);border:.5px solid rgba(0,47,167,.2);font-size:7.5px;color:var(--ta);">💡 3 文件变更 — 建议打开 Review Panel 详细审查 · <span style="cursor:pointer;text-decoration:underline;">打开</span> · <span style="cursor:pointer;color:#828296;">忽略</span></div>
             </div>
           </div>
         </div>
@@ -1022,7 +1022,7 @@ body{background:var(--bg);color:var(--tx);font-family:'Noto Sans SC',sans-serif;
           <div style="padding:7px 10px;border:.5px solid var(--grey-2);background:var(--grey-1);">
             <div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--tx3);letter-spacing:.1em;margin-bottom:4px;">SESSION TABS — Status Bar 左侧</div>
             <div style="display:flex;gap:6px;flex-wrap:wrap;">
-              <div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--acc);padding:2px 8px;border-bottom:1.5px solid var(--acc);">RMSNorm ⟳</div>
+              <div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--ta);padding:2px 8px;border-bottom:1.5px solid var(--acc);">RMSNorm ⟳</div>
               <div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--tx3);padding:2px 8px;">FlashAttn ✓</div>
               <div style="font-family:'DM Mono',monospace;font-size:8px;color:#b45309;padding:2px 8px;animation:blink 1s step-end infinite;">RopeEmb ⚠</div>
             </div>
@@ -1063,11 +1063,11 @@ body{background:var(--bg);color:var(--tx);font-family:'Noto Sans SC',sans-serif;
           <div class="mac-win" style="box-shadow:0 8px 32px rgba(0,0,0,.25);">
             <!-- Session status bar -->
             <div id="sess-sbar" style="background:#0d0d14;padding:0 10px;height:22px;display:flex;align-items:center;gap:0;border-bottom:.5px solid #252530;font-family:'DM Mono',monospace;font-size:7.5px;overflow:hidden;">
-              <span id="sess-t1" style="color:var(--acc);padding:0 8px;border-bottom:1.5px solid var(--acc);height:100%;display:flex;align-items:center;">RMSNorm ⟳</span>
+              <span id="sess-t1" style="color:var(--ta);padding:0 8px;border-bottom:1.5px solid var(--acc);height:100%;display:flex;align-items:center;">RMSNorm ⟳</span>
               <span id="sess-t2" style="color:#828296;padding:0 8px;height:100%;display:flex;align-items:center;">FlashAttn ✓</span>
               <span id="sess-t3" style="color:#828296;padding:0 8px;height:100%;display:flex;align-items:center;">RopeEmb ⚠</span>
               <div style="flex:1;text-align:center;color:#828296;">~/workspace</div>
-              <span id="sess-stage" style="color:var(--acc);">Stage 04 · 执行中</span>
+              <span id="sess-stage" style="color:var(--ta);">Stage 04 · 执行中</span>
             </div>
             <div class="mac-bar">
               <div class="mac-dots"><div class="mac-dot" style="background:#FF5F57;"></div><div class="mac-dot" style="background:#FEBC2E;"></div><div class="mac-dot" style="background:#28C840;"></div></div>
@@ -1139,7 +1139,7 @@ body{background:var(--bg);color:var(--tx);font-family:'Noto Sans SC',sans-serif;
           </div>
           <div style="display:flex;flex-direction:column;gap:4px;">
             <div style="padding:6px 10px;border-left:3px solid var(--acc);background:var(--sur);">
-              <div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--acc);">/fork</div>
+              <div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--ta);">/fork</div>
               <div style="font-size:9px;color:var(--tx2);margin-top:2px;">创建当前状态快照分支，原分支完整保留，可随时回溯</div>
             </div>
             <div style="padding:6px 10px;border-left:3px solid var(--y);background:var(--sur);">
@@ -1186,7 +1186,7 @@ body{background:var(--bg);color:var(--tx);font-family:'Noto Sans SC',sans-serif;
             <!-- Input area showing context meter -->
             <div style="border-top:.5px solid #252530;">
               <div style="padding:4px 12px;display:flex;gap:5px;align-items:center;background:rgba(255,255,255,.02);border-bottom:.5px solid rgba(255,255,255,.05);min-height:24px;flex-wrap:wrap;">
-                <span style="font-family:'DM Mono',monospace;font-size:7.5px;color:var(--acc);background:rgba(0,47,167,.1);border:.5px solid rgba(0,47,167,.2);padding:1px 8px;">@rmsnorm.py ×</span>
+                <span style="font-family:'DM Mono',monospace;font-size:7.5px;color:var(--ta);background:rgba(0,47,167,.1);border:.5px solid rgba(0,47,167,.2);padding:1px 8px;">@rmsnorm.py ×</span>
                 <span style="font-family:'DM Mono',monospace;font-size:7px;color:#828296;">+ @file</span>
                 <!-- Context meter -->
                 <div style="margin-left:auto;display:flex;align-items:center;gap:5px;">
@@ -1197,7 +1197,7 @@ body{background:var(--bg);color:var(--tx);font-family:'Noto Sans SC',sans-serif;
                 <span style="font-family:'DM Mono',monospace;font-size:7px;color:#F59E0B;background:rgba(245,158,11,.08);border:.5px solid rgba(245,158,11,.2);padding:1px 6px;">$0.031</span>
               </div>
               <div style="padding:7px 12px;display:flex;align-items:center;gap:8px;">
-                <span style="color:var(--acc);font-size:12px;flex-shrink:0;">❯</span>
+                <span style="color:var(--ta);font-size:12px;flex-shrink:0;">❯</span>
                 <span id="ctx-input-text" style="font-family:'DM Mono',monospace;font-size:9px;color:#828296;"></span>
                 <span style="animation:bl .9s step-end infinite;color:#C8C8DC;">▌</span>
               </div>
@@ -1389,7 +1389,7 @@ body{background:var(--bg);color:var(--tx);font-family:'Noto Sans SC',sans-serif;
               </div>
               <!-- Memory saved -->
               <div style="padding:6px 10px;background:rgba(0,47,167,.08);border:.5px solid rgba(0,47,167,.25);border-radius:4px;">
-                <div style="font-family:'DM Mono',monospace;font-size:7px;color:var(--acc);margin-bottom:3px;">已存入记忆</div>
+                <div style="font-family:'DM Mono',monospace;font-size:7px;color:var(--ta);margin-bottom:3px;">已存入记忆</div>
                 <div style="font-size:7.5px;color:var(--td);">tile_m=128 最优配置 · FRACTAL_NZ→ND 格式迁移路径 · 910B 基准线 72.4%</div>
               </div>
               <!-- Actions -->
@@ -1519,7 +1519,7 @@ setupSlideSteps('s-output', 'stp-output', [
     },
     act: function() {
       var rb = document.getElementById('out-read-badge');
-      if (rb) { rb.textContent = '3 files ▴'; rb.style.background = 'rgba(0,47,167,.08)'; rb.style.borderColor = 'rgba(0,47,167,.2)'; rb.style.color = 'var(--acc)'; }
+      if (rb) { rb.textContent = '3 files ▴'; rb.style.background = 'rgba(0,47,167,.08)'; rb.style.borderColor = 'rgba(0,47,167,.2)'; rb.style.color = 'var(--ta)'; }
       var rl = document.getElementById('out-read-list');
       if (rl) rl.style.display = 'inline';
     }
@@ -1560,9 +1560,9 @@ setupSlideSteps('s-exec', 'stp-exec', [
       if (s3) s3.style.display = 'none';
       if (s5) s5.style.display = 'none';
       var sl = document.getElementById('exec-stage-label');
-      if (sl) { sl.textContent = 'Stage 04 · Agent 运行中'; sl.style.color = 'var(--acc)'; }
+      if (sl) { sl.textContent = 'Stage 04 · Agent 运行中'; sl.style.color = 'var(--ta)'; }
       var st1 = document.getElementById('exec-sbar').querySelector('span:first-child');
-      if (st1) { st1.style.color = 'var(--acc)'; st1.textContent = 'RMSNorm ⟳'; }
+      if (st1) { st1.style.color = 'var(--ta)'; st1.textContent = 'RMSNorm ⟳'; }
     },
     act: null
   },
@@ -1684,12 +1684,12 @@ setupSlideSteps('s-session', 'stp-session', [
       var title = document.getElementById('sess-title');
       var stage = document.getElementById('sess-stage');
       var notif = document.getElementById('sess-notif');
-      if (t1) { t1.style.color = 'var(--acc)'; t1.style.borderBottom = '1.5px solid var(--acc)'; }
+      if (t1) { t1.style.color = 'var(--ta)'; t1.style.borderBottom = '1.5px solid var(--acc)'; }
       if (t3) { t3.style.color = '#828296'; t3.style.borderBottom = 'none'; }
       if (c1) c1.style.display = 'block';
       if (c3) c3.style.display = 'none';
       if (title) title.textContent = 'hai — RMSNorm-910B';
-      if (stage) { stage.textContent = 'Stage 04 · 执行中'; stage.style.color = 'var(--acc)'; }
+      if (stage) { stage.textContent = 'Stage 04 · 执行中'; stage.style.color = 'var(--ta)'; }
       if (notif) notif.style.display = 'none';
     },
     act: null
@@ -1721,7 +1721,7 @@ setupSlideSteps('s-session', 'stp-session', [
       var t3 = document.getElementById('sess-t3');
       if (t3) t3.textContent = 'RopeEmb ✓';
       var stage = document.getElementById('sess-stage');
-      if (stage) { stage.textContent = 'Stage 04 · 继续执行中'; stage.style.color = 'var(--acc)'; }
+      if (stage) { stage.textContent = 'Stage 04 · 继续执行中'; stage.style.color = 'var(--ta)'; }
     }
   }
 ]);
@@ -1862,7 +1862,7 @@ setupSlideSteps('s-input', 'stp-input', [
       if (vc) vc.style.display = 'flex';
       if (text) text.textContent = '';
       var mode = document.getElementById('inp-mode');
-      if (mode) { mode.textContent = 'Auto ·语音'; mode.style.borderColor = 'rgba(0,47,167,.4)'; mode.style.color = 'var(--acc)'; }
+      if (mode) { mode.textContent = 'Auto ·语音'; mode.style.borderColor = 'rgba(0,47,167,.4)'; mode.style.color = 'var(--ta)'; }
     }
   }
 ]);
@@ -1879,7 +1879,7 @@ setupSlideSteps('s-status', 'stp-status', [
       var s1 = document.getElementById('sb-s1');
       var s3 = document.getElementById('sb-s3');
       var hint = document.getElementById('sb-hint');
-      if (t1) { t1.style.color = 'var(--acc)'; t1.style.borderBottom = '1.5px solid var(--acc)'; t1.textContent = 'RMSNorm ⟳'; }
+      if (t1) { t1.style.color = 'var(--ta)'; t1.style.borderBottom = '1.5px solid var(--acc)'; t1.textContent = 'RMSNorm ⟳'; }
       if (t3) { t3.style.color = '#828296'; t3.style.borderBottom = 'none'; }
       if (s1) s1.style.display = 'flex';
       if (s3) s3.style.display = 'none';

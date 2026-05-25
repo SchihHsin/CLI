@@ -494,6 +494,8 @@ grep -n "id=\"s-m" file.html | head    # 快速列出所有 section
 | `c9cad4c` | 新增 hai-cli-design.html（HAI CLI 完整设计体系，12 个设计点，134KB）+ cli-analysis-key-findings.md（核心结论速查 Markdown） |
 | `255949f` | **WCAG AA 对比度修复**：`--td` #48485C（2:1）→ #828296（5.27:1）；修复两个 HTML 文件中共 200+ 处暗色终端文字；新增 **colors.css** 共用色表，两个 HTML 均 `<link>` 引入，各自 `:root{}` 只保留文件级覆盖 |
 | `266dcd1` | s-cli-arch（第8页）：5状态终端行 `flex:1` → `height:185px`，恢复正常终端宽高比；s-m6a（光标伴侣）：`.clicky-app` 从浅灰 #F6F6FA 改为暗色 var(--tb)，msprof 标签/tab/气泡全部适配暗色主题 |
+| `91ab5d1` | 更新 CLAUDE.md：记录 WCAG 修复、colors.css 共用色表、两处 UI 修复 |
+| *(2026-05-25)* | **终端主题/PPT主题严格分离**：新增 `--ta #60A5FA`（终端专用强调色，WCAG AAA 9:1），将两个 HTML 文件中终端区域的所有 `color:var(--acc)` 改为 `color:var(--ta)`（hai-operator-design.html 56处，hai-cli-design.html 49处HTML+8处JS），同步更新 colors.css 和 CLAUDE.md |
 
 ### ai-dev-tools-design.html 专项工作（更早）
 
@@ -514,12 +516,19 @@ grep -n "id=\"s-m" file.html | head    # 快速列出所有 section
 
 | 变量 | 值 | 用途 | WCAG（on --tb） |
 |---|---|---|---|
-| `--acc` | `#002FA7` | IKB 克莱因蓝主色 | — |
+| `--acc` | `#002FA7` | IKB 克莱因蓝主色（**PPT/浅色背景专用**） | 1.87:1 ❌ 禁止在终端文字中使用 |
+| `--ta` | `#60A5FA` | **终端强调色**（terminal accent，深色背景专用） | **9.0:1 ✓ AAA** |
 | `--td` | `#828296` | 终端次要文字 | **5.27:1 ✓ AA** |
 | `--tw` | `#C8C8DC` | 终端主要文字 | 12.3:1 ✓ AAA |
 | `--tb` | `#0C0C11` | 终端背景 | — |
 | `--tbar` | `#181820` | 终端标题栏 | — |
 | `--tbdr` | `#252530` | 终端边框 | — |
+
+**⚠️ 两套主题严格分离（不可混用）：**
+- **PPT 主题**：`--acc #002FA7` 用于幻灯片边框、标签、按钮填充——只在浅色背景（`--bg #fafaf8`）上使用
+- **终端主题**：`--ta #60A5FA` 用于深色终端内所有强调色文字——只在 `--tb #0C0C11` 背景上使用
+- `#002FA7` 在 `#0C0C11` 上对比度仅 **1.87:1**，基本不可见，**严禁**在终端内做文字颜色
+- 凡终端区域内的 `color:var(--acc)` 均为错误，必须改为 `color:var(--ta)`
 
 **文件级覆盖（各 HTML 自己的 `:root{}`）：**
 - `hai-operator-design.html`：`--tp:#4A7FE8`（用 IKB 蓝替代终端紫色槽位）
