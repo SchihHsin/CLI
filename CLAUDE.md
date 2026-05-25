@@ -26,7 +26,7 @@
 | 技术栈 | `tik.Tensor`、`tik.data_move`、msprof profiler、FRACTAL_NZ格式 |
 | 状态 | 主体完成，s-m3a 已删除；全局终端 Chrome 已标准化（2026-05-25） |
 
-### 第三份材料（HAI CLI 全流程设计体系）
+### 第三份材料（ORCA CLI 全流程设计体系）
 
 | 项 | 值 |
 |---|---|
@@ -40,7 +40,7 @@
 
 ---
 
-## HAI CLI 全流程架构（已锁定，2026-05-25）
+## ORCA CLI 全流程架构（已锁定，2026-05-25）
 
 ### 全局 UI 结构
 
@@ -69,28 +69,34 @@
 ```
 [新会话]  ~/workspace  就绪
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  HAI · 昇腾算子开发助手
+  ORCA  v0.9
+  Operator Runtime
+  CANN Assistant
+  ──────────────
+  昇腾算子开发助手  910B · 310P
 
-  长按 Space 开始语音，或直接输入指令
+  /help  /goal  Space↲
 
   ❯ _
 ```
-- 欢迎态，无历史上下文
-- 若已有 workspace：自动加载记忆（→ 第8页 s-m4a 流程）
+- 欢迎态，ORCA wordmark + 产品名全称（Operator Runtime CANN Assistant）+ 版本 + 快捷键提示
+- 外部标注：终端面板下方显示 "Operator Runtime / CANN Assistant"
+- 若已有 workspace：输入任意指令自动加载记忆（→ 第8页 s-m4a 流程，无需显式命令）
 
 #### State 2 — Working（执行中）
 ```
 [RMSNorm ⟳]  ~/workspace/RMSNorm-910B  Stage 04 · Agent 运行中
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  ▸ tbe-gen: tile_m 64→128→192 迭代中…
-  ▸ dtype-check: 验证 FRACTAL_NZ 兼容性…
-  ▸ perf-bench: 910B 基准测试…
-  [████████░░] 进度 4/5 步
+  ⟳  tbe-gen       tile_m 迭代…        （黄色，进行中）
+  ✓  dtype-check   NZ 格式通过         （绿色，已完成）
+  ✗  perf-bench    CUBE 21% 异常       （红色，失败）
+  ·  compat        等待中…             （灰色，未开始）
 
   ❯ _   （Ctrl+C 中断 / Space 语音补充指令）
 ```
-- AI 流式输出日志
-- 用户可随时插话（Space 语音），AI 吸收后继续
+- 四态状态指示：⟳ 黄（进行中）/ ✓ 绿（完成）/ ✗ 红（失败）/ · 灰（等待）
+- 每行 flex 布局：状态图标 + 任务名（min-width:52px）+ 状态描述
+- AI 流式输出日志；用户可随时插话（Space 语音），AI 吸收后继续
 
 #### State 3 — Confirmation（等待确认）
 ```
@@ -135,7 +141,7 @@
 
   已存入记忆 · 本次优化路径 + 最终参数
 
-  ❯ _   （输入新目标 / hai new 开启新 session）
+  ❯ _   （输入新目标 / orca new 开启新 session）
 ```
 - 展示验收摘要
 - 「已存入记忆」：有新内容时显示，已知内容不重复提示
@@ -495,7 +501,11 @@ grep -n "id=\"s-m" file.html | head    # 快速列出所有 section
 | `255949f` | **WCAG AA 对比度修复**：`--td` #48485C（2:1）→ #828296（5.27:1）；修复两个 HTML 文件中共 200+ 处暗色终端文字；新增 **colors.css** 共用色表，两个 HTML 均 `<link>` 引入，各自 `:root{}` 只保留文件级覆盖 |
 | `266dcd1` | s-cli-arch（第8页）：5状态终端行 `flex:1` → `height:185px`，恢复正常终端宽高比；s-m6a（光标伴侣）：`.clicky-app` 从浅灰 #F6F6FA 改为暗色 var(--tb)，msprof 标签/tab/气泡全部适配暗色主题 |
 | `91ab5d1` | 更新 CLAUDE.md：记录 WCAG 修复、colors.css 共用色表、两处 UI 修复 |
-| *(2026-05-25)* | **终端主题/PPT主题严格分离**：新增 `--ta #60A5FA`（终端专用强调色，WCAG AAA 9:1），将两个 HTML 文件中终端区域的所有 `color:var(--acc)` 改为 `color:var(--ta)`（hai-operator-design.html 56处，hai-cli-design.html 49处HTML+8处JS），同步更新 colors.css 和 CLAUDE.md |
+| *(2026-05-25)* | **终端主题/PPT主题严格分离**：新增 `--ta #A78BFA`（紫色，终端专用强调色，WCAG AAA 7.7:1），将两个 HTML 文件中终端区域的所有 `color:var(--acc)` 改为 `color:var(--ta)`（hai-operator-design.html 56处，hai-cli-design.html 49处HTML+8处JS），同步更新 colors.css 和 CLAUDE.md |
+| `6a04eb6` | `.goal-term` 加 `border-radius:10px`，修复终端面板无圆角问题 |
+| `3767d06` | 产品更名 HAI → **ORCA**（Operator Runtime CANN Assistant）；State 1 新增 ORCA 欢迎屏（wordmark+全称+版本+快捷键）；终端面板外部标注产品名释义；State 2 加四态状态指示 ⟳/✓/✗/·（hai-cli-design.html + hai-operator-design.html 两文件同步） |
+| `247fd0e` | **s-cli-arch（第8页）独立窗口重设计**：5个状态从共享单窗口改为各自独立 macOS chrome + ORCA status bar + 内容区；Row1（S1→S2→S3）+ Row2（S4→S5，右对齐）双行排列；箭头列 28px 间隔；State 3 红色边框+RMSNorm ⚠ pulse 动画；State 5 绿色边框 |
+| `d72b055` | s-m4a（第9页）记忆自动加载重设计：不需要显式 `orca start` 命令，任意任务指令触发自动恢复；终端输入改为自然任务 `继续优化 RMSNorm`；s-m3b（第12页）Goal 命令改为中文自然语言输入，条件标签全部汉化 |
 
 ### ai-dev-tools-design.html 专项工作（更早）
 
@@ -517,7 +527,7 @@ grep -n "id=\"s-m" file.html | head    # 快速列出所有 section
 | 变量 | 值 | 用途 | WCAG（on --tb） |
 |---|---|---|---|
 | `--acc` | `#002FA7` | IKB 克莱因蓝主色（**PPT/浅色背景专用**） | 1.87:1 ❌ 禁止在终端文字中使用 |
-| `--ta` | `#60A5FA` | **终端强调色**（terminal accent，深色背景专用） | **9.0:1 ✓ AAA** |
+| `--ta` | `#A78BFA` | **终端强调色**（terminal accent，深色背景专用，紫色） | **7.7:1 ✓ AAA** |
 | `--td` | `#828296` | 终端次要文字 | **5.27:1 ✓ AA** |
 | `--tw` | `#C8C8DC` | 终端主要文字 | 12.3:1 ✓ AAA |
 | `--tb` | `#0C0C11` | 终端背景 | — |
@@ -526,7 +536,7 @@ grep -n "id=\"s-m" file.html | head    # 快速列出所有 section
 
 **⚠️ 两套主题严格分离（不可混用）：**
 - **PPT 主题**：`--acc #002FA7` 用于幻灯片边框、标签、按钮填充——只在浅色背景（`--bg #fafaf8`）上使用
-- **终端主题**：`--ta #60A5FA` 用于深色终端内所有强调色文字——只在 `--tb #0C0C11` 背景上使用
+- **终端主题**：`--ta #A78BFA`（紫色）用于深色终端内所有强调色文字——只在 `--tb #0C0C11` 背景上使用
 - `#002FA7` 在 `#0C0C11` 上对比度仅 **1.87:1**，基本不可见，**严禁**在终端内做文字颜色
 - 凡终端区域内的 `color:var(--acc)` 均为错误，必须改为 `color:var(--ta)`
 
@@ -623,7 +633,7 @@ box-shadow:0 2px 20px rgba(0,47,167,.10),0 1px 0 rgba(255,255,255,.8) inset,0 0 
 ### s-bg2 范式演进（已完成）
 - 布局：4张浮动卡片，gap:16px，高度拉伸齐平
 - Cards 01-03：`background:var(--sur)` 白底，`.5px solid var(--grey-2)`
-- Card 04 HAI：`background:var(--acc)` IKB 蓝，白色文字，flex:1.4
+- Card 04 ORCA：`background:var(--acc)` IKB 蓝，白色文字，flex:1.4
 
 ### s-sum 设计总结（已完成）
 - 上方4卡：SVG 线性图标，去掉数字序号 badge
@@ -667,17 +677,17 @@ grid-template-rows: 1.5fr 1fr 1fr 1.3fr 1fr 1fr;
 
 ### s-bg-community / s-bg-community2 社区知识转化（已完成 2026-05-23）
 
-**命题：** 昇腾社区的经验知识在 HAI 时代如何渗透进工具，而非消失。
+**命题：** 昇腾社区的经验知识在 ORCA 时代如何渗透进工具，而非消失。
 
 **s-bg-community — 三层内化框架：**
-- L1 训练层：社区帖子/issue/PR 作为训练数据 → HAI 离线感知社区智慧
+- L1 训练层：社区帖子/issue/PR 作为训练数据 → ORCA 离线感知社区智慧
 - L2 检索层：RAG 实时召回社区片段 → 回答时注入上下文
 - L3 沉淀层：用户交互反馈形成个性化知识库 → 越用越懂算子习惯
-- Before/After 对比：30min 手动社区搜索 vs. <10s HAI 直接给出答案
+- Before/After 对比：30min 手动社区搜索 vs. <10s ORCA 直接给出答案
 
 **s-bg-community2 — 渗透地图：**
 - 5阶段（算子开发5步）× 知识类型（格式规范/调试案例/性能技巧/芯片差异/优化经验）矩阵
-- 每格有 terminal mockup 片段，展示 HAI 如何在该阶段引用社区知识
+- 每格有 terminal mockup 片段，展示 ORCA 如何在该阶段引用社区知识
 - 底部：知识飞轮（Knowledge Flywheel）可视化
 
 ### s-m1c 实体状态灯（已完成 2026-05-23）
@@ -690,13 +700,13 @@ grid-template-rows: 1.5fr 1fr 1fr 1.3fr 1fr 1fr;
    - 屏幕：`aspect-ratio:16/10`，深蓝壁纸渐变 + 双径向光斑
    - 菜单栏（`height:14px`，半透明模糊）
    - 浮动 Terminal 窗口（带 macOS 红黄绿标题栏点 + tl-s1..7 终端内容）
-   - Dock（半透明，Finder/HAI/Terminal/VSCode/Chrome/Slack/Trash）
+   - Dock（半透明，Finder/ORCA/Terminal/VSCode/Chrome/Slack/Trash）
    - 键盘底座（铝色，两排按键暗示）+ 触控板
 2. **SVG USB 线**（`width:24px`，bezier 曲线从笔记本右侧弯向交通灯USB口）
 3. **交通灯硬件设备**（`flex-shrink:0, width:36px`）
    - 圆角顶盖/底盖，渐变侧面（3D感），左侧高光条
    - 三个凹陷灯槽（inner shadow）+ 内部灯圈
-   - USB 颈部 + USB 插头 + HAI LINK 标签
+   - USB 颈部 + USB 插头 + ORCA LINK 标签
 
 **三个状态：**
 - Phase 1：黄灯常亮，终端显示 s2-s3（运行日志），statusChip=RUNNING
@@ -704,6 +714,40 @@ grid-template-rows: 1.5fr 1fr 1fr 1.3fr 1fr 1fr;
 - Phase 3：绿灯常亮，终端显示 s2-s3+s6-s7（完成），statusChip=DONE
 
 **JS IDs：** `tl-red/yellow/green`（灯圈）、`tl-s1..7`（终端行）、`tl-status-chip`、`tl-state-bar/dot/title/desc`
+
+### s-cli-arch 5状态独立终端窗口（2026-05-25 重设计）
+
+**⚠️ 5个状态各自是独立的 macOS 终端窗口，不共享外层框架。**
+
+布局：双行网格
+- Row 1：S1（初始）→ 箭头 → S2（执行中）→ 箭头 → S3（等待确认）
+- Row 2：S4（结果预览）→ 箭头 → S5（完成），右对齐
+- 网格列：`grid-template-columns:1fr 28px 1fr 28px 1fr`
+
+每个状态窗口结构：macOS chrome（6px 三点）+ ORCA status bar（tab + 路径 + 阶段标签）+ 内容区 + 输入提示
+
+边框颜色区分：
+- S3：`rgba(248,113,113,.35)` 红色 + RMSNorm ⚠ pulse 动画
+- S4：`rgba(0,47,167,.4)` IKB 蓝
+- S5：`rgba(52,211,153,.3)` 绿色
+
+### s-m4a 记忆自动加载（2026-05-25 重设计）
+
+**⚠️ 不需要显式 `orca start` 或"加载记忆"命令。**
+
+设计原则：用户输入任意真实任务指令（如 `继续优化 RMSNorm，目标 cube 利用率 > 70%`），ORCA 自动检测 workspace 并恢复历史上下文。
+
+- 终端输入：`❯ 继续优化 RMSNorm，目标 cube 利用率 > 70%`
+- 自动加载提示：`正在恢复工作区记忆…`（灰色斜体，非醒目提示）
+- Step 标签：step1 "输入任务指令" / step2 "自动加载上下文" / step3 "恢复完成，继续工作"
+
+### s-m3b Goal 命令（2026-05-25 更新）
+
+**Goal 命令输入使用中文自然语言，不用英文参数格式。**
+
+- 输入：`❯ /goal cube 利用率 > 70%，精度误差 < 1e-5，兼容 910B 和 310P`
+- 提示符：`❯`（不用 `$`）
+- 条件面板标签全部汉化：`cube 利用率 > 70%` / `精度误差 < 1e-5` / `硬件兼容：910B · 310P`
 
 ### s-bg-signal / s-bg-signal2 行业验证（已完成 2026-05-23）
 
@@ -735,7 +779,6 @@ grid-template-rows: 1.5fr 1fr 1fr 1.3fr 1fr 1fr;
 ### 低优先级
 - [ ] s-m2a cursor demo 最终验证
 - [ ] 旅程地图页内容验证
-- [ ] s-m3b Goal demo emoji清理（🧪✓⚡不符合IKB风格）
 - [ ] s-m4b 卡片 border-radius:6px 清理为直角
 
 ---
@@ -749,7 +792,7 @@ grid-template-rows: 1.5fr 1fr 1fr 1.3fr 1fr 1fr;
 | `window.goalShowPanel(1/2/3)` | s-m3b | Goal面板显示/+进度/+日志 |
 | `window.dashSetPhase(1/2/3)` | s-m1b | 看板正常/异常高亮/注入指令 |
 | `window.reasonSetPhase(1/2)` | s-m5b | 推理框/决策badge |
-| `window.memSetPhase(1/2/3)` | s-m4a | hai start命令/会话列表淡入/高亮当前 |
+| `window.memSetPhase(1/2/3)` | s-m4a | 任务指令触发/自动加载上下文/高亮当前会话 |
 | `window.cursorSetPhase(0/1/2)` | s-m2a | 光标移动到targets[index] |
 | `window.agvSetPhase(1/2/3)` | s-m1a | tbe-gen运行/shape-infer报警/全部完成 |
 | `window.reviewSetPhase(1/2/3)` | s-m5a | 切换tab: perf/prec/cstr |
