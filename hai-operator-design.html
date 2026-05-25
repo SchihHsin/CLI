@@ -1216,15 +1216,15 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
 <div class="sec" id="s-m4a" style="background:var(--bg);">
   <div class="slabel">
     <span class="sub">记忆启动 · Stage 01 · 设计点 1/1</span>
-    <span class="main">启动即加载 — 算子开发上下文跨会话持久</span>
+    <span class="main">指令触发，自动恢复 — 算子开发上下文跨会话持久</span>
   </div>
   <div class="inner">
     <div class="dp-layout">
       <div class="dp-left">
         <div class="dp-desc">
           <div class="dp-label">设计说明</div>
-          <div class="dp-title">CANN 算子知识库 × 会话记忆</div>
-          <div class="dp-body">目前主流 AI 工具将会话上下文存入静态文件（如 CLAUDE.md），依赖人工维护、更新不及时；一旦上下文 compact，当轮已沉淀的决策和分析结果随即丢失。ORCA 将算子开发上下文自动结构化写入持久记忆：TBE 实现版本、msprof 分析结果、历次性能迭代记录、shape/dtype 约束配置——每次启动即时恢复，不需要重新解释"我在做什么"。</div>
+          <div class="dp-title">无需显式唤醒 — 任意指令触发自动恢复</div>
+          <div class="dp-body">不需要输入「加载记忆」或「启动工作区」——用户直接输入自己的任务指令，ORCA 自动检测当前工作区并在后台加载 TBE 实现版本、msprof 分析基线、shape/dtype 约束配置。过去依赖静态 CLAUDE.md 手动维护、上下文 compact 后当轮决策随即丢失的问题彻底消除。</div>
         </div>
         <div class="dp-desc">
           <div class="dp-label">核心设计点</div>
@@ -1262,8 +1262,8 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
         <div class="stp-strip" id="stp-m4a">
           <div class="stp-bar"><div class="stp-fill"></div></div>
           <div class="stp-steps">
-            <div class="stp-step"><div class="stp-num">1</div><span class="stp-lbl">启动开发环境</span></div>
-            <div class="stp-step"><div class="stp-num">2</div><span class="stp-lbl">加载历史记忆</span></div>
+            <div class="stp-step"><div class="stp-num">1</div><span class="stp-lbl">输入任务指令</span></div>
+            <div class="stp-step"><div class="stp-num">2</div><span class="stp-lbl">自动加载上下文</span></div>
             <div class="stp-step"><div class="stp-num">3</div><span class="stp-lbl">就绪 · 从断点继续</span></div>
           </div>
         </div>
@@ -1275,8 +1275,9 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
             <span style="font-family:'DM Mono',monospace;font-size:9px;color:var(--td);margin-left:4px;">Terminal — RMSNorm-910B</span>
           </div>
           <div style="flex:1;padding:10px 14px;font-family:'DM Mono',monospace;font-size:9px;line-height:1.85;display:flex;flex-direction:column;overflow:hidden;">
-            <div><span style="color:var(--ta);">❯ </span><span style="color:var(--tw);">启动 RMSNorm-910B 工作空间</span></div>
+            <div><span style="color:var(--ta);">❯ </span><span style="color:var(--tw);">继续优化 RMSNorm，目标 cube 利用率 &gt; 70%</span></div>
             <div id="mem-s1" style="display:none;margin-top:7px;">
+              <div style="color:var(--td);font-size:8px;font-style:italic;margin-bottom:5px;">正在恢复工作区记忆…</div>
               <div style="color:var(--ta);font-size:8px;letter-spacing:.07em;margin-bottom:3px;">▸ 会话上下文 · · · · · · · · · · · · · · ✓</div>
               <div style="color:var(--td);">&nbsp;&nbsp;FlashAttention v2&nbsp;&nbsp;&nbsp;<span style="color:var(--tg);">tile_m=128 · CUBE=74.3%</span></div>
               <div style="color:var(--td);">&nbsp;&nbsp;RopeEmbedding&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:var(--ty);">FRACTAL_NZ · 310P ⏳</span></div>
@@ -1995,13 +1996,13 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
           <div class="goal-term" style="flex:1;">
             <div class="goal-term-hd" style="display:flex;align-items:center;gap:7px;"><div style="display:flex;gap:4px;"><div style="width:7px;height:7px;border-radius:50%;background:#FF5F57;"></div><div style="width:7px;height:7px;border-radius:50%;background:#FEBC2E;"></div><div style="width:7px;height:7px;border-radius:50%;background:#28C840;"></div></div>ORCA · RMSNorm 算子</div>
             <div class="goal-term-body" id="goal-log">
-              <div style="font-family:'DM Mono',monospace;font-size:9px;color:var(--td);line-height:1.6;"><span style="color:var(--ta);">$ </span><span style="color:var(--tw);">/goal cube_util &gt; 70% &amp;&amp; max_error &lt; 1e-5 &amp;&amp; compat: [910B, 310P]</span></div>
+              <div style="font-family:'DM Mono',monospace;font-size:9px;color:var(--td);line-height:1.6;"><span style="color:var(--ta);">❯ </span><span style="color:var(--tw);">/goal cube 利用率 &gt; 70%，精度误差 &lt; 1e-5，兼容 910B 和 310P</span></div>
               <div id="goal-conditions" style="display:none;margin-top:6px;font-family:'DM Mono',monospace;font-size:8.5px;line-height:1.85;">
                 <div style="color:var(--ta);letter-spacing:.07em;">◆ GOAL · 验收条件</div>
                 <div style="color:rgba(255,255,255,.1);margin:2px 0;">──────────────────────────────────</div>
-                <div style="display:flex;align-items:center;gap:8px;"><span id="goal-icon-1" style="width:12px;color:var(--ty);">⏳</span><span style="color:var(--tw);">cube_util <span style="color:var(--tp);">&gt;</span> <span style="color:var(--tg);">70%</span></span><span id="goal-val-1" style="margin-left:auto;color:var(--td);">当前 21%</span></div>
-                <div style="display:flex;align-items:center;gap:8px;"><span id="goal-icon-2" style="width:12px;color:var(--ty);">⏳</span><span style="color:var(--tw);">max_error <span style="color:var(--tp);">&lt;</span> <span style="color:var(--tg);">1e-5</span></span><span id="goal-val-2" style="margin-left:auto;color:var(--td);">未测试</span></div>
-                <div style="display:flex;align-items:center;gap:8px;"><span id="goal-icon-3" style="width:12px;color:var(--ty);">⏳</span><span style="color:var(--tw);">compat: [<span style="color:var(--ty);">910B</span>, <span style="color:var(--ty);">310P</span>]</span><span id="goal-val-3" style="margin-left:auto;color:var(--td);">待验证</span></div>
+                <div style="display:flex;align-items:center;gap:8px;"><span id="goal-icon-1" style="width:12px;color:var(--ty);">⏳</span><span style="color:var(--tw);">cube 利用率 <span style="color:var(--tp);">&gt;</span> <span style="color:var(--tg);">70%</span></span><span id="goal-val-1" style="margin-left:auto;color:var(--td);">当前 21%</span></div>
+                <div style="display:flex;align-items:center;gap:8px;"><span id="goal-icon-2" style="width:12px;color:var(--ty);">⏳</span><span style="color:var(--tw);">精度误差 <span style="color:var(--tp);">&lt;</span> <span style="color:var(--tg);">1e-5</span></span><span id="goal-val-2" style="margin-left:auto;color:var(--td);">未测试</span></div>
+                <div style="display:flex;align-items:center;gap:8px;"><span id="goal-icon-3" style="width:12px;color:var(--ty);">⏳</span><span style="color:var(--tw);">硬件兼容：<span style="color:var(--ty);">910B</span> · <span style="color:var(--ty);">310P</span></span><span id="goal-val-3" style="margin-left:auto;color:var(--td);">待验证</span></div>
                 <div style="color:rgba(255,255,255,.1);margin:2px 0;">──────────────────────────────────</div>
               </div>
               <div id="goal-iter-log"></div>
