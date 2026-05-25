@@ -1,0 +1,1956 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>HAI CLI · 界面与交互设计体系</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600&family=DM+Mono:wght@300;400;500&family=Noto+Sans+SC:wght@300;400;500&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --acc:#002FA7;--acc2:#001F7A;--acc-l:#4A7FE8;
+  --acc-dim:rgba(0,47,167,.07);--acc-b:rgba(0,47,167,.2);
+  --bg:#fafaf8;--bg2:#f0f0ee;--sur:#ffffff;
+  --tx:#0a0a0a;--tx2:#3a3a3a;--tx3:#737373;
+  --bdr:rgba(0,0,0,.07);--bdr2:rgba(0,0,0,.12);
+  --grey-1:#f0f0ee;--grey-2:#d4d4d2;--grey-3:#737373;
+  --g:#059669;--r:#DC2626;--y:#b45309;--tl:#0D9488;
+  --tb:#0C0C11;--tbar:#181820;--tbdr:#252530;
+  --tw:#C8C8DC;--td:#48485C;
+  --tg:#34D399;--tb2:#60A5FA;--tp:#A78BFA;--ty:#FBBF24;--tr:#F87171;--tc:#2DD4BF;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--tx);font-family:'Noto Sans SC',sans-serif;font-weight:300;font-size:14px;overflow:hidden;}
+
+/* snap scroll */
+.snap-root{height:100vh;overflow-y:scroll;scroll-snap-type:y mandatory;}
+.snap-root::-webkit-scrollbar{display:none;}
+.sec{width:100vw;height:100vh;scroll-snap-align:start;scroll-snap-stop:always;position:relative;overflow:hidden;display:flex;flex-direction:column;}
+
+/* slabel */
+.slabel{flex-shrink:0;padding:20px 52px 0;border-top:2.5px solid var(--acc);}
+.slabel .sub{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.14em;color:var(--tx3);text-transform:uppercase;margin-bottom:5px;}
+.slabel .main{font-family:'Inter',sans-serif;font-weight:200;font-size:22px;color:var(--tx);line-height:1.2;}
+.slabel .main strong{font-weight:600;}
+
+/* inner */
+.inner{flex:1;padding:10px 52px 20px;display:flex;flex-direction:column;overflow:hidden;}
+.dp-layout{display:flex;gap:36px;flex:1;min-height:0;}
+.dp-left{flex:0 0 320px;display:flex;flex-direction:column;gap:10px;overflow-y:auto;}
+.dp-left::-webkit-scrollbar{display:none;}
+.dp-right{flex:1;display:flex;flex-direction:column;gap:8px;min-width:0;position:relative;}
+
+/* desc blocks */
+.dp-label{font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.12em;color:var(--tx3);text-transform:uppercase;margin-bottom:3px;}
+.dp-title{font-family:'Inter',sans-serif;font-weight:500;font-size:13px;color:var(--tx);margin-bottom:5px;}
+.dp-body{font-size:10.5px;color:var(--tx2);line-height:1.7;}
+.dp-desc{display:flex;flex-direction:column;}
+.dpp{font-size:10px;color:var(--tx2);line-height:1.6;padding:2px 0 2px 10px;border-left:2px solid var(--grey-2);}
+.dpp+.dpp{margin-top:3px;}
+
+/* before/after */
+.ba-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:auto;}
+.ba-before{background:var(--grey-1);border:.5px solid var(--grey-2);padding:8px 10px;display:flex;flex-direction:column;gap:5px;}
+.ba-after{background:var(--acc-dim);border:.5px solid var(--acc-b);padding:8px 10px;display:flex;flex-direction:column;gap:5px;}
+.ba-label{font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.1em;display:flex;align-items:center;gap:6px;}
+.ba-text{font-size:9.5px;color:var(--tx2);line-height:1.6;}
+
+/* step strip */
+.stp-strip{display:flex;flex-direction:column;gap:5px;flex-shrink:0;}
+.stp-bar{height:2px;background:var(--grey-2);border-radius:1px;overflow:hidden;}
+.stp-fill{height:100%;width:0%;background:var(--acc);border-radius:1px;transition:width .4s ease;}
+.stp-steps{display:flex;gap:0;}
+.stp-step{flex:1;display:flex;align-items:center;gap:5px;font-family:'DM Mono',monospace;font-size:8px;color:var(--tx3);cursor:pointer;padding:3px 4px;}
+.stp-num{width:16px;height:16px;border-radius:50%;border:1px solid var(--grey-2);display:flex;align-items:center;justify-content:center;font-size:8px;flex-shrink:0;transition:all .3s;}
+.stp-step.stp-active .stp-num{background:var(--acc);border-color:var(--acc);color:#fff;}
+.stp-step.stp-active .stp-lbl{color:var(--acc);}
+.stp-step.stp-done .stp-num{background:var(--g);border-color:var(--g);color:#fff;}
+.stp-step.stp-done .stp-lbl{color:var(--g);}
+.mockup-label{font-family:'DM Mono',monospace;font-size:8px;color:var(--tx3);letter-spacing:.1em;text-transform:uppercase;}
+
+/* macOS terminal chrome helper */
+.mac-win{border-radius:10px;overflow:hidden;display:flex;flex-direction:column;border:.5px solid #2a2a38;}
+.mac-bar{background:#181820;padding:6px 12px;border-bottom:.5px solid #252530;display:flex;align-items:center;gap:8px;flex-shrink:0;}
+.mac-dots{display:flex;gap:5px;}
+.mac-dot{width:8px;height:8px;border-radius:50%;}
+.mac-title{font-family:'DM Mono',monospace;font-size:9px;color:#48485C;margin-left:4px;}
+.mac-body{flex:1;overflow:hidden;background:#0C0C11;font-family:'DM Mono',monospace;font-size:9px;color:#C8C8DC;display:flex;flex-direction:column;}
+
+/* mini mac bar (5px dots) */
+.mac-bar-sm{background:#181820;padding:4px 8px;border-bottom:.5px solid #252530;display:flex;align-items:center;gap:5px;flex-shrink:0;}
+.mac-dot-sm{width:5px;height:5px;border-radius:50%;}
+
+/* top nav */
+#top-nav{position:fixed;top:16px;right:20px;z-index:9999;display:flex;flex-direction:column;gap:4px;align-items:flex-end;}
+.nav-dot{width:6px;height:6px;border-radius:50%;background:rgba(0,47,167,.2);cursor:pointer;transition:all .2s;position:relative;}
+.nav-dot:hover,.nav-dot.active{background:var(--acc);transform:scale(1.3);}
+.nav-dot .nav-tip{position:absolute;right:14px;top:50%;transform:translateY(-50%);background:rgba(0,47,167,.88);color:#fff;font-family:'DM Mono',monospace;font-size:8px;padding:2px 7px;border-radius:2px;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .15s;}
+.nav-dot:hover .nav-tip{opacity:1;}
+
+/* cover */
+.cover-bg{position:absolute;inset:0;background:linear-gradient(135deg,#fafaf8 0%,#eeeeff 100%);}
+.cover-stripe{position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--acc);}
+.cover-body{position:absolute;inset:0;display:flex;}
+.c-left{flex:1;display:flex;flex-direction:column;justify-content:center;padding:0 64px 0 60px;}
+.c-eyebrow{font-family:'DM Mono',monospace;font-size:10px;color:var(--acc);letter-spacing:.2em;margin-bottom:20px;}
+.c-title{font-family:'Syne',sans-serif;font-size:72px;font-weight:800;color:var(--tx);line-height:.95;margin-bottom:18px;}
+.c-title span{color:var(--acc);}
+.c-sub{font-size:12px;color:var(--tx2);line-height:1.8;max-width:440px;margin-bottom:28px;}
+.c-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;max-width:480px;}
+.cstat{background:var(--sur);border:.5px solid var(--grey-2);padding:12px 14px;}
+.csl{font-family:'DM Mono',monospace;font-size:8px;color:var(--tx3);letter-spacing:.1em;margin-bottom:2px;}
+.csv{font-family:'Syne',sans-serif;font-size:28px;font-weight:800;color:var(--acc);}
+.csd{font-size:9px;color:var(--tx2);}
+.c-right{width:420px;display:flex;align-items:center;justify-content:center;padding-right:40px;}
+
+/* comparison table */
+.cmp-tbl{width:100%;border-collapse:collapse;font-family:'DM Mono',monospace;font-size:8px;}
+.cmp-tbl th{background:var(--acc);color:#fff;padding:5px 8px;font-weight:400;letter-spacing:.08em;border:.5px solid var(--acc2);}
+.cmp-tbl td{padding:5px 8px;border:.5px solid var(--grey-2);color:var(--tx2);vertical-align:top;line-height:1.5;}
+.cmp-tbl tr:nth-child(even) td{background:var(--grey-1);}
+.cmp-tbl .td-hai{background:var(--acc-dim) !important;color:var(--acc);font-weight:500;}
+.cmp-tbl .td-label{color:var(--tx3);background:var(--grey-1) !important;font-size:7.5px;letter-spacing:.08em;}
+
+/* annotation badge */
+.ann{display:inline-flex;align-items:center;gap:4px;font-family:'DM Mono',monospace;font-size:8px;color:var(--acc);background:var(--acc-dim);border:.5px solid var(--acc-b);padding:2px 7px;border-radius:2px;}
+
+/* keyframes */
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+@keyframes bl{0%,100%{opacity:1}50%{opacity:0}}
+@keyframes ck-wave{0%,100%{transform:scaleY(1)}50%{transform:scaleY(1.8)}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes slideIn{from{opacity:0;transform:translateX(8px)}to{opacity:1;transform:translateX(0)}}
+</style>
+</head>
+<body>
+<div id="top-nav"></div>
+<div class="snap-root" id="snap-root">
+
+<!-- ══ COVER ══ -->
+<div class="sec" id="s-cover" style="background:var(--bg);">
+  <div class="cover-bg"></div>
+  <div class="cover-stripe"></div>
+  <div class="cover-body">
+    <div class="c-left">
+      <div class="c-eyebrow">HAI CLI · 2026</div>
+      <h1 class="c-title">界面<br>与交互<br><span>设计体系</span></h1>
+      <p class="c-sub">从全局架构到每个交互细节 — 固定三层布局 / 轻量 Block 输出 / Context Chips / 语音输入 / 多会话管理 / 安全自主确认流</p>
+      <div class="c-stats">
+        <div class="cstat"><div class="csl">设计页面</div><div class="csv">12</div><div class="csd">完整设计规范</div></div>
+        <div class="cstat"><div class="csl">CLI 状态</div><div class="csv">5</div><div class="csd">Init/Running/Confirm/Preview/Done</div></div>
+        <div class="cstat"><div class="csl">输入模式</div><div class="csv">3</div><div class="csd">文字 / 语音 / 手势</div></div>
+        <div class="cstat"><div class="csl">对比产品</div><div class="csv">5</div><div class="csd">Claude Code/Warp/Gemini/Aider/OpenCode</div></div>
+      </div>
+    </div>
+    <div class="c-right">
+      <div style="width:340px;">
+        <!-- mini terminal preview -->
+        <div class="mac-win" style="box-shadow:0 20px 60px rgba(0,47,167,.18);">
+          <div class="mac-bar">
+            <div class="mac-dots">
+              <div class="mac-dot" style="background:#FF5F57;"></div>
+              <div class="mac-dot" style="background:#FEBC2E;"></div>
+              <div class="mac-dot" style="background:#28C840;"></div>
+            </div>
+            <span class="mac-title">HAI CLI — RMSNorm-910B</span>
+          </div>
+          <!-- status bar -->
+          <div style="background:#111118;padding:4px 12px;display:flex;align-items:center;justify-content:space-between;border-bottom:.5px solid #252530;flex-shrink:0;">
+            <div style="display:flex;gap:5px;">
+              <span style="font-family:'DM Mono',monospace;font-size:7.5px;color:var(--acc);background:var(--acc-dim);border:.5px solid var(--acc-b);padding:1px 7px;">RMSNorm ⟳</span>
+              <span style="font-family:'DM Mono',monospace;font-size:7.5px;color:rgba(255,255,255,.3);background:rgba(255,255,255,.04);border:.5px solid rgba(255,255,255,.08);padding:1px 7px;">FlashAttn ✓</span>
+              <span style="font-family:'DM Mono',monospace;font-size:7.5px;color:var(--tr);background:rgba(248,113,113,.08);border:.5px solid rgba(248,113,113,.25);padding:1px 7px;">RopeEmb ⚠</span>
+            </div>
+            <span style="font-family:'DM Mono',monospace;font-size:7.5px;color:#48485C;">Stage 04 · 运行中</span>
+          </div>
+          <!-- output stream -->
+          <div style="flex:1;padding:10px 12px;display:flex;flex-direction:column;gap:4px;overflow:hidden;min-height:0;max-height:150px;">
+            <div style="font-size:8px;color:#48485C;">$ hai optimize --target cube_util &gt; 70%</div>
+            <div style="font-size:8px;color:var(--acc);">▸ 分析 msprof 报告...</div>
+            <div style="font-size:8px;color:var(--td);">  CUBE=38% · Vec=87% · BW=84%</div>
+            <div style="background:rgba(0,47,167,.07);border:.5px solid rgba(0,47,167,.2);padding:4px 8px;display:flex;align-items:center;gap:6px;">
+              <span style="font-size:7.5px;color:var(--acc);font-family:'DM Mono',monospace;">WRITE</span>
+              <span style="font-size:8px;color:#C8C8DC;">tbe-gen: tile_m 64→128 · 迭代中...</span>
+              <div style="margin-left:auto;width:40px;height:3px;background:rgba(255,255,255,.1);">
+                <div style="width:72%;height:100%;background:var(--acc);"></div>
+              </div>
+            </div>
+            <div style="font-size:8px;color:var(--tg);">✓ dtype-check 通过</div>
+          </div>
+          <!-- input area -->
+          <div style="border-top:.5px solid #252530;border-bottom:.5px solid rgba(255,255,255,.04);flex-shrink:0;">
+            <div style="padding:4px 10px;display:flex;gap:5px;align-items:center;background:rgba(255,255,255,.02);">
+              <span style="font-size:7.5px;color:var(--acc);background:var(--acc-dim);border:.5px solid var(--acc-b);padding:1px 7px;font-family:'DM Mono',monospace;border-radius:2px;">@rmsnorm.py ×</span>
+              <span style="font-size:7px;color:#48485C;font-family:'DM Mono',monospace;">+ @file  + @url</span>
+            </div>
+            <div style="padding:6px 10px;display:flex;align-items:center;gap:8px;">
+              <span style="color:var(--acc);font-size:10px;">❯</span>
+              <span style="font-size:8.5px;color:#C8C8DC;flex:1;">查看 tile_m=128 的完整推导过程<span style="animation:bl .9s step-end infinite;color:rgba(255,255,255,.6);">▌</span></span>
+              <span style="font-size:7px;color:#48485C;font-family:'DM Mono',monospace;">$0.04</span>
+              <span style="font-size:7px;color:rgba(255,255,255,.3);font-family:'DM Mono',monospace;">Space 语音</span>
+            </div>
+          </div>
+        </div>
+        <div style="margin-top:10px;display:flex;gap:6px;align-items:center;">
+          <div style="flex:1;height:.5px;background:var(--grey-2);"></div>
+          <span style="font-family:'DM Mono',monospace;font-size:8px;color:var(--tx3);">固定三层 · Status Bar + 输出流 + 输入区</span>
+          <div style="flex:1;height:.5px;background:var(--grey-2);"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ S2: 全局布局架构 ══ -->
+<div class="sec" id="s-arch" style="background:var(--bg);">
+  <div class="slabel">
+    <span class="sub">全局架构 · Foundation</span>
+    <span class="main">三层布局 — Status Bar + 输出流 + 固定输入区</span>
+  </div>
+  <div class="inner">
+    <div class="dp-layout">
+      <div class="dp-left">
+        <div class="dp-desc">
+          <div class="dp-label">设计说明</div>
+          <div class="dp-title">物理分离的三层结构</div>
+          <div class="dp-body">HAI CLI 将屏幕划分为三个职责明确的层：顶部固定 Status Bar 始终传达"我在哪里"；中间滚动输出流展示"发生了什么"；底部固定输入区提供"我能做什么"。三层位置永远不变，消除视线跳跃。</div>
+        </div>
+        <div class="dp-desc">
+          <div class="dp-label">核心设计点</div>
+          <div style="display:flex;flex-direction:column;gap:4px;margin-top:4px;">
+            <div class="dpp"><strong style="color:var(--acc);">Status Bar（固定顶部）</strong> — 多 Session 标签 + 当前路径 + Stage，始终可见，不随输出滚动消失</div>
+            <div class="dpp"><strong style="color:var(--acc);">输出流（可滚动）</strong> — 工具调用 Block + 进度 + 结果，写入操作加 badge，读取自动折叠</div>
+            <div class="dpp"><strong style="color:var(--acc);">输入区（固定底部）</strong> — Context Chips + 主输入框 + 模式/费用/语音，永远在底部 20%</div>
+          </div>
+        </div>
+        <div class="dp-desc" style="margin-top:4px;">
+          <div class="dp-label">与竞品对比</div>
+          <table class="cmp-tbl" style="margin-top:5px;">
+            <tr><th></th><th>输入位置</th><th>状态栏</th><th>输出结构</th></tr>
+            <tr><td class="td-label">Claude Code</td><td>固定底部</td><td>无</td><td>线性文字流</td></tr>
+            <tr><td class="td-label">Warp</td><td>底部</td><td>持久状态栏</td><td>Block 单元</td></tr>
+            <tr><td class="td-label">Gemini CLI</td><td>随输出滚动</td><td>状态嵌入行内</td><td>线性对话流</td></tr>
+            <tr><td class="td-label td-hai">HAI</td><td class="td-hai">固定底部</td><td class="td-hai">固定顶部</td><td class="td-hai">Block + 折叠</td></tr>
+          </table>
+        </div>
+        <div class="ba-grid" style="margin-top:auto;">
+          <div class="ba-before">
+            <div class="ba-label"><span style="background:var(--grey-2);color:var(--tx2);font-family:'DM Mono',monospace;font-size:7px;padding:1px 6px;">BEFORE</span>OpenCode 现状</div>
+            <div style="font-size:9px;color:var(--tx2);line-height:1.6;">输入框跟随输出流末尾滚动，Agent 执行时无法输入；无全局状态栏；错误/进度信息与普通输出视觉相同</div>
+          </div>
+          <div class="ba-after">
+            <div class="ba-label"><span style="background:var(--acc);color:white;font-family:'DM Mono',monospace;font-size:7px;padding:1px 6px;">AFTER</span>HAI 三层设计</div>
+            <div class="ba-text">输入框永远在底部，可随时输入；Status Bar 始终显示会话状态；输出流层次分明，写入操作即时可辨</div>
+          </div>
+        </div>
+      </div>
+      <div class="dp-right">
+        <div class="mockup-label">全局布局 — 三层区域标注</div>
+        <div style="flex:1;min-height:0;display:flex;flex-direction:column;gap:8px;">
+          <!-- Full layout annotated mockup -->
+          <div class="mac-win" style="flex:1;min-height:0;display:flex;flex-direction:column;box-shadow:0 12px 40px rgba(0,0,0,.2);">
+            <div class="mac-bar">
+              <div class="mac-dots">
+                <div class="mac-dot" style="background:#FF5F57;"></div>
+                <div class="mac-dot" style="background:#FEBC2E;"></div>
+                <div class="mac-dot" style="background:#28C840;"></div>
+              </div>
+              <span class="mac-title">hai — Terminal</span>
+            </div>
+            <!-- Zone A: Status Bar -->
+            <div style="background:#111118;padding:5px 14px;display:flex;align-items:center;justify-content:space-between;border-bottom:.5px solid #252530;flex-shrink:0;position:relative;">
+              <div style="position:absolute;left:-2px;top:0;bottom:0;width:2px;background:var(--acc);"></div>
+              <div style="display:flex;gap:5px;align-items:center;">
+                <span style="font-family:'DM Mono',monospace;font-size:7.5px;color:var(--acc);background:rgba(0,47,167,.15);border:.5px solid rgba(0,47,167,.3);padding:1px 8px;">RMSNorm ⟳</span>
+                <span style="font-family:'DM Mono',monospace;font-size:7.5px;color:rgba(255,255,255,.3);background:rgba(255,255,255,.04);border:.5px solid rgba(255,255,255,.08);padding:1px 8px;">FlashAttn ✓</span>
+                <span style="font-family:'DM Mono',monospace;font-size:7.5px;color:#F87171;background:rgba(248,113,113,.08);border:.5px solid rgba(248,113,113,.25);padding:1px 8px;">RopeEmb ⚠</span>
+                <span style="font-size:7px;color:rgba(255,255,255,.2);font-family:'DM Mono',monospace;">Alt+1/2/3</span>
+              </div>
+              <span style="font-family:'DM Mono',monospace;font-size:7.5px;color:#48485C;">~/workspace/RMSNorm-910B</span>
+              <span style="font-family:'DM Mono',monospace;font-size:7.5px;color:var(--acc);">Stage 04 · 运行中</span>
+            </div>
+            <!-- Zone label A -->
+            <div style="background:rgba(0,47,167,.06);padding:3px 14px;border-bottom:.5px solid rgba(0,47,167,.15);flex-shrink:0;display:flex;align-items:center;gap:8px;">
+              <span style="font-family:'DM Mono',monospace;font-size:7px;color:var(--acc);letter-spacing:.1em;">▲ ZONE A · STATUS BAR · 固定 · 不随滚动消失</span>
+            </div>
+            <!-- Zone B: Output stream -->
+            <div style="flex:1;padding:10px 14px;overflow:hidden;display:flex;flex-direction:column;gap:5px;min-height:0;">
+              <div style="font-family:'DM Mono',monospace;font-size:8.5px;">
+                <span style="color:#48485C;">$ </span><span style="color:#C8C8DC;">hai optimize --op RMSNorm --target cube_util &gt; 0.70</span>
+              </div>
+              <div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--acc);">▸ 读取 msprof 报告...</div>
+              <!-- Read tool call - collapsed -->
+              <div style="background:rgba(255,255,255,.03);border:.5px solid rgba(255,255,255,.08);padding:4px 8px;display:flex;align-items:center;gap:6px;font-family:'DM Mono',monospace;font-size:7.5px;">
+                <span style="color:#48485C;">READ</span>
+                <span style="color:#48485C;">×3 文件</span>
+                <span style="color:rgba(255,255,255,.15);font-size:10px;">▸</span>
+                <span style="color:#48485C;">msprof.json · rmsnorm.py · constraints.yaml</span>
+                <span style="margin-left:auto;color:#48485C;">展开</span>
+              </div>
+              <!-- Write tool call - expanded -->
+              <div style="background:rgba(0,47,167,.06);border:.5px solid rgba(0,47,167,.2);border-left:2px solid var(--acc);padding:5px 8px;font-family:'DM Mono',monospace;font-size:7.5px;">
+                <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;">
+                  <span style="color:var(--acc);">WRITE</span>
+                  <span style="color:#C8C8DC;">rmsnorm_tbe.py</span>
+                  <div style="margin-left:auto;width:50px;height:3px;background:rgba(255,255,255,.1);">
+                    <div style="width:65%;height:100%;background:var(--acc);"></div>
+                  </div>
+                  <span style="color:var(--acc);">65%</span>
+                </div>
+                <div style="color:#48485C;font-size:7px;">tile_m: 64 → 128 · UB 优化 · CUBE 提升 ~21%</div>
+              </div>
+              <div style="font-family:'DM Mono',monospace;font-size:8px;color:#34D399;">✓ dtype-check 通过 · 910B/310P 均兼容</div>
+            </div>
+            <!-- Zone label B -->
+            <div style="background:rgba(52,211,153,.04);padding:3px 14px;border-top:.5px solid rgba(52,211,153,.12);border-bottom:.5px solid rgba(52,211,153,.12);flex-shrink:0;">
+              <span style="font-family:'DM Mono',monospace;font-size:7px;color:#34D399;letter-spacing:.1em;">▲ ZONE B · OUTPUT STREAM · 可滚动 · READ折叠 WRITE展开</span>
+            </div>
+            <!-- Zone C: Input area -->
+            <div style="border-top:.5px solid #252530;border-bottom:.5px solid rgba(255,255,255,.04);flex-shrink:0;">
+              <div style="padding:4px 12px;display:flex;gap:5px;align-items:center;background:rgba(255,255,255,.02);border-bottom:.5px solid rgba(255,255,255,.04);">
+                <span style="font-family:'DM Mono',monospace;font-size:7.5px;color:var(--acc);background:rgba(0,47,167,.1);border:.5px solid rgba(0,47,167,.2);padding:1px 8px;border-radius:2px;">@rmsnorm.py ×</span>
+                <span style="font-family:'DM Mono',monospace;font-size:7px;color:#48485C;">+ @file  + @url  上下文 42%</span>
+                <span style="margin-left:auto;font-family:'DM Mono',monospace;font-size:7px;color:#F59E0B;">$0.031</span>
+              </div>
+              <div style="padding:7px 12px;display:flex;align-items:center;gap:8px;">
+                <span style="color:var(--acc);font-size:11px;">❯</span>
+                <span style="font-family:'DM Mono',monospace;font-size:9px;color:#C8C8DC;flex:1;">分析 CUBE 利用率低的根本原因<span style="animation:bl .9s step-end infinite;">▌</span></span>
+                <span style="font-family:'DM Mono',monospace;font-size:7px;color:#48485C;border:.5px solid #252530;padding:1px 6px;">Auto</span>
+                <span style="font-family:'DM Mono',monospace;font-size:7px;color:rgba(255,255,255,.3);">Space 语音</span>
+              </div>
+            </div>
+            <!-- Zone label C -->
+            <div style="background:rgba(0,47,167,.06);padding:3px 14px;border-top:.5px solid rgba(0,47,167,.1);flex-shrink:0;">
+              <span style="font-family:'DM Mono',monospace;font-size:7px;color:var(--acc);letter-spacing:.1em;">▲ ZONE C · INPUT AREA · 固定底部 · Chips + 输入框 + 费用</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ S3: STATUS BAR ══ -->
+<div class="sec" id="s-status" style="background:var(--sur);">
+  <div class="slabel">
+    <span class="sub">Zone A · Status Bar</span>
+    <span class="main">始终感知位置 — 多 Session + 路径 + Stage，一行掌控全局</span>
+  </div>
+  <div class="inner">
+    <div class="dp-layout">
+      <div class="dp-left">
+        <div class="dp-desc">
+          <div class="dp-label">设计说明</div>
+          <div class="dp-title">三段式信息架构</div>
+          <div class="dp-body">Status Bar 是 HAI 的"永久地图"：左侧所有 Session 标签一眼看出谁在运行、谁完成、谁需要确认；中间是当前 Session 的工作路径；右侧是当前 Stage 与状态描述。任何时刻用户都能回答"我在哪里"。</div>
+        </div>
+        <div class="dp-desc">
+          <div class="dp-label">Session 标签状态</div>
+          <div style="display:flex;flex-direction:column;gap:5px;margin-top:4px;">
+            <div style="display:flex;gap:8px;align-items:center;padding:5px 8px;background:var(--bg2);border:.5px solid var(--bdr2);">
+              <span style="font-family:'DM Mono',monospace;font-size:8px;color:var(--acc);background:rgba(0,47,167,.1);border:.5px solid rgba(0,47,167,.2);padding:1px 7px;">RMSNorm ⟳</span>
+              <span style="font-size:9px;color:var(--tx2);">运行中 — 蓝色高亮，慢速旋转</span>
+            </div>
+            <div style="display:flex;gap:8px;align-items:center;padding:5px 8px;background:var(--bg2);border:.5px solid var(--bdr2);">
+              <span style="font-family:'DM Mono',monospace;font-size:8px;color:var(--g);background:rgba(5,150,105,.08);border:.5px solid rgba(5,150,105,.2);padding:1px 7px;">FlashAttn ✓</span>
+              <span style="font-size:9px;color:var(--tx2);">已完成 — 绿色，暗化</span>
+            </div>
+            <div style="display:flex;gap:8px;align-items:center;padding:5px 8px;background:var(--bg2);border:.5px solid var(--bdr2);">
+              <span style="font-family:'DM Mono',monospace;font-size:8px;color:var(--r);background:rgba(220,38,38,.08);border:.5px solid rgba(220,38,38,.2);padding:1px 7px;animation:pulse 1.2s ease-in-out infinite;">RopeEmb ⚠</span>
+              <span style="font-size:9px;color:var(--tx2);">需要确认 — 橙红闪烁，推送通知</span>
+            </div>
+          </div>
+        </div>
+        <div class="dp-desc" style="margin-top:4px;">
+          <div class="dp-label">切换方式</div>
+          <div class="dpp"><kbd style="background:var(--bg2);border:.5px solid var(--bdr2);padding:1px 5px;font-family:'DM Mono',monospace;font-size:8px;">Alt+1/2/3</kbd> 直接跳转对应 Session</div>
+          <div class="dpp" style="margin-top:3px;"><kbd style="background:var(--bg2);border:.5px solid var(--bdr2);padding:1px 5px;font-family:'DM Mono',monospace;font-size:8px;">Alt+N</kbd> 新建 Session</div>
+        </div>
+        <div class="ba-grid" style="margin-top:auto;">
+          <div class="ba-before">
+            <div class="ba-label"><span style="background:var(--grey-2);color:var(--tx2);font-family:'DM Mono',monospace;font-size:7px;padding:1px 6px;">BEFORE</span>无状态栏时</div>
+            <div style="font-size:9px;color:var(--tx2);line-height:1.6;">需要记住"RMSNorm 在哪个 terminal 窗口"；Session 3 报警无法及时发现；Alt+Tab 在多个终端窗口间盲目切换</div>
+          </div>
+          <div class="ba-after">
+            <div class="ba-label"><span style="background:var(--acc);color:white;font-family:'DM Mono',monospace;font-size:7px;padding:1px 6px;">AFTER</span>Status Bar</div>
+            <div class="ba-text">三个 Session 状态一行尽收；⚠ 闪烁立刻吸引注意；Alt+2 一键跳转，不需要找窗口</div>
+          </div>
+        </div>
+      </div>
+      <div class="dp-right">
+        <div class="mockup-label">动态 Mockup — Session 切换演示</div>
+        <div class="stp-strip" id="stp-status">
+          <div class="stp-bar"><div class="stp-fill"></div></div>
+          <div class="stp-steps">
+            <div class="stp-step"><div class="stp-num">1</div><span class="stp-lbl">Session 1 运行中</span></div>
+            <div class="stp-step"><div class="stp-num">2</div><span class="stp-lbl">Session 3 收到警告</span></div>
+            <div class="stp-step"><div class="stp-num">3</div><span class="stp-lbl">Alt+3 切换处理</span></div>
+          </div>
+        </div>
+        <div style="flex:1;min-height:0;display:flex;flex-direction:column;gap:0;">
+          <div class="mac-win" style="flex:1;display:flex;flex-direction:column;">
+            <div class="mac-bar">
+              <div class="mac-dots">
+                <div class="mac-dot" style="background:#FF5F57;"></div>
+                <div class="mac-dot" style="background:#FEBC2E;"></div>
+                <div class="mac-dot" style="background:#28C840;"></div>
+              </div>
+              <span class="mac-title">HAI — Multi-Session</span>
+            </div>
+            <!-- Status bar area -->
+            <div id="sb-bar" style="background:#111118;padding:5px 14px;display:flex;align-items:center;justify-content:space-between;border-bottom:.5px solid #252530;flex-shrink:0;">
+              <div id="sb-tabs" style="display:flex;gap:5px;align-items:center;">
+                <span id="sb-t1" style="font-family:'DM Mono',monospace;font-size:7.5px;color:var(--acc);background:rgba(0,47,167,.15);border:.5px solid rgba(0,47,167,.3);padding:1px 8px;">RMSNorm ⟳</span>
+                <span id="sb-t2" style="font-family:'DM Mono',monospace;font-size:7.5px;color:rgba(255,255,255,.3);background:rgba(255,255,255,.04);border:.5px solid rgba(255,255,255,.08);padding:1px 8px;">FlashAttn ✓</span>
+                <span id="sb-t3" style="font-family:'DM Mono',monospace;font-size:7.5px;color:#F87171;background:rgba(248,113,113,.08);border:.5px solid rgba(248,113,113,.25);padding:1px 8px;">RopeEmb</span>
+              </div>
+              <span id="sb-path" style="font-family:'DM Mono',monospace;font-size:7.5px;color:#48485C;">~/workspace/RMSNorm-910B</span>
+              <span id="sb-stage" style="font-family:'DM Mono',monospace;font-size:7.5px;color:var(--acc);">Stage 04 · 运行中</span>
+            </div>
+            <!-- Terminal content -->
+            <div style="flex:1;padding:12px 14px;overflow:hidden;display:flex;flex-direction:column;gap:5px;">
+              <!-- Screen 1 -->
+              <div id="sb-s1" style="display:flex;flex-direction:column;gap:5px;">
+                <div style="font-family:'DM Mono',monospace;font-size:8.5px;color:#48485C;">$ hai optimize --op RMSNorm</div>
+                <div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--acc);">▸ tbe-gen: tile_m 迭代中...</div>
+                <div style="background:rgba(0,47,167,.06);border:.5px solid rgba(0,47,167,.2);border-left:2px solid var(--acc);padding:5px 8px;font-family:'DM Mono',monospace;font-size:7.5px;">
+                  <div style="display:flex;justify-content:space-between;"><span style="color:var(--acc);">WRITE</span><span style="color:#48485C;">Stage 04/06</span></div>
+                  <div style="margin-top:4px;width:100%;height:3px;background:rgba(255,255,255,.1);"><div style="width:68%;height:100%;background:var(--acc);"></div></div>
+                </div>
+                <div style="font-family:'DM Mono',monospace;font-size:8px;color:#C8C8DC;">❯ <span style="animation:bl .9s step-end infinite;">▌</span></div>
+              </div>
+              <!-- Screen 3 (step 2/3) -->
+              <div id="sb-s3" style="display:none;flex-direction:column;gap:5px;">
+                <div style="font-family:'DM Mono',monospace;font-size:8.5px;color:#48485C;">$ hai compile RopeEmb</div>
+                <div style="background:rgba(248,113,113,.06);border:.5px solid rgba(248,113,113,.25);border-left:2px solid #F87171;padding:7px 10px;font-family:'DM Mono',monospace;font-size:8px;">
+                  <div style="color:#F87171;margin-bottom:4px;">◆ shape 推导失败 — 310P 不支持当前配置</div>
+                  <div style="color:#48485C;font-size:7.5px;">期望 ND · 当前 FRACTAL_NZ → 建议切换格式</div>
+                  <div style="display:flex;gap:6px;margin-top:6px;">
+                    <div style="background:var(--acc);color:white;padding:2px 8px;font-size:7.5px;cursor:pointer;">Y 切换 ND</div>
+                    <div style="background:rgba(255,255,255,.06);color:#48485C;padding:2px 8px;font-size:7.5px;">N 暂停</div>
+                    <div style="background:rgba(255,255,255,.06);color:#48485C;padding:2px 8px;font-size:7.5px;">Space 语音</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Input -->
+            <div style="border-top:.5px solid #252530;padding:6px 12px;display:flex;align-items:center;gap:8px;flex-shrink:0;">
+              <span style="color:var(--acc);">❯</span>
+              <span style="font-family:'DM Mono',monospace;font-size:9px;color:rgba(255,255,255,.35);">输入指令...</span>
+            </div>
+          </div>
+          <!-- Step key hints -->
+          <div id="sb-hint" style="padding:8px 0;font-family:'DM Mono',monospace;font-size:8px;color:var(--tx3);text-align:center;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ S4: 输入区 ══ -->
+<div class="sec" id="s-input" style="background:var(--bg);">
+  <div class="slabel">
+    <span class="sub">Zone C · Input Area</span>
+    <span class="main">固定底部全能面板 — Context Chips · 语音 · 费用角标</span>
+  </div>
+  <div class="inner">
+    <div class="dp-layout">
+      <div class="dp-left">
+        <div class="dp-desc">
+          <div class="dp-label">设计说明</div>
+          <div class="dp-title">三行结构 · 固定底部 20%</div>
+          <div class="dp-body">输入区由上至下分三行：Context Chips 行（已引用文件 + 上下文用量 + 费用）、主输入行（提示符 + 文本 + 语音）、工具行（模式切换 + 快捷键）。物理位置永远固定，消除"输入框跑走了"的焦虑。</div>
+        </div>
+        <div class="dp-desc">
+          <div class="dp-label">组件详解</div>
+          <div style="display:flex;flex-direction:column;gap:5px;margin-top:4px;">
+            <div style="padding:6px 9px;background:var(--bg2);border:.5px solid var(--bdr2);">
+              <div style="font-family:'DM Mono',monospace;font-size:7.5px;color:var(--acc);margin-bottom:2px;">Context Chips</div>
+              <div style="font-size:9px;color:var(--tx2);line-height:1.5;">@file 引用以 chip 形式展示，点 × 移除；超过 3 个折叠为 "+N"；上下文用量 Chip 颜色随百分比变化（绿/黄/红）</div>
+            </div>
+            <div style="padding:6px 9px;background:var(--bg2);border:.5px solid var(--bdr2);">
+              <div style="font-family:'DM Mono',monospace;font-size:7.5px;color:var(--acc);margin-bottom:2px;">费用角标</div>
+              <div style="font-size:9px;color:var(--tx2);line-height:1.5;">黄色累计费用常驻右侧，实时更新；点击展开按任务归因的明细列表；不出现在每条输出中（不切碎内容）</div>
+            </div>
+            <div style="padding:6px 9px;background:var(--bg2);border:.5px solid var(--bdr2);">
+              <div style="font-family:'DM Mono',monospace;font-size:7.5px;color:var(--acc);margin-bottom:2px;">语音输入（Space）</div>
+              <div style="font-size:9px;color:var(--tx2);line-height:1.5;">长按 Space 激活；光标位置自动成为分析上下文；松开后三种模式：写入 / 发送 / 浮动编辑面板</div>
+            </div>
+            <div style="padding:6px 9px;background:var(--bg2);border:.5px solid var(--bdr2);">
+              <div style="font-family:'DM Mono',monospace;font-size:7.5px;color:var(--acc);margin-bottom:2px;">模式切换（Cmd+I）</div>
+              <div style="font-size:9px;color:var(--tx2);line-height:1.5;">Auto（自主执行）/ Plan（提案后确认）/ Manual（逐步确认）；边框颜色随模式改变：Auto=蓝 / Plan=橙 / Manual=灰</div>
+            </div>
+          </div>
+        </div>
+        <div class="ba-grid" style="margin-top:auto;">
+          <div class="ba-before">
+            <div class="ba-label"><span style="background:var(--grey-2);color:var(--tx2);font-family:'DM Mono',monospace;font-size:7px;padding:1px 6px;">BEFORE</span>OpenCode</div>
+            <div style="font-size:9px;color:var(--tx2);line-height:1.6;">纯文本输入框，无 @file 结构化引用，无费用感知，无模式指示，无语音</div>
+          </div>
+          <div class="ba-after">
+            <div class="ba-label"><span style="background:var(--acc);color:white;font-family:'DM Mono',monospace;font-size:7px;padding:1px 6px;">AFTER</span>HAI 输入区</div>
+            <div class="ba-text">Context Chips 管理上下文范围；费用角标实时可见；Space 语音填入；三种模式边框区分</div>
+          </div>
+        </div>
+      </div>
+      <div class="dp-right">
+        <div class="mockup-label">动态 Mockup — 输入区组件演示</div>
+        <div class="stp-strip" id="stp-input">
+          <div class="stp-bar"><div class="stp-fill"></div></div>
+          <div class="stp-steps">
+            <div class="stp-step"><div class="stp-num">1</div><span class="stp-lbl">空白输入 · 基础状态</span></div>
+            <div class="stp-step"><div class="stp-num">2</div><span class="stp-lbl">添加 @file 上下文</span></div>
+            <div class="stp-step"><div class="stp-num">3</div><span class="stp-lbl">Space 激活语音输入</span></div>
+          </div>
+        </div>
+        <div style="flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;gap:12px;">
+          <!-- Main annotated input area -->
+          <div class="mac-win" style="box-shadow:0 8px 32px rgba(0,0,0,.25);">
+            <div class="mac-bar">
+              <div class="mac-dots">
+                <div class="mac-dot" style="background:#FF5F57;"></div>
+                <div class="mac-dot" style="background:#FEBC2E;"></div>
+                <div class="mac-dot" style="background:#28C840;"></div>
+              </div>
+              <span class="mac-title">hai — RMSNorm-910B · Stage 04</span>
+            </div>
+            <!-- Output area (abbreviated) -->
+            <div style="padding:12px 14px;font-family:'DM Mono',monospace;font-size:8.5px;color:#48485C;flex:none;">
+              <div>$ hai optimize --op RMSNorm</div>
+              <div style="color:var(--tg);margin-top:4px;">✓ tile_m=128 · CUBE 38% → 72% · 迭代完成</div>
+            </div>
+            <!-- INPUT AREA - 3 rows -->
+            <div id="inp-container" style="border-top:.5px solid #252530;border-bottom:.5px solid rgba(255,255,255,.04);">
+              <!-- Row 1: Chips -->
+              <div id="inp-chips-row" style="padding:4px 12px;display:flex;gap:5px;align-items:center;background:rgba(255,255,255,.02);border-bottom:.5px solid rgba(255,255,255,.05);min-height:24px;flex-wrap:wrap;">
+                <span id="chip-1" style="display:none;font-family:'DM Mono',monospace;font-size:7.5px;color:var(--acc);background:rgba(0,47,167,.1);border:.5px solid rgba(0,47,167,.2);padding:1px 8px;border-radius:2px;cursor:pointer;">@rmsnorm.py ×</span>
+                <span id="chip-2" style="display:none;font-family:'DM Mono',monospace;font-size:7.5px;color:var(--acc);background:rgba(0,47,167,.1);border:.5px solid rgba(0,47,167,.2);padding:1px 8px;border-radius:2px;">@constraints.yaml ×</span>
+                <span id="chip-add" style="font-family:'DM Mono',monospace;font-size:7px;color:#48485C;cursor:pointer;">+ @file</span>
+                <span id="chip-url" style="font-family:'DM Mono',monospace;font-size:7px;color:#48485C;cursor:pointer;">+ @url</span>
+                <span id="ctx-meter" style="margin-left:auto;font-family:'DM Mono',monospace;font-size:7px;color:#48485C;">上下文 28%</span>
+                <span id="cost-badge" style="font-family:'DM Mono',monospace;font-size:7px;color:#F59E0B;background:rgba(245,158,11,.08);border:.5px solid rgba(245,158,11,.2);padding:1px 6px;">$0.031</span>
+              </div>
+              <!-- Row 2: Main input -->
+              <div style="padding:7px 12px;display:flex;align-items:center;gap:8px;">
+                <span style="color:var(--acc);font-size:12px;flex-shrink:0;">❯</span>
+                <div id="inp-main" style="flex:1;font-family:'DM Mono',monospace;font-size:9px;color:#C8C8DC;position:relative;">
+                  <span id="inp-text"></span><span id="inp-cursor" style="animation:bl .9s step-end infinite;">▌</span>
+                </div>
+                <div id="voice-capsule" style="display:none;align-items:center;gap:6px;background:linear-gradient(135deg,rgba(0,47,167,.9),rgba(107,56,212,.9));padding:3px 10px;border-radius:100px;">
+                  <div style="display:flex;gap:1px;align-items:center;height:12px;">
+                    <div style="width:1px;background:rgba(255,255,255,.9);border-radius:1px;height:4px;animation:ck-wave .45s infinite;animation-delay:0s;"></div>
+                    <div style="width:1px;background:rgba(255,255,255,.9);border-radius:1px;height:7px;animation:ck-wave .45s infinite;animation-delay:.07s;"></div>
+                    <div style="width:1px;background:rgba(255,255,255,.9);border-radius:1px;height:10px;animation:ck-wave .45s infinite;animation-delay:.14s;"></div>
+                    <div style="width:1px;background:rgba(255,255,255,.9);border-radius:1px;height:7px;animation:ck-wave .45s infinite;animation-delay:.21s;"></div>
+                    <div style="width:1px;background:rgba(255,255,255,.9);border-radius:1px;height:4px;animation:ck-wave .45s infinite;animation-delay:.28s;"></div>
+                  </div>
+                  <span style="font-family:'DM Mono',monospace;font-size:7.5px;color:rgba(255,255,255,.8);">松开发送</span>
+                </div>
+              </div>
+              <!-- Row 3: Mode tools -->
+              <div style="padding:3px 12px 5px;display:flex;align-items:center;gap:8px;">
+                <div id="inp-mode" style="font-family:'DM Mono',monospace;font-size:7px;color:#48485C;border:.5px solid #252530;padding:1px 7px;cursor:pointer;">Auto</div>
+                <span style="font-family:'DM Mono',monospace;font-size:7px;color:#252530;">|</span>
+                <span style="font-family:'DM Mono',monospace;font-size:7px;color:#48485C;">↑↓ 历史</span>
+                <span style="font-family:'DM Mono',monospace;font-size:7px;color:#48485C;">Ctrl+R 搜索</span>
+                <span style="margin-left:auto;font-family:'DM Mono',monospace;font-size:7px;color:#48485C;">Space 语音 · ↵ 发送</span>
+              </div>
+            </div>
+          </div>
+          <!-- Component labels -->
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;">
+            <div style="padding:6px 8px;background:var(--bg2);border:.5px solid var(--bdr2);text-align:center;">
+              <div style="font-family:'DM Mono',monospace;font-size:7.5px;color:var(--acc);margin-bottom:2px;">Row 1</div>
+              <div style="font-size:9px;color:var(--tx2);">Chips · 用量 · 费用</div>
+            </div>
+            <div style="padding:6px 8px;background:var(--bg2);border:.5px solid var(--bdr2);text-align:center;">
+              <div style="font-family:'DM Mono',monospace;font-size:7.5px;color:var(--acc);margin-bottom:2px;">Row 2</div>
+              <div style="font-size:9px;color:var(--tx2);">提示符 · 输入 · 语音</div>
+            </div>
+            <div style="padding:6px 8px;background:var(--bg2);border:.5px solid var(--bdr2);text-align:center;">
+              <div style="font-family:'DM Mono',monospace;font-size:7.5px;color:var(--acc);margin-bottom:2px;">Row 3</div>
+              <div style="font-size:9px;color:var(--tx2);">模式 · 快捷键</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ========== s-output: OUTPUT STREAM / BLOCK SYSTEM ========== -->
+<div class="sec" id="s-output" style="background:var(--sur);">
+  <div class="slabel">
+    <span class="sub">HAI CLI · 输出流 · 设计点 5/12</span>
+    <span class="main">工具调用块 — <strong>读取折叠，写入高亮</strong></span>
+  </div>
+  <div class="inner">
+    <div class="dp-layout">
+      <div class="dp-left">
+        <div class="dp-desc">
+          <div class="dp-label">设计原则</div>
+          <div class="dp-title">信噪比优先的输出流</div>
+          <div class="dp-body">AI 执行任务时会产生大量中间步骤。关键是：让重要信息突出，让噪声退后。</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px;margin-top:4px;">
+          <div style="padding:8px 10px;border:.5px solid var(--grey-2);background:var(--grey-1);">
+            <div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--tx3);letter-spacing:.1em;margin-bottom:4px;">READ OPS — 自动折叠</div>
+            <div style="font-size:10px;color:var(--tx2);line-height:1.6;">读取类操作（Read / Search / List）自动折叠为计数徽章，不占用视觉空间。点击展开查看完整列表。</div>
+          </div>
+          <div style="padding:8px 10px;border:.5px solid rgba(245,158,11,.35);background:rgba(245,158,11,.05);">
+            <div style="font-family:'DM Mono',monospace;font-size:8px;color:#b45309;letter-spacing:.1em;margin-bottom:4px;">WRITE OPS — 展开 + 橙色 badge</div>
+            <div style="font-size:10px;color:var(--tx2);line-height:1.6;">写入类操作（Edit / Write / Delete）展开显示，加橙色边框 + WRITE badge，变更前需确认。</div>
+          </div>
+          <div style="padding:8px 10px;border:.5px solid rgba(0,47,167,.25);background:rgba(0,47,167,.04);">
+            <div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--acc);letter-spacing:.1em;margin-bottom:4px;">THINKING — 默认一行摘要</div>
+            <div style="font-size:10px;color:var(--tx2);line-height:1.6;">AI 推理过程折叠为单行摘要，点击展开完整思考链，不污染主输出流。</div>
+          </div>
+          <div style="padding:8px 10px;border:.5px solid var(--grey-2);background:var(--grey-1);">
+            <div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--tx3);letter-spacing:.1em;margin-bottom:4px;">EXEC OPS — 红色 badge</div>
+            <div style="font-size:10px;color:var(--tx2);line-height:1.6;">执行命令（Bash / Run）加红色边框，始终需要用户确认，不可自动执行。</div>
+          </div>
+        </div>
+        <div class="ba-grid" style="margin-top:auto;">
+          <div class="ba-before">
+            <div class="ba-label"><span style="background:var(--grey-2);color:var(--tx2);font-family:'DM Mono',monospace;font-size:7px;padding:1px 6px;">BEFORE</span>OpenCode</div>
+            <div style="font-size:9px;color:var(--tx2);line-height:1.6;font-family:'DM Mono',monospace;">所有 Tool Call 平铺输出<br>JSON + 换行，无区分<br>Read 和 Write 混在一起</div>
+          </div>
+          <div class="ba-after">
+            <div class="ba-label"><span style="background:var(--acc);color:white;font-family:'DM Mono',monospace;font-size:7px;padding:1px 6px;">AFTER</span>HAI 输出流</div>
+            <div class="ba-text">READ 折叠计数 · WRITE 橙色展开 · THINK 单行摘要 · EXEC 红色必确认</div>
+          </div>
+        </div>
+      </div>
+      <div class="dp-right">
+        <div class="mockup-label">动态 Mockup — Tool Call 块演示</div>
+        <div class="stp-strip" id="stp-output">
+          <div class="stp-bar"><div class="stp-fill"></div></div>
+          <div class="stp-steps">
+            <div class="stp-step"><div class="stp-num">1</div><span class="stp-lbl">读取阶段 · 自动折叠</span></div>
+            <div class="stp-step"><div class="stp-num">2</div><span class="stp-lbl">Thinking 摘要展开</span></div>
+            <div class="stp-step"><div class="stp-num">3</div><span class="stp-lbl">WRITE 块 · 橙色边框</span></div>
+          </div>
+        </div>
+        <div style="flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;">
+          <div class="mac-win" style="box-shadow:0 8px 32px rgba(0,0,0,.25);">
+            <div class="mac-bar">
+              <div class="mac-dots"><div class="mac-dot" style="background:#FF5F57;"></div><div class="mac-dot" style="background:#FEBC2E;"></div><div class="mac-dot" style="background:#28C840;"></div></div>
+              <span class="mac-title">hai — RMSNorm-910B · Stage 04 · 执行中</span>
+            </div>
+            <div id="out-stream" style="padding:10px 14px;font-family:'DM Mono',monospace;font-size:8px;display:flex;flex-direction:column;gap:4px;min-height:220px;">
+              <!-- Read block (always shown) -->
+              <div style="color:var(--td);">$ hai optimize --op RMSNorm --target 910B</div>
+              <div id="out-think" style="margin:2px 0;border:.5px solid rgba(0,47,167,.2);background:rgba(0,47,167,.04);padding:4px 8px;border-radius:2px;">
+                <div style="display:flex;align-items:center;gap:6px;cursor:pointer;">
+                  <span style="color:var(--acc);font-size:7px;">▶</span>
+                  <span style="font-family:'DM Mono',monospace;font-size:7.5px;color:var(--acc);">THINKING</span>
+                  <span id="out-think-summary" style="font-size:7.5px;color:var(--td);">分析 RMSNorm tile 策略，目标 910B AICore 利用率 &gt;70%…</span>
+                </div>
+                <div id="out-think-detail" style="display:none;margin-top:4px;font-size:7px;color:var(--td);line-height:1.7;padding-left:14px;">需考虑：UB 大小 192KB / tile_m 候选 [64,128,192] / FRACTAL_NZ 对齐约束 / 910B vs 310P 兼容性</div>
+              </div>
+              <div id="out-read-block" style="display:flex;align-items:center;gap:6px;padding:3px 0;">
+                <span style="font-size:7px;color:var(--td);font-family:'DM Mono',monospace;">READ</span>
+                <span id="out-read-badge" style="font-family:'DM Mono',monospace;font-size:7px;background:var(--grey-1);border:.5px solid var(--grey-2);color:var(--tx3);padding:1px 8px;cursor:pointer;">3 files ▾</span>
+                <span id="out-read-list" style="display:none;font-size:7px;color:var(--td);">rmsnorm.py · constraints.yaml · perf_baseline.json</span>
+              </div>
+              <!-- Write block (hidden initially) -->
+              <div id="out-write-block" style="display:none;border:.5px solid rgba(245,158,11,.5);background:rgba(245,158,11,.04);border-radius:2px;padding:5px 8px;margin:2px 0;">
+                <div style="display:flex;align-items:center;gap:6px;margin-bottom:3px;">
+                  <span style="font-family:'DM Mono',monospace;font-size:7px;background:rgba(245,158,11,.9);color:white;padding:1px 6px;">WRITE</span>
+                  <span style="font-size:7.5px;color:#b45309;font-family:'DM Mono',monospace;">rmsnorm_optimized.py</span>
+                </div>
+                <div style="font-size:7px;color:var(--td);line-height:1.5;">
+                  <div style="color:#34D399;">+ tile_m = 128  <span style="color:var(--td);"># 64→128，AICore利用率 38%→72%</span></div>
+                  <div style="color:#34D399;">+ ub_size = 192 * 1024</div>
+                  <div style="color:#F87171;">- tile_m = 64</div>
+                  <div style="color:#F87171;">- ub_size = 96 * 1024</div>
+                </div>
+                <div style="display:flex;gap:6px;margin-top:5px;">
+                  <div id="out-accept" style="font-family:'DM Mono',monospace;font-size:7px;background:var(--acc);color:white;padding:2px 10px;cursor:pointer;">Accept</div>
+                  <div style="font-family:'DM Mono',monospace;font-size:7px;border:.5px solid var(--grey-2);color:var(--tx2);padding:2px 10px;cursor:pointer;">Reject</div>
+                  <div style="font-family:'DM Mono',monospace;font-size:7px;border:.5px solid var(--grey-2);color:var(--tx2);padding:2px 10px;cursor:pointer;">Ask AI ›</div>
+                </div>
+              </div>
+              <div id="out-result" style="display:none;color:var(--tg);margin-top:4px;font-size:8px;">✓ 写入完成 · cube_util 72.4% · 优化验收通过</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="snav" id="nav-output"></div>
+</div>
+
+<!-- ========== s-exec: EXECUTION STATE (5 STATES) ========== -->
+<div class="sec" id="s-exec" style="background:var(--bg);">
+  <div class="slabel">
+    <span class="sub">HAI CLI · 执行流 · 设计点 6/12</span>
+    <span class="main">五状态模型 — <strong>任务全生命周期可见</strong></span>
+  </div>
+  <div class="inner">
+    <div class="dp-layout">
+      <div class="dp-left">
+        <div class="dp-desc">
+          <div class="dp-label">核心设计</div>
+          <div class="dp-title">用户永远知道 AI 在哪一步</div>
+          <div class="dp-body">HAI 把每个任务分解为 5 个状态，Status Bar 右侧始终显示当前状态，不会"黑屏执行"。</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:5px;margin-top:4px;">
+          <div style="padding:6px 10px;border:.5px solid var(--grey-2);background:var(--sur);display:flex;gap:10px;align-items:flex-start;">
+            <span style="font-family:'DM Mono',monospace;font-size:9px;color:var(--tx3);flex-shrink:0;width:24px;">S1</span>
+            <div><div style="font-size:10px;font-weight:500;color:var(--tx);margin-bottom:2px;">Initial — 就绪</div><div style="font-size:9px;color:var(--tx2);">欢迎画面 · 自动加载工作区记忆 · 显示上次任务摘要</div></div>
+          </div>
+          <div style="padding:6px 10px;border:.5px solid rgba(0,47,167,.3);background:rgba(0,47,167,.04);display:flex;gap:10px;align-items:flex-start;">
+            <span style="font-family:'DM Mono',monospace;font-size:9px;color:var(--acc);flex-shrink:0;width:24px;">S2</span>
+            <div><div style="font-size:10px;font-weight:500;color:var(--tx);margin-bottom:2px;">Working — 执行中</div><div style="font-size:9px;color:var(--tx2);">步骤计数 + 用时 + Esc 浮动按钮 · 可插话追加指令</div></div>
+          </div>
+          <div style="padding:6px 10px;border:.5px solid rgba(245,158,11,.4);background:rgba(245,158,11,.05);display:flex;gap:10px;align-items:flex-start;">
+            <span style="font-family:'DM Mono',monospace;font-size:9px;color:#b45309;flex-shrink:0;width:24px;">S3</span>
+            <div><div style="font-size:10px;font-weight:500;color:var(--tx);margin-bottom:2px;">Confirmation — 等待确认</div><div style="font-size:9px;color:var(--tx2);">颜色编码风险 · 三档授权 · 标签 ⚠ 闪烁 · 手机推送</div></div>
+          </div>
+          <div style="padding:6px 10px;border:.5px solid rgba(0,47,167,.3);background:rgba(0,47,167,.04);display:flex;gap:10px;align-items:flex-start;">
+            <span style="font-family:'DM Mono',monospace;font-size:9px;color:var(--acc);flex-shrink:0;width:24px;">S4</span>
+            <div><div style="font-size:10px;font-weight:500;color:var(--tx);margin-bottom:2px;">Preview — 结果预览</div><div style="font-size:9px;color:var(--tx2);">默认摘要行 · 点击展开完整 diff · ≥3 文件触发 Review Panel</div></div>
+          </div>
+          <div style="padding:6px 10px;border:.5px solid rgba(5,150,105,.3);background:rgba(5,150,105,.04);display:flex;gap:10px;align-items:flex-start;">
+            <span style="font-family:'DM Mono',monospace;font-size:9px;color:var(--g);flex-shrink:0;width:24px;">S5</span>
+            <div><div style="font-size:10px;font-weight:500;color:var(--tx);margin-bottom:2px;">Completion — 完成</div><div style="font-size:9px;color:var(--tx2);">验收摘要 · 存入记忆 · 可直接输入下一目标</div></div>
+          </div>
+        </div>
+        <div class="ba-grid" style="margin-top:auto;">
+          <div class="ba-before">
+            <div class="ba-label"><span style="background:var(--grey-2);color:var(--tx2);font-family:'DM Mono',monospace;font-size:7px;padding:1px 6px;">BEFORE</span>传统 CLI</div>
+            <div style="font-size:9px;color:var(--tx2);line-height:1.6;">命令执行 = 黑盒<br>不知道执行到哪一步<br>不知道需要多久</div>
+          </div>
+          <div class="ba-after">
+            <div class="ba-label"><span style="background:var(--acc);color:white;font-family:'DM Mono',monospace;font-size:7px;padding:1px 6px;">AFTER</span>HAI 五状态</div>
+            <div class="ba-text">Status Bar 右侧始终显示 Stage · 任务状态完全可见</div>
+          </div>
+        </div>
+      </div>
+      <div class="dp-right">
+        <div class="mockup-label">动态 Mockup — 五状态切换演示</div>
+        <div class="stp-strip" id="stp-exec">
+          <div class="stp-bar"><div class="stp-fill"></div></div>
+          <div class="stp-steps">
+            <div class="stp-step"><div class="stp-num">1</div><span class="stp-lbl">S2 执行中</span></div>
+            <div class="stp-step"><div class="stp-num">2</div><span class="stp-lbl">S3 等待确认</span></div>
+            <div class="stp-step"><div class="stp-num">3</div><span class="stp-lbl">S5 完成</span></div>
+          </div>
+        </div>
+        <div style="flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;">
+          <div class="mac-win" style="box-shadow:0 8px 32px rgba(0,0,0,.25);">
+            <!-- Status Bar -->
+            <div id="exec-sbar" style="background:#0d0d14;padding:0 12px;height:22px;display:flex;align-items:center;gap:8px;border-bottom:.5px solid #252530;font-family:'DM Mono',monospace;font-size:7.5px;">
+              <span style="color:var(--acc);padding:0 6px;border-bottom:1.5px solid var(--acc);">RMSNorm ⟳</span>
+              <span style="color:#48485C;">FlashAttn ✓</span>
+              <div style="flex:1;text-align:center;color:#48485C;">~/workspace/RMSNorm-910B</div>
+              <span id="exec-stage-label" style="color:var(--acc);">Stage 04 · Agent 运行中</span>
+            </div>
+            <div class="mac-bar">
+              <div class="mac-dots"><div class="mac-dot" style="background:#FF5F57;"></div><div class="mac-dot" style="background:#FEBC2E;"></div><div class="mac-dot" style="background:#28C840;"></div></div>
+              <span class="mac-title">hai — 主终端</span>
+            </div>
+            <div id="exec-body" style="padding:10px 14px;font-family:'DM Mono',monospace;font-size:8px;min-height:180px;display:flex;flex-direction:column;gap:3px;">
+              <div style="color:var(--td);">$ hai optimize --op RMSNorm</div>
+              <!-- S2 content -->
+              <div id="exec-s2">
+                <div style="color:var(--tb2);margin-top:4px;">▸ tile_m: 64 → 128 → 192 迭代中…</div>
+                <div style="color:var(--td);">▸ dtype-check: 验证 FRACTAL_NZ 兼容性…</div>
+                <div style="color:var(--td);">▸ perf-bench: 910B 基准测试…</div>
+                <div style="margin-top:6px;display:flex;align-items:center;gap:8px;">
+                  <div style="flex:1;height:3px;background:#252530;border-radius:2px;overflow:hidden;"><div style="width:80%;height:100%;background:var(--acc);"></div></div>
+                  <span style="color:var(--td);">4/5 步 · 00:23</span>
+                </div>
+                <div style="margin-top:4px;display:flex;gap:6px;align-items:center;">
+                  <div style="font-size:7px;color:#DC2626;border:.5px solid rgba(220,38,38,.4);padding:1px 7px;font-family:'DM Mono',monospace;">Esc 中断</div>
+                  <span style="font-size:7.5px;color:#48485C;">Space 追加语音指令</span>
+                </div>
+              </div>
+              <!-- S3 content -->
+              <div id="exec-s3" style="display:none;">
+                <div style="border:.5px solid rgba(245,158,11,.5);background:rgba(245,158,11,.05);padding:7px 10px;border-radius:2px;margin-top:4px;">
+                  <div style="font-size:8px;color:#b45309;font-family:'DM Mono',monospace;margin-bottom:4px;">◆ dtype-check — format 不兼容</div>
+                  <div style="font-size:7.5px;color:var(--td);line-height:1.6;">310P 不支持 FRACTAL_NZ → 建议切换为 ND</div>
+                  <div style="display:flex;gap:6px;margin-top:6px;">
+                    <div style="font-family:'DM Mono',monospace;font-size:7px;background:var(--acc);color:white;padding:2px 10px;">Y 切换 ND</div>
+                    <div style="font-family:'DM Mono',monospace;font-size:7px;border:.5px solid var(--grey-2);color:var(--tx2);padding:2px 10px;">N 暂停</div>
+                    <div style="font-family:'DM Mono',monospace;font-size:7px;border:.5px solid var(--grey-2);color:var(--tx2);padding:2px 10px;">Space 语音</div>
+                  </div>
+                </div>
+              </div>
+              <!-- S5 content -->
+              <div id="exec-s5" style="display:none;">
+                <div style="color:var(--tg);margin-top:4px;">✓ cube_util: 72.4% &gt; 70%</div>
+                <div style="color:var(--tg);">✓ max_error: 8.3e-6 &lt; 1e-5</div>
+                <div style="color:var(--tg);">✓ compat: 910B ✓ / 310P ✓</div>
+                <div style="color:var(--tb2);margin-top:4px;">◆ 最优版本 tile_m=128 已存入团队库</div>
+                <div style="color:#48485C;margin-top:3px;font-size:7.5px;">已存入记忆 · 本次优化路径 + 最终参数</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="snav" id="nav-exec"></div>
+</div>
+
+<!-- ========== s-confirm: CONFIRMATION FLOW ========== -->
+<div class="sec" id="s-confirm" style="background:var(--sur);">
+  <div class="slabel">
+    <span class="sub">HAI CLI · 权限确认 · 设计点 7/12</span>
+    <span class="main">颜色编码风险 — <strong>三档授权 + 修改后执行</strong></span>
+  </div>
+  <div class="inner">
+    <div class="dp-layout">
+      <div class="dp-left">
+        <div class="dp-desc">
+          <div class="dp-label">设计原则</div>
+          <div class="dp-title">让用户感知风险等级，而不是盲目确认</div>
+          <div class="dp-body">权限确认必须传递风险信息。颜色系统让用户一眼判断操作危险程度。</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:5px;margin-top:4px;">
+          <div style="padding:6px 10px;border-left:3px solid var(--acc);background:rgba(0,47,167,.04);">
+            <div style="font-size:9px;font-weight:500;color:var(--tx);margin-bottom:2px;">蓝色 — 读取操作</div>
+            <div style="font-size:9px;color:var(--tx2);">Read / Search / List 文件系统，低风险，可快速批准</div>
+          </div>
+          <div style="padding:6px 10px;border-left:3px solid #b45309;background:rgba(245,158,11,.05);">
+            <div style="font-size:9px;font-weight:500;color:var(--tx);margin-bottom:2px;">橙色 — 写入操作</div>
+            <div style="font-size:9px;color:var(--tx2);">Edit / Write / Delete 文件，中等风险，建议查看 diff</div>
+          </div>
+          <div style="padding:6px 10px;border-left:3px solid var(--r);background:rgba(220,38,38,.04);">
+            <div style="font-size:9px;font-weight:500;color:var(--tx);margin-bottom:2px;">红色 — 执行命令</div>
+            <div style="font-size:9px;color:var(--tx2);">Bash / Run / Deploy，高风险，必须显式确认</div>
+          </div>
+        </div>
+        <div style="margin-top:8px;padding:8px 10px;border:.5px solid var(--grey-2);background:var(--grey-1);">
+          <div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--tx3);letter-spacing:.1em;margin-bottom:5px;">三档授权粒度</div>
+          <div style="display:flex;flex-direction:column;gap:3px;">
+            <div style="display:flex;gap:8px;align-items:center;font-size:9px;color:var(--tx2);"><span style="font-family:'DM Mono',monospace;color:var(--tx);width:56px;flex-shrink:0;">仅此次</span>本次操作有效，下次重新确认</div>
+            <div style="display:flex;gap:8px;align-items:center;font-size:9px;color:var(--tx2);"><span style="font-family:'DM Mono',monospace;color:var(--tx);width:56px;flex-shrink:0;">会话级</span>本次 session 内自动批准同类操作</div>
+            <div style="display:flex;gap:8px;align-items:center;font-size:9px;color:var(--tx2);"><span style="font-family:'DM Mono',monospace;color:var(--tx);width:56px;flex-shrink:0;">永久级</span>写入 settings.json，后续不再询问</div>
+            <div style="display:flex;gap:8px;align-items:center;font-size:9px;color:var(--acc);border-top:.5px solid var(--grey-2);padding-top:3px;margin-top:2px;"><span style="font-family:'DM Mono',monospace;width:56px;flex-shrink:0;">修改执行</span>打开编辑器修改命令参数后再执行</div>
+          </div>
+        </div>
+        <div class="ba-grid" style="margin-top:auto;">
+          <div class="ba-before">
+            <div class="ba-label"><span style="background:var(--grey-2);color:var(--tx2);font-family:'DM Mono',monospace;font-size:7px;padding:1px 6px;">BEFORE</span>Claude Code</div>
+            <div style="font-size:9px;color:var(--tx2);line-height:1.6;">二选一：Allow / Deny<br>不传递风险等级<br>无"修改后执行"选项</div>
+          </div>
+          <div class="ba-after">
+            <div class="ba-label"><span style="background:var(--acc);color:white;font-family:'DM Mono',monospace;font-size:7px;padding:1px 6px;">AFTER</span>HAI 权限确认</div>
+            <div class="ba-text">颜色编码风险 · 三档授权 · 第四选项"修改后执行"</div>
+          </div>
+        </div>
+      </div>
+      <div class="dp-right">
+        <div class="mockup-label">动态 Mockup — 权限确认演示</div>
+        <div class="stp-strip" id="stp-confirm">
+          <div class="stp-bar"><div class="stp-fill"></div></div>
+          <div class="stp-steps">
+            <div class="stp-step"><div class="stp-num">1</div><span class="stp-lbl">读取请求 · 蓝色</span></div>
+            <div class="stp-step"><div class="stp-num">2</div><span class="stp-lbl">写入请求 · 橙色</span></div>
+            <div class="stp-step"><div class="stp-num">3</div><span class="stp-lbl">执行请求 · 红色</span></div>
+          </div>
+        </div>
+        <div style="flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;gap:10px;">
+          <!-- READ confirm -->
+          <div id="cfm-read" style="border:.5px solid rgba(0,47,167,.4);background:rgba(0,47,167,.05);border-radius:3px;padding:8px 12px;">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:5px;">
+              <span style="font-family:'DM Mono',monospace;font-size:7px;background:var(--acc);color:white;padding:1px 7px;">READ</span>
+              <span style="font-size:9px;color:var(--tx);">读取 src/ 目录结构</span>
+            </div>
+            <div style="font-family:'DM Mono',monospace;font-size:7.5px;color:var(--td);margin-bottom:6px;">hai → ls -la src/ && cat rmsnorm.py</div>
+            <div style="display:flex;gap:5px;">
+              <div style="font-family:'DM Mono',monospace;font-size:7px;background:var(--acc);color:white;padding:2px 8px;">仅此次</div>
+              <div style="font-family:'DM Mono',monospace;font-size:7px;border:.5px solid rgba(0,47,167,.3);color:var(--acc);padding:2px 8px;">会话级</div>
+              <div style="font-family:'DM Mono',monospace;font-size:7px;border:.5px solid var(--grey-2);color:var(--tx2);padding:2px 8px;">永久级</div>
+            </div>
+          </div>
+          <!-- WRITE confirm (hidden) -->
+          <div id="cfm-write" style="display:none;border:.5px solid rgba(245,158,11,.5);background:rgba(245,158,11,.05);border-radius:3px;padding:8px 12px;">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:5px;">
+              <span style="font-family:'DM Mono',monospace;font-size:7px;background:#b45309;color:white;padding:1px 7px;">WRITE</span>
+              <span style="font-size:9px;color:var(--tx);">写入 rmsnorm_optimized.py</span>
+            </div>
+            <div style="font-family:'DM Mono',monospace;font-size:7.5px;color:var(--td);margin-bottom:3px;">+18 -6 行 · tile_m=64→128 · ub_size 更新</div>
+            <div style="font-size:7.5px;color:#b45309;margin-bottom:6px;">⚠ 将覆盖现有文件，建议先查看 diff</div>
+            <div style="display:flex;gap:5px;flex-wrap:wrap;">
+              <div style="font-family:'DM Mono',monospace;font-size:7px;background:#b45309;color:white;padding:2px 8px;">仅此次</div>
+              <div style="font-family:'DM Mono',monospace;font-size:7px;border:.5px solid rgba(245,158,11,.4);color:#b45309;padding:2px 8px;">会话级</div>
+              <div style="font-family:'DM Mono',monospace;font-size:7px;border:.5px solid var(--grey-2);color:var(--tx2);padding:2px 8px;">永久级</div>
+              <div style="font-family:'DM Mono',monospace;font-size:7px;border:.5px solid var(--acc);color:var(--acc);padding:2px 8px;">修改后执行 ›</div>
+            </div>
+          </div>
+          <!-- EXEC confirm (hidden) -->
+          <div id="cfm-exec" style="display:none;border:.5px solid rgba(220,38,38,.5);background:rgba(220,38,38,.04);border-radius:3px;padding:8px 12px;">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:5px;">
+              <span style="font-family:'DM Mono',monospace;font-size:7px;background:var(--r);color:white;padding:1px 7px;">EXEC</span>
+              <span style="font-size:9px;color:var(--tx);">在 910B 上运行性能测试</span>
+            </div>
+            <div style="font-family:'DM Mono',monospace;font-size:7.5px;color:var(--td);margin-bottom:3px;">python3 test_rmsnorm.py --device 910B --iters 1000</div>
+            <div style="font-size:7.5px;color:var(--r);margin-bottom:6px;">⛔ 高风险操作 · 将在昇腾硬件上执行代码</div>
+            <div style="display:flex;gap:5px;">
+              <div style="font-family:'DM Mono',monospace;font-size:7px;background:var(--r);color:white;padding:2px 8px;">确认执行</div>
+              <div style="font-family:'DM Mono',monospace;font-size:7px;border:.5px solid var(--grey-2);color:var(--tx2);padding:2px 8px;">拒绝</div>
+              <div style="font-family:'DM Mono',monospace;font-size:7px;border:.5px solid var(--acc);color:var(--acc);padding:2px 8px;">修改后执行 ›</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="snav" id="nav-confirm"></div>
+</div>
+
+<!-- ========== s-review: RESULT REVIEW / DIFF VIEW ========== -->
+<div class="sec" id="s-review" style="background:var(--bg);">
+  <div class="slabel">
+    <span class="sub">HAI CLI · 结果审查 · 设计点 8/12</span>
+    <span class="main">变更摘要行 — <strong>Accept All · By File · Ask AI</strong></span>
+  </div>
+  <div class="inner">
+    <div class="dp-layout">
+      <div class="dp-left">
+        <div class="dp-desc">
+          <div class="dp-label">设计原则</div>
+          <div class="dp-title">96% 路径只需一键</div>
+          <div class="dp-body">绝大多数情况下用户会接受全部变更。设计为"Accept All"主路径，减少点击数。需要审查的情况自动触发 Review Panel。</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:5px;margin-top:4px;">
+          <div style="padding:6px 10px;border-.5px solid var(--grey-2);border-left:3px solid var(--acc);background:var(--sur);">
+            <div style="font-size:9px;font-weight:500;color:var(--tx);margin-bottom:2px;">默认摘要行</div>
+            <div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--td);">✔ 3 files · +18 -6 · $0.023</div>
+            <div style="font-size:9px;color:var(--tx2);margin-top:2px;">点击展开完整 diff，默认折叠节省空间</div>
+          </div>
+          <div style="padding:6px 10px;border-left:3px solid var(--g);background:var(--sur);">
+            <div style="font-size:9px;font-weight:500;color:var(--tx);margin-bottom:2px;">Accept All — 主路径（96%）</div>
+            <div style="font-size:9px;color:var(--tx2);">一键接受所有变更，Enter 快捷键，最小阻力</div>
+          </div>
+          <div style="padding:6px 10px;border-left:3px solid var(--y);background:var(--sur);">
+            <div style="font-size:9px;font-weight:500;color:var(--tx);margin-bottom:2px;">By File — 次路径</div>
+            <div style="font-size:9px;color:var(--tx2);">逐文件审查，适合大型变更 / 多人协作场景</div>
+          </div>
+          <div style="padding:6px 10px;border-left:3px solid var(--acc);background:var(--sur);">
+            <div style="font-size:9px;font-weight:500;color:var(--tx);margin-bottom:2px;">Ask AI — 始终内嵌</div>
+            <div style="font-size:9px;color:var(--tx2);">在 diff 旁边直接追问，无需离开当前界面</div>
+          </div>
+          <div style="padding:6px 10px;border-.5px solid var(--grey-2);background:rgba(245,158,11,.05);border-left:3px solid #b45309;">
+            <div style="font-size:9px;font-weight:500;color:var(--tx);margin-bottom:2px;">Review Panel — 自动触发</div>
+            <div style="font-size:9px;color:var(--tx2);">变更 ≥ 3 文件时自动建议打开，文件树 + diff 双栏，可忽略不强制</div>
+          </div>
+        </div>
+        <div class="ba-grid" style="margin-top:auto;">
+          <div class="ba-before">
+            <div class="ba-label"><span style="background:var(--grey-2);color:var(--tx2);font-family:'DM Mono',monospace;font-size:7px;padding:1px 6px;">BEFORE</span>OpenCode</div>
+            <div style="font-size:9px;color:var(--tx2);line-height:1.6;">原始 diff 输出<br>无 Accept/Reject 工作流<br>无摘要，无操作引导</div>
+          </div>
+          <div class="ba-after">
+            <div class="ba-label"><span style="background:var(--acc);color:white;font-family:'DM Mono',monospace;font-size:7px;padding:1px 6px;">AFTER</span>HAI 审查流</div>
+            <div class="ba-text">摘要行默认折叠 · Accept All 主路径 · Ask AI 内嵌 · ≥3 文件触发 Review Panel</div>
+          </div>
+        </div>
+      </div>
+      <div class="dp-right">
+        <div class="mockup-label">动态 Mockup — 变更审查流演示</div>
+        <div class="stp-strip" id="stp-review">
+          <div class="stp-bar"><div class="stp-fill"></div></div>
+          <div class="stp-steps">
+            <div class="stp-step"><div class="stp-num">1</div><span class="stp-lbl">摘要行折叠状态</span></div>
+            <div class="stp-step"><div class="stp-num">2</div><span class="stp-lbl">展开 diff 查看</span></div>
+            <div class="stp-step"><div class="stp-num">3</div><span class="stp-lbl">Accept All 完成</span></div>
+          </div>
+        </div>
+        <div style="flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;">
+          <div class="mac-win" style="box-shadow:0 8px 32px rgba(0,0,0,.25);">
+            <div class="mac-bar">
+              <div class="mac-dots"><div class="mac-dot" style="background:#FF5F57;"></div><div class="mac-dot" style="background:#FEBC2E;"></div><div class="mac-dot" style="background:#28C840;"></div></div>
+              <span class="mac-title">hai — 变更审查</span>
+            </div>
+            <div style="padding:10px 14px;font-family:'DM Mono',monospace;font-size:8px;display:flex;flex-direction:column;gap:4px;min-height:200px;">
+              <div style="color:var(--tg);">✓ 优化完成 · tile_m=128 收敛</div>
+              <!-- Summary row -->
+              <div id="rev-summary" style="display:flex;align-items:center;gap:8px;padding:5px 0;border-top:.5px solid #252530;border-bottom:.5px solid #252530;margin:4px 0;">
+                <span style="color:var(--tg);font-size:9px;">✔</span>
+                <span style="color:var(--tw);">3 files</span>
+                <span style="color:var(--tg);">+18</span>
+                <span style="color:var(--tr);">-6</span>
+                <span style="color:#48485C;">· $0.023</span>
+                <span id="rev-expand-btn" style="margin-left:auto;color:var(--acc);cursor:pointer;font-size:7.5px;">展开 diff ▾</span>
+              </div>
+              <!-- Diff (hidden) -->
+              <div id="rev-diff" style="display:none;font-size:7.5px;line-height:1.6;border:.5px solid #252530;padding:6px 8px;border-radius:2px;background:rgba(255,255,255,.02);">
+                <div style="color:#48485C;margin-bottom:3px;">rmsnorm_optimized.py</div>
+                <div style="color:#34D399;">+ tile_m = 128  # 64→128，AICore利用率 38%→72%</div>
+                <div style="color:#34D399;">+ ub_size = 192 * 1024</div>
+                <div style="color:#F87171;">- tile_m = 64</div>
+                <div style="color:#F87171;">- ub_size = 96 * 1024</div>
+                <div style="color:#48485C;margin-top:4px;">constraints.yaml · perf_report.json (2 more)</div>
+              </div>
+              <!-- Accept actions -->
+              <div id="rev-actions" style="display:flex;gap:6px;flex-wrap:wrap;margin-top:4px;">
+                <div id="rev-accept-all" style="font-family:'DM Mono',monospace;font-size:7.5px;background:var(--acc);color:white;padding:3px 12px;cursor:pointer;">Accept All ↵</div>
+                <div style="font-family:'DM Mono',monospace;font-size:7.5px;border:.5px solid var(--grey-2);color:var(--tx2);padding:3px 10px;cursor:pointer;">By File</div>
+                <div style="font-family:'DM Mono',monospace;font-size:7.5px;border:.5px solid var(--acc);color:var(--acc);padding:3px 10px;cursor:pointer;">Ask AI ›</div>
+                <div style="font-family:'DM Mono',monospace;font-size:7.5px;border:.5px solid var(--grey-2);color:var(--tx2);padding:3px 10px;cursor:pointer;">Reject All</div>
+              </div>
+              <!-- Accepted state -->
+              <div id="rev-done" style="display:none;color:var(--tg);margin-top:4px;">✓ 全部变更已接受 · 可输入下一目标</div>
+              <!-- Review panel hint -->
+              <div style="margin-top:auto;padding:4px 6px;background:rgba(0,47,167,.06);border:.5px solid rgba(0,47,167,.2);font-size:7.5px;color:var(--acc);">💡 3 文件变更 — 建议打开 Review Panel 详细审查 · <span style="cursor:pointer;text-decoration:underline;">打开</span> · <span style="cursor:pointer;color:#48485C;">忽略</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="snav" id="nav-review"></div>
+</div>
+
+
+<!-- ========== s-session: MULTI-SESSION MANAGEMENT ========== -->
+<div class="sec" id="s-session" style="background:var(--sur);">
+  <div class="slabel">
+    <span class="sub">HAI CLI · 多会话 · 设计点 9/12</span>
+    <span class="main">并行会话 — <strong>Alt+1/2/3 瞬间切换，⚠ 即时告警</strong></span>
+  </div>
+  <div class="inner">
+    <div class="dp-layout">
+      <div class="dp-left">
+        <div class="dp-desc">
+          <div class="dp-label">设计原则</div>
+          <div class="dp-title">多任务不等于多窗口</div>
+          <div class="dp-body">在一个终端内并行运行多个 AI 任务，Status Bar 顶部的 Session Tabs 是全局导航中枢。切换会话不开新窗口。</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px;margin-top:4px;">
+          <div style="padding:7px 10px;border:.5px solid var(--grey-2);background:var(--grey-1);">
+            <div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--tx3);letter-spacing:.1em;margin-bottom:4px;">SESSION TABS — Status Bar 左侧</div>
+            <div style="display:flex;gap:6px;flex-wrap:wrap;">
+              <div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--acc);padding:2px 8px;border-bottom:1.5px solid var(--acc);">RMSNorm ⟳</div>
+              <div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--tx3);padding:2px 8px;">FlashAttn ✓</div>
+              <div style="font-family:'DM Mono',monospace;font-size:8px;color:#b45309;padding:2px 8px;animation:blink 1s step-end infinite;">RopeEmb ⚠</div>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:4px;padding:7px 10px;border:.5px solid var(--grey-2);background:var(--grey-1);">
+            <div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--tx3);letter-spacing:.1em;margin-bottom:2px;">快捷键</div>
+            <div style="display:flex;gap:8px;align-items:center;font-size:9px;"><code style="background:var(--grey-2);padding:1px 6px;font-family:'DM Mono',monospace;font-size:8px;">Alt+1/2/3</code><span style="color:var(--tx2);">切换到对应 session</span></div>
+            <div style="display:flex;gap:8px;align-items:center;font-size:9px;"><code style="background:var(--grey-2);padding:1px 6px;font-family:'DM Mono',monospace;font-size:8px;">hai new</code><span style="color:var(--tx2);">开启新 session</span></div>
+            <div style="display:flex;gap:8px;align-items:center;font-size:9px;"><code style="background:var(--grey-2);padding:1px 6px;font-family:'DM Mono',monospace;font-size:8px;">hai list</code><span style="color:var(--tx2);">列出所有活跃 session</span></div>
+          </div>
+          <div style="padding:7px 10px;border:.5px solid rgba(245,158,11,.35);background:rgba(245,158,11,.05);">
+            <div style="font-family:'DM Mono',monospace;font-size:8px;color:#b45309;letter-spacing:.1em;margin-bottom:3px;">⚠ 确认告警机制</div>
+            <div style="font-size:9px;color:var(--tx2);line-height:1.6;">需要确认的 session 标签闪烁橙色 ⚠；同时触发桌面通知；不阻塞其他 session 继续执行。</div>
+          </div>
+        </div>
+        <div class="ba-grid" style="margin-top:auto;">
+          <div class="ba-before">
+            <div class="ba-label"><span style="background:var(--grey-2);color:var(--tx2);font-family:'DM Mono',monospace;font-size:7px;padding:1px 6px;">BEFORE</span>多窗口方案</div>
+            <div style="font-size:9px;color:var(--tx2);line-height:1.6;">开多个 tmux pane<br>状态分散难统览<br>告警容易被忽视</div>
+          </div>
+          <div class="ba-after">
+            <div class="ba-label"><span style="background:var(--acc);color:white;font-family:'DM Mono',monospace;font-size:7px;padding:1px 6px;">AFTER</span>HAI Session Tabs</div>
+            <div class="ba-text">单终端多 session · Status Bar 统一导航 · ⚠ 闪烁 + 推送双告警</div>
+          </div>
+        </div>
+      </div>
+      <div class="dp-right">
+        <div class="mockup-label">动态 Mockup — 多会话切换演示</div>
+        <div class="stp-strip" id="stp-session">
+          <div class="stp-bar"><div class="stp-fill"></div></div>
+          <div class="stp-steps">
+            <div class="stp-step"><div class="stp-num">1</div><span class="stp-lbl">Session 1 运行中</span></div>
+            <div class="stp-step"><div class="stp-num">2</div><span class="stp-lbl">切换到 Session 3</span></div>
+            <div class="stp-step"><div class="stp-num">3</div><span class="stp-lbl">处理 ⚠ 确认请求</span></div>
+          </div>
+        </div>
+        <div style="flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;">
+          <div class="mac-win" style="box-shadow:0 8px 32px rgba(0,0,0,.25);">
+            <!-- Session status bar -->
+            <div id="sess-sbar" style="background:#0d0d14;padding:0 10px;height:22px;display:flex;align-items:center;gap:0;border-bottom:.5px solid #252530;font-family:'DM Mono',monospace;font-size:7.5px;overflow:hidden;">
+              <span id="sess-t1" style="color:var(--acc);padding:0 8px;border-bottom:1.5px solid var(--acc);height:100%;display:flex;align-items:center;">RMSNorm ⟳</span>
+              <span id="sess-t2" style="color:#48485C;padding:0 8px;height:100%;display:flex;align-items:center;">FlashAttn ✓</span>
+              <span id="sess-t3" style="color:#48485C;padding:0 8px;height:100%;display:flex;align-items:center;">RopeEmb ⚠</span>
+              <div style="flex:1;text-align:center;color:#48485C;">~/workspace</div>
+              <span id="sess-stage" style="color:var(--acc);">Stage 04 · 执行中</span>
+            </div>
+            <div class="mac-bar">
+              <div class="mac-dots"><div class="mac-dot" style="background:#FF5F57;"></div><div class="mac-dot" style="background:#FEBC2E;"></div><div class="mac-dot" style="background:#28C840;"></div></div>
+              <span class="mac-title" id="sess-title">hai — RMSNorm-910B</span>
+            </div>
+            <div id="sess-body" style="padding:10px 14px;font-family:'DM Mono',monospace;font-size:8px;min-height:175px;display:flex;flex-direction:column;gap:3px;">
+              <!-- S1 content -->
+              <div id="sess-c1">
+                <div style="color:var(--td);">$ hai optimize --op RMSNorm</div>
+                <div style="color:var(--tb2);margin-top:3px;">▸ tile_m: 迭代中…</div>
+                <div style="color:var(--td);">▸ perf-bench: 运行基准测试…</div>
+                <div style="margin-top:6px;display:flex;gap:8px;align-items:center;">
+                  <div style="flex:1;height:3px;background:#252530;border-radius:2px;overflow:hidden;"><div style="width:60%;height:100%;background:var(--acc);"></div></div>
+                  <span style="color:var(--td);font-size:7.5px;">3/5 步</span>
+                </div>
+              </div>
+              <!-- S3 content -->
+              <div id="sess-c3" style="display:none;">
+                <div style="color:var(--td);">$ hai optimize --op RopeEmb</div>
+                <div style="border:.5px solid rgba(245,158,11,.5);background:rgba(245,158,11,.05);padding:7px 10px;border-radius:2px;margin-top:4px;">
+                  <div style="font-size:8px;color:#b45309;margin-bottom:3px;">◆ 需要确认 — shape 推导失败</div>
+                  <div style="font-size:7.5px;color:var(--td);">RopeEmb 在 310P 上 shape 不匹配，是否忽略并仅针对 910B 优化？</div>
+                  <div style="display:flex;gap:6px;margin-top:5px;">
+                    <div style="font-family:'DM Mono',monospace;font-size:7px;background:var(--acc);color:white;padding:2px 8px;">确认</div>
+                    <div style="font-family:'DM Mono',monospace;font-size:7px;border:.5px solid var(--grey-2);color:var(--tx2);padding:2px 8px;">取消</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Desktop notification (shown in step 1) -->
+          <div id="sess-notif" style="display:none;background:var(--sur);border:.5px solid var(--grey-2);border-radius:10px;padding:8px 12px;box-shadow:0 4px 16px rgba(0,0,0,.12);font-size:8px;">
+            <div style="display:flex;align-items:center;gap:6px;margin-bottom:3px;">
+              <div style="width:16px;height:16px;background:var(--acc);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:white;font-family:'DM Mono',monospace;">H</div>
+              <span style="font-weight:500;color:var(--tx);">HAI 需要确认</span>
+              <span style="margin-left:auto;color:var(--tx3);font-size:7px;">刚刚</span>
+            </div>
+            <div style="color:var(--tx2);">RopeEmb — shape 推导失败，需要您的决策</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="snav" id="nav-session"></div>
+</div>
+
+<!-- ========== s-context: CONTEXT MANAGEMENT ========== -->
+<div class="sec" id="s-context" style="background:var(--bg);">
+  <div class="slabel">
+    <span class="sub">HAI CLI · 上下文管理 · 设计点 10/12</span>
+    <span class="main">上下文仪表盘 — <strong>/fork 快照 · /compact 压缩 · /clear 全清</strong></span>
+  </div>
+  <div class="inner">
+    <div class="dp-layout">
+      <div class="dp-left">
+        <div class="dp-desc">
+          <div class="dp-label">设计原则</div>
+          <div class="dp-title">上下文用量始终可见，渐进式管理</div>
+          <div class="dp-body">上下文消耗是开发者最担忧的隐性问题。HAI 把用量仪表盘常驻在 Chips 区，并提供三级渐进清理策略。</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:5px;margin-top:4px;">
+          <div style="padding:6px 10px;border:.5px solid var(--grey-2);background:var(--sur);">
+            <div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--tx3);letter-spacing:.1em;margin-bottom:4px;">仪表盘颜色规则</div>
+            <div style="display:flex;flex-direction:column;gap:3px;">
+              <div style="display:flex;gap:8px;align-items:center;font-size:9px;"><span style="font-family:'DM Mono',monospace;color:var(--tx3);width:40px;">&lt;70%</span><div style="width:36px;height:6px;background:var(--grey-2);border-radius:3px;"></div><span style="color:var(--tx2);">灰色 · 正常</span></div>
+              <div style="display:flex;gap:8px;align-items:center;font-size:9px;"><span style="font-family:'DM Mono',monospace;color:#b45309;width:40px;">70-90%</span><div style="width:36px;height:6px;background:#b45309;border-radius:3px;opacity:.7;"></div><span style="color:var(--tx2);">橙色 · 建议压缩</span></div>
+              <div style="display:flex;gap:8px;align-items:center;font-size:9px;"><span style="font-family:'DM Mono',monospace;color:var(--r);width:40px;">&gt;90%</span><div style="width:36px;height:6px;background:var(--r);border-radius:3px;opacity:.8;"></div><span style="color:var(--tx2);">红色 · 必须处理</span></div>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:4px;">
+            <div style="padding:6px 10px;border-left:3px solid var(--acc);background:var(--sur);">
+              <div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--acc);">/fork</div>
+              <div style="font-size:9px;color:var(--tx2);margin-top:2px;">创建当前状态快照分支，原分支完整保留，可随时回溯</div>
+            </div>
+            <div style="padding:6px 10px;border-left:3px solid var(--y);background:var(--sur);">
+              <div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--y);">/compact</div>
+              <div style="font-size:9px;color:var(--tx2);margin-top:2px;">轻量压缩：保留关键决策 + 代码变更，清除冗余对话，显示压缩摘要</div>
+            </div>
+            <div style="padding:6px 10px;border-left:3px solid var(--r);background:var(--sur);">
+              <div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--r);">/clear</div>
+              <div style="font-size:9px;color:var(--tx2);margin-top:2px;">全量清除会话上下文，重置为初始状态，适合开始全新任务</div>
+            </div>
+          </div>
+        </div>
+        <div class="ba-grid" style="margin-top:auto;">
+          <div class="ba-before">
+            <div class="ba-label"><span style="background:var(--grey-2);color:var(--tx2);font-family:'DM Mono',monospace;font-size:7px;padding:1px 6px;">BEFORE</span>无上下文感知</div>
+            <div style="font-size:9px;color:var(--tx2);line-height:1.6;">突然报错"上下文超限"<br>不知道还剩多少余量<br>只能 /clear 全部清空</div>
+          </div>
+          <div class="ba-after">
+            <div class="ba-label"><span style="background:var(--acc);color:white;font-family:'DM Mono',monospace;font-size:7px;padding:1px 6px;">AFTER</span>HAI 三级策略</div>
+            <div class="ba-text">仪表盘常驻 · 颜色预警 · /fork 快照 + /compact 轻压缩 + /clear 全清</div>
+          </div>
+        </div>
+      </div>
+      <div class="dp-right">
+        <div class="mockup-label">动态 Mockup — 上下文管理演示</div>
+        <div class="stp-strip" id="stp-context">
+          <div class="stp-bar"><div class="stp-fill"></div></div>
+          <div class="stp-steps">
+            <div class="stp-step"><div class="stp-num">1</div><span class="stp-lbl">用量 28% · 正常</span></div>
+            <div class="stp-step"><div class="stp-num">2</div><span class="stp-lbl">用量 82% · 橙色预警</span></div>
+            <div class="stp-step"><div class="stp-num">3</div><span class="stp-lbl">/compact 压缩</span></div>
+          </div>
+        </div>
+        <div style="flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;">
+          <div class="mac-win" style="box-shadow:0 8px 32px rgba(0,0,0,.25);">
+            <div class="mac-bar">
+              <div class="mac-dots"><div class="mac-dot" style="background:#FF5F57;"></div><div class="mac-dot" style="background:#FEBC2E;"></div><div class="mac-dot" style="background:#28C840;"></div></div>
+              <span class="mac-title">hai — RMSNorm-910B</span>
+            </div>
+            <div style="padding:8px 14px;font-family:'DM Mono',monospace;font-size:8px;min-height:70px;color:var(--td);">
+              <div>✓ 优化完成 · cube_util 72.4%</div>
+              <div id="ctx-compact-msg" style="display:none;color:var(--tg);margin-top:3px;">✓ /compact 完成 · 上下文 82% → 34% · 已保留 12 个关键决策</div>
+            </div>
+            <!-- Input area showing context meter -->
+            <div style="border-top:.5px solid #252530;">
+              <div style="padding:4px 12px;display:flex;gap:5px;align-items:center;background:rgba(255,255,255,.02);border-bottom:.5px solid rgba(255,255,255,.05);min-height:24px;flex-wrap:wrap;">
+                <span style="font-family:'DM Mono',monospace;font-size:7.5px;color:var(--acc);background:rgba(0,47,167,.1);border:.5px solid rgba(0,47,167,.2);padding:1px 8px;">@rmsnorm.py ×</span>
+                <span style="font-family:'DM Mono',monospace;font-size:7px;color:#48485C;">+ @file</span>
+                <!-- Context meter -->
+                <div style="margin-left:auto;display:flex;align-items:center;gap:5px;">
+                  <span id="ctx-pct-label" style="font-family:'DM Mono',monospace;font-size:7px;color:#48485C;">上下文</span>
+                  <div style="width:48px;height:5px;background:#252530;border-radius:3px;overflow:hidden;"><div id="ctx-meter-bar" style="height:100%;width:28%;background:var(--grey-2);transition:width .4s,background .4s;border-radius:3px;"></div></div>
+                  <span id="ctx-pct-num" style="font-family:'DM Mono',monospace;font-size:7px;color:#48485C;">28%</span>
+                </div>
+                <span style="font-family:'DM Mono',monospace;font-size:7px;color:#F59E0B;background:rgba(245,158,11,.08);border:.5px solid rgba(245,158,11,.2);padding:1px 6px;">$0.031</span>
+              </div>
+              <div style="padding:7px 12px;display:flex;align-items:center;gap:8px;">
+                <span style="color:var(--acc);font-size:12px;flex-shrink:0;">❯</span>
+                <span id="ctx-input-text" style="font-family:'DM Mono',monospace;font-size:9px;color:#48485C;"></span>
+                <span style="animation:bl .9s step-end infinite;color:#C8C8DC;">▌</span>
+              </div>
+              <div id="ctx-warning" style="display:none;padding:4px 12px;background:rgba(245,158,11,.08);border-top:.5px solid rgba(245,158,11,.2);font-family:'DM Mono',monospace;font-size:7.5px;color:#b45309;">
+                ⚠ 上下文 82% · 建议 /fork 快照后 /compact 压缩
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="snav" id="nav-context"></div>
+</div>
+
+<!-- ========== s-error: ERROR HANDLING ========== -->
+<div class="sec" id="s-error" style="background:var(--sur);">
+  <div class="slabel">
+    <span class="sub">HAI CLI · 错误处理 · 设计点 11/12</span>
+    <span class="main">错误分类 — <strong>自动重试 · 透明上报 · 升级路径</strong></span>
+  </div>
+  <div class="inner">
+    <div class="dp-layout">
+      <div class="dp-left">
+        <div class="dp-desc">
+          <div class="dp-label">设计原则</div>
+          <div class="dp-title">错误是信息，不是墙</div>
+          <div class="dp-body">HAI 对错误进行分类，根据类型决定是自动重试、上报给用户还是升级到人工介入。</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:5px;margin-top:4px;">
+          <div style="padding:6px 10px;border-left:3px solid var(--g);background:rgba(5,150,105,.04);">
+            <div style="font-size:9px;font-weight:500;color:var(--tx);margin-bottom:2px;">可恢复错误 — 自动重试</div>
+            <div style="font-size:9px;color:var(--tx2);">网络超时 / API 限流 / 临时失败 → 自动重试 3 次，透明显示重试进度</div>
+          </div>
+          <div style="padding:6px 10px;border-left:3px solid #b45309;background:rgba(245,158,11,.05);">
+            <div style="font-size:9px;font-weight:500;color:var(--tx);margin-bottom:2px;">逻辑错误 — 上报用户</div>
+            <div style="font-size:9px;color:var(--tx2);">format 不兼容 / UB 溢出 / shape 推导失败 → 具体描述 + 建议方案，等待用户决策</div>
+          </div>
+          <div style="padding:6px 10px;border-left:3px solid var(--r);background:rgba(220,38,38,.04);">
+            <div style="font-size:9px;font-weight:500;color:var(--tx);margin-bottom:2px;">严重错误 — 升级路径</div>
+            <div style="font-size:9px;color:var(--tx2);">编译器崩溃 / 硬件异常 / 未知错误 → 保存现场 + 提示联系支持 + 提供诊断包</div>
+          </div>
+          <div style="padding:6px 10px;border-.5px solid var(--grey-2);background:var(--grey-1);">
+            <div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--tx3);letter-spacing:.1em;margin-bottom:3px;">错误上报规范</div>
+            <div style="font-size:9px;color:var(--tx2);line-height:1.6;">1. 明确错误类型（非错误码）<br>2. 当前状态 + 已完成步骤<br>3. 可选操作：重试 / 修改参数 / 跳过 / 中止</div>
+          </div>
+        </div>
+        <div class="ba-grid" style="margin-top:auto;">
+          <div class="ba-before">
+            <div class="ba-label"><span style="background:var(--grey-2);color:var(--tx2);font-family:'DM Mono',monospace;font-size:7px;padding:1px 6px;">BEFORE</span>错误 = 崩溃</div>
+            <div style="font-size:9px;color:var(--tx2);line-height:1.6;">任意错误中止任务<br>无状态保存<br>需要重新开始</div>
+          </div>
+          <div class="ba-after">
+            <div class="ba-label"><span style="background:var(--acc);color:white;font-family:'DM Mono',monospace;font-size:7px;padding:1px 6px;">AFTER</span>HAI 三级错误流</div>
+            <div class="ba-text">自动重试 · 类型化上报 · 升级路径 · 现场保存</div>
+          </div>
+        </div>
+      </div>
+      <div class="dp-right">
+        <div class="mockup-label">动态 Mockup — 错误处理演示</div>
+        <div class="stp-strip" id="stp-error">
+          <div class="stp-bar"><div class="stp-fill"></div></div>
+          <div class="stp-steps">
+            <div class="stp-step"><div class="stp-num">1</div><span class="stp-lbl">网络超时 · 自动重试</span></div>
+            <div class="stp-step"><div class="stp-num">2</div><span class="stp-lbl">format 不兼容 · 上报</span></div>
+            <div class="stp-step"><div class="stp-num">3</div><span class="stp-lbl">用户决策 · 任务继续</span></div>
+          </div>
+        </div>
+        <div style="flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;">
+          <div class="mac-win" style="box-shadow:0 8px 32px rgba(0,0,0,.25);">
+            <div class="mac-bar">
+              <div class="mac-dots"><div class="mac-dot" style="background:#FF5F57;"></div><div class="mac-dot" style="background:#FEBC2E;"></div><div class="mac-dot" style="background:#28C840;"></div></div>
+              <span class="mac-title">hai — 错误处理演示</span>
+            </div>
+            <div id="err-body" style="padding:10px 14px;font-family:'DM Mono',monospace;font-size:8px;min-height:190px;display:flex;flex-direction:column;gap:3px;">
+              <div style="color:var(--td);">$ hai optimize --op RMSNorm</div>
+              <!-- Error states -->
+              <div id="err-e1" style="margin-top:4px;">
+                <div style="color:var(--tr);">✗ API 连接超时（尝试 1/3）</div>
+                <div style="color:var(--td);margin-top:2px;font-size:7.5px;">↻ 自动重试中… 2.3s 后</div>
+                <div style="color:var(--tg);margin-top:2px;">✓ 重试成功 · 继续执行</div>
+              </div>
+              <div id="err-e2" style="display:none;border:.5px solid rgba(245,158,11,.5);background:rgba(245,158,11,.05);border-radius:2px;padding:7px 9px;margin-top:4px;">
+                <div style="color:#b45309;margin-bottom:4px;font-size:8.5px;">◆ format 不兼容</div>
+                <div style="color:var(--td);font-size:7.5px;line-height:1.6;">FRACTAL_NZ 格式在 310P 上不支持 · 当前 tile_m=128 配置需调整</div>
+                <div style="color:var(--ty);font-size:7.5px;margin-top:3px;">建议：切换为 ND 格式（性能损失约 8%）</div>
+                <div style="display:flex;gap:5px;margin-top:6px;">
+                  <div style="font-family:'DM Mono',monospace;font-size:7px;background:var(--acc);color:white;padding:2px 8px;">切换 ND 继续</div>
+                  <div style="font-family:'DM Mono',monospace;font-size:7px;border:.5px solid var(--grey-2);color:var(--tx2);padding:2px 8px;">仅 910B</div>
+                  <div style="font-family:'DM Mono',monospace;font-size:7px;border:.5px solid var(--grey-2);color:var(--tx2);padding:2px 8px;">中止</div>
+                </div>
+              </div>
+              <div id="err-e3" style="display:none;margin-top:4px;">
+                <div style="color:var(--tg);">✓ 已切换 ND 格式</div>
+                <div style="color:var(--tb2);">▸ 重新验证 910B + 310P 兼容性…</div>
+                <div style="color:var(--tg);margin-top:3px;">✓ 兼容性验证通过 · 继续优化</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="snav" id="nav-error"></div>
+</div>
+
+<!-- ========== s-summary: SESSION SUMMARY ========== -->
+<div class="sec" id="s-summary" style="background:var(--bg);">
+  <div class="slabel">
+    <span class="sub">HAI CLI · 会话摘要 · 设计点 12/12</span>
+    <span class="main">退出摘要卡 — <strong>任务 · 文件 · Token · 费用 · 用时</strong></span>
+  </div>
+  <div class="inner">
+    <div class="dp-layout">
+      <div class="dp-left">
+        <div class="dp-desc">
+          <div class="dp-label">设计原则</div>
+          <div class="dp-title">每次会话留下清晰记录</div>
+          <div class="dp-body">退出时自动弹出会话摘要卡，让用户对本次 AI 协作有完整认知，支持复制分享。</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:5px;margin-top:4px;">
+          <div style="padding:7px 10px;border:.5px solid var(--grey-2);background:var(--sur);">
+            <div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--tx3);letter-spacing:.1em;margin-bottom:4px;">摘要卡包含内容</div>
+            <div style="display:flex;flex-direction:column;gap:3px;font-size:9px;color:var(--tx2);">
+              <div>📋 完成任务数 + 类型归因（优化/修复/新增）</div>
+              <div>📁 变更文件数 + 总增删行数</div>
+              <div>🔤 Token 用量（输入 + 输出 + 缓存）</div>
+              <div>💰 本次会话总费用（含明细）</div>
+              <div>⏱ 总用时 + 各任务耗时分布</div>
+              <div>💾 已存入记忆的内容摘要</div>
+            </div>
+          </div>
+          <div style="padding:7px 10px;border:.5px solid var(--grey-2);background:var(--sur);">
+            <div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--tx3);letter-spacing:.1em;margin-bottom:3px;">费用角标常驻</div>
+            <div style="font-size:9px;color:var(--tx2);line-height:1.6;">费用角标常驻在 Chips 区右侧，实时更新，不在每条输出中重复显示。退出时在摘要卡中展示完整明细。</div>
+          </div>
+        </div>
+        <div class="ba-grid" style="margin-top:auto;">
+          <div class="ba-before">
+            <div class="ba-label"><span style="background:var(--grey-2);color:var(--tx2);font-family:'DM Mono',monospace;font-size:7px;padding:1px 6px;">BEFORE</span>无会话感知</div>
+            <div style="font-size:9px;color:var(--tx2);line-height:1.6;">关闭终端后什么都不剩<br>不知道花了多少钱<br>不知道改了哪些文件</div>
+          </div>
+          <div class="ba-after">
+            <div class="ba-label"><span style="background:var(--acc);color:white;font-family:'DM Mono',monospace;font-size:7px;padding:1px 6px;">AFTER</span>HAI 摘要卡</div>
+            <div class="ba-text">退出自动弹出 · 任务归因明细 · 可复制分享</div>
+          </div>
+        </div>
+      </div>
+      <div class="dp-right">
+        <div class="mockup-label">Mockup — 会话摘要卡</div>
+        <div style="flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;">
+          <!-- Summary card -->
+          <div style="background:#0C0C11;border:.5px solid #252530;border-radius:10px;overflow:hidden;box-shadow:0 16px 48px rgba(0,0,0,.4);">
+            <div style="background:#181820;padding:10px 16px;border-bottom:.5px solid #252530;display:flex;align-items:center;gap:8px;">
+              <div style="width:8px;height:8px;background:var(--tg);border-radius:50%;"></div>
+              <span style="font-family:'DM Mono',monospace;font-size:9px;color:var(--tw);">HAI · 会话摘要 · 2026-05-25 14:32</span>
+              <span style="margin-left:auto;font-family:'DM Mono',monospace;font-size:7.5px;color:#48485C;cursor:pointer;">复制 ⧉</span>
+            </div>
+            <div style="padding:14px 16px;display:flex;flex-direction:column;gap:10px;">
+              <!-- Stats grid -->
+              <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;">
+                <div style="padding:7px 10px;background:#181820;border:.5px solid #252530;border-radius:4px;">
+                  <div style="font-family:'DM Mono',monospace;font-size:7px;color:#48485C;margin-bottom:3px;">任务</div>
+                  <div style="font-family:'Inter',sans-serif;font-size:18px;font-weight:200;color:var(--tg);line-height:1;">3</div>
+                  <div style="font-size:7px;color:#48485C;margin-top:2px;">优化×2 · 修复×1</div>
+                </div>
+                <div style="padding:7px 10px;background:#181820;border:.5px solid #252530;border-radius:4px;">
+                  <div style="font-family:'DM Mono',monospace;font-size:7px;color:#48485C;margin-bottom:3px;">文件</div>
+                  <div style="font-family:'Inter',sans-serif;font-size:18px;font-weight:200;color:var(--tb2);line-height:1;">7</div>
+                  <div style="font-size:7px;color:#48485C;margin-top:2px;">+64 -18 行</div>
+                </div>
+                <div style="padding:7px 10px;background:#181820;border:.5px solid #252530;border-radius:4px;">
+                  <div style="font-family:'DM Mono',monospace;font-size:7px;color:#48485C;margin-bottom:3px;">用时</div>
+                  <div style="font-family:'Inter',sans-serif;font-size:18px;font-weight:200;color:var(--tp);line-height:1;">14m</div>
+                  <div style="font-size:7px;color:#48485C;margin-top:2px;">avg 4.7m/任务</div>
+                </div>
+              </div>
+              <!-- Token + cost -->
+              <div style="padding:8px 10px;background:#181820;border:.5px solid #252530;border-radius:4px;">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;">
+                  <span style="font-family:'DM Mono',monospace;font-size:7px;color:#48485C;">Token 用量</span>
+                  <span style="font-family:'DM Mono',monospace;font-size:7px;color:var(--ty);">总费用 $0.087</span>
+                </div>
+                <div style="display:flex;gap:12px;font-size:7.5px;font-family:'DM Mono',monospace;">
+                  <span style="color:var(--tw);">输入 <span style="color:#48485C;">18.2k</span></span>
+                  <span style="color:var(--tw);">输出 <span style="color:#48485C;">4.1k</span></span>
+                  <span style="color:var(--tw);">缓存 <span style="color:#48485C;">12.4k</span></span>
+                </div>
+              </div>
+              <!-- Memory saved -->
+              <div style="padding:6px 10px;background:rgba(0,47,167,.08);border:.5px solid rgba(0,47,167,.25);border-radius:4px;">
+                <div style="font-family:'DM Mono',monospace;font-size:7px;color:var(--acc);margin-bottom:3px;">已存入记忆</div>
+                <div style="font-size:7.5px;color:var(--td);">tile_m=128 最优配置 · FRACTAL_NZ→ND 格式迁移路径 · 910B 基准线 72.4%</div>
+              </div>
+              <!-- Actions -->
+              <div style="display:flex;gap:6px;">
+                <div style="flex:1;font-family:'DM Mono',monospace;font-size:8px;background:var(--acc);color:white;padding:4px 0;text-align:center;border-radius:3px;cursor:pointer;">新建会话</div>
+                <div style="font-family:'DM Mono',monospace;font-size:8px;border:.5px solid #252530;color:#48485C;padding:4px 12px;border-radius:3px;cursor:pointer;">关闭</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="snav" id="nav-summary"></div>
+</div>
+
+
+</div><!-- snap-root -->
+
+<!-- Top nav dots -->
+<nav id="top-nav" style="position:fixed;top:14px;right:20px;z-index:999;display:flex;align-items:center;gap:6px;background:rgba(250,250,248,.78);border:1px solid rgba(255,255,255,.6);backdrop-filter:blur(28px) saturate(200%);padding:5px 10px;border-radius:100px;box-shadow:0 2px 20px rgba(0,47,167,.10);">
+</nav>
+
+<script>
+// ──────────────────────────────────────────────
+// SETUP SLIDE STEPS
+// ──────────────────────────────────────────────
+function setupSlideSteps(secId, stripId, defs) {
+  var strip = document.getElementById(stripId);
+  if (!strip) return;
+  var fill = strip.querySelector('.stp-fill');
+  var steps = strip.querySelectorAll('.stp-step');
+  var cur = -1, gen = 0;
+
+  function activate(i, g) {
+    if (g !== gen) return;
+    cur = i;
+    var pct = defs.length <= 1 ? 100 : (i / (defs.length - 1)) * 100;
+    if (fill) fill.style.width = pct + '%';
+    steps.forEach(function(s, idx) {
+      s.classList.remove('stp-active', 'stp-done');
+      if (idx < i) s.classList.add('stp-done');
+      else if (idx === i) s.classList.add('stp-active');
+    });
+    if (defs[i].immediate) defs[i].immediate();
+    var ms = defs[i].ms || 2000;
+    setTimeout(function() {
+      if (g !== gen) return;
+      if (defs[i].act) defs[i].act();
+      var next = (i + 1) % defs.length;
+      var delay = ms + 400;
+      setTimeout(function() { activate(next, g); }, delay);
+    }, ms);
+  }
+
+  function start() { gen++; activate(0, gen); }
+  function stop() { gen++; }
+
+  var io = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) { e.isIntersecting ? start() : stop(); });
+  }, { threshold: 0.4 });
+  var sec = document.getElementById(secId);
+  if (sec) io.observe(sec);
+}
+
+// ──────────────────────────────────────────────
+// NAV DOTS
+// ──────────────────────────────────────────────
+(function initTopNav() {
+  var sections = [
+    {id:'s-cover',label:'封面'},
+    {id:'s-arch',label:'架构'},
+    {id:'s-status',label:'状态栏'},
+    {id:'s-input',label:'输入区'},
+    {id:'s-output',label:'输出流'},
+    {id:'s-exec',label:'五状态'},
+    {id:'s-confirm',label:'权限确认'},
+    {id:'s-review',label:'变更审查'},
+    {id:'s-session',label:'多会话'},
+    {id:'s-context',label:'上下文'},
+    {id:'s-error',label:'错误处理'},
+    {id:'s-summary',label:'会话摘要'}
+  ];
+  var nav = document.getElementById('top-nav');
+  var root = document.querySelector('.snap-root');
+  if (!nav || !root) return;
+
+  sections.forEach(function(s, i) {
+    var dot = document.createElement('div');
+    dot.title = s.label;
+    dot.style.cssText = 'width:6px;height:6px;border-radius:50%;background:rgba(0,47,167,.22);cursor:pointer;transition:background .2s,transform .2s;';
+    dot.addEventListener('mouseenter', function() { dot.style.background = 'rgba(0,47,167,.6)'; dot.style.transform = 'scale(1.3)'; });
+    dot.addEventListener('mouseleave', function() { dot.style.background = dot._active ? 'rgba(0,47,167,.8)' : 'rgba(0,47,167,.22)'; dot.style.transform = dot._active ? 'scale(1.2)' : ''; });
+    dot.addEventListener('click', function() {
+      var el = document.getElementById(s.id);
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
+    });
+    nav.appendChild(dot);
+
+    var io = new IntersectionObserver(function(entries) {
+      entries.forEach(function(e) {
+        dot._active = e.isIntersecting;
+        dot.style.background = e.isIntersecting ? 'rgba(0,47,167,.8)' : 'rgba(0,47,167,.22)';
+        dot.style.transform = e.isIntersecting ? 'scale(1.2)' : '';
+      });
+    }, { threshold: 0.5, root: root });
+    var el = document.getElementById(s.id);
+    if (el) io.observe(el);
+  });
+})();
+
+// ──────────────────────────────────────────────
+// S-OUTPUT: tool call block demo
+// ──────────────────────────────────────────────
+setupSlideSteps('s-output', 'stp-output', [
+  {
+    ms: 2200,
+    immediate: function() {
+      var wr = document.getElementById('out-write-block');
+      var res = document.getElementById('out-result');
+      if (wr) wr.style.display = 'none';
+      if (res) res.style.display = 'none';
+      var rb = document.getElementById('out-read-badge');
+      var rl = document.getElementById('out-read-list');
+      if (rb) rb.textContent = '3 files ▾';
+      if (rl) rl.style.display = 'none';
+    },
+    act: function() {
+      var rb = document.getElementById('out-read-badge');
+      if (rb) { rb.textContent = '3 files ▴'; rb.style.background = 'rgba(0,47,167,.08)'; rb.style.borderColor = 'rgba(0,47,167,.2)'; rb.style.color = 'var(--acc)'; }
+      var rl = document.getElementById('out-read-list');
+      if (rl) rl.style.display = 'inline';
+    }
+  },
+  {
+    ms: 2000,
+    act: function() {
+      var td = document.getElementById('out-think-detail');
+      if (td) { td.style.display = 'block'; }
+      var ts = document.getElementById('out-think-summary');
+      if (ts) ts.style.color = 'var(--tw)';
+    }
+  },
+  {
+    ms: 2400,
+    act: function() {
+      var wr = document.getElementById('out-write-block');
+      if (wr) { wr.style.display = 'block'; }
+      setTimeout(function() {
+        var res = document.getElementById('out-result');
+        if (res) res.style.display = 'block';
+      }, 1600);
+    }
+  }
+]);
+
+// ──────────────────────────────────────────────
+// S-EXEC: 5-state demo
+// ──────────────────────────────────────────────
+setupSlideSteps('s-exec', 'stp-exec', [
+  {
+    ms: 2600,
+    immediate: function() {
+      var s2 = document.getElementById('exec-s2');
+      var s3 = document.getElementById('exec-s3');
+      var s5 = document.getElementById('exec-s5');
+      if (s2) s2.style.display = 'block';
+      if (s3) s3.style.display = 'none';
+      if (s5) s5.style.display = 'none';
+      var sl = document.getElementById('exec-stage-label');
+      if (sl) { sl.textContent = 'Stage 04 · Agent 运行中'; sl.style.color = 'var(--acc)'; }
+      var st1 = document.getElementById('exec-sbar').querySelector('span:first-child');
+      if (st1) { st1.style.color = 'var(--acc)'; st1.textContent = 'RMSNorm ⟳'; }
+    },
+    act: null
+  },
+  {
+    ms: 2400,
+    act: function() {
+      var s2 = document.getElementById('exec-s2');
+      var s3 = document.getElementById('exec-s3');
+      if (s2) s2.style.display = 'none';
+      if (s3) s3.style.display = 'block';
+      var sl = document.getElementById('exec-stage-label');
+      if (sl) { sl.textContent = 'Stage 04 · 等待确认'; sl.style.color = '#b45309'; }
+      var st1 = document.getElementById('exec-sbar').querySelector('span:first-child');
+      if (st1) { st1.style.color = '#b45309'; st1.textContent = 'RMSNorm ⚠'; }
+    }
+  },
+  {
+    ms: 2000,
+    act: function() {
+      var s3 = document.getElementById('exec-s3');
+      var s5 = document.getElementById('exec-s5');
+      if (s3) s3.style.display = 'none';
+      if (s5) s5.style.display = 'block';
+      var sl = document.getElementById('exec-stage-label');
+      if (sl) { sl.textContent = 'Stage 06 · 完成'; sl.style.color = 'var(--tg)'; }
+      var st1 = document.getElementById('exec-sbar').querySelector('span:first-child');
+      if (st1) { st1.style.color = 'var(--tg)'; st1.textContent = 'RMSNorm ✓'; }
+    }
+  }
+]);
+
+// ──────────────────────────────────────────────
+// S-CONFIRM: color-coded risk demo
+// ──────────────────────────────────────────────
+setupSlideSteps('s-confirm', 'stp-confirm', [
+  {
+    ms: 2000,
+    immediate: function() {
+      var r = document.getElementById('cfm-read');
+      var w = document.getElementById('cfm-write');
+      var e = document.getElementById('cfm-exec');
+      if (r) r.style.display = 'block';
+      if (w) w.style.display = 'none';
+      if (e) e.style.display = 'none';
+    },
+    act: null
+  },
+  {
+    ms: 2000,
+    act: function() {
+      var r = document.getElementById('cfm-read');
+      var w = document.getElementById('cfm-write');
+      if (r) r.style.display = 'none';
+      if (w) w.style.display = 'block';
+    }
+  },
+  {
+    ms: 2200,
+    act: function() {
+      var w = document.getElementById('cfm-write');
+      var e = document.getElementById('cfm-exec');
+      if (w) w.style.display = 'none';
+      if (e) e.style.display = 'block';
+    }
+  }
+]);
+
+// ──────────────────────────────────────────────
+// S-REVIEW: diff + accept demo
+// ──────────────────────────────────────────────
+setupSlideSteps('s-review', 'stp-review', [
+  {
+    ms: 1800,
+    immediate: function() {
+      var diff = document.getElementById('rev-diff');
+      var done = document.getElementById('rev-done');
+      var acts = document.getElementById('rev-actions');
+      var sum = document.getElementById('rev-summary');
+      if (diff) diff.style.display = 'none';
+      if (done) done.style.display = 'none';
+      if (acts) acts.style.display = 'flex';
+      if (sum) sum.style.display = 'flex';
+    },
+    act: null
+  },
+  {
+    ms: 2200,
+    act: function() {
+      var diff = document.getElementById('rev-diff');
+      if (diff) { diff.style.display = 'block'; }
+      var btn = document.getElementById('rev-expand-btn');
+      if (btn) btn.textContent = '收起 diff ▴';
+    }
+  },
+  {
+    ms: 1800,
+    act: function() {
+      var acts = document.getElementById('rev-actions');
+      var done = document.getElementById('rev-done');
+      var diff = document.getElementById('rev-diff');
+      if (acts) acts.style.display = 'none';
+      if (diff) diff.style.display = 'none';
+      if (done) done.style.display = 'block';
+    }
+  }
+]);
+
+// ──────────────────────────────────────────────
+// S-SESSION: multi-session switching demo
+// ──────────────────────────────────────────────
+setupSlideSteps('s-session', 'stp-session', [
+  {
+    ms: 2400,
+    immediate: function() {
+      var t1 = document.getElementById('sess-t1');
+      var t3 = document.getElementById('sess-t3');
+      var c1 = document.getElementById('sess-c1');
+      var c3 = document.getElementById('sess-c3');
+      var title = document.getElementById('sess-title');
+      var stage = document.getElementById('sess-stage');
+      var notif = document.getElementById('sess-notif');
+      if (t1) { t1.style.color = 'var(--acc)'; t1.style.borderBottom = '1.5px solid var(--acc)'; }
+      if (t3) { t3.style.color = '#48485C'; t3.style.borderBottom = 'none'; }
+      if (c1) c1.style.display = 'block';
+      if (c3) c3.style.display = 'none';
+      if (title) title.textContent = 'hai — RMSNorm-910B';
+      if (stage) { stage.textContent = 'Stage 04 · 执行中'; stage.style.color = 'var(--acc)'; }
+      if (notif) notif.style.display = 'none';
+    },
+    act: null
+  },
+  {
+    ms: 2400,
+    act: function() {
+      var t1 = document.getElementById('sess-t1');
+      var t3 = document.getElementById('sess-t3');
+      var c1 = document.getElementById('sess-c1');
+      var c3 = document.getElementById('sess-c3');
+      var title = document.getElementById('sess-title');
+      var stage = document.getElementById('sess-stage');
+      var notif = document.getElementById('sess-notif');
+      if (t1) { t1.style.color = '#48485C'; t1.style.borderBottom = 'none'; }
+      if (t3) { t3.style.color = '#b45309'; t3.style.borderBottom = '1.5px solid #b45309'; }
+      if (c1) c1.style.display = 'none';
+      if (c3) c3.style.display = 'block';
+      if (title) title.textContent = 'hai — RopeEmb-910B';
+      if (stage) { stage.textContent = 'Stage 04 · 等待确认'; stage.style.color = '#b45309'; }
+      if (notif) notif.style.display = 'block';
+    }
+  },
+  {
+    ms: 2000,
+    act: function() {
+      var notif = document.getElementById('sess-notif');
+      if (notif) notif.style.display = 'none';
+      var t3 = document.getElementById('sess-t3');
+      if (t3) t3.textContent = 'RopeEmb ✓';
+      var stage = document.getElementById('sess-stage');
+      if (stage) { stage.textContent = 'Stage 04 · 继续执行中'; stage.style.color = 'var(--acc)'; }
+    }
+  }
+]);
+
+// ──────────────────────────────────────────────
+// S-CONTEXT: context meter demo
+// ──────────────────────────────────────────────
+setupSlideSteps('s-context', 'stp-context', [
+  {
+    ms: 2000,
+    immediate: function() {
+      var bar = document.getElementById('ctx-meter-bar');
+      var num = document.getElementById('ctx-pct-num');
+      var label = document.getElementById('ctx-pct-label');
+      var warn = document.getElementById('ctx-warning');
+      var msg = document.getElementById('ctx-compact-msg');
+      var inp = document.getElementById('ctx-input-text');
+      if (bar) { bar.style.width = '28%'; bar.style.background = 'var(--grey-2)'; }
+      if (num) { num.textContent = '28%'; num.style.color = '#48485C'; }
+      if (label) label.style.color = '#48485C';
+      if (warn) warn.style.display = 'none';
+      if (msg) msg.style.display = 'none';
+      if (inp) inp.textContent = '';
+    },
+    act: null
+  },
+  {
+    ms: 2400,
+    act: function() {
+      var bar = document.getElementById('ctx-meter-bar');
+      var num = document.getElementById('ctx-pct-num');
+      var label = document.getElementById('ctx-pct-label');
+      var warn = document.getElementById('ctx-warning');
+      if (bar) { bar.style.width = '82%'; bar.style.background = '#b45309'; }
+      if (num) { num.textContent = '82%'; num.style.color = '#b45309'; }
+      if (label) label.style.color = '#b45309';
+      if (warn) warn.style.display = 'block';
+    }
+  },
+  {
+    ms: 2200,
+    act: function() {
+      var inp = document.getElementById('ctx-input-text');
+      if (inp) inp.textContent = '/compact';
+      setTimeout(function() {
+        var bar = document.getElementById('ctx-meter-bar');
+        var num = document.getElementById('ctx-pct-num');
+        var label = document.getElementById('ctx-pct-label');
+        var warn = document.getElementById('ctx-warning');
+        var msg = document.getElementById('ctx-compact-msg');
+        var inp2 = document.getElementById('ctx-input-text');
+        if (bar) { bar.style.width = '34%'; bar.style.background = 'var(--grey-2)'; }
+        if (num) { num.textContent = '34%'; num.style.color = '#48485C'; }
+        if (label) label.style.color = '#48485C';
+        if (warn) warn.style.display = 'none';
+        if (msg) msg.style.display = 'block';
+        if (inp2) inp2.textContent = '';
+      }, 1000);
+    }
+  }
+]);
+
+// ──────────────────────────────────────────────
+// S-ERROR: error handling demo
+// ──────────────────────────────────────────────
+setupSlideSteps('s-error', 'stp-error', [
+  {
+    ms: 2200,
+    immediate: function() {
+      var e1 = document.getElementById('err-e1');
+      var e2 = document.getElementById('err-e2');
+      var e3 = document.getElementById('err-e3');
+      if (e1) e1.style.display = 'block';
+      if (e2) e2.style.display = 'none';
+      if (e3) e3.style.display = 'none';
+    },
+    act: null
+  },
+  {
+    ms: 2400,
+    act: function() {
+      var e1 = document.getElementById('err-e1');
+      var e2 = document.getElementById('err-e2');
+      if (e1) e1.style.display = 'none';
+      if (e2) e2.style.display = 'block';
+    }
+  },
+  {
+    ms: 2000,
+    act: function() {
+      var e2 = document.getElementById('err-e2');
+      var e3 = document.getElementById('err-e3');
+      if (e2) e2.style.display = 'none';
+      if (e3) e3.style.display = 'block';
+    }
+  }
+]);
+
+// ──────────────────────────────────────────────
+// S-INPUT: step demo (from earlier section)
+// ──────────────────────────────────────────────
+setupSlideSteps('s-input', 'stp-input', [
+  {
+    ms: 2000,
+    immediate: function() {
+      var c1 = document.getElementById('chip-1');
+      var c2 = document.getElementById('chip-2');
+      var vc = document.getElementById('voice-capsule');
+      var mode = document.getElementById('inp-mode');
+      var text = document.getElementById('inp-text');
+      if (c1) c1.style.display = 'none';
+      if (c2) c2.style.display = 'none';
+      if (vc) vc.style.display = 'none';
+      if (mode) { mode.textContent = 'Auto'; mode.style.borderColor = '#252530'; mode.style.color = '#48485C'; }
+      if (text) text.textContent = '';
+    },
+    act: function() {
+      var text = document.getElementById('inp-text');
+      if (text) text.textContent = 'hai optimize --op RMSNorm';
+    }
+  },
+  {
+    ms: 2000,
+    act: function() {
+      var c1 = document.getElementById('chip-1');
+      var c2 = document.getElementById('chip-2');
+      if (c1) c1.style.display = 'inline';
+      if (c2) c2.style.display = 'inline';
+      var text = document.getElementById('inp-text');
+      if (text) text.textContent = '';
+    }
+  },
+  {
+    ms: 2200,
+    act: function() {
+      var vc = document.getElementById('voice-capsule');
+      var text = document.getElementById('inp-text');
+      if (vc) vc.style.display = 'flex';
+      if (text) text.textContent = '';
+      var mode = document.getElementById('inp-mode');
+      if (mode) { mode.textContent = 'Auto ·语音'; mode.style.borderColor = 'rgba(0,47,167,.4)'; mode.style.color = 'var(--acc)'; }
+    }
+  }
+]);
+
+// ──────────────────────────────────────────────
+// S-STATUS: step demo
+// ──────────────────────────────────────────────
+setupSlideSteps('s-status', 'stp-status', [
+  {
+    ms: 2200,
+    immediate: function() {
+      var t1 = document.getElementById('sb-t1');
+      var t3 = document.getElementById('sb-t3');
+      var s1 = document.getElementById('sb-s1');
+      var s3 = document.getElementById('sb-s3');
+      var hint = document.getElementById('sb-hint');
+      if (t1) { t1.style.color = 'var(--acc)'; t1.style.borderBottom = '1.5px solid var(--acc)'; t1.textContent = 'RMSNorm ⟳'; }
+      if (t3) { t3.style.color = '#48485C'; t3.style.borderBottom = 'none'; }
+      if (s1) s1.style.display = 'flex';
+      if (s3) s3.style.display = 'none';
+      if (hint) hint.style.display = 'none';
+    },
+    act: null
+  },
+  {
+    ms: 2200,
+    act: function() {
+      var t1 = document.getElementById('sb-t1');
+      var t3 = document.getElementById('sb-t3');
+      var s1 = document.getElementById('sb-s1');
+      var s3 = document.getElementById('sb-s3');
+      if (t3) { t3.style.color = '#b45309'; t3.style.borderBottom = '1.5px solid #b45309'; t3.textContent = 'RopeEmb ⚠'; }
+      if (t1) { t1.style.color = '#48485C'; t1.style.borderBottom = 'none'; }
+      if (s1) s1.style.display = 'none';
+      if (s3) s3.style.display = 'flex';
+    }
+  },
+  {
+    ms: 1800,
+    act: function() {
+      var hint = document.getElementById('sb-hint');
+      if (hint) hint.style.display = 'block';
+      var t3 = document.getElementById('sb-t3');
+      if (t3) { t3.textContent = 'RopeEmb ✓'; t3.style.color = 'var(--tg)'; t3.style.borderBottom = 'none'; }
+    }
+  }
+]);
+
+// mockup-label style (injected globally)
+(function() {
+  var style = document.createElement('style');
+  style.textContent = [
+    '.mockup-label{font-family:"DM Mono",monospace;font-size:8px;letter-spacing:.1em;color:var(--tx3);text-transform:uppercase;margin-bottom:4px;flex-shrink:0;}',
+    '.mac-win{background:var(--tb);border-radius:10px;overflow:hidden;display:flex;flex-direction:column;}',
+    '.mac-bar{background:var(--tbar);padding:7px 10px 6px;display:flex;align-items:center;gap:6px;border-bottom:.5px solid var(--tbdr);}',
+    '.mac-dots{display:flex;gap:5px;flex-shrink:0;}',
+    '.mac-dot{width:8px;height:8px;border-radius:50%;}',
+    '.mac-title{font-family:"DM Mono",monospace;font-size:8px;color:var(--td);margin:0 auto;}',
+    '.stp-strip{display:flex;flex-direction:column;gap:5px;flex-shrink:0;}',
+    '.stp-bar{height:2px;background:var(--grey-2);border-radius:2px;overflow:hidden;}',
+    '.stp-fill{height:100%;width:0%;background:var(--acc);transition:width .4s cubic-bezier(.4,0,.2,1);border-radius:2px;}',
+    '.stp-steps{display:flex;gap:4px;}',
+    '.stp-step{display:flex;align-items:center;gap:4px;flex:1;cursor:default;}',
+    '.stp-num{width:14px;height:14px;border-radius:50%;background:var(--grey-2);color:var(--tx3);font-size:8px;font-family:"DM Mono",monospace;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .3s,color .3s;}',
+    '.stp-lbl{font-size:8px;color:var(--tx3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:color .3s;}',
+    '.stp-step.stp-active .stp-num{background:var(--acc);color:white;}',
+    '.stp-step.stp-active .stp-lbl{color:var(--tx);}',
+    '.stp-step.stp-done .stp-num{background:var(--g);color:white;}',
+    '.stp-step.stp-done .stp-lbl{color:var(--tx2);}',
+    '.ba-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}',
+    '.ba-before{background:var(--grey-1);border:.5px solid var(--grey-2);padding:8px 10px;display:flex;flex-direction:column;gap:5px;}',
+    '.ba-after{background:var(--acc-dim);border:.5px solid var(--acc-b);padding:8px 10px;display:flex;flex-direction:column;gap:5px;}',
+    '.ba-label{font-family:"DM Mono",monospace;font-size:8px;color:var(--tx);display:flex;align-items:center;gap:5px;font-weight:500;}',
+    '.ba-text{font-size:9px;color:var(--tx2);line-height:1.6;}',
+    '@keyframes bl{0%,100%{opacity:1}50%{opacity:0}}',
+    '@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}',
+    '@keyframes ck-wave{0%,100%{transform:scaleY(.5)}50%{transform:scaleY(1)}}',
+  ].join('');
+  document.head.appendChild(style);
+})();
+</script>
+</body>
+</html>
