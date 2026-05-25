@@ -1242,7 +1242,7 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
             <span style="font-family:'DM Mono',monospace;font-size:9px;color:var(--td);margin-left:4px;">Terminal — RMSNorm-910B</span>
           </div>
           <div style="flex:1;padding:10px 14px;font-family:'DM Mono',monospace;font-size:9px;line-height:1.85;display:flex;flex-direction:column;overflow:hidden;">
-            <div><span style="color:var(--td);">$ </span><span style="color:var(--tw);">hai start</span><span style="color:var(--td);"> --workspace RMSNorm-910B</span></div>
+            <div><span style="color:var(--ta);">❯ </span><span style="color:var(--tw);">启动 RMSNorm-910B 工作空间</span></div>
             <div id="mem-s1" style="display:none;margin-top:7px;">
               <div style="color:var(--ta);font-size:8px;letter-spacing:.07em;margin-bottom:3px;">▸ 会话上下文 · · · · · · · · · · · · · · ✓</div>
               <div style="color:var(--td);">&nbsp;&nbsp;FlashAttention v2&nbsp;&nbsp;&nbsp;<span style="color:var(--tg);">tile_m=128 · CUBE=74.3%</span></div>
@@ -1453,7 +1453,7 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
               <div id="voice-ai-result" style="display:none;margin-top:4px;">
                 <div style="color:var(--tg);">[HAI] CUBE 利用率低 → tile_m=64 偏小，data_move 占主导</div>
                 <div style="color:var(--tg);">      建议: tile_m 调整至 128，预计 CUBE 提升至 ~58%</div>
-                <div style="border-top:.5px solid rgba(255,255,255,.35);border-bottom:.5px solid rgba(255,255,255,.35);padding:3px 0;margin:3px 0;color:rgba(255,255,255,.7);">$ hai optimize --tile_m 128<span style="animation:bl .9s step-end infinite;color:rgba(255,255,255,.7);">▌</span></div>
+                <div style="border-top:.5px solid rgba(255,255,255,.35);border-bottom:.5px solid rgba(255,255,255,.35);padding:3px 0;margin:3px 0;color:rgba(255,255,255,.7);">❯ 将 tile_m 设为 128<span style="animation:bl .9s step-end infinite;color:rgba(255,255,255,.7);">▌</span></div>
               </div>
             </div>
           </div>
@@ -3295,7 +3295,7 @@ function setupSlideSteps(secId, stripId, defs) {
       if (wavebar) wavebar.style.display = 'none';
       const term = document.getElementById('voice-terminal');
       if (term) term.style.display = 'flex';
-      if (aiText) typeText(aiText, 'hai ask --ctx msprof:CUBE "这里为什么这么低？"', 38, function() {
+      if (aiText) typeText(aiText, '这里为什么这么低？', 38, function() {
         const result = document.getElementById('voice-ai-result');
         if (result) { result.style.display = 'block'; }
       });
@@ -3391,8 +3391,8 @@ function setupSlideSteps(secId, stripId, defs) {
 
   function resetAll() { resetCol1(); resetCol2(); resetCol3(); waveActive=[false,false,false]; updateDim(); }
 
-  /* ── Column 1: 发送 ── */
-  function animCol1(myGen) {
+  /* ── Column 1: 发送 — sequential, calls onDone when cycle ends ── */
+  function animCol1(myGen, onDone) {
     resetCol1();
     setTimeout(function() {
       if (gen !== myGen) return;
@@ -3423,12 +3423,12 @@ function setupSlideSteps(secId, stripId, defs) {
     }, 2450);
     setTimeout(function() {
       if (gen !== myGen) return;
-      animCol1(myGen);
+      if (onDone) onDone();
     }, 4600);
   }
 
-  /* ── Column 2: 写入 ── */
-  function animCol2(myGen) {
+  /* ── Column 2: 写入 — sequential ── */
+  function animCol2(myGen, onDone) {
     resetCol2();
     setTimeout(function() {
       if (gen !== myGen) return;
@@ -3457,12 +3457,12 @@ function setupSlideSteps(secId, stripId, defs) {
     }, 2800);
     setTimeout(function() {
       if (gen !== myGen) return;
-      animCol2(myGen);
+      if (onDone) onDone();
     }, 5400);
   }
 
-  /* ── Column 3: 编辑面板 ── */
-  function animCol3(myGen) {
+  /* ── Column 3: 编辑面板 — sequential ── */
+  function animCol3(myGen, onDone) {
     resetCol3();
     setTimeout(function() {
       if (gen !== myGen) return;
@@ -3493,14 +3493,26 @@ function setupSlideSteps(secId, stripId, defs) {
     }, 2500);
     setTimeout(function() {
       if (gen !== myGen) return;
-      animCol3(myGen);
+      if (onDone) onDone();
     }, 6200);
   }
 
+  /* Sequential chain: col1 → col2 → col3 → repeat */
   function startAll(myGen) {
-    animCol1(myGen);
-    setTimeout(function() { if (gen === myGen) animCol2(myGen); }, 1500);
-    setTimeout(function() { if (gen === myGen) animCol3(myGen); }, 3000);
+    function loop() {
+      if (gen !== myGen) return;
+      animCol1(myGen, function() {
+        if (gen !== myGen) return;
+        animCol2(myGen, function() {
+          if (gen !== myGen) return;
+          animCol3(myGen, function() {
+            if (gen !== myGen) return;
+            loop();
+          });
+        });
+      });
+    }
+    loop();
   }
 
   function restart() {

@@ -159,7 +159,7 @@ body{background:var(--bg);color:var(--tx);font-family:'Noto Sans SC',sans-serif;
           </div>
           <!-- output stream -->
           <div style="flex:1;padding:10px 12px;display:flex;flex-direction:column;gap:4px;overflow:hidden;min-height:0;max-height:150px;">
-            <div style="font-size:8px;color:#828296;">$ hai optimize --target cube_util &gt; 70%</div>
+            <div style="font-size:8px;color:#828296;">❯ 优化目标：cube 利用率超过 70%</div>
             <div style="font-size:8px;color:var(--acc);">▸ 分析 msprof 报告...</div>
             <div style="font-size:8px;color:var(--td);">  CUBE=38% · Vec=87% · BW=84%</div>
             <div style="background:rgba(0,47,167,.07);border:.5px solid rgba(0,47,167,.2);padding:4px 8px;display:flex;align-items:center;gap:6px;">
@@ -270,7 +270,7 @@ body{background:var(--bg);color:var(--tx);font-family:'Noto Sans SC',sans-serif;
             <!-- Zone B: Output stream -->
             <div style="flex:1;padding:10px 14px;overflow:hidden;display:flex;flex-direction:column;gap:5px;min-height:0;">
               <div style="font-family:'DM Mono',monospace;font-size:8.5px;">
-                <span style="color:#828296;">$ </span><span style="color:#C8C8DC;">hai optimize --op RMSNorm --target cube_util &gt; 0.70</span>
+                <span style="color:var(--ta);">❯ </span><span style="color:#C8C8DC;">优化 RMSNorm 算子，目标 cube 利用率 ≥ 70%</span>
               </div>
               <div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--ta);">▸ 读取 msprof 报告...</div>
               <!-- Read tool call - collapsed -->
@@ -405,7 +405,7 @@ body{background:var(--bg);color:var(--tx);font-family:'Noto Sans SC',sans-serif;
             <div style="flex:1;padding:12px 14px;overflow:hidden;display:flex;flex-direction:column;gap:5px;">
               <!-- Screen 1 -->
               <div id="sb-s1" style="display:flex;flex-direction:column;gap:5px;">
-                <div style="font-family:'DM Mono',monospace;font-size:8.5px;color:#828296;">$ hai optimize --op RMSNorm</div>
+                <div style="font-family:'DM Mono',monospace;font-size:8.5px;color:#828296;">❯ 优化 RMSNorm 算子</div>
                 <div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--ta);">▸ tbe-gen: tile_m 迭代中...</div>
                 <div style="background:rgba(0,47,167,.06);border:.5px solid rgba(0,47,167,.2);border-left:2px solid var(--acc);padding:5px 8px;font-family:'DM Mono',monospace;font-size:7.5px;">
                   <div style="display:flex;justify-content:space-between;"><span style="color:var(--ta);">WRITE</span><span style="color:#828296;">Stage 04/06</span></div>
@@ -510,7 +510,7 @@ body{background:var(--bg);color:var(--tx);font-family:'Noto Sans SC',sans-serif;
             </div>
             <!-- Output area (abbreviated) -->
             <div style="padding:12px 14px;font-family:'DM Mono',monospace;font-size:8.5px;color:#828296;flex:none;">
-              <div>$ hai optimize --op RMSNorm</div>
+              <div>❯ 优化 RMSNorm 算子</div>
               <div style="color:var(--tg);margin-top:4px;">✓ tile_m=128 · CUBE 38% → 72% · 迭代完成</div>
             </div>
             <!-- INPUT AREA - 3 rows -->
@@ -634,7 +634,7 @@ body{background:var(--bg);color:var(--tx);font-family:'Noto Sans SC',sans-serif;
             </div>
             <div id="out-stream" style="padding:10px 14px;font-family:'DM Mono',monospace;font-size:8px;display:flex;flex-direction:column;gap:4px;min-height:220px;">
               <!-- Read block (always shown) -->
-              <div style="color:var(--td);">$ hai optimize --op RMSNorm --target 910B</div>
+              <div><span style="color:var(--ta);">❯</span><span style="color:var(--td);"> 优化 RMSNorm 算子，适配 910B</span></div>
               <div id="out-think" style="margin:2px 0;border:.5px solid rgba(0,47,167,.2);background:rgba(0,47,167,.04);padding:4px 8px;border-radius:2px;">
                 <div style="display:flex;align-items:center;gap:6px;cursor:pointer;">
                   <span style="color:var(--ta);font-size:7px;">▶</span>
@@ -747,7 +747,7 @@ body{background:var(--bg);color:var(--tx);font-family:'Noto Sans SC',sans-serif;
               <span class="mac-title">hai — 主终端</span>
             </div>
             <div id="exec-body" style="padding:10px 14px;font-family:'DM Mono',monospace;font-size:8px;min-height:180px;display:flex;flex-direction:column;gap:3px;">
-              <div style="color:var(--td);">$ hai optimize --op RMSNorm</div>
+              <div style="color:var(--td);">❯ 优化 RMSNorm 算子</div>
               <!-- S2 content -->
               <div id="exec-s2">
                 <div style="color:var(--tb2);margin-top:4px;">▸ tile_m: 64 → 128 → 192 迭代中…</div>
@@ -1094,7 +1094,7 @@ body{background:var(--bg);color:var(--tx);font-family:'Noto Sans SC',sans-serif;
             <div id="sess-body" style="padding:10px 14px;font-family:'DM Mono',monospace;font-size:8px;min-height:172px;position:relative;display:flex;flex-direction:column;gap:3px;overflow:hidden;">
               <!-- Session 1: RMSNorm -->
               <div id="sess-c1">
-                <div style="color:var(--td);">$ hai optimize --op RMSNorm</div>
+                <div style="color:var(--td);">❯ 优化 RMSNorm 算子</div>
                 <div style="color:var(--ta);margin-top:3px;">▸ tile_m: 迭代中…</div>
                 <div style="color:var(--td);">▸ perf-bench: 运行基准测试…</div>
                 <div style="margin-top:6px;display:flex;gap:8px;align-items:center;">
@@ -1105,7 +1105,7 @@ body{background:var(--bg);color:var(--tx);font-family:'Noto Sans SC',sans-serif;
               </div>
               <!-- Session 2: FlashAttn done -->
               <div id="sess-c2" style="display:none;">
-                <div style="color:var(--td);">$ hai optimize --op FlashAttn</div>
+                <div><span style="color:var(--ta);">❯</span><span style="color:var(--td);"> 优化 FlashAttn 算子</span></div>
                 <div style="color:var(--tg);margin-top:3px;">✓ tile_m=128 收敛，cube_util 74.2%</div>
                 <div style="color:var(--tg);">✓ 精度验证通过，max_error 6.1e-6</div>
                 <div style="color:var(--tg);">✓ 兼容 910B / 310P</div>
@@ -1321,7 +1321,7 @@ body{background:var(--bg);color:var(--tx);font-family:'Noto Sans SC',sans-serif;
               <span class="mac-title">hai — 错误处理演示</span>
             </div>
             <div id="err-body" style="padding:10px 14px;font-family:'DM Mono',monospace;font-size:8px;min-height:190px;display:flex;flex-direction:column;gap:3px;">
-              <div style="color:var(--td);">$ hai optimize --op RMSNorm</div>
+              <div style="color:var(--td);">❯ 优化 RMSNorm 算子</div>
               <!-- Error states -->
               <div id="err-e1" style="margin-top:4px;">
                 <div style="color:var(--tr);">✗ API 连接超时（尝试 1/3）</div>
@@ -1900,7 +1900,7 @@ setupSlideSteps('s-input', 'stp-input', [
     },
     act: function() {
       var text = document.getElementById('inp-text');
-      if (text) text.textContent = 'hai optimize --op RMSNorm';
+      if (text) text.textContent = '优化 RMSNorm 算子';
     }
   },
   {
