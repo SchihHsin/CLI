@@ -511,6 +511,9 @@ grep -n "id=\"s-m" file.html | head    # 快速列出所有 section
 | `75a841c` | 新增 s-m2e 情感感知：语音情绪识别（能量/语速/音调）→ 符号（⚡/‼/≈/·）→ AI 策略自适应；3步骤 Mockup；Stage 02 编号 1/3→1/4, 2/3→2/4, 3/3→4/4 |
 | `5483c0c` | 新增 s-m2f Prompt 记忆补全：2字触发 ghost text → Tab 补全 → 历史面板；Stage 02 编号 x/4→x/5 |
 | `4f76c73` | 重设计 s-m5b：AI推理透视改为"超时/卡住时按需展开"——正常隐藏推理，超时出现展开提示，推理链三态显示，阻塞定位+干预选项 |
+| `5f5f673` | 封面标题去昇腾算子限定：cover-tag/title/sub → HAI · Developer × AI Interaction / 开发者/与 AI/协作新范式；HAI 卡片 eyebrow 同步 |
+| `d97a668` | s-cli-arch State 1 ORCA wordmark 升级：DM Mono 11px → **Silkscreen 18px**（像素风）+ 渐变（#E8E4FF→#A78BFA→#6B38D4）+ drop-shadow 像素阴影 |
+| `0287083` | 终端主题色清理：21处遗留 `var(--acc)` 蓝 → `var(--ta)` 紫（CSS类4个 + HTML终端区域14处 + JS 3处），涉及第5/8/9/12/13/14/16/22页 |
 
 ### ai-dev-tools-design.html 专项工作（更早）
 
