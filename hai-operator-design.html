@@ -309,111 +309,129 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
     <span class="sub">背景 · 设计方向</span>
     <span class="main">三道墙 — 代码是手段，性能与正确性才是产出</span>
   </div>
-  <div class="inner" style="padding-bottom:0;">
-    <div class="dp-layout" style="gap:28px;">
+  <div class="inner" style="flex-direction:column;gap:0;padding-bottom:0;">
 
-      <!-- ── LEFT ── -->
-      <div class="dp-left" style="gap:8px;display:flex;flex-direction:column;">
+    <!-- ── 三列痛点（大卡片）── -->
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;flex:1;min-height:0;align-items:stretch;overflow:hidden;">
 
-        <!-- Three pain points: compact rows -->
-        <div style="display:flex;flex-direction:column;gap:5px;">
-          <div style="display:flex;align-items:center;gap:14px;padding:9px 14px;background:var(--sur);border:.5px solid var(--grey-2);">
-            <div style="font-family:'Inter','Helvetica Neue',sans-serif;font-size:30px;font-weight:200;color:var(--r);letter-spacing:-.04em;line-height:1;min-width:58px;">3d+</div>
-            <div>
-              <div style="font-size:11px;color:var(--tx);font-weight:500;margin-bottom:1px;">错误定位难</div>
-              <div style="font-size:9px;color:var(--tx2);line-height:1.5;">CANN 运行时 format 不兼容 / UB 溢出 / shape 推导失败多类型混叠，平均排查 3 天以上，知识无法沉淀复用。</div>
-            </div>
-          </div>
-          <div style="display:flex;align-items:center;gap:14px;padding:9px 14px;background:var(--sur);border:.5px solid var(--grey-2);">
-            <div style="font-family:'Inter','Helvetica Neue',sans-serif;font-size:30px;font-weight:200;color:var(--r);letter-spacing:-.04em;line-height:1;min-width:58px;">62%</div>
-            <div>
-              <div style="font-size:11px;color:var(--tx);font-weight:500;margin-bottom:1px;">性能调优盲目</div>
-              <div style="font-size:9px;color:var(--tx2);line-height:1.5;">AI Core 平均利用率仅 38%，理论峰值 62% 被浪费。msprof 数据繁多，CUBE/VECTOR/内存带宽耦合分析全靠人工。</div>
-            </div>
-          </div>
-          <div style="display:flex;align-items:center;gap:14px;padding:9px 14px;background:var(--sur);border:.5px solid var(--grey-2);">
-            <div style="font-family:'Inter','Helvetica Neue',sans-serif;font-size:30px;font-weight:200;color:var(--r);letter-spacing:-.04em;line-height:1;min-width:58px;">&gt;80%</div>
-            <div>
-              <div style="font-size:11px;color:var(--tx);font-weight:500;margin-bottom:1px;">多硬件适配重复</div>
-              <div style="font-size:9px;color:var(--tx2);line-height:1.5;">910B 完成的算子移植到 310P，shape 推导/dtype 约束/性能调优三项核心工作需重写，工作量重复超过 80%。</div>
-            </div>
+      <!-- 01 错误定位难 -->
+      <div style="display:flex;flex-direction:column;gap:10px;background:var(--sur);border:.5px solid var(--grey-2);padding:18px 16px;overflow:hidden;">
+        <div style="display:flex;align-items:flex-end;gap:8px;padding-bottom:10px;border-bottom:.5px solid var(--grey-2);">
+          <div style="font-family:'Inter','Helvetica Neue',sans-serif;font-size:36px;font-weight:200;color:var(--r);letter-spacing:-.04em;line-height:1;">3d+</div>
+          <div style="display:flex;flex-direction:column;gap:1px;">
+            <div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--r);letter-spacing:.1em;">01</div>
+            <div style="font-size:11px;color:var(--tx);font-weight:500;">错误定位难</div>
           </div>
         </div>
-
-        <!-- Focus shift: 过去 vs AI时代 -->
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:7px;">
-          <div style="background:var(--grey-1);border:.5px solid var(--grey-2);padding:10px 12px;">
-            <div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--r);letter-spacing:.08em;margin-bottom:5px;">过去关注</div>
-            <div style="font-size:9.5px;color:var(--tx2);line-height:1.65;">TBE DSL 语法是否正确<br>data_move 顺序对不对<br>tile_m/tile_n 怎么设<br>手动计算 UB 大小</div>
+        <div style="background:var(--tb);border:.5px solid var(--tbdr);padding:9px 10px;font-family:'DM Mono',monospace;font-size:8px;line-height:1.75;flex:1;min-height:0;overflow:hidden;">
+          <div style="color:var(--tr);">[RuntimeError] format mismatch · RMSNorm</div>
+          <div style="color:var(--td);">  input: NHWC</div>
+          <div style="color:var(--tr);">  expected: FRACTAL_NZ</div>
+          <div style="color:var(--td);">  at tbe_compile.py:2847</div>
+          <div style="color:var(--td);">  at aicore_build.cc:341</div>
+          <div style="color:var(--td);margin-top:6px;">  ...</div>
+          <div style="color:var(--ty);margin-top:6px;">← 框架内部栈，无法溯源</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:4px;">
+          <div style="display:flex;gap:6px;align-items:flex-start;">
+            <span style="font-family:'DM Mono',monospace;font-size:8px;color:var(--r);margin-top:1px;">—</span>
+            <span style="font-size:9.5px;color:var(--tx2);line-height:1.5;">CANN 运行时错误往往是 format 不兼容、UB 溢出、shape 推导失败等多种类型混叠，开发者难以快速定位根因。</span>
           </div>
-          <div style="background:var(--acc-dim);border:.5px solid var(--acc-b);padding:10px 12px;">
-            <div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--acc);letter-spacing:.08em;margin-bottom:5px;">AI 时代关注</div>
-            <div style="font-size:9.5px;color:var(--tx2);line-height:1.65;">CUBE 利用率达没达标<br>数值误差在范围内吗<br>310P 兼容性通过了吗<br>与参考实现的精度差</div>
+          <div style="display:flex;gap:6px;align-items:flex-start;">
+            <span style="font-family:'DM Mono',monospace;font-size:8px;color:var(--r);margin-top:1px;">—</span>
+            <span style="font-size:9.5px;color:var(--tx2);line-height:1.5;">平均排查时长 3 天以上，且知识无法沉淀复用。</span>
           </div>
         </div>
-
-        <!-- HAI 设计原则 -->
-        <div style="background:var(--acc);padding:10px 14px;margin-top:auto;flex-shrink:0;">
-          <div style="font-family:'DM Mono',monospace;font-size:8px;color:rgba(255,255,255,.55);letter-spacing:.08em;margin-bottom:3px;">◆ HAI 设计原则</div>
-          <div style="font-size:10px;color:rgba(255,255,255,.9);line-height:1.65;">让开发者只需表达「这个算子需要做什么、达到什么指标」——硬件格式适配、性能调优、多型号验证由 AI 协作完成。</div>
-        </div>
-
       </div>
 
-      <!-- ── RIGHT: terminal comparison mockup ── -->
-      <div class="dp-right">
-        <div class="mockup-label">范式对比 — 同一个 RMSNorm 算子</div>
-        <div style="display:grid;grid-template-rows:1fr 1fr;gap:8px;flex:1;min-height:0;margin-top:8px;">
-
-          <!-- 过去: 手写TBE -->
-          <div style="background:var(--tb);border:.5px solid var(--tbdr);border-radius:8px;overflow:hidden;display:flex;flex-direction:column;">
-            <div style="background:var(--tbar);padding:5px 10px;border-bottom:.5px solid var(--tbdr);display:flex;align-items:center;gap:6px;flex-shrink:0;">
-              <div style="display:flex;gap:4px;">
-                <div style="width:7px;height:7px;border-radius:50%;background:#FF5F57;"></div>
-                <div style="width:7px;height:7px;border-radius:50%;background:#FEBC2E;"></div>
-                <div style="width:7px;height:7px;border-radius:50%;background:#28C840;"></div>
-              </div>
-              <span style="font-family:'DM Mono',monospace;font-size:7px;color:var(--td);flex:1;text-align:center;">过去 · 开发者手写 TBE</span>
-              <span style="font-family:'DM Mono',monospace;font-size:7px;color:var(--ty);">~3天</span>
-            </div>
-            <div style="padding:8px 12px;font-family:'DM Mono',monospace;font-size:8px;line-height:1.7;flex:1;overflow:hidden;">
-              <div style="color:var(--td);"># 手动计算 UB 分配</div>
-              <div><span style="color:var(--tp);">ub_size</span> = <span style="color:var(--tg);">128</span> * <span style="color:var(--tg);">1024</span> <span style="color:var(--td);"># 128KB</span></div>
-              <div><span style="color:var(--tp);">tile_m</span> = <span style="color:var(--tg);">64</span>  <span style="color:var(--td);"># 反复试验得出</span></div>
-              <div><span style="color:var(--tw);">x_ub</span> = <span style="color:var(--tb2);">tik.Tensor</span>(<span style="color:var(--ty);">"float16"</span>, ...)</div>
-              <div style="color:var(--td);"># 手动 data_move, 容易出错</div>
-              <div><span style="color:var(--tw);">tik.data_move</span>(x_ub, x_gm, ...)</div>
-              <div style="color:var(--td);margin-top:6px;"># 310P 适配：重写 shape 推导 + 重调参数</div>
-              <div style="color:var(--ty);">← 相同逻辑写两遍，知识无法复用</div>
-            </div>
+      <!-- 02 性能调优盲目 -->
+      <div style="display:flex;flex-direction:column;gap:10px;background:var(--sur);border:.5px solid var(--grey-2);padding:18px 16px;overflow:hidden;">
+        <div style="display:flex;align-items:flex-end;gap:8px;padding-bottom:10px;border-bottom:.5px solid var(--grey-2);">
+          <div style="font-family:'Inter','Helvetica Neue',sans-serif;font-size:36px;font-weight:200;color:var(--r);letter-spacing:-.04em;line-height:1;">62%</div>
+          <div style="display:flex;flex-direction:column;gap:1px;">
+            <div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--r);letter-spacing:.1em;">02</div>
+            <div style="font-size:11px;color:var(--tx);font-weight:500;">性能调优盲目</div>
           </div>
-
-          <!-- ORCA: 描述意图 -->
-          <div style="background:var(--tb);border:.5px solid rgba(167,139,250,.22);border-top:2px solid var(--ta);border-radius:8px;overflow:hidden;display:flex;flex-direction:column;">
-            <div style="background:var(--tbar);padding:5px 10px;border-bottom:.5px solid var(--tbdr);display:flex;align-items:center;gap:6px;flex-shrink:0;">
-              <div style="display:flex;gap:4px;">
-                <div style="width:7px;height:7px;border-radius:50%;background:#FF5F57;"></div>
-                <div style="width:7px;height:7px;border-radius:50%;background:#FEBC2E;"></div>
-                <div style="width:7px;height:7px;border-radius:50%;background:#28C840;"></div>
-              </div>
-              <span style="font-family:'DM Mono',monospace;font-size:7px;color:var(--ta);flex:1;text-align:center;">ORCA · 描述意图，AI 生成</span>
-              <span style="font-family:'DM Mono',monospace;font-size:7px;color:var(--tg);">~20分钟</span>
-            </div>
-            <div style="padding:8px 12px;font-family:'DM Mono',monospace;font-size:8.5px;line-height:1.7;flex:1;overflow:hidden;">
-              <div><span style="color:var(--ta);">/op</span> <span style="color:var(--tw);">RMSNorm 前向</span></div>
-              <div style="color:var(--td);">  input: [B, S, H] float16/bfloat16</div>
-              <div style="color:var(--td);">  target: 910B + 310P · cube_util &gt; 65%</div>
-              <div style="color:var(--tg);margin-top:4px;">✓ AI 生成 TBE · 已完成 UB 切分</div>
-              <div style="color:var(--tg);">✓ 精度误差 4.1e-6 · 通过验收</div>
-              <div style="color:var(--tg);">✓ 310P 自动适配 · 无需手动重写</div>
-              <div style="color:var(--ta);margin-top:4px;">→ 经验写入团队知识库，下次复用</div>
-            </div>
+        </div>
+        <div style="background:var(--tb);border:.5px solid var(--tbdr);padding:9px 10px;font-family:'DM Mono',monospace;font-size:8px;line-height:1.75;flex:1;min-height:0;overflow:hidden;">
+          <div style="color:var(--tw);">AI Core 利用率: <span style="color:var(--ty);">38%</span></div>
+          <div style="color:var(--tw);">CUBE 单元:       <span style="color:var(--tr);">21%</span></div>
+          <div style="color:var(--tw);">VECTOR 单元:     <span style="color:var(--tg);">91%</span></div>
+          <div style="margin-top:6px;color:var(--td);"># 尝试 1: 调大 tile_m → 无改善</div>
+          <div style="color:var(--td);"># 尝试 2: 换 ub 分配 → 更慢</div>
+          <div style="color:var(--ty);margin-top:6px;">← 瓶颈在哪？不知道</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:4px;">
+          <div style="display:flex;gap:6px;align-items:flex-start;">
+            <span style="font-family:'DM Mono',monospace;font-size:8px;color:var(--r);margin-top:1px;">—</span>
+            <span style="font-size:9.5px;color:var(--tx2);line-height:1.5;">msprof 数据项繁多，CUBE/VECTOR/内存带宽耦合分析全靠人工，结论难以量化。</span>
           </div>
+          <div style="display:flex;gap:6px;align-items:flex-start;">
+            <span style="font-family:'DM Mono',monospace;font-size:8px;color:var(--r);margin-top:1px;">—</span>
+            <span style="font-size:9.5px;color:var(--tx2);line-height:1.5;">AI Core 平均利用率仅 38%，理论峰值性能 62% 被浪费。</span>
+          </div>
+        </div>
+      </div>
 
+      <!-- 03 多硬件适配重复 -->
+      <div style="display:flex;flex-direction:column;gap:10px;background:var(--sur);border:.5px solid var(--grey-2);padding:18px 16px;overflow:hidden;">
+        <div style="display:flex;align-items:flex-end;gap:8px;padding-bottom:10px;border-bottom:.5px solid var(--grey-2);">
+          <div style="font-family:'Inter','Helvetica Neue',sans-serif;font-size:36px;font-weight:200;color:var(--r);letter-spacing:-.04em;line-height:1;">&gt;80%</div>
+          <div style="display:flex;flex-direction:column;gap:1px;">
+            <div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--r);letter-spacing:.1em;">03</div>
+            <div style="font-size:11px;color:var(--tx);font-weight:500;">多硬件适配重复</div>
+          </div>
+        </div>
+        <div style="background:var(--sur);border:.5px solid var(--grey-2);padding:9px 10px;flex:1;min-height:0;overflow:hidden;">
+          <div style="display:grid;grid-template-columns:1.4fr .8fr .8fr;gap:4px;font-family:'DM Mono',monospace;font-size:8px;">
+            <div style="color:var(--tx3);padding-bottom:5px;border-bottom:.5px solid var(--grey-2);">任务</div>
+            <div style="color:var(--tx3);padding-bottom:5px;border-bottom:.5px solid var(--grey-2);text-align:center;">910B</div>
+            <div style="color:var(--tx3);padding-bottom:5px;border-bottom:.5px solid var(--grey-2);text-align:center;">310P</div>
+            <div style="color:var(--tx2);padding:4px 0;">shape 推导</div>
+            <div style="color:var(--r);text-align:center;padding:4px 0;">重写</div>
+            <div style="color:var(--r);text-align:center;padding:4px 0;">重写</div>
+            <div style="color:var(--tx2);padding:4px 0;">dtype 约束</div>
+            <div style="color:var(--g);text-align:center;padding:4px 0;">✓</div>
+            <div style="color:var(--r);text-align:center;padding:4px 0;">重写</div>
+            <div style="color:var(--tx2);padding:4px 0;">性能调优</div>
+            <div style="color:var(--g);text-align:center;padding:4px 0;">✓</div>
+            <div style="color:var(--y);text-align:center;padding:4px 0;">重调</div>
+            <div style="color:var(--tx2);padding:4px 0;">集成测试</div>
+            <div style="color:var(--g);text-align:center;padding:4px 0;">✓</div>
+            <div style="color:var(--td);text-align:center;padding:4px 0;">等待</div>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:4px;">
+          <div style="display:flex;gap:6px;align-items:flex-start;">
+            <span style="font-family:'DM Mono',monospace;font-size:8px;color:var(--r);margin-top:1px;">—</span>
+            <span style="font-size:9.5px;color:var(--tx2);line-height:1.5;">910B 完成的算子移植到 310P，三项核心工作需要重写，工作量重复超过 80%。</span>
+          </div>
+          <div style="display:flex;gap:6px;align-items:flex-start;">
+            <span style="font-family:'DM Mono',monospace;font-size:8px;color:var(--r);margin-top:1px;">—</span>
+            <span style="font-size:9.5px;color:var(--tx2);line-height:1.5;">团队内部的硬件知识无法以结构化形式沉淀和共享。</span>
+          </div>
         </div>
       </div>
 
     </div>
+
+    <!-- ── 底部：过去关注 vs AI时代关注 + 设计原则 ── -->
+    <div style="display:grid;grid-template-columns:1fr 1fr 2fr;gap:0;margin-top:12px;flex-shrink:0;border:.5px solid var(--grey-2);">
+      <div style="padding:10px 14px;border-right:.5px solid var(--grey-2);">
+        <div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--r);letter-spacing:.08em;margin-bottom:5px;">过去关注</div>
+        <div style="font-size:9.5px;color:var(--tx2);line-height:1.65;">TBE DSL 语法是否正确 · data_move 顺序对不对 · tile_m/tile_n 怎么设 · 手动计算 UB 大小</div>
+      </div>
+      <div style="padding:10px 14px;background:var(--acc-dim);border-right:.5px solid var(--acc-b);">
+        <div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--acc);letter-spacing:.08em;margin-bottom:5px;">AI 时代关注</div>
+        <div style="font-size:9.5px;color:var(--tx2);line-height:1.65;">CUBE 利用率达没达标 · 数值误差在范围内吗 · 310P 兼容性通过了吗 · 与参考实现的精度差</div>
+      </div>
+      <div style="padding:10px 16px;background:var(--acc);display:flex;align-items:center;gap:12px;">
+        <div style="font-family:'DM Mono',monospace;font-size:8px;color:rgba(255,255,255,.5);white-space:nowrap;letter-spacing:.08em;">HAI 设计原则</div>
+        <div style="width:.5px;height:20px;background:rgba(255,255,255,.2);flex-shrink:0;"></div>
+        <div style="font-size:10px;color:rgba(255,255,255,.9);line-height:1.6;">让开发者只需表达算子应该做什么、达到什么指标——硬件格式适配、性能调优、多型号验证由 AI 协作完成。</div>
+      </div>
+    </div>
+
   </div>
 </div>
 <div class="sec" id="s-bg-signal" style="background:var(--bg);">
