@@ -24,7 +24,7 @@
 | 当前大小 | ~303,755 字符（持续增长） |
 | 场景 | CANN 昇腾算子开发（TBE DSL、format 不兼容、UB 溢出、910B/310P适配） |
 | 技术栈 | `tik.Tensor`、`tik.data_move`、msprof profiler、FRACTAL_NZ格式 |
-| 状态 | 主体完成，s-m3a 已删除；全局终端 Chrome 已标准化（2026-05-25） |
+| 状态 | 主体完成，s-m3a 已删除；全局终端 Chrome 已标准化（2026-05-25）；s-m2e 情感感知新增（2026-05-26） |
 
 ### 第三份材料（ORCA CLI 全流程设计体系）
 
@@ -506,6 +506,7 @@ grep -n "id=\"s-m" file.html | head    # 快速列出所有 section
 | `3767d06` | 产品更名 HAI → **ORCA**（Operator Runtime CANN Assistant）；State 1 新增 ORCA 欢迎屏（wordmark+全称+版本+快捷键）；终端面板外部标注产品名释义；State 2 加四态状态指示 ⟳/✓/✗/·（hai-cli-design.html + hai-operator-design.html 两文件同步） |
 | `247fd0e` | **s-cli-arch（第8页）独立窗口重设计**：5个状态从共享单窗口改为各自独立 macOS chrome + ORCA status bar + 内容区；Row1（S1→S2→S3）+ Row2（S4→S5，右对齐）双行排列；箭头列 28px 间隔；State 3 红色边框+RMSNorm ⚠ pulse 动画；State 5 绿色边框 |
 | `d72b055` | s-m4a（第9页）记忆自动加载重设计：不需要显式 `orca start` 命令，任意任务指令触发自动恢复；终端输入改为自然任务 `继续优化 RMSNorm`；s-m3b（第12页）Goal 命令改为中文自然语言输入，条件标签全部汉化 |
+| `75a841c` | 新增 s-m2e 情感感知：语音情绪识别（能量/语速/音调）→ 符号（⚡/‼/≈/·）→ AI 策略自适应；3步骤 Mockup；Stage 02 编号 1/3→1/4, 2/3→2/4, 3/3→4/4 |
 
 ### ai-dev-tools-design.html 专项工作（更早）
 
@@ -798,3 +799,4 @@ grid-template-rows: 1.5fr 1fr 1fr 1.3fr 1fr 1fr;
 | `window.reviewSetPhase(1/2/3)` | s-m5a | 切换tab: perf/prec/cstr |
 | `window.libSetPhase(1/2/3)` | s-m4b | 高亮算子库列/高亮调试库列/高亮推荐条 |
 | `window.trafficSetPhase(1/2/3)` | s-m1c | 黄灯（思考）/红黄闪（确认）/绿灯（完成）|
+| `window.moodSetPhase(1/2/3)` | s-m2e | 语音分析仪表盘/情绪徽章/AI 自适应响应 |
