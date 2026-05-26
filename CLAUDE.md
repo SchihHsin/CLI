@@ -21,7 +21,7 @@
 | 项 | 值 |
 |---|---|
 | 文件 | `/Users/hsin/Documents/Coding/CLI/hai-operator-design.html` |
-| 当前大小 | ~374,430 字符 / 5158 行（2026-05-26） |
+| 当前大小 | ~361,733 字符 / 4995 行（2026-05-27） |
 | 场景 | CANN 昇腾算子开发（TBE DSL、format 不兼容、UB 溢出、910B/310P适配） |
 | 技术栈 | `tik.Tensor`、`tik.data_move`、msprof profiler、FRACTAL_NZ格式 |
 | 状态 | 主体完成，s-m3a 已删除；新增 s-m2e 情感感知、s-m2f Prompt记忆补全；s-m5b 重设计为推理透视 |
@@ -211,12 +211,9 @@
 | 顺序 | ID | 标题 | 近似行号 |
 |---|---|---|---|
 | 1 | `s-cover` | 封面 | ~304 |
-| 2 | `s-bg` | 背景：信号扫描 | ~339 |
-| 3 | `s-bg2` | 背景：范式演进时间轴 | ~431 |
-| 3.3 | `s-bg-signal` | 行业验证 · 1/2 — AI 走向实体，硬件联动 | ~495 |
-| 3.4 | `s-bg-signal2` | 行业验证 · 2/2 — Agent 编排进化 | ~546 |
-| 3.5 | `s-bg3` | 代码是过程，结果才是产出物 | ~597 |
-| 3.6 | `s-bg-community` | 昇腾社区知识转化（预热/响应/积累 + Before/After） | ~670 |
+| 2 | `s-bg` | **背景·设计方向**（三道墙大卡片 + 底部过去/AI时代对比条 + HAI设计原则） | ~307 |
+| 3 | `s-bg-signal` | 行业验证 — AI 走向实体，硬件联动（s-bg-signal2 无导航点，紧随其后） | ~419 |
+| 4 | `s-bg-community` | 昇腾社区知识转化（预热/响应/积累 + Before/After） | 动态定位 |
 | 4 | `s-j-overview` | 用户旅程全景地图（5阶段×7维度，含社区知识行） | ~802 |
 | 5 | `s-m4a` | 记忆启动 — 跨会话上下文 | ~1046 |
 | 6 | `s-m2c` | 语音×光标 — 指着说话（三模式+浮动编辑面板）· Stage 02 · 1/5 | ~1424 |
@@ -514,6 +511,10 @@ grep -n "id=\"s-m" file.html | head    # 快速列出所有 section
 | `5f5f673` | 封面标题去昇腾算子限定：cover-tag/title/sub → HAI · Developer × AI Interaction / 开发者/与 AI/协作新范式；HAI 卡片 eyebrow 同步 |
 | `d97a668` | s-cli-arch State 1 ORCA wordmark 升级：DM Mono 11px → **Silkscreen 18px**（像素风）+ 渐变（#E8E4FF→#A78BFA→#6B38D4）+ drop-shadow 像素阴影 |
 | `0287083` | 终端主题色清理：21处遗留 `var(--acc)` 蓝 → `var(--ta)` 紫（CSS类4个 + HTML终端区域14处 + JS 3处），涉及第5/8/9/12/13/14/16/22页 |
+| `2439fe1` | 更新 CLAUDE.md：记录封面标题改版、ORCA wordmark 升级、终端主题色清理 |
+| `97a1f23` | s-m2e Y 确认按钮对比度修复：`var(--ta)` 浅紫白字（3:1）→ `#6B38D4` 深紫白字（10:1） |
+| `fb9c28d` | **结构精简**：删除 s-bg2（范式演进）和 s-bg3（设计方向），将 s-bg3 精华合并进 s-bg；navSections 同步移除两项 |
+| `79518c0` | **s-bg 最终版**：恢复三道墙大卡片（36px数字+终端mockup），底部换为过去关注/AI时代关注横排对比条 + HAI设计原则蓝底栏；去掉右侧终端对比 mockup |
 
 ### ai-dev-tools-design.html 专项工作（更早）
 
@@ -568,7 +569,7 @@ grep -n "id=\"s-m" file.html | head    # 快速列出所有 section
 
 ### Section 顺序（当前）
 ```
-s-cover → s-bg → s-bg2 → s-bg-signal（行业验证1/2）→ s-bg-signal2（行业验证2/2）→ s-bg3
+s-cover → s-bg（背景·设计方向）→ s-bg-signal（行业验证1/2）→ s-bg-signal2（行业验证2/2）
 → s-bg-community（社区知识转化）
 → s-j-overview
 → s-m4a（记忆启动）
@@ -638,10 +639,10 @@ box-shadow:0 2px 20px rgba(0,47,167,.10),0 1px 0 rgba(255,255,255,.8) inset,0 0 
 - 导航点颜色：`rgba(0,47,167,.22)`（非灰色），hover → `rgba(0,47,167,.55)`
 - 注意：不要用纯白 `rgba(255,255,255,.65)` 背景 + 纯白边框，白页上会完全消失
 
-### s-bg2 范式演进（已完成）
-- 布局：4张浮动卡片，gap:16px，高度拉伸齐平
-- Cards 01-03：`background:var(--sur)` 白底，`.5px solid var(--grey-2)`
-- Card 04 ORCA：`background:var(--acc)` IKB 蓝，白色文字，flex:1.4
+### s-bg 背景·设计方向（2026-05-27 最终版）
+- 三道墙大卡片：3列 grid，36px 大数字 + 终端错误/数据 mockup + 说明文字
+- 底部三格横排：过去关注（灰底）| AI时代关注（紫色淡底）| HAI设计原则（IKB蓝底），grid-template-columns:1fr 1fr 2fr
+- 已删除 s-bg2（范式演进四时代卡片）和 s-bg3（设计方向），其内容精华（过去/AI时代对比）已并入本页
 
 ### s-sum 设计总结（已完成）
 - 上方4卡：SVG 线性图标，去掉数字序号 badge
