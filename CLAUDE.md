@@ -507,6 +507,7 @@ grep -n "id=\"s-m" file.html | head    # 快速列出所有 section
 | `247fd0e` | **s-cli-arch（第8页）独立窗口重设计**：5个状态从共享单窗口改为各自独立 macOS chrome + ORCA status bar + 内容区；Row1（S1→S2→S3）+ Row2（S4→S5，右对齐）双行排列；箭头列 28px 间隔；State 3 红色边框+RMSNorm ⚠ pulse 动画；State 5 绿色边框 |
 | `d72b055` | s-m4a（第9页）记忆自动加载重设计：不需要显式 `orca start` 命令，任意任务指令触发自动恢复；终端输入改为自然任务 `继续优化 RMSNorm`；s-m3b（第12页）Goal 命令改为中文自然语言输入，条件标签全部汉化 |
 | `75a841c` | 新增 s-m2e 情感感知：语音情绪识别（能量/语速/音调）→ 符号（⚡/‼/≈/·）→ AI 策略自适应；3步骤 Mockup；Stage 02 编号 1/3→1/4, 2/3→2/4, 3/3→4/4 |
+| `5483c0c` | 新增 s-m2f Prompt 记忆补全：2字触发 ghost text → Tab 补全 → 历史面板；Stage 02 编号 x/4→x/5 |
 
 ### ai-dev-tools-design.html 专项工作（更早）
 
@@ -800,3 +801,4 @@ grid-template-rows: 1.5fr 1fr 1fr 1.3fr 1fr 1fr;
 | `window.libSetPhase(1/2/3)` | s-m4b | 高亮算子库列/高亮调试库列/高亮推荐条 |
 | `window.trafficSetPhase(1/2/3)` | s-m1c | 黄灯（思考）/红黄闪（确认）/绿灯（完成）|
 | `window.moodSetPhase(1/2/3)` | s-m2e | 语音分析仪表盘/情绪徽章/AI 自适应响应 |
+| `window.promptSetPhase(1/2/3)` | s-m2f | ghost text 出现/Tab 补全确认/历史记忆面板 |
