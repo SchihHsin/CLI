@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HAI Cover · Huashu ASCII Field Preview</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600&family=JetBrains+Mono:wght@300;400;500;600&family=Noto+Sans+SC:wght@200;300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --accent:#002FA7;
+  --accent-deep:#001f78;
+  --accent-dark:#00124f;
+  --accent-bright:#5B7BFF;
+  --paper:#fafaf8;
+  --text-on:#fff;
+  --sans:"Inter","Noto Sans SC","PingFang SC","Microsoft YaHei UI",sans-serif;
+  --mono:"JetBrains Mono","DM Mono","SF Mono","Consolas",monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;height:100%;overflow:hidden;background:var(--accent);color:var(--text-on);font-family:var(--sans);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+.slide{width:100vw;height:100vh;position:relative;overflow:hidden;background:var(--accent);color:var(--text-on)}
+.canvas-card{
+  width:100vw;height:100vh;position:relative;overflow:hidden;
+  padding:5.4vh 5vw 4.4vh;display:flex;flex-direction:column;
+  background:
+    radial-gradient(ellipse 88vw 70vh at 45% 45%,rgba(92,133,255,.28) 0%,rgba(92,133,255,.12) 28%,rgba(0,47,167,0) 62%),
+    radial-gradient(ellipse 38vw 46vh at 83% 18%,rgba(255,255,255,.16),rgba(255,255,255,0) 65%),
+    linear-gradient(180deg,#0033af 0%,var(--accent) 42%,#001b66 100%);
+}
+.canvas-card::after{
+  content:"";position:absolute;inset:0;z-index:0;pointer-events:none;
+  background:
+    linear-gradient(90deg,rgba(0,13,62,.52),rgba(0,13,62,0) 20%,rgba(0,13,62,0) 76%,rgba(0,13,62,.48)),
+    radial-gradient(circle at 50% 48%,rgba(255,255,255,.12),rgba(255,255,255,0) 22%),
+    linear-gradient(180deg,rgba(0,0,0,.06),rgba(0,0,0,.30));
+}
+canvas.ascii-bg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;mix-blend-mode:screen;opacity:.90}
+.canvas-card>*:not(.ascii-bg){position:relative;z-index:1}
+.chrome-min{
+  display:flex;justify-content:space-between;align-items:flex-start;flex:0 0 auto;
+  font-family:var(--mono);font-size:14px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;
+  color:rgba(255,255,255,.62);margin-bottom:4.8vh;line-height:1.5;
+}
+.chrome-min .l,.chrome-min .r{max-width:48vw}
+.cover-body{
+  flex:1;display:grid;grid-template-columns:minmax(0,1.06fr) minmax(430px,.94fr);
+  gap:4.6vw;align-items:stretch;min-height:0;
+}
+.hero-copy{display:grid;grid-template-rows:auto 1fr auto;gap:2.2vh;min-width:0}
+.kicker{
+  font-family:var(--mono);font-size:14px;font-weight:500;letter-spacing:.22em;text-transform:uppercase;
+  color:rgba(255,255,255,.78);line-height:1.5;
+}
+h1{
+  align-self:center;font-family:var(--sans);font-weight:200;font-size:min(8.2vw,14.8vh);
+  line-height:.94;letter-spacing:-.045em;color:#fff;
+}
+h1 em{font-style:italic;font-weight:300;color:rgba(255,255,255,.66)}
+.lead{
+  max-width:520px;font-size:max(16px,1.05vw);font-weight:300;line-height:1.74;color:rgba(255,255,255,.76);
+}
+.metric-row{
+  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid rgba(255,255,255,.22);
+  border-bottom:1px solid rgba(255,255,255,.16);
+}
+.metric{min-height:12vh;padding:2vh 1.5vw 1.8vh 0;display:flex;flex-direction:column;justify-content:center}
+.metric+.metric{border-left:1px solid rgba(255,255,255,.18);padding-left:1.5vw}
+.metric .n{font-family:var(--sans);font-size:min(4vw,7vh);font-weight:200;letter-spacing:-.045em;line-height:1;color:#fff}
+.metric .l{margin-top:.9vh;font-family:var(--mono);font-size:12px;letter-spacing:.04em;line-height:1.65;color:rgba(255,255,255,.60)}
+.compare-wrap{
+  align-self:center;display:grid;grid-template-rows:auto auto auto;gap:1.7vh;min-width:0;
+}
+.compare-card{
+  position:relative;overflow:hidden;min-height:20vh;padding:2.5vh 2.1vw 2.4vh;
+  border:1px solid rgba(255,255,255,.24);
+  background:linear-gradient(180deg,rgba(255,255,255,.12),rgba(255,255,255,.045));
+  backdrop-filter:blur(18px) saturate(145%);-webkit-backdrop-filter:blur(18px) saturate(145%);
+}
+.compare-card::before{content:"";position:absolute;left:0;top:0;right:0;height:2px;background:rgba(255,255,255,.38)}
+.compare-card.hai{background:linear-gradient(180deg,rgba(255,255,255,.18),rgba(255,255,255,.07));border-color:rgba(255,255,255,.44)}
+.compare-card.hai::before{background:#fff}
+.card-meta{
+  font-family:var(--mono);font-size:12px;font-weight:500;letter-spacing:.15em;text-transform:uppercase;
+  color:rgba(255,255,255,.66);line-height:1.45;margin-bottom:1.3vh;
+}
+.card-title{
+  font-family:var(--sans);font-size:min(2.25vw,4.2vh);font-weight:200;letter-spacing:-.028em;line-height:1.08;
+  color:rgba(255,255,255,.92);margin-bottom:1.6vh;
+}
+.hai .card-title{color:#fff}
+.flow{display:flex;align-items:center;gap:.8vw;margin-bottom:1.2vh}
+.flow .letter{font-family:var(--mono);font-size:15px;color:rgba(255,255,255,.82)}
+.flow .line{height:1px;flex:1;background:rgba(255,255,255,.28)}
+.flow .mid{
+  font-family:var(--mono);font-size:12px;color:#fff;padding:.28vh .72vw;
+  border:1px solid rgba(255,255,255,.24);background:rgba(255,255,255,.08);
+}
+.hai .flow .mid{background:#fff;color:var(--accent);border-color:#fff;font-weight:600}
+.chips{display:flex;gap:.46vw;flex-wrap:wrap}
+.chips span{
+  font-family:var(--mono);font-size:11px;color:rgba(255,255,255,.72);
+  border:1px solid rgba(255,255,255,.20);background:rgba(255,255,255,.07);padding:.28vh .62vw;
+}
+.hai .chips span{color:#fff;background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.34)}
+.shift{display:flex;align-items:center;gap:1vw;padding:0 .6vw}
+.shift::before,.shift::after{content:"";height:1px;flex:1;background:rgba(255,255,255,.24)}
+.shift span{font-family:var(--mono);font-size:12px;letter-spacing:.20em;color:rgba(255,255,255,.82);text-transform:uppercase;white-space:nowrap}
+.bottom-line{
+  margin-top:3.4vh;display:flex;justify-content:space-between;align-items:flex-end;
+  border-top:1px solid rgba(255,255,255,.22);padding-top:1.8vh;
+  font-family:var(--mono);font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.56);
+}
+@media(max-width:980px){
+  .canvas-card{padding:4.2vh 6vw}
+  .cover-body{grid-template-columns:1fr;gap:2.8vh}
+  h1{font-size:min(15vw,12vh)}
+  .compare-card{min-height:auto}
+  .metric-row{grid-template-columns:1fr}
+  .metric+.metric{border-left:0;border-top:1px solid rgba(255,255,255,.16);padding-left:0}
+}
+</style>
+</head>
+<body>
+<section class="slide accent" data-animate="hero" data-layout="S01">
+  <div class="canvas-card">
+    <canvas class="ascii-bg" aria-hidden="true"></canvas>
+    <div class="chrome-min">
+      <div class="l">HAI · ASCEND OPERATOR DESIGN</div>
+      <div class="r">01 / COVER · 2024—</div>
+    </div>
+    <div class="cover-body">
+      <div class="hero-copy">
+        <div class="kicker">HAI · 昇腾算子开发助手</div>
+        <h1>昇腾算子<br><em>下一代</em><br>开发体验</h1>
+        <div>
+          <div class="lead">以算子开发为场景，重新设计人与 AI 的协作界面。让工程师把注意力集中在算法意图上，而非硬件细节。</div>
+          <div class="metric-row">
+            <div class="metric"><div class="n">76%</div><div class="l">调试与验证占用的开发时间</div></div>
+            <div class="metric"><div class="n">4×</div><div class="l">多硬件适配重复工作量</div></div>
+            <div class="metric"><div class="n">~2天</div><div class="l">单算子调优平均耗时</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="compare-wrap">
+        <div class="compare-card">
+          <div class="card-meta">HCI · Human–Computer Interaction · 1960s—2020s</div>
+          <div class="card-title">Human — Computer<br>Interaction</div>
+          <div class="flow"><span class="letter">H</span><span class="line"></span><span class="mid">Computer</span><span class="line"></span><span class="letter">I</span></div>
+          <div class="chips"><span>键鼠输入</span><span>等待输出</span><span>串行操作</span><span>过程式指令</span></div>
+        </div>
+        <div class="shift"><span>范式跃迁</span></div>
+        <div class="compare-card hai">
+          <div class="card-meta">HAI · 昇腾算子开发助手 · 2024—</div>
+          <div class="card-title">Human × AI<br>Interaction</div>
+          <div class="flow"><span class="letter">H</span><span class="line"></span><span class="mid">AI</span><span class="line"></span><span class="letter">Environment</span></div>
+          <div class="chips"><span>意图声明</span><span>协同决策</span><span>持续感知</span><span>跨会话记忆</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="bottom-line">
+      <div>Human · AI · Environment</div>
+      <div>Blue PPT Theme · No Terminal Surface</div>
+    </div>
+  </div>
+</section>
+<script>
+(function initHuashuAsciiField(){
+  const canvas = document.querySelector('canvas.ascii-bg');
+  const ctx = canvas.getContext('2d', { alpha:true });
+  const glyphs = ['+', '*', '-', '·', ':', '/', '\\', '×'];
+  let w = 0, h = 0, dpr = 1, cells = [], raf = 0;
+
+  const ease = x => x * x * (3 - 2 * x);
+  const clamp = (v,a,b) => Math.max(a, Math.min(b, v));
+
+  function resize(){
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    w = window.innerWidth;
+    h = window.innerHeight;
+    canvas.width = Math.floor(w * dpr);
+    canvas.height = Math.floor(h * dpr);
+    canvas.style.width = w + 'px';
+    canvas.style.height = h + 'px';
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    buildCells();
+  }
+
+  function buildCells(){
+    cells = [];
+    const spacing = clamp(w / 118, 10, 14);
+    const cols = Math.ceil(w / spacing) + 4;
+    const rows = Math.ceil(h / spacing) + 4;
+    const ox = (w - (cols - 1) * spacing) / 2;
+    const oy = (h - (rows - 1) * spacing) / 2;
+    for(let y=0;y<rows;y++){
+      for(let x=0;x<cols;x++){
+        const seed = Math.sin((x + 1) * 127.1 + (y + 3) * 311.7) * 43758.5453;
+        const rnd = seed - Math.floor(seed);
+        cells.push({
+          x: ox + x * spacing,
+          y: oy + y * spacing,
+          row:y,
+          col:x,
+          seed:rnd,
+          drift:(rnd - .5) * 1.4,
+          speed:.075 + rnd * .065,
+          offset:rnd * glyphs.length
+        });
+      }
+    }
+  }
+
+  function drawGlyph(ch, x, y, alpha, size, glow){
+    if(alpha <= .002) return;
+    ctx.save();
+    ctx.globalAlpha = alpha;
+    ctx.font = `300 ${size}px "JetBrains Mono","DM Mono",monospace`;
+    ctx.fillStyle = '#fff';
+    ctx.shadowColor = 'rgba(168,196,255,.28)';
+    ctx.shadowBlur = glow;
+    ctx.fillText(ch, x, y);
+    ctx.restore();
+  }
+
+  function render(now){
+    const t = now * .001;
+    ctx.clearRect(0,0,w,h);
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+
+    const cx = w * .51 + Math.sin(t * .20) * w * .035;
+    const cy = h * .48 + Math.cos(t * .17) * h * .035;
+    const maxD = Math.hypot(Math.max(cx,w-cx), Math.max(cy,h-cy));
+    const globalBreath = .72 + .28 * Math.sin(t * .58);
+
+    for(const cell of cells){
+      const dx = cell.x - cx;
+      const dy = cell.y - cy;
+      const dist = Math.hypot(dx, dy);
+      const radial = 1 - clamp(dist / maxD, 0, 1);
+      const slowWave = Math.sin(dist * .018 - t * 1.18 + cell.seed * 8);
+      const crossWave = Math.sin((cell.x + cell.y) * .012 + t * .42 + cell.seed * 5);
+      const verticalBreath = Math.sin(cell.row * .18 + t * .46);
+      const density = clamp(.22 + radial * .72 + slowWave * .14 + crossWave * .10, 0, 1);
+      const breath = clamp(.50 + globalBreath * .32 + verticalBreath * .18, 0, 1);
+
+      const cycle = (t * cell.speed + cell.offset + radial * 1.2 + slowWave * .18) % glyphs.length;
+      const i0 = Math.floor(cycle);
+      const i1 = (i0 + 1) % glyphs.length;
+      const p = ease(cycle - i0);
+
+      const x = cell.x + Math.sin(t * .31 + cell.seed * 12) * .55;
+      const y = cell.y + Math.cos(t * .27 + cell.seed * 9) * .55 + cell.drift;
+      const size = clamp(w / 145, 8.4, 11.2) * (1 + density * .08);
+      const alpha = clamp(.035 + density * .22 + breath * .11, .035, .46);
+      const pulse = clamp((slowWave + 1) * .5, 0, 1);
+      const glow = pulse > .82 ? 9 : 0;
+
+      drawGlyph(glyphs[i0], x, y, alpha * (1 - p) * .92, size, glow);
+      drawGlyph(glyphs[i1], x, y, alpha * p * .92, size, glow);
+    }
+
+    raf = requestAnimationFrame(render);
+  }
+
+  window.addEventListener('resize', resize, { passive:true });
+  document.addEventListener('visibilitychange', () => {
+    if(document.hidden) cancelAnimationFrame(raf);
+    else raf = requestAnimationFrame(render);
+  });
+  resize();
+  raf = requestAnimationFrame(render);
+})();
+</script>
+</body>
+</html>

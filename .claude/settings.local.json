@@ -17,7 +17,19 @@
       "Bash(curl -fsSL \"https://raw.githubusercontent.com/b0o/lavi/main/contrib/opencode/lavi.json\" -o lavi.json)",
       "Bash(git -C \"D:/HW/AICLI/ai-cli-report \\(1\\)/report\" add sharing-slides.html)",
       "Bash(git -C 'D:/HW/AICLI/ai-cli-report \\(1\\)/report' commit -m ' *)",
-      "Bash(git *)"
+      "Bash(git *)",
+      "Bash(python combine.py)",
+      "Bash(Rename-Item *)",
+      "PowerShell(Rename-Item *)",
+      "Bash(del *)",
+      "PowerShell(Get-Command *)",
+      "PowerShell(npm list *)",
+      "PowerShell(Get-Item \".\\\\sharing-slides.pdf\" | Select-Object Name, @{N='Size\\(KB\\)';E={[math]::Round\\($_.Length/1KB,1\\)}}, LastWriteTime)",
+      "PowerShell(Get-ChildItem *)",
+      "PowerShell(Start-Process \"D:\\\\HW\\\\AICLI\\\\ai-cli-report \\(1\\)\\\\report\\\\sharing-slides.pdf\")",
+      "Bash(npx playwright *)",
+      "Bash(where playwright *)",
+      "Bash(where node *)"
     ]
   }
 }

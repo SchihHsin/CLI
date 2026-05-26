@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ORCA Cover · IKB Interactive</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400&family=Inter:wght@100;200;300;400;500&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+
+:root {
+  --acc: #002FA7;
+  --acc-deep: #001E6E;
+  --acc-light: #4A7FE8;
+  --bg: #fafaf8;
+  --tx: #0a0a0a;
+  --tx2: #4a4a4a;
+  --tx3: #828296;
+  --grey-1: #f5f5f3;
+  --grey-2: #d4d4d2;
+  --r: #DC2626;
+  --tb: #0C0C11;
+  --tbar: #181820;
+  --tbdr: #252530;
+  --td: #828296;
+  --tw: #C8C8DC;
+  --tr: #F87171;
+  --ty: #FBBF24;
+}
+
+html, body {
+  width:100%; height:100%;
+  font-family: 'Inter', -apple-system, "PingFang SC", sans-serif;
+  background: var(--acc);
+  overflow: hidden;
+  color: white;
+}
+
+/* ── 交互点阵背景 ── */
+#dot-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* ── 封面容器 ── */
+.sec {
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+  overflow: hidden;
+  background: transparent;
+}
+
+.cover-grid {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  z-index: 2;
+}
+
+#dot-canvas {
+  z-index: 1;
+}
+
+/* 顶部 IKB 加深条（保留原 4px bar 但用更深蓝） */
+.top-bar {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--acc-light) 0%, white 50%, var(--acc-light) 100%);
+  opacity: .8;
+  z-index: 5;
+}
+
+/* ── 左侧文字区（改为白字蓝底）── */
+.cover-left {
+  padding: 72px 60px 60px;
+  position: relative;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.cover-tag {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: .2em;
+  color: rgba(255,255,255,.7);
+  margin-bottom: 16px;
+  text-transform: uppercase;
+}
+
+.cover-title {
+  font-family: 'Inter', sans-serif;
+  font-weight: 200;
+  font-size: 88px;
+  line-height: 1.02;
+  letter-spacing: -.04em;
+  color: white;
+}
+.cover-title em {
+  font-style: italic;
+  font-weight: 300;
+  color: rgba(255,255,255,.55);
+}
+
+.cover-sub {
+  margin-top: 28px;
+  font-size: 14px;
+  font-weight: 300;
+  color: rgba(255,255,255,.78);
+  line-height: 1.7;
+  max-width: 380px;
+}
+
+.cst-grid {
+  display: flex;
+  gap: 0;
+  margin-top: 36px;
+  border-top: 1px solid rgba(255,255,255,.18);
+  padding-top: 24px;
+}
+.cst {
+  padding: 0 28px;
+  border-right: 1px solid rgba(255,255,255,.18);
+}
+.cst:first-child { padding-left: 0; }
+.cst:last-child { border-right: none; }
+.cst-n {
+  font-family: 'Inter', sans-serif;
+  font-weight: 200;
+  font-size: 36px;
+  letter-spacing: -.03em;
+  color: white;
+  line-height: 1;
+}
+.cst-l {
+  font-size: 10px;
+  color: rgba(255,255,255,.65);
+  margin-top: 6px;
+  font-family: 'DM Mono', monospace;
+  letter-spacing: .05em;
+}
+
+/* ── 右侧 HCI/HAI 对比卡（深底卡片，浮在 IKB 蓝面上）── */
+.cover-right {
+  padding: 40px 48px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  justify-content: center;
+  position: relative;
+  z-index: 3;
+}
+
+.compare-card {
+  border: .5px solid rgba(255,255,255,.18);
+  background: rgba(255,255,255,.04);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  padding: 20px 24px;
+  position: relative;
+  overflow: hidden;
+}
+.compare-card::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: rgba(255,255,255,.3);
+}
+.compare-card.hai::before {
+  background: white;
+}
+.compare-card.hai {
+  border: .5px solid rgba(255,255,255,.45);
+  background: rgba(255,255,255,.1);
+}
+
+.cc-meta {
+  font-family: 'DM Mono', monospace;
+  font-size: 7.5px;
+  letter-spacing: .15em;
+  color: rgba(255,255,255,.55);
+  margin-bottom: 10px;
+}
+.compare-card.hai .cc-meta {
+  color: white;
+}
+
+.cc-title {
+  font-size: 24px;
+  font-weight: 200;
+  font-family: 'Inter', sans-serif;
+  color: rgba(255,255,255,.78);
+  line-height: 1.1;
+  margin-bottom: 12px;
+}
+.compare-card.hai .cc-title {
+  color: white;
+}
+
+.cc-flow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.cc-flow-letter {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: rgba(255,255,255,.65);
+}
+.compare-card.hai .cc-flow-letter {
+  color: white;
+}
+.cc-flow-line {
+  height: .5px;
+  flex: 1;
+  background: rgba(255,255,255,.25);
+}
+.compare-card.hai .cc-flow-line {
+  background: rgba(255,255,255,.5);
+}
+.cc-flow-mid {
+  font-family: 'DM Mono', monospace;
+  font-size: 8px;
+  background: rgba(255,255,255,.1);
+  border: .5px solid rgba(255,255,255,.25);
+  padding: 2px 8px;
+  color: rgba(255,255,255,.78);
+}
+.compare-card.hai .cc-flow-mid {
+  background: white;
+  color: var(--acc);
+  border: .5px solid white;
+  font-weight: 500;
+}
+
+.cc-chips {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.cc-chip {
+  font-size: 8px;
+  background: rgba(255,255,255,.06);
+  border: .5px solid rgba(255,255,255,.2);
+  padding: 2px 6px;
+  font-family: 'DM Mono', monospace;
+  color: rgba(255,255,255,.65);
+}
+.compare-card.hai .cc-chip {
+  background: rgba(255,255,255,.18);
+  border: .5px solid rgba(255,255,255,.4);
+  color: white;
+}
+
+/* ── 中间箭头 ── */
+.arrow-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 4px;
+}
+.arrow-row .ar-line {
+  flex: 1;
+  height: .5px;
+}
+.arrow-row .ar-l1 { background: linear-gradient(to right, rgba(255,255,255,.2), white); }
+.arrow-row .ar-l2 { background: white; }
+.arrow-row .ar-tag {
+  font-family: 'DM Mono', monospace;
+  font-size: 8px;
+  color: white;
+  letter-spacing: .15em;
+}
+</style>
+</head>
+<body>
+
+<canvas id="dot-canvas"></canvas>
+
+<div class="sec">
+  <div class="top-bar"></div>
+  <div class="cover-grid">
+    <!-- 左侧 -->
+    <div class="cover-left">
+      <div class="cover-tag">ORCA · 昇腾算子开发助手</div>
+      <div class="cover-title">昇腾算子<br><em>下一代</em><br>开发体验</div>
+      <div class="cover-sub">以算子开发为场景，重新设计人与 AI 的协作界面。让工程师把注意力集中在算法意图上，而非硬件细节。</div>
+      <div class="cst-grid">
+        <div class="cst">
+          <div class="cst-n">76%</div><div class="cst-l">调试与验证占用的开发时间</div>
+        </div>
+        <div class="cst">
+          <div class="cst-n">4×</div><div class="cst-l">多硬件适配重复工作量</div>
+        </div>
+        <div class="cst">
+          <div class="cst-n">~2天</div><div class="cst-l">单算子调优平均耗时</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 右侧 HCI / HAI 对比 -->
+    <div class="cover-right">
+      <!-- HCI -->
+      <div class="compare-card">
+        <div class="cc-meta">HCI · Human–Computer Interaction · 1960s—2020s</div>
+        <div class="cc-title">Human — Computer<br>Interaction</div>
+        <div class="cc-flow">
+          <span class="cc-flow-letter">H</span>
+          <div class="cc-flow-line"></div>
+          <span class="cc-flow-mid">Computer</span>
+          <div class="cc-flow-line"></div>
+          <span class="cc-flow-letter">I</span>
+        </div>
+        <div class="cc-chips">
+          <span class="cc-chip">键鼠输入</span>
+          <span class="cc-chip">等待输出</span>
+          <span class="cc-chip">串行操作</span>
+          <span class="cc-chip">过程式指令</span>
+        </div>
+      </div>
+
+      <!-- 范式跃迁 -->
+      <div class="arrow-row">
+        <div class="ar-line ar-l1"></div>
+        <div class="ar-tag">范式跃迁</div>
+        <div class="ar-line ar-l2"></div>
+      </div>
+
+      <!-- HAI -->
+      <div class="compare-card hai">
+        <div class="cc-meta">HAI · 昇腾算子开发助手 · 2024—</div>
+        <div class="cc-title">Human × AI<br>Interaction</div>
+        <div class="cc-flow">
+          <span class="cc-flow-letter">H</span>
+          <div class="cc-flow-line"></div>
+          <span class="cc-flow-mid">AI</span>
+          <div class="cc-flow-line"></div>
+          <span class="cc-flow-letter">Environment</span>
+        </div>
+        <div class="cc-chips">
+          <span class="cc-chip">意图声明</span>
+          <span class="cc-chip">协同决策</span>
+          <span class="cc-chip">持续感知</span>
+          <span class="cc-chip">跨会话记忆</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function initSymbolMatrix() {
+  const canvas = document.getElementById('dot-canvas');
+  const ctx = canvas.getContext('2d');
+  let W, H, dpr;
+  let cells = [];
+
+  const SPACING = 28;
+  const FONT_SIZE = 12;
+  const SYMBOLS = ['+', '·', '×', '-', '/', '*', '◦', '⋅', '∙', '∘'];
+
+  function resize() {
+    dpr = window.devicePixelRatio || 1;
+    W = window.innerWidth;
+    H = window.innerHeight;
+    canvas.width = W * dpr;
+    canvas.height = H * dpr;
+    canvas.style.width = W + 'px';
+    canvas.style.height = H + 'px';
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    buildCells();
+  }
+
+  function buildCells() {
+    cells = [];
+    const cols = Math.ceil(W / SPACING);
+    const rows = Math.ceil(H / SPACING);
+    const offsetX = (W - (cols - 1) * SPACING) / 2;
+    const offsetY = (H - (rows - 1) * SPACING) / 2;
+    const now = performance.now();
+    for (let r = 0; r < rows; r++) {
+      for (let c = 0; c < cols; c++) {
+        const x = offsetX + c * SPACING;
+        const y = offsetY + r * SPACING;
+        // 每格独立：起始延迟 + 切换周期都不同
+        cells.push({
+          x, y,
+          // 当前 symbol index
+          symIdx: Math.floor(Math.random() * SYMBOLS.length),
+          // 上次切换时间
+          lastSwitch: now + Math.random() * 3000,
+          // 切换间隔（1.2–3.6s 随机）
+          interval: 1200 + Math.random() * 2400,
+          // 当前可见度（用于切换时的 fade）
+          fadeStart: now,
+          fadePhase: 1, // 1=显示中, -1=切换淡出, 0=刚淡入
+          // 基础不透明度 0.08–0.32 之间随机分层
+          baseAlpha: 0.08 + Math.random() * 0.22,
+        });
+      }
+    }
+  }
+
+  function tick() {
+    const now = performance.now();
+    ctx.clearRect(0, 0, W, H);
+    ctx.font = FONT_SIZE + "px 'DM Mono', monospace";
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+
+    for (let i = 0; i < cells.length; i++) {
+      const cell = cells[i];
+
+      // 切换检测
+      const since = now - cell.lastSwitch;
+      if (since > cell.interval) {
+        cell.symIdx = (cell.symIdx + 1 + Math.floor(Math.random() * (SYMBOLS.length - 1))) % SYMBOLS.length;
+        cell.lastSwitch = now;
+        cell.interval = 1200 + Math.random() * 2400;
+        cell.fadeStart = now;
+        cell.fadePhase = 0;
+      }
+
+      // fade 动画（切换后 360ms 内 fade-in，结束后稳定）
+      const fadeElapsed = now - cell.fadeStart;
+      let alphaScale = 1;
+      if (fadeElapsed < 360) {
+        alphaScale = fadeElapsed / 360;
+      }
+
+      const alpha = cell.baseAlpha * alphaScale;
+      ctx.fillStyle = `rgba(255,255,255,${alpha})`;
+      ctx.fillText(SYMBOLS[cell.symIdx], cell.x, cell.y);
+    }
+
+    requestAnimationFrame(tick);
+  }
+
+  window.addEventListener('resize', resize);
+  resize();
+  tick();
+})();
+</script>
+</body>
+</html>
