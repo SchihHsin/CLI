@@ -1421,7 +1421,7 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
 <!-- ══ STAGE 02-1: 语音×光标 ══ -->
 <div class="sec" id="s-m2c" style="background:var(--sur);">
   <div class="slabel">
-    <span class="sub">表达意图 · Stage 02 · 设计点 1/4</span>
+    <span class="sub">表达意图 · Stage 02 · 设计点 1/5</span>
     <span class="main">指着 msprof 说话 — 光标位置就是分析上下文</span>
   </div>
   <div class="inner">
@@ -1615,7 +1615,7 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
 <!-- ══ STAGE 02: 语音模式路由 ══ -->
 <div class="sec" id="s-m2d" style="background:var(--bg);">
   <div class="slabel">
-    <span class="sub">表达意图 · Stage 02 · 设计点 2/4</span>
+    <span class="sub">表达意图 · Stage 02 · 设计点 2/5</span>
     <span class="main">语音模式路由 — 上下文决定落地方式</span>
   </div>
   <div class="inner">
@@ -1856,7 +1856,7 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
 <!-- ══ STAGE 02: 情感感知 ══ -->
 <div class="sec" id="s-m2e" style="background:var(--bg);">
   <div class="slabel">
-    <span class="sub">表达意图 · Stage 02 · 设计点 3/4</span>
+    <span class="sub">表达意图 · Stage 02 · 设计点 3/5</span>
     <span class="main">情感感知 — 音调即上下文</span>
   </div>
   <div class="inner">
@@ -2027,10 +2027,180 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
 </div>
 
 
+<!-- ══ STAGE 02: Prompt 记忆补全 ══ -->
+<div class="sec" id="s-m2f" style="background:var(--sur);">
+  <div class="slabel">
+    <span class="sub">表达意图 · Stage 02 · 设计点 5/5</span>
+    <span class="main">Prompt 记忆补全 — 两字召回历史</span>
+  </div>
+  <div class="inner">
+    <div class="dp-layout">
+
+      <!-- ── LEFT ── -->
+      <div class="dp-left">
+        <div class="dp-desc">
+          <div class="dp-label">设计说明</div>
+          <div class="dp-title">开发者总是在重复相似的 Prompt — AI 应该替他们记住</div>
+          <div class="dp-body">算子调优阶段有大量结构相同的指令：「继续优化 X，目标 Y」「分析 msprof 里 Z 的原因」。ORCA 在后台统计每条指令的使用频次与上下文，在用户输入前两个字时实时匹配——最高置信度的结果以幽灵文字（ghost text）内联显示在光标后，按 <strong style="color:var(--ta);">Tab</strong> 即接受，像打字一样自然。补全是可选的，忽略它继续打字即消失。</div>
+        </div>
+        <div class="dp-desc">
+          <div class="dp-label">匹配逻辑</div>
+          <div style="margin-top:6px;">
+            <table style="width:100%;border-collapse:collapse;font-size:8px;">
+              <tr style="border-bottom:.5px solid var(--grey-2);">
+                <td style="padding:4px 6px;color:var(--tx2);font-weight:600;width:52px;">输入长度</td>
+                <td style="padding:4px 6px;color:var(--tx2);font-weight:600;">匹配策略</td>
+              </tr>
+              <tr style="border-bottom:.5px solid var(--grey-2);">
+                <td style="padding:4px 6px;font-family:'DM Mono',monospace;font-size:7.5px;color:var(--ta);">1 字</td>
+                <td style="padding:4px 6px;color:var(--tx3);">仅前缀索引，不展示（噪声高）</td>
+              </tr>
+              <tr style="border-bottom:.5px solid var(--grey-2);">
+                <td style="padding:4px 6px;font-family:'DM Mono',monospace;font-size:7.5px;color:var(--ta);">2 字</td>
+                <td style="padding:4px 6px;color:var(--tx3);">展示最高频匹配 · ghost text 出现</td>
+              </tr>
+              <tr>
+                <td style="padding:4px 6px;font-family:'DM Mono',monospace;font-size:7.5px;color:var(--ta);">3+ 字</td>
+                <td style="padding:4px 6px;color:var(--tx3);">实时缩窄候选，置信度升高</td>
+              </tr>
+            </table>
+          </div>
+        </div>
+        <div class="ba-grid">
+          <div class="ba-before">
+            <div class="ba-label" style="gap:6px;"><span style="font-family:'DM Mono',monospace;font-size:7px;letter-spacing:.1em;background:var(--grey-2);color:var(--tx2);padding:1px 6px;">BEFORE</span>过去的做法</div>
+            <div style="margin-top:6px;background:var(--tb);border-radius:6px;padding:6px 9px;font-family:'DM Mono',monospace;font-size:7.5px;display:flex;flex-direction:column;gap:4px;">
+              <div style="color:var(--td);">─ 用 ↑ 翻历史，找不到就重打</div>
+              <div style="color:var(--td);">─ 每次手动输入完整 Prompt</div>
+              <div style="height:.5px;background:var(--tbdr);margin:2px 0;"></div>
+              <div style="display:flex;align-items:center;gap:5px;color:var(--ta);">
+                <span>❯</span>
+                <span style="color:var(--tw);">继续优化 RMSNorm，目标 cube 利用率 &gt; 70%</span>
+              </div>
+              <div style="font-size:6.5px;color:rgba(255,255,255,.18);margin-top:2px;">← 这句话今天已经打了 8 遍</div>
+            </div>
+          </div>
+          <div class="ba-after">
+            <div class="ba-label" style="gap:6px;"><span style="font-family:'DM Mono',monospace;font-size:7px;letter-spacing:.1em;background:var(--acc);color:white;padding:1px 6px;">AFTER</span>新的设计</div>
+            <div class="ba-text">输入「继续」→ ghost text 实时出现 → Tab 补全，全程 3 次击键替代 20+ 次。系统后台自动学习，越用越快。</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── RIGHT ── -->
+      <div class="dp-right" style="position:relative;">
+        <div class="mockup-label">动态 Mockup — Prompt 补全流程</div>
+        <div class="stp-strip" id="stp-m2f">
+          <div class="stp-bar"><div class="stp-fill"></div></div>
+          <div class="stp-steps">
+            <div class="stp-step"><div class="stp-num">1</div><span class="stp-lbl">输入 2 字 · ghost text 出现</span></div>
+            <div class="stp-step"><div class="stp-num">2</div><span class="stp-lbl">Tab 补全</span></div>
+            <div class="stp-step"><div class="stp-num">3</div><span class="stp-lbl">历史 Prompt 记忆面板</span></div>
+          </div>
+        </div>
+
+        <!-- Terminal mockup -->
+        <div style="background:var(--tb);border-radius:10px;border:.5px solid var(--tbdr);box-shadow:0 6px 24px rgba(0,0,0,.35);overflow:hidden;margin-top:6px;display:flex;flex-direction:column;">
+          <div style="background:var(--tbar);padding:5px 10px;border-bottom:.5px solid var(--tbdr);display:flex;align-items:center;gap:5px;flex-shrink:0;">
+            <div style="display:flex;gap:4px;">
+              <div style="width:8px;height:8px;border-radius:50%;background:#FF5F57;"></div>
+              <div style="width:8px;height:8px;border-radius:50%;background:#FEBC2E;"></div>
+              <div style="width:8px;height:8px;border-radius:50%;background:#28C840;"></div>
+            </div>
+            <span style="font-family:'DM Mono',monospace;font-size:7px;color:rgba(255,255,255,.25);flex:1;text-align:center;">orca — prompt-memory</span>
+          </div>
+          <div style="background:#0d0d14;padding:3px 10px;border-bottom:.5px solid var(--tbdr);display:flex;align-items:center;gap:5px;flex-shrink:0;">
+            <div style="font-family:'DM Mono',monospace;font-size:6.5px;color:var(--ta);background:rgba(167,139,250,.12);border:.5px solid rgba(167,139,250,.3);padding:1px 6px;border-radius:2px;white-space:nowrap;">RMSNorm ⟳</div>
+            <div style="flex:1;font-family:'DM Mono',monospace;font-size:6.5px;color:rgba(255,255,255,.2);text-align:center;">~/RMSNorm-910B</div>
+            <div style="font-family:'DM Mono',monospace;font-size:6.5px;color:var(--ta);">Stage 02 · 语音</div>
+          </div>
+
+          <div style="padding:10px 12px;font-family:'DM Mono',monospace;font-size:8px;min-height:210px;display:flex;flex-direction:column;gap:4px;">
+
+            <!-- Recent session output (always visible) -->
+            <div style="color:var(--td);font-size:7px;">✓ tile_m=128 已写入，CUBE 72.4%</div>
+            <div style="height:.5px;background:var(--tbdr);margin:2px 0;flex-shrink:0;"></div>
+
+            <!-- Step 1: ghost text -->
+            <div id="pc-s1" style="display:flex;flex-direction:column;gap:5px;">
+              <!-- Input line with ghost text -->
+              <div style="display:flex;align-items:center;gap:0;white-space:pre;font-size:8.5px;line-height:1.4;">
+                <span style="color:var(--ta);">❯ </span>
+                <span id="pc-typed1" style="color:var(--tw);"></span><span id="pc-ghost1" style="color:rgba(255,255,255,.22);display:none;"></span><span id="pc-cur1" style="color:var(--ta);animation:bl 1s step-end infinite;">█</span>
+              </div>
+              <!-- Match info pill -->
+              <div id="pc-pill1" style="display:none;margin-left:14px;">
+                <div style="display:inline-flex;align-items:center;gap:6px;background:rgba(18,18,26,.9);border:.5px solid rgba(167,139,250,.25);border-radius:4px;padding:3px 8px;">
+                  <span style="font-size:6px;color:var(--td);">最高匹配</span>
+                  <span style="font-size:6.5px;color:var(--ty);">8 次</span>
+                  <span style="font-size:6px;color:rgba(255,255,255,.2);">·</span>
+                  <span style="font-size:6.5px;color:var(--td);">Tab 补全</span>
+                  <kbd style="font-size:6px;background:rgba(255,255,255,.08);border:.5px solid rgba(255,255,255,.15);border-radius:2px;padding:0 4px;color:var(--tw);">Tab</kbd>
+                </div>
+              </div>
+            </div>
+
+            <!-- Step 2: completed input (hidden initially) -->
+            <div id="pc-s2" style="display:none;flex-direction:column;gap:5px;">
+              <div style="display:flex;align-items:center;gap:0;white-space:pre;font-size:8.5px;line-height:1.4;">
+                <span style="color:var(--ta);">❯ </span>
+                <span style="color:var(--tw);">继续优化 RMSNorm，目标 cube 利用率 &gt; 70%</span><span style="color:var(--ta);animation:bl 1s step-end infinite;">█</span>
+              </div>
+              <!-- Tab feedback badge -->
+              <div style="margin-left:14px;display:inline-flex;align-items:center;gap:5px;background:rgba(52,211,153,.07);border:.5px solid rgba(52,211,153,.2);border-radius:4px;padding:3px 8px;width:fit-content;animation:fadeIn .2s ease;">
+                <span style="font-size:7px;color:var(--tg);">✓</span>
+                <span style="font-size:6.5px;color:var(--td);">已补全 · 记忆使用第 9 次</span>
+              </div>
+            </div>
+
+            <!-- Step 3: history panel (hidden initially) -->
+            <div id="pc-s3" style="display:none;flex-direction:column;gap:6px;">
+              <div style="display:flex;align-items:center;gap:6px;margin-bottom:2px;">
+                <span style="font-size:6.5px;color:var(--td);">常用 Prompt 记忆</span>
+                <span style="font-size:6px;color:rgba(255,255,255,.15);">· /history 查看全部</span>
+              </div>
+              <!-- History list -->
+              <div style="display:flex;flex-direction:column;gap:2px;">
+                <!-- Item 1 — highlighted (current) -->
+                <div style="display:flex;align-items:center;gap:8px;padding:4px 8px;background:rgba(167,139,250,.1);border:.5px solid rgba(167,139,250,.25);border-radius:4px;">
+                  <span style="font-size:6.5px;color:var(--ty);min-width:20px;text-align:right;">9×</span>
+                  <span style="font-size:7px;color:var(--tw);">继续优化 RMSNorm，目标 cube 利用率 &gt; 70%</span>
+                </div>
+                <!-- Item 2 -->
+                <div style="display:flex;align-items:center;gap:8px;padding:4px 8px;border-radius:4px;">
+                  <span style="font-size:6.5px;color:var(--td);min-width:20px;text-align:right;">6×</span>
+                  <span style="font-size:7px;color:var(--td);">分析 msprof 里 data_move 偏高的原因</span>
+                </div>
+                <!-- Item 3 -->
+                <div style="display:flex;align-items:center;gap:8px;padding:4px 8px;border-radius:4px;">
+                  <span style="font-size:6.5px;color:var(--td);min-width:20px;text-align:right;">4×</span>
+                  <span style="font-size:7px;color:var(--td);">检查 310P format 兼容性</span>
+                </div>
+                <!-- Item 4 -->
+                <div style="display:flex;align-items:center;gap:8px;padding:4px 8px;border-radius:4px;">
+                  <span style="font-size:6.5px;color:var(--td);min-width:20px;text-align:right;">2×</span>
+                  <span style="font-size:7px;color:var(--td);">运行精度验证，误差阈值 1e-5</span>
+                </div>
+              </div>
+              <div style="font-size:6px;color:rgba(255,255,255,.15);margin-top:2px;">记忆自动增长 · 跨会话持久化</div>
+            </div>
+
+            <!-- Prompt line -->
+            <div id="pc-prompt" style="margin-top:auto;color:var(--ta);">❯ <span style="opacity:.4;">_</span></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <div class="snav" id="nav-m2f"></div>
+</div>
+
+
 <!-- ══ STAGE 08: 光标伴侣 ══ -->
 <div class="sec" id="s-m6a" style="background:var(--sur);">
   <div class="slabel">
-    <span class="sub">表达意图 · Stage 02 · 设计点 4/4</span>
+    <span class="sub">表达意图 · Stage 02 · 设计点 4/5</span>
     <span class="main">光标伴侣 — msprof 分析全程 AI 贴身引导</span>
   </div>
   <div class="inner">
@@ -2137,7 +2307,7 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
 <!-- ══ STAGE 02-2: 手势 Prompt ══ -->
 <div class="sec" id="s-m2b" style="background:var(--bg);">
   <div class="slabel">
-    <span class="sub">表达意图 · Stage 02 · 设计点 4/4</span>
+    <span class="sub">表达意图 · Stage 02 · 设计点 4/5</span>
     <span class="main">代码交互 — 停顿 + 圈选，AI 感知意图</span>
   </div>
   <div class="inner">
@@ -4363,6 +4533,70 @@ function setupSlideSteps(secId, stripId, defs) {
 })();
 
 /* ─────────────────────────────────────────────
+   s-m2f: prompt memory autocomplete IIFE
+───────────────────────────────────────────── */
+(function initPromptMemory() {
+  var sec = document.getElementById('s-m2f');
+  if (!sec) return;
+
+  function typeText(el, text, speed, cb) {
+    var i = 0; el.textContent = '';
+    var t = setInterval(function() {
+      if (i < text.length) { el.textContent += text[i++]; }
+      else { clearInterval(t); if (cb) cb(); }
+    }, speed);
+  }
+
+  window.promptSetPhase = function(p) {
+    var s1 = document.getElementById('pc-s1');
+    var s2 = document.getElementById('pc-s2');
+    var s3 = document.getElementById('pc-s3');
+    var pr = document.getElementById('pc-prompt');
+    function hide(el) { if (el) el.style.display = 'none'; }
+    function show(el, d) { if (el) el.style.display = d || 'flex'; }
+    if (p === 1) {
+      show(s1, 'flex'); hide(s2); hide(s3);
+      if (pr) pr.style.display = 'none';
+      var typed = document.getElementById('pc-typed1');
+      var ghost = document.getElementById('pc-ghost1');
+      var pill  = document.getElementById('pc-pill1');
+      if (ghost) { ghost.style.display = 'none'; ghost.textContent = ''; }
+      if (pill)  pill.style.display = 'none';
+      if (typed) typeText(typed, '继续', 200, function() {
+        setTimeout(function() {
+          if (ghost) { ghost.textContent = '优化 RMSNorm，目标 cube 利用率 > 70%'; ghost.style.display = ''; }
+          if (pill)  pill.style.display = 'block';
+        }, 300);
+      });
+    } else if (p === 2) {
+      hide(s1); show(s2, 'flex'); hide(s3);
+      if (pr) pr.style.display = 'none';
+    } else if (p === 3) {
+      hide(s1); hide(s2); show(s3, 'flex');
+      if (pr) pr.style.display = 'none';
+    }
+  };
+
+  window._sectionDOMResets = window._sectionDOMResets || {};
+  window._sectionDOMResets['s-m2f'] = function() {
+    var s1    = document.getElementById('pc-s1');
+    var s2    = document.getElementById('pc-s2');
+    var s3    = document.getElementById('pc-s3');
+    var pr    = document.getElementById('pc-prompt');
+    var typed = document.getElementById('pc-typed1');
+    var ghost = document.getElementById('pc-ghost1');
+    var pill  = document.getElementById('pc-pill1');
+    if (s1)    s1.style.display    = 'flex';
+    if (s2)    s2.style.display    = 'none';
+    if (s3)    s3.style.display    = 'none';
+    if (pr)    pr.style.display    = 'block';
+    if (typed) typed.textContent   = '';
+    if (ghost) { ghost.style.display = 'none'; ghost.textContent = ''; }
+    if (pill)  pill.style.display  = 'none';
+  };
+})();
+
+/* ─────────────────────────────────────────────
    s-m6a: msprof companion IIFE
 ───────────────────────────────────────────── */
 (function initCompanion() {
@@ -4700,6 +4934,12 @@ setupSlideSteps('s-m2e', 'stp-m2e', [
   { ms:2000, act: function() { if(window.moodSetPhase) window.moodSetPhase(3); } },
 ]);
 
+setupSlideSteps('s-m2f', 'stp-m2f', [
+  { ms:2200, act: function() { if(window.promptSetPhase) window.promptSetPhase(1); } },
+  { ms:1600, act: function() { if(window.promptSetPhase) window.promptSetPhase(2); } },
+  { ms:2000, act: function() { if(window.promptSetPhase) window.promptSetPhase(3); } },
+]);
+
 /* s-m6a: companion — triangle managed by companionSetStep, no sim-cursor */
 setupSlideSteps('s-m6a', 'stp-m6a', [
   { ms:2200, key:'/', act: function() { if(window.companionSetStep) window.companionSetStep(0); } },
@@ -4745,6 +4985,7 @@ document.head.appendChild(sty);
     { id:'s-m4b',        label:'团队库' },
     { id:'s-m2d',        label:'语音模式路由' },
     { id:'s-m2e',        label:'情感感知' },
+    { id:'s-m2f',        label:'Prompt 补全' },
     { id:'s-m6a',        label:'光标伴侣' },
     { id:'s-sum',        label:'总结' },
   ];
