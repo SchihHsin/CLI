@@ -1421,7 +1421,7 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
 <!-- ══ STAGE 02-1: 语音×光标 ══ -->
 <div class="sec" id="s-m2c" style="background:var(--sur);">
   <div class="slabel">
-    <span class="sub">表达意图 · Stage 02 · 设计点 1/3</span>
+    <span class="sub">表达意图 · Stage 02 · 设计点 1/4</span>
     <span class="main">指着 msprof 说话 — 光标位置就是分析上下文</span>
   </div>
   <div class="inner">
@@ -1615,7 +1615,7 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
 <!-- ══ STAGE 02: 语音模式路由 ══ -->
 <div class="sec" id="s-m2d" style="background:var(--bg);">
   <div class="slabel">
-    <span class="sub">表达意图 · Stage 02 · 设计点 2/3</span>
+    <span class="sub">表达意图 · Stage 02 · 设计点 2/4</span>
     <span class="main">语音模式路由 — 上下文决定落地方式</span>
   </div>
   <div class="inner">
@@ -1853,10 +1853,184 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
   </div>
 </div>
 
+<!-- ══ STAGE 02: 情感感知 ══ -->
+<div class="sec" id="s-m2e" style="background:var(--bg);">
+  <div class="slabel">
+    <span class="sub">表达意图 · Stage 02 · 设计点 3/4</span>
+    <span class="main">情感感知 — 音调即上下文</span>
+  </div>
+  <div class="inner">
+    <div class="dp-layout">
+
+      <!-- ── LEFT ── -->
+      <div class="dp-left">
+        <div class="dp-desc">
+          <div class="dp-label">设计说明</div>
+          <div class="dp-title">同一句话、两种语气 — AI 应该感知得到</div>
+          <div class="dp-body">开发者说「tile_m 调一下」和「CUBE 怎么又掉了！」，文字传递操作，声音传递状态——急迫、困惑还是满怀信心。HAI 在语音识别的同时分析音频能量密度、语速和音调变化，把情绪转化为可见符号附加在指令的上下文里。符号在发送前对用户可见，可一键纠正，确保 AI 不会误读情绪。</div>
+        </div>
+        <div class="dp-desc">
+          <div class="dp-label">情绪 → 策略映射</div>
+          <div style="margin-top:6px;">
+            <table style="width:100%;border-collapse:collapse;font-size:8px;">
+              <tr style="border-bottom:.5px solid var(--grey-2);">
+                <td style="padding:4px 6px;font-family:'DM Mono',monospace;color:var(--y);font-size:11px;width:22px;">⚡</td>
+                <td style="padding:4px 6px;color:var(--tx2);width:40px;">活跃</td>
+                <td style="padding:4px 6px;color:var(--tx3);">激进执行，跳过渐进确认</td>
+              </tr>
+              <tr style="border-bottom:.5px solid var(--grey-2);">
+                <td style="padding:4px 6px;font-family:'DM Mono',monospace;color:var(--r);font-size:11px;">‼</td>
+                <td style="padding:4px 6px;color:var(--tx2);">紧张</td>
+                <td style="padding:4px 6px;color:var(--tx3);">先承认，直接给根本原因</td>
+              </tr>
+              <tr style="border-bottom:.5px solid var(--grey-2);">
+                <td style="padding:4px 6px;font-family:'DM Mono',monospace;color:var(--tl);font-size:11px;">≈</td>
+                <td style="padding:4px 6px;color:var(--tx2);">犹豫</td>
+                <td style="padding:4px 6px;color:var(--tx3);">先澄清意图，再执行</td>
+              </tr>
+              <tr>
+                <td style="padding:4px 6px;font-family:'DM Mono',monospace;color:var(--tx3);font-size:11px;">·</td>
+                <td style="padding:4px 6px;color:var(--tx2);">中性</td>
+                <td style="padding:4px 6px;color:var(--tx3);">默认行为</td>
+              </tr>
+            </table>
+          </div>
+        </div>
+        <div class="ba-grid">
+          <div class="ba-before">
+            <div class="ba-label" style="gap:6px;"><span style="font-family:'DM Mono',monospace;font-size:7px;letter-spacing:.1em;background:var(--grey-2);color:var(--tx2);padding:1px 6px;">BEFORE</span>过去的做法</div>
+            <div style="margin-top:6px;background:var(--tb);border-radius:6px;padding:6px 9px;font-family:'DM Mono',monospace;font-size:7px;display:flex;flex-direction:column;gap:3px;">
+              <div style="color:var(--td);">User A: tile_m 可以调一下吗？</div>
+              <div style="color:var(--td);">User B: CUBE 18%怎么又掉了！！</div>
+              <div style="height:.5px;background:var(--tbdr);margin:3px 0;"></div>
+              <div style="color:rgba(200,200,220,.45);">[AI·A] 建议 tile_m 从 64→128...</div>
+              <div style="color:rgba(200,200,220,.45);">[AI·B] 建议 tile_m 从 64→128...</div>
+              <div style="margin-top:3px;font-size:6.5px;color:rgba(255,255,255,.18);">语气截然不同，AI 响应一模一样</div>
+            </div>
+          </div>
+          <div class="ba-after">
+            <div class="ba-label" style="gap:6px;"><span style="font-family:'DM Mono',monospace;font-size:7px;letter-spacing:.1em;background:var(--acc);color:white;padding:1px 6px;">AFTER</span>新的设计</div>
+            <div class="ba-text">情绪符号可见、可纠正。AI 根据情绪调整策略——高能量时激进执行，紧张时先定位根本原因，犹豫时先澄清。</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── RIGHT ── -->
+      <div class="dp-right" style="position:relative;">
+        <div class="mockup-label">动态 Mockup — 情感感知流程</div>
+        <div class="stp-strip" id="stp-m2e">
+          <div class="stp-bar"><div class="stp-fill"></div></div>
+          <div class="stp-steps">
+            <div class="stp-step"><div class="stp-num">1</div><span class="stp-lbl">语音识别 + 情绪分析</span></div>
+            <div class="stp-step"><div class="stp-num">2</div><span class="stp-lbl">情绪符号 · 可纠正</span></div>
+            <div class="stp-step"><div class="stp-num">3</div><span class="stp-lbl">AI 策略自适应响应</span></div>
+          </div>
+        </div>
+        <!-- Terminal mockup -->
+        <div style="background:var(--tb);border-radius:10px;border:.5px solid var(--tbdr);box-shadow:0 6px 24px rgba(0,0,0,.35);overflow:hidden;margin-top:6px;display:flex;flex-direction:column;">
+          <div style="background:var(--tbar);padding:5px 10px;border-bottom:.5px solid var(--tbdr);display:flex;align-items:center;gap:5px;flex-shrink:0;">
+            <div style="display:flex;gap:4px;">
+              <div style="width:8px;height:8px;border-radius:50%;background:#FF5F57;"></div>
+              <div style="width:8px;height:8px;border-radius:50%;background:#FEBC2E;"></div>
+              <div style="width:8px;height:8px;border-radius:50%;background:#28C840;"></div>
+            </div>
+            <span style="font-family:'DM Mono',monospace;font-size:7px;color:rgba(255,255,255,.25);flex:1;text-align:center;">orca — emotion-aware</span>
+          </div>
+          <div style="background:#0d0d14;padding:3px 10px;border-bottom:.5px solid var(--tbdr);display:flex;align-items:center;gap:5px;flex-shrink:0;">
+            <div style="font-family:'DM Mono',monospace;font-size:6.5px;color:var(--ta);background:rgba(167,139,250,.12);border:.5px solid rgba(167,139,250,.3);padding:1px 6px;border-radius:2px;white-space:nowrap;">RMSNorm ⟳</div>
+            <div style="flex:1;font-family:'DM Mono',monospace;font-size:6.5px;color:rgba(255,255,255,.2);text-align:center;">~/RMSNorm-910B</div>
+            <div style="font-family:'DM Mono',monospace;font-size:6.5px;color:var(--ta);">Stage 02 · 语音</div>
+          </div>
+          <div style="padding:10px 12px;font-family:'DM Mono',monospace;font-size:8px;min-height:190px;display:flex;flex-direction:column;gap:4px;">
+
+            <!-- Step 1: voice waveform + realtime analysis meters -->
+            <div id="mood-s1" style="display:flex;flex-direction:column;gap:6px;">
+              <div style="color:var(--td);font-size:7px;">语音输入分析中...</div>
+              <!-- Waveform (amber = high-energy analysis) -->
+              <div style="display:flex;align-items:center;gap:6px;background:rgba(18,18,26,.9);border-radius:6px;padding:5px 10px;width:fit-content;">
+                <div id="mood-wave" style="display:flex;align-items:flex-end;gap:1.5px;height:16px;"></div>
+                <div style="font-size:7px;color:rgba(245,158,11,.7);">情绪分析中…</div>
+              </div>
+              <!-- Analysis meters -->
+              <div style="display:flex;flex-direction:column;gap:4px;margin-top:2px;">
+                <div style="display:flex;align-items:center;gap:6px;">
+                  <div style="font-size:6.5px;color:var(--td);width:44px;">语速</div>
+                  <div style="width:90px;height:2px;background:rgba(255,255,255,.06);border-radius:1px;">
+                    <div id="mood-bar-speed" style="height:100%;background:var(--ty);border-radius:1px;width:0%;transition:width .9s ease;"></div>
+                  </div>
+                  <div id="mood-speed-val" style="font-size:6px;color:var(--ty);min-width:28px;"></div>
+                </div>
+                <div style="display:flex;align-items:center;gap:6px;">
+                  <div style="font-size:6.5px;color:var(--td);width:44px;">能量</div>
+                  <div style="width:90px;height:2px;background:rgba(255,255,255,.06);border-radius:1px;">
+                    <div id="mood-bar-energy" style="height:100%;background:var(--ty);border-radius:1px;width:0%;transition:width 1.1s ease;"></div>
+                  </div>
+                  <div id="mood-energy-val" style="font-size:6px;color:var(--ty);min-width:28px;"></div>
+                </div>
+                <div style="display:flex;align-items:center;gap:6px;">
+                  <div style="font-size:6.5px;color:var(--td);width:44px;">音调变化</div>
+                  <div style="width:90px;height:2px;background:rgba(255,255,255,.06);border-radius:1px;">
+                    <div id="mood-bar-pitch" style="height:100%;background:var(--ty);border-radius:1px;width:0%;transition:width 1.3s ease;"></div>
+                  </div>
+                  <div id="mood-pitch-val" style="font-size:6px;color:var(--ty);min-width:28px;"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Step 2: emotion badge (hidden initially) -->
+            <div id="mood-s2" style="display:none;flex-direction:column;gap:6px;">
+              <div style="font-size:8px;color:var(--tw);">把 tile_m 往上加，我感觉还能榨更多性能</div>
+              <div style="background:rgba(18,18,26,.96);border:.5px solid rgba(245,158,11,.4);border-radius:8px;padding:8px 10px;width:fit-content;animation:fadeIn .25s ease;">
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+                  <span style="font-size:15px;line-height:1;">⚡</span>
+                  <div>
+                    <div style="font-size:8.5px;color:var(--ty);font-weight:600;letter-spacing:.04em;">活跃</div>
+                    <div style="font-size:6.5px;color:var(--td);margin-top:1px;">语速 +42% · 能量偏高 · 音调上扬</div>
+                  </div>
+                </div>
+                <div style="display:flex;align-items:center;gap:5px;margin-bottom:5px;">
+                  <span style="font-size:7px;color:var(--td);">改为：</span>
+                  <div style="background:rgba(248,113,113,.1);border:.5px solid rgba(248,113,113,.3);border-radius:3px;padding:1px 7px;font-size:7px;color:var(--tr);">‼ 紧张</div>
+                  <div style="background:rgba(45,212,191,.07);border:.5px solid rgba(45,212,191,.2);border-radius:3px;padding:1px 7px;font-size:7px;color:var(--tc);">≈ 犹豫</div>
+                  <div style="background:rgba(255,255,255,.04);border:.5px solid rgba(255,255,255,.1);border-radius:3px;padding:1px 7px;font-size:7px;color:var(--td);">· 中性</div>
+                </div>
+                <div style="font-size:6.5px;color:rgba(255,255,255,.2);">↵ 确认 · 或点击切换</div>
+              </div>
+            </div>
+
+            <!-- Step 3: AI adaptive response (hidden initially) -->
+            <div id="mood-s3" style="display:none;flex-direction:column;gap:4px;">
+              <div style="color:var(--ta);font-size:8px;">❯ 把 tile_m 往上加，我感觉还能榨更多性能 <span style="color:var(--ty);">⚡</span></div>
+              <div style="height:.5px;background:var(--tbdr);margin:2px 0;"></div>
+              <div style="color:rgba(167,139,250,.75);font-size:7px;">[HAI] ⚡ 高能量模式 — 跳过渐进测试</div>
+              <div style="color:var(--tw);font-size:7.5px;line-height:1.65;margin-top:1px;">直接推 tile_m=192，CUBE 预期 +8%<br>UB 溢出风险已知，继续执行？</div>
+              <div style="display:flex;gap:6px;margin-top:3px;">
+                <div style="background:var(--acc);color:white;padding:2px 10px;border-radius:2px;font-size:7px;">Y 确认</div>
+                <div style="background:rgba(255,255,255,.06);color:var(--td);padding:2px 10px;border-radius:2px;font-size:7px;">N 渐进</div>
+              </div>
+              <!-- Contrast note -->
+              <div style="margin-top:6px;padding:5px 8px;background:rgba(248,113,113,.05);border:.5px solid rgba(248,113,113,.15);border-radius:4px;">
+                <div style="font-size:6.5px;color:var(--td);margin-bottom:2px;">若检测为 ‼ 紧张，同一句话触发：</div>
+                <div style="font-size:7px;color:rgba(200,200,220,.45);font-style:italic;line-height:1.55;">[HAI] 看起来有些急——先定位根本原因<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;msprof 显示 data_move 异常上升...</div>
+              </div>
+            </div>
+
+            <!-- Prompt -->
+            <div id="mood-prompt" style="margin-top:auto;color:var(--ta);">❯ <span style="opacity:.4;">_</span></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <div class="snav" id="nav-m2e"></div>
+</div>
+
+
 <!-- ══ STAGE 08: 光标伴侣 ══ -->
 <div class="sec" id="s-m6a" style="background:var(--sur);">
   <div class="slabel">
-    <span class="sub">表达意图 · Stage 02 · 设计点 3/3</span>
+    <span class="sub">表达意图 · Stage 02 · 设计点 4/4</span>
     <span class="main">光标伴侣 — msprof 分析全程 AI 贴身引导</span>
   </div>
   <div class="inner">
@@ -1963,7 +2137,7 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
 <!-- ══ STAGE 02-2: 手势 Prompt ══ -->
 <div class="sec" id="s-m2b" style="background:var(--bg);">
   <div class="slabel">
-    <span class="sub">表达意图 · Stage 02 · 设计点 3/3</span>
+    <span class="sub">表达意图 · Stage 02 · 设计点 4/4</span>
     <span class="main">代码交互 — 停顿 + 圈选，AI 感知意图</span>
   </div>
   <div class="inner">
@@ -4119,6 +4293,76 @@ function setupSlideSteps(secId, stripId, defs) {
 })();
 
 /* ─────────────────────────────────────────────
+   s-m2e: emotion detection IIFE
+───────────────────────────────────────────── */
+(function initMoodDemo() {
+  var sec = document.getElementById('s-m2e');
+  if (!sec) return;
+
+  /* inject amber waveform bars into mood-wave */
+  var waveEl = document.getElementById('mood-wave');
+  if (waveEl) {
+    var heights = [4,6,8,5,7,10,6,8,5,7,9,6,8,5,7,9,6,8,5,7,6,8];
+    heights.forEach(function(h, i) {
+      var bar = document.createElement('div');
+      bar.style.cssText = 'width:1.5px;background:linear-gradient(to top,#F59E0B,#FBBF24);border-radius:1px;height:' + h + 'px;animation:ck-wave .5s infinite;animation-delay:' + (i * 0.04).toFixed(2) + 's;';
+      waveEl.appendChild(bar);
+    });
+  }
+
+  window.moodSetPhase = function(p) {
+    var s1 = document.getElementById('mood-s1');
+    var s2 = document.getElementById('mood-s2');
+    var s3 = document.getElementById('mood-s3');
+    function hide(el) { if (el) el.style.display = 'none'; }
+    function show(el, d) { if (el) el.style.display = d || 'flex'; }
+    if (p === 1) {
+      show(s1, 'flex'); hide(s2); hide(s3);
+      setTimeout(function() {
+        var sp = document.getElementById('mood-bar-speed');
+        var en = document.getElementById('mood-bar-energy');
+        var pi = document.getElementById('mood-bar-pitch');
+        var sv = document.getElementById('mood-speed-val');
+        var ev = document.getElementById('mood-energy-val');
+        var pv = document.getElementById('mood-pitch-val');
+        if (sp) sp.style.width = '78%';
+        if (en) en.style.width = '82%';
+        if (pi) pi.style.width = '65%';
+        if (sv) sv.textContent = '+42%';
+        if (ev) ev.textContent = '偏高';
+        if (pv) pv.textContent = '上扬';
+      }, 300);
+    } else if (p === 2) {
+      hide(s1); show(s2, 'flex'); hide(s3);
+    } else if (p === 3) {
+      hide(s1); hide(s2); show(s3, 'flex');
+    }
+  };
+
+  window._sectionDOMResets = window._sectionDOMResets || {};
+  window._sectionDOMResets['s-m2e'] = function() {
+    var s1 = document.getElementById('mood-s1');
+    var s2 = document.getElementById('mood-s2');
+    var s3 = document.getElementById('mood-s3');
+    var sp = document.getElementById('mood-bar-speed');
+    var en = document.getElementById('mood-bar-energy');
+    var pi = document.getElementById('mood-bar-pitch');
+    var sv = document.getElementById('mood-speed-val');
+    var ev = document.getElementById('mood-energy-val');
+    var pv = document.getElementById('mood-pitch-val');
+    if (s1) s1.style.display = 'flex';
+    if (s2) s2.style.display = 'none';
+    if (s3) s3.style.display = 'none';
+    if (sp) sp.style.width = '0%';
+    if (en) en.style.width = '0%';
+    if (pi) pi.style.width = '0%';
+    if (sv) sv.textContent = '';
+    if (ev) ev.textContent = '';
+    if (pv) pv.textContent = '';
+  };
+})();
+
+/* ─────────────────────────────────────────────
    s-m6a: msprof companion IIFE
 ───────────────────────────────────────────── */
 (function initCompanion() {
@@ -4450,6 +4694,12 @@ setupSlideSteps('s-m5b', 'stp-m5b', [
     act: function() { if(window.reasonSetPhase) window.reasonSetPhase(2); } },
 ]);
 
+setupSlideSteps('s-m2e', 'stp-m2e', [
+  { ms:1800, act: function() { if(window.moodSetPhase) window.moodSetPhase(1); } },
+  { ms:1500, act: function() { if(window.moodSetPhase) window.moodSetPhase(2); } },
+  { ms:2000, act: function() { if(window.moodSetPhase) window.moodSetPhase(3); } },
+]);
+
 /* s-m6a: companion — triangle managed by companionSetStep, no sim-cursor */
 setupSlideSteps('s-m6a', 'stp-m6a', [
   { ms:2200, key:'/', act: function() { if(window.companionSetStep) window.companionSetStep(0); } },
@@ -4494,6 +4744,7 @@ document.head.appendChild(sty);
     { id:'s-m5b',        label:'AI 推理' },
     { id:'s-m4b',        label:'团队库' },
     { id:'s-m2d',        label:'语音模式路由' },
+    { id:'s-m2e',        label:'情感感知' },
     { id:'s-m6a',        label:'光标伴侣' },
     { id:'s-sum',        label:'总结' },
   ];
