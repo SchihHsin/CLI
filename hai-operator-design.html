@@ -3221,78 +3221,182 @@ body{font-family:'Inter','Helvetica Neue',Helvetica,'Noto Sans SC',sans-serif;ba
 <div class="sec" id="s-m5b" style="background:var(--sur);">
   <div class="slabel">
     <span class="sub">审核结果 · Stage 06 · 设计点 2/2</span>
-    <span class="main">意图对齐 — AI 的 TBE 决策完全透明可追溯</span>
+    <span class="main">推理透视 — AI 停下来时看清内部</span>
   </div>
   <div class="inner">
     <div class="dp-layout">
       <div class="dp-left">
         <div class="dp-desc">
           <div class="dp-label">设计说明</div>
-          <div class="dp-title">AI 决策透明化</div>
-          <div class="dp-body">AI 生成的 TBE 代码不是黑盒。工程师可以针对任何决策点提问——为什么选这个 tile_m？为什么用 FRACTAL_NZ 而不是 ND？AI 用昇腾硬件数据（UB 占用计算、CUBE 吞吐公式、AI Core 占用率分析）给出完整解释，工程师可以接受、修改或学习。</div>
+          <div class="dp-title">推理过程默认不可见 — 卡住时按需展开</div>
+          <div class="dp-body">正常执行时 AI 推理过程对用户透明，不打扰工作流。当运行时间异常偏长时，系统主动出现「展开推理」提示——用户展开后一眼看清推理链：哪步已完成、哪步卡住、原因是什么，并决定继续等待还是立即介入。推理细节是应急工具，不是日常界面。</div>
         </div>
         <div class="dp-desc">
           <div class="dp-label">核心设计点</div>
           <div class="dp-points">
-            <div class="dpp">每个关键参数都有"为什么"链接，点击展开决策依据</div>
-            <div class="dpp">解释包含：昇腾硬件约束 + 数值计算过程 + 备选方案对比</div>
-            <div class="dpp">支持"我想要 xxx，请重新优化"直接修改约束</div>
-            <div class="dpp">学习模式：决策链路可导出为团队知识库条目</div>
+            <div class="dpp">执行正常 → 推理全程隐藏，只显示轻量计时</div>
+            <div class="dpp">超时 → 系统主动提示「展开推理过程」，无需用户找入口</div>
+            <div class="dpp">推理链分层：✓ 已完成 · ⟳ 进行中（含耗时） · · 等待</div>
+            <div class="dpp">阻塞步骤高亮 + 原因说明 + 两个出口：继续等 / 中止介入</div>
           </div>
         </div>
         <div class="ba-grid">
           <div class="ba-before">
             <div class="ba-label" style="gap:6px;"><span style="font-family:'DM Mono',monospace;font-size:7px;letter-spacing:.1em;background:var(--grey-2);color:var(--tx2);padding:1px 6px;">BEFORE</span>过去的做法</div>
-            <div style="display:flex;flex-direction:column;gap:3px;margin-top:4px;">
-              <div style="background:var(--tb);padding:5px 8px;border-left:2px solid var(--grey-2);font-family:'DM Mono',monospace;font-size:8px;border:.5px solid var(--tbdr);">
-                <span style="color:var(--tp);">tile_m</span> = <span style="color:var(--tg);">128</span>  <span style="color:var(--td);"># ???</span>
+            <div style="margin-top:6px;background:var(--tb);border-radius:6px;padding:7px 9px;font-family:'DM Mono',monospace;font-size:7.5px;display:flex;flex-direction:column;gap:5px;">
+              <div style="color:var(--ta);">❯ 继续优化 RMSNorm，目标 cube 利用率 > 70%</div>
+              <div style="height:.5px;background:var(--tbdr);"></div>
+              <div style="display:flex;align-items:center;justify-content:space-between;">
+                <span style="color:var(--td);">⟳  分析中...</span>
+                <span style="color:var(--td);">⏱ 00:47</span>
               </div>
-              <div style="font-size:8px;color:var(--tx3);padding:0 4px;">这个值是哪来的？为什么不是 64 或 256？</div>
-              <div style="background:var(--grey-1);border:.5px solid var(--grey-2);padding:5px 8px;font-size:8px;color:var(--tx2);">不敢乱改，只能保持原样</div>
+              <div style="font-size:6.5px;color:rgba(255,255,255,.18);margin-top:2px;">卡了将近一分钟，不知道在干什么</div>
             </div>
           </div>
           <div class="ba-after">
             <div class="ba-label" style="gap:6px;"><span style="font-family:'DM Mono',monospace;font-size:7px;letter-spacing:.1em;background:var(--acc);color:white;padding:1px 6px;">AFTER</span>新的设计</div>
-            <div class="ba-text">AI 给出 tile_m=128 的完整推导：UB 容量 / CUBE 粒度约束 / 实测利用率对比，工程师理解后可主动干预调整。</div>
+            <div class="ba-text">按需展开推理链，阻塞步骤一眼可见。用户知道在等什么、卡在哪里、该不该出手。</div>
           </div>
         </div>
       </div>
-      <div class="dp-right">
-        <div class="mockup-label">动态 Mockup — 决策透明化</div>
+
+      <div class="dp-right" style="position:relative;">
+        <div class="mockup-label">动态 Mockup — 推理透视流程</div>
         <div class="stp-strip" id="stp-m5b">
           <div class="stp-bar"><div class="stp-fill"></div></div>
           <div class="stp-steps">
-            <div class="stp-step"><div class="stp-num">1</div><span class="stp-lbl">提问决策依据</span></div>
-            <div class="stp-step"><div class="stp-num">2</div><span class="stp-lbl">AI 展开推导过程</span></div>
-            <div class="stp-step"><div class="stp-num">3</div><span class="stp-lbl">主动修改约束</span></div>
+            <div class="stp-step"><div class="stp-num">1</div><span class="stp-lbl">正常执行 · 推理隐藏</span></div>
+            <div class="stp-step"><div class="stp-num">2</div><span class="stp-lbl">超时 · 展开推理链</span></div>
+            <div class="stp-step"><div class="stp-num">3</div><span class="stp-lbl">阻塞定位 · 干预选项</span></div>
           </div>
         </div>
-        <div style="flex:1;background:var(--tb);border:.5px solid var(--tbdr);border-radius:10px;display:flex;flex-direction:column;overflow:hidden;">
-          <div style="background:var(--tbar);padding:6px 14px;border-bottom:.5px solid var(--tbdr);display:flex;align-items:center;gap:8px;">
-            <div style="display:flex;gap:5px;">
+
+        <div style="background:var(--tb);border-radius:10px;border:.5px solid var(--tbdr);box-shadow:0 6px 24px rgba(0,0,0,.35);overflow:hidden;margin-top:6px;display:flex;flex-direction:column;">
+          <!-- macOS chrome -->
+          <div style="background:var(--tbar);padding:5px 10px;border-bottom:.5px solid var(--tbdr);display:flex;align-items:center;gap:5px;flex-shrink:0;">
+            <div style="display:flex;gap:4px;">
               <div style="width:8px;height:8px;border-radius:50%;background:#FF5F57;"></div>
               <div style="width:8px;height:8px;border-radius:50%;background:#FEBC2E;"></div>
               <div style="width:8px;height:8px;border-radius:50%;background:#28C840;"></div>
             </div>
-            <span style="font-family:'DM Mono',monospace;font-size:9px;color:var(--td);">RMSNorm · AI 决策解释</span>
+            <span style="font-family:'DM Mono',monospace;font-size:7px;color:rgba(255,255,255,.25);flex:1;text-align:center;">orca — reasoning-trace</span>
           </div>
-          <div style="flex:1;overflow-y:auto;padding:12px 14px;display:flex;flex-direction:column;gap:10px;" id="intent-body">
-            <div style="background:var(--acc-dim);border:.5px solid var(--acc-b);padding:8px 12px;">
-              <div style="font-size:9.5px;color:var(--tx);">为什么 tile_m 选 128，而不是 64 或 256？</div>
-            </div>
-            <div id="intent-answer" style="display:flex;flex-direction:column;gap:6px;">
-              <!-- filled by JS -->
-            </div>
+          <!-- Status bar -->
+          <div style="background:#0d0d14;padding:3px 10px;border-bottom:.5px solid var(--tbdr);display:flex;align-items:center;gap:5px;flex-shrink:0;">
+            <div style="font-family:'DM Mono',monospace;font-size:6.5px;color:var(--ta);background:rgba(167,139,250,.12);border:.5px solid rgba(167,139,250,.3);padding:1px 6px;border-radius:2px;white-space:nowrap;">RMSNorm ⟳</div>
+            <div style="flex:1;font-family:'DM Mono',monospace;font-size:6.5px;color:rgba(255,255,255,.2);text-align:center;">~/RMSNorm-910B</div>
+            <div id="rsn-stage-label" style="font-family:'DM Mono',monospace;font-size:6.5px;color:var(--ta);">Stage 06 · Agent 运行中</div>
           </div>
-          <div style="padding:8px 14px;border-top:.5px solid var(--tbdr);display:flex;gap:6px;align-items:center;" id="intent-input-row" style="display:none;">
-            <input id="intent-input" style="flex:1;background:var(--tb);border:.5px solid var(--tbdr);padding:5px 9px;font-family:'DM Mono',monospace;font-size:9px;color:var(--tw);outline:none;" placeholder="我想要 cube_util > 75%，请重新优化..." />
-            <div style="font-size:9px;color:var(--ta);padding:4px 8px;border:.5px solid var(--acc-b);cursor:pointer;font-family:'DM Mono',monospace;">↵</div>
+
+          <!-- Content area -->
+          <div style="padding:10px 12px;font-family:'DM Mono',monospace;font-size:8px;min-height:220px;display:flex;flex-direction:column;gap:5px;">
+
+            <!-- Input echo (always shown) -->
+            <div style="color:var(--ta);font-size:8px;">❯ <span style="color:var(--tw);">继续优化 RMSNorm，目标 cube 利用率 &gt; 70%</span></div>
+            <div style="height:.5px;background:var(--tbdr);flex-shrink:0;"></div>
+
+            <!-- Step 1: normal execution, hidden reasoning -->
+            <div id="rsn-s1" style="display:flex;flex-direction:column;gap:5px;">
+              <div style="display:flex;align-items:center;justify-content:space-between;">
+                <div style="display:flex;align-items:center;gap:6px;color:var(--ty);">
+                  <span style="animation:spin 1.2s linear infinite;display:inline-block;">⟳</span>
+                  <span style="font-size:7.5px;">分析参数空间...</span>
+                </div>
+                <span id="rsn-timer1" style="font-size:6.5px;color:var(--td);">⏱ 00:08</span>
+              </div>
+              <!-- Subtle expand link -->
+              <div style="display:flex;align-items:center;gap:4px;margin-top:2px;opacity:.3;">
+                <span style="font-size:6px;color:var(--td);">▶ 推理过程</span>
+              </div>
+            </div>
+
+            <!-- Step 2: timeout, reasoning chain expanded -->
+            <div id="rsn-s2" style="display:none;flex-direction:column;gap:5px;">
+              <!-- Timer turned warning -->
+              <div style="display:flex;align-items:center;justify-content:space-between;">
+                <div style="display:flex;align-items:center;gap:6px;color:var(--ty);">
+                  <span style="animation:spin 1.2s linear infinite;display:inline-block;">⟳</span>
+                  <span style="font-size:7.5px;">分析参数空间...</span>
+                </div>
+                <span style="font-size:6.5px;color:var(--tr);">⏱ 00:47 ⚠</span>
+              </div>
+              <!-- Expand hint -->
+              <div style="display:flex;align-items:center;gap:5px;background:rgba(251,191,36,.06);border:.5px solid rgba(251,191,36,.2);border-radius:4px;padding:3px 8px;width:fit-content;cursor:pointer;">
+                <span style="font-size:7px;color:var(--ty);">▼</span>
+                <span style="font-size:6.5px;color:var(--ty);">推理过程（已展开）</span>
+              </div>
+              <!-- Reasoning chain -->
+              <div style="display:flex;flex-direction:column;gap:2px;padding:5px 8px;background:rgba(12,12,17,.6);border-radius:6px;border:.5px solid var(--tbdr);">
+                <div style="display:flex;align-items:center;gap:6px;">
+                  <span style="color:var(--tg);font-size:8px;min-width:10px;">✓</span>
+                  <span style="font-size:7px;color:var(--td);flex:1;">解析 msprof 性能数据</span>
+                  <span style="font-size:6px;color:rgba(255,255,255,.2);">0.8s</span>
+                </div>
+                <div style="display:flex;align-items:center;gap:6px;">
+                  <span style="color:var(--tg);font-size:8px;min-width:10px;">✓</span>
+                  <span style="font-size:7px;color:var(--td);flex:1;">计算 tile_m 候选值</span>
+                  <span style="font-size:6px;color:rgba(255,255,255,.2);">1.3s</span>
+                </div>
+                <!-- Stuck step -->
+                <div style="display:flex;align-items:center;gap:6px;background:rgba(248,113,113,.06);border-radius:3px;padding:2px 3px;margin:1px -3px;">
+                  <span style="color:var(--ty);font-size:8px;min-width:10px;animation:spin 1.2s linear infinite;display:inline-block;">⟳</span>
+                  <span style="font-size:7px;color:var(--tr);flex:1;">验证 tile_m=192 UB 限制...</span>
+                  <span style="font-size:6px;color:var(--tr);">44.9s</span>
+                </div>
+                <div style="display:flex;align-items:center;gap:6px;opacity:.4;">
+                  <span style="color:var(--td);font-size:8px;min-width:10px;">·</span>
+                  <span style="font-size:7px;color:var(--td);flex:1;">shape 推导</span>
+                  <span style="font-size:6px;color:rgba(255,255,255,.15);">等待</span>
+                </div>
+                <div style="display:flex;align-items:center;gap:6px;opacity:.4;">
+                  <span style="color:var(--td);font-size:8px;min-width:10px;">·</span>
+                  <span style="font-size:7px;color:var(--td);flex:1;">精度验证</span>
+                  <span style="font-size:6px;color:rgba(255,255,255,.15);">等待</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Step 3: problem located, intervention options -->
+            <div id="rsn-s3" style="display:none;flex-direction:column;gap:5px;">
+              <div style="display:flex;align-items:center;justify-content:space-between;">
+                <div style="display:flex;align-items:center;gap:6px;color:var(--tr);">
+                  <span>⚠</span>
+                  <span style="font-size:7.5px;">UB 溢出边界检测阻塞</span>
+                </div>
+                <span style="font-size:6.5px;color:var(--tr);">⏱ 00:47 ⚠</span>
+              </div>
+              <!-- Problem details -->
+              <div style="background:rgba(248,113,113,.06);border:.5px solid rgba(248,113,113,.2);border-radius:6px;padding:7px 10px;display:flex;flex-direction:column;gap:4px;">
+                <div style="font-size:7px;color:var(--td);">阻塞原因</div>
+                <div style="font-size:7.5px;color:var(--tw);line-height:1.6;">tile_m=192 → UB 需要 <span style="color:var(--tr);">312 KB</span>，超出限制 <span style="color:var(--td);">256 KB</span><br>边界计算死循环，AI 无法自动跳出</div>
+              </div>
+              <!-- Reasoning chain (compact) -->
+              <div style="display:flex;flex-direction:column;gap:2px;padding:4px 8px;background:rgba(12,12,17,.6);border-radius:5px;border:.5px solid var(--tbdr);">
+                <div style="display:flex;align-items:center;gap:6px;">
+                  <span style="color:var(--tg);font-size:8px;min-width:10px;">✓</span>
+                  <span style="font-size:7px;color:var(--td);flex:1;">解析 msprof / 计算候选值</span>
+                </div>
+                <div style="display:flex;align-items:center;gap:6px;background:rgba(248,113,113,.06);border-radius:3px;padding:2px 3px;margin:0 -3px;">
+                  <span style="color:var(--tr);font-size:8px;min-width:10px;">✗</span>
+                  <span style="font-size:7px;color:var(--tr);flex:1;">验证 tile_m=192 UB 限制</span>
+                  <span style="font-size:6px;color:var(--tr);">阻塞</span>
+                </div>
+              </div>
+              <!-- Intervention options -->
+              <div style="display:flex;gap:6px;margin-top:2px;">
+                <div style="background:rgba(255,255,255,.05);color:var(--td);padding:3px 10px;border-radius:3px;font-size:7px;border:.5px solid var(--tbdr);">继续等待</div>
+                <div style="background:var(--acc);color:white;padding:3px 10px;border-radius:3px;font-size:7px;">中止 · 手动指定 tile_m</div>
+              </div>
+            </div>
+
+            <div id="rsn-prompt" style="margin-top:auto;color:var(--ta);">❯ <span style="opacity:.4;">_</span></div>
           </div>
         </div>
       </div>
     </div>
   </div>
 </div>
+
 
 <!-- ══ STAGE 07: 团队记忆库 ══ -->
 <div class="sec" id="s-m4b" style="background:var(--bg);">
@@ -4346,63 +4450,42 @@ function setupSlideSteps(secId, stripId, defs) {
 })();
 
 /* ─────────────────────────────────────────────
-   s-m5b: AI reasoning IIFE
+   s-m5b: reasoning trace IIFE
 ───────────────────────────────────────────── */
-(function initReasoning() {
-  const answerBox  = document.getElementById('intent-answer');
-  const inputRow   = document.getElementById('intent-input-row');
+(function initReasoningTrace() {
+  var sec = document.getElementById('s-m5b');
+  if (!sec) return;
 
-  function addCard(html, delay) {
-    setTimeout(() => {
-      if (!answerBox) return;
-      const d = document.createElement('div');
-      d.innerHTML = html;
-      d.style.cssText = 'opacity:0;transition:opacity .35s;';
-      answerBox.appendChild(d);
-      requestAnimationFrame(() => { d.style.opacity = '1'; });
-    }, delay);
-  }
-
-  let initialized = false;
-  function setPhase(p) {
-    if (!initialized && p >= 1) {
-      if (answerBox) answerBox.innerHTML = '';
-      initialized = true;
-    }
+  window.reasonSetPhase = function(p) {
+    var s1 = document.getElementById('rsn-s1');
+    var s2 = document.getElementById('rsn-s2');
+    var s3 = document.getElementById('rsn-s3');
+    var pr = document.getElementById('rsn-prompt');
+    function hide(el) { if (el) el.style.display = 'none'; }
+    function show(el, d) { if (el) el.style.display = d || 'flex'; }
     if (p === 1) {
-      addCard(
-        '<div style="background:var(--tb);border:.5px solid var(--tbdr);padding:8px 12px;display:flex;flex-direction:column;gap:5px;">' +
-        '<div style="font-family:\'DM Mono\',monospace;font-size:8px;color:var(--acc);margin-bottom:2px;">◆ AI 决策推导</div>' +
-        '<div style="font-size:8.5px;color:var(--td);line-height:1.6;">1. UB 容量：256KB ÷ (fp16 × 2 tensors) = 65536 元素</div>' +
-        '<div style="font-size:8.5px;color:var(--td);line-height:1.6;">2. CUBE 粒度：昇腾 910B CUBE 矩阵乘以 16×16 为粒度</div>' +
-        '<div style="font-size:8.5px;color:var(--td);line-height:1.6;">3. tile_m = 128 = 8 × 16 · 充分填充 CUBE，减少空转</div>' +
-        '</div>',
-        0
-      );
-      addCard(
-        '<div style="background:var(--tb);border:.5px solid var(--tbdr);padding:8px 12px;">' +
-        '<div style="font-family:\'DM Mono\',monospace;font-size:8px;color:var(--acc);margin-bottom:4px;">备选方案对比</div>' +
-        '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:4px;">' +
-        '<div style="padding:5px 8px;border:.5px solid var(--tbdr);text-align:center;"><div style="font-family:\'DM Mono\',monospace;font-size:8px;color:var(--td);">tile_m=64</div><div style="font-size:7.5px;color:var(--tr);">CUBE 21%</div></div>' +
-        '<div style="padding:5px 8px;border:.5px solid var(--acc-b);background:rgba(0,47,167,.08);text-align:center;"><div style="font-family:\'DM Mono\',monospace;font-size:8px;color:var(--acc);">tile_m=128</div><div style="font-size:7.5px;color:var(--tg);">CUBE 72% ✓</div></div>' +
-        '<div style="padding:5px 8px;border:.5px solid var(--tbdr);text-align:center;"><div style="font-family:\'DM Mono\',monospace;font-size:8px;color:var(--td);">tile_m=256</div><div style="font-size:7.5px;color:var(--ty);">OOM 风险</div></div>' +
-        '</div></div>',
-        400
-      );
+      show(s1, 'flex'); hide(s2); hide(s3);
+      if (pr) pr.style.display = 'block';
     } else if (p === 2) {
-      addCard(
-        '<div style="background:rgba(0,47,167,.08);border:.5px solid var(--acc-b);padding:8px 12px;">' +
-        '<div style="font-family:\'DM Mono\',monospace;font-size:8px;color:var(--acc);margin-bottom:4px;">决策确认 · tile_m = 128</div>' +
-        '<div style="font-size:8.5px;color:var(--tx);line-height:1.6;">基于 UB 容量约束和 CUBE 吞吐公式，128 是当前 shape 下的最优解。' +
-        '工程师可在此修改约束后重新优化。</div>' +
-        '</div>',
-        0
-      );
-      if (inputRow) inputRow.style.display = 'flex';
+      hide(s1); show(s2, 'flex'); hide(s3);
+      if (pr) pr.style.display = 'none';
+    } else if (p === 3) {
+      hide(s1); hide(s2); show(s3, 'flex');
+      if (pr) pr.style.display = 'none';
     }
-  }
+  };
 
-  window.reasonSetPhase = setPhase;
+  window._sectionDOMResets = window._sectionDOMResets || {};
+  window._sectionDOMResets['s-m5b'] = function() {
+    var s1 = document.getElementById('rsn-s1');
+    var s2 = document.getElementById('rsn-s2');
+    var s3 = document.getElementById('rsn-s3');
+    var pr = document.getElementById('rsn-prompt');
+    if (s1) s1.style.display = 'flex';
+    if (s2) s2.style.display = 'none';
+    if (s3) s3.style.display = 'none';
+    if (pr) pr.style.display = 'block';
+  };
 })();
 
 /* ─────────────────────────────────────────────
@@ -4920,12 +5003,11 @@ setupSlideSteps('s-m4b', 'stp-m4b', [
   { ms:2400, act: function() { if(window.libSetPhase) window.libSetPhase(3); } },
 ]);
 
-/* s-m5b: reasoning (no cursor needed) */
+/* s-m5b: reasoning trace */
 setupSlideSteps('s-m5b', 'stp-m5b', [
-  { ms:2400,
-    act: function() { if(window.reasonSetPhase) window.reasonSetPhase(1); } },
-  { ms:2800,
-    act: function() { if(window.reasonSetPhase) window.reasonSetPhase(2); } },
+  { ms:2000, act: function() { if(window.reasonSetPhase) window.reasonSetPhase(1); } },
+  { ms:2200, act: function() { if(window.reasonSetPhase) window.reasonSetPhase(2); } },
+  { ms:2400, act: function() { if(window.reasonSetPhase) window.reasonSetPhase(3); } },
 ]);
 
 setupSlideSteps('s-m2e', 'stp-m2e', [
