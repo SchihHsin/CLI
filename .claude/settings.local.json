@@ -29,7 +29,8 @@
       "PowerShell(Start-Process \"D:\\\\HW\\\\AICLI\\\\ai-cli-report \\(1\\)\\\\report\\\\sharing-slides.pdf\")",
       "Bash(npx playwright *)",
       "Bash(where playwright *)",
-      "Bash(where node *)"
+      "Bash(where node *)",
+      "Bash(python3 *)"
     ]
   }
 }
