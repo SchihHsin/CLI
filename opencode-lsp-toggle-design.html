@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OpenCode /lsp-toggle 交互设计方案</title>
+<style>
+  /* ── TOKENS ───────────────────────────────────────── */
+  :root {
+    /* page (light) */
+    --page-bg:       #f5f5f3;
+    --page-surface:  #ffffff;
+    --page-border:   #e2e2de;
+    --page-text:     #1a1a18;
+    --page-muted:    #6b6b65;
+    --page-faint:    #b0b0aa;
+    --page-tag-bg:   #efefec;
+
+    /* terminal (dark — opencode palette) */
+    --t-bg:          #0e0e0e;
+    --t-bg2:         #161616;
+    --t-bg3:         #1c1c1c;
+    --t-bg4:         #222;
+    --t-border:      #282828;
+    --t-border2:     #333;
+    --t-orange:      #fab283;
+    --t-blue:        #5c9cf5;
+    --t-purple:      #9d7cd8;
+    --t-green:       #9ece6a;
+    --t-red:         #f7768e;
+    --t-yellow:      #e0af68;
+    --t-cyan:        #7dcfff;
+    --t-text:        #a9b1d6;
+    --t-dim:         #565f89;
+    --t-muted:       #3a3f5c;
+    --t-white:       #c0caf5;
+
+    --font-mono: 'JetBrains Mono','Fira Code','Cascadia Code','Consolas',monospace;
+    --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: var(--font-sans);
+    background: var(--page-bg);
+    color: var(--page-text);
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  /* ── PAGE CHROME ────────────────────────────────── */
+  .doc-header {
+    background: var(--page-surface);
+    border-bottom: 1px solid var(--page-border);
+    padding: 40px 52px 32px;
+  }
+  .doc-header h1 {
+    font-size: 22px; font-weight: 600;
+    color: var(--page-text); margin-bottom: 6px; letter-spacing: -0.02em;
+  }
+  .doc-header h1 code {
+    font-family: var(--font-mono);
+    font-size: 18px; font-weight: 400;
+    color: #c96a2a;
+    background: #fef3ea; padding: 1px 7px; border-radius: 4px;
+  }
+  .doc-header p { color: var(--page-muted); font-size: 13px; }
+  .doc-header .meta {
+    display: flex; gap: 10px; margin-top: 14px; flex-wrap: wrap;
+  }
+  .meta-tag {
+    font-size: 11px; color: var(--page-muted);
+    padding: 3px 10px; background: var(--page-tag-bg);
+    border: 1px solid var(--page-border); border-radius: 4px;
+  }
+  .meta-tag b { color: var(--page-text); font-weight: 500; }
+
+  .doc-body { padding: 36px 52px 60px; max-width: 920px; }
+
+  .section { margin-bottom: 52px; }
+
+  .section-title {
+    font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em;
+    color: var(--page-muted); font-weight: 500;
+    margin-bottom: 18px; padding-bottom: 8px;
+    border-bottom: 1px solid var(--page-border);
+  }
+  .section-title .num { color: #c96a2a; }
+
+  /* step layout */
+  .step-wrap { display: flex; flex-direction: column; gap: 28px; }
+  .step { display: flex; gap: 18px; }
+  .step-num {
+    flex-shrink: 0; width: 24px; height: 24px;
+    border: 1px solid var(--page-border);
+    border-radius: 4px; background: var(--page-surface);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; color: var(--page-muted); margin-top: 2px;
+    font-family: var(--font-mono);
+  }
+  .step-content { flex: 1; min-width: 0; }
+  .step-label {
+    font-size: 13px; color: var(--page-muted);
+    margin-bottom: 10px; line-height: 1.5;
+  }
+  .step-label b { color: var(--page-text); font-weight: 500; }
+  .step-note {
+    margin-top: 10px; font-size: 12px; color: var(--page-muted);
+    line-height: 1.7; padding: 8px 12px;
+    background: var(--page-tag-bg);
+    border-left: 3px solid var(--page-border);
+    border-radius: 0 4px 4px 0;
+  }
+  .step-note b { color: var(--page-text); font-weight: 500; }
+  .step-note code {
+    font-family: var(--font-mono); font-size: 11px;
+    background: #e8e8e4; padding: 1px 5px; border-radius: 3px;
+    color: #c96a2a;
+  }
+
+  .path-divider {
+    display: flex; align-items: center; gap: 12px; margin: 4px 0 18px;
+  }
+  .path-divider::before, .path-divider::after {
+    content:''; flex:1; height:1px; background: var(--page-border);
+  }
+  .path-divider span {
+    font-size: 11px; color: var(--page-muted);
+    letter-spacing: 0.05em; white-space: nowrap;
+    background: var(--page-bg); padding: 0 4px;
+  }
+
+  /* ══════════════════════════════════════════════════
+     TERMINAL SHELL
+  ══════════════════════════════════════════════════ */
+  .tui-wrap {
+    background: var(--t-bg);
+    border-radius: 8px;
+    overflow: hidden;
+    /* subtle shadow so it lifts off the page */
+    box-shadow: 0 2px 12px rgba(0,0,0,0.18), 0 0 0 1px rgba(0,0,0,0.12);
+    font-family: var(--font-mono);
+  }
+
+  /* mac titlebar */
+  .tui-bar {
+    background: var(--t-bg2);
+    padding: 9px 14px;
+    display: flex; align-items: center; gap: 8px;
+    border-bottom: 1px solid var(--t-border);
+  }
+  .tui-dots { display: flex; gap: 6px; }
+  .tui-dot { width: 12px; height: 12px; border-radius: 50%; }
+  .tui-dot.r { background: #ff5f57; }
+  .tui-dot.y { background: #febc2e; }
+  .tui-dot.g { background: #28c840; }
+  .tui-wt { flex:1; text-align:center; font-size:12px; color:var(--t-dim); }
+
+  /* main split */
+  .tui-main { display: flex; min-height: 260px; }
+  .tui-msgs {
+    flex: 1; min-width: 0;
+    padding: 14px 18px;
+    border-right: 1px solid var(--t-border);
+    display: flex; flex-direction: column; gap: 3px;
+  }
+  .tui-sidebar {
+    width: 210px; flex-shrink: 0;
+    padding: 14px 16px;
+    font-family: var(--font-mono);
+  }
+  .sb-sec { margin-bottom: 16px; }
+  .sb-title { font-size: 12px; color: var(--t-white); margin-bottom: 3px; }
+  .sb-body  { font-size: 12px; color: var(--t-dim); line-height: 1.8; }
+  .sb-off   { color: var(--t-dim); }
+  .sb-on    { color: var(--t-green); }
+  .sb-pend  { color: var(--t-yellow); }
+
+  /* input line */
+  .tui-input {
+    border-top: 1px solid var(--t-border);
+    display: flex;
+  }
+  .tui-iline {
+    flex: 1;
+    border-left: 2px solid var(--t-blue);
+    padding: 9px 14px;
+    background: var(--t-bg2);
+    font-size: 12px; color: var(--t-white);
+    min-height: 40px; display: flex; align-items: center;
+  }
+  .t-cursor {
+    display: inline-block; width: 7px; height: 13px;
+    background: var(--t-white); border-radius: 1px;
+    vertical-align: middle; margin-left: 1px; opacity: 0.85;
+  }
+
+  /* status bar */
+  .tui-status {
+    background: var(--t-bg2); border-top: 1px solid var(--t-border);
+    padding: 5px 14px;
+    display: flex; align-items: center; justify-content: space-between;
+    font-size: 11px; color: var(--t-dim); font-family: var(--font-mono);
+  }
+  .tui-sl { display: flex; align-items: center; gap: 8px; }
+  .tui-sr { display: flex; align-items: center; gap: 12px; }
+  .agent-lbl { color: var(--t-orange); }
+  .t-kbd { color: var(--t-white); }
+
+  /* terminal text helpers */
+  .tm { font-size: 12px; line-height: 1.85; font-family: var(--font-mono); }
+  .tc-dim    { color: var(--t-dim); }
+  .tc-white  { color: var(--t-white); }
+  .tc-orange { color: var(--t-orange); }
+  .tc-green  { color: var(--t-green); }
+  .tc-red    { color: var(--t-red); }
+  .tc-yellow { color: var(--t-yellow); }
+  .tc-blue   { color: var(--t-blue); }
+  .tm-gap    { height: 5px; }
+
+  /* ── OPENCODE ALERT (left border only, no radius/outline/icon) ── */
+  /*   border color = semantic: error=red, warning=yellow,
+       success=green, info=blue                                      */
+  .oc-alert {
+    padding: 6px 14px;
+    border-left: 3px solid transparent;
+    font-family: var(--font-mono);
+    font-size: 12px; line-height: 1.8;
+  }
+  .oc-alert.error   { border-left-color: var(--t-red); }
+  .oc-alert.warning { border-left-color: var(--t-yellow); }
+  .oc-alert.success { border-left-color: var(--t-green); }
+  .oc-alert.info    { border-left-color: var(--t-blue); }
+
+  .oc-alert .a-title { margin-bottom: 1px; }
+  .oc-alert.error   .a-title { color: var(--t-red); }
+  .oc-alert.warning .a-title { color: var(--t-yellow); }
+  .oc-alert.success .a-title { color: var(--t-green); }
+  .oc-alert.info    .a-title { color: var(--t-blue); }
+  .oc-alert .a-body { color: var(--t-dim); }
+  .oc-alert .a-body .hi-on  { color: var(--t-green); }
+  .oc-alert .a-body .hi-off { color: var(--t-red); }
+  .oc-alert .a-body .hi-was { color: var(--t-dim); text-decoration: line-through; }
+
+  /* ── MODAL (matching real opencode select modal) ───── */
+  .modal-wrap {
+    /* floats inside .tui-msgs */
+    margin: 8px auto;
+    background: var(--t-bg3);
+    border: 1px solid #3a3a3a;
+    border-radius: 4px;
+    overflow: hidden;
+    max-width: 400px;
+    font-family: var(--font-mono);
+  }
+  .modal-hdr {
+    padding: 10px 16px 8px;
+    display: flex; justify-content: space-between; align-items: baseline;
+  }
+  .modal-title { font-size: 13px; color: var(--t-white); }
+  .modal-esc   { font-size: 11px; color: var(--t-dim); }
+
+  .modal-search {
+    padding: 0 12px 8px;
+  }
+  .modal-search-box {
+    border: 1px solid #3a3a3a; border-radius: 3px;
+    padding: 5px 10px;
+    display: flex; align-items: center; gap: 6px;
+    background: var(--t-bg4);
+  }
+  .modal-search-box span { font-size: 12px; color: var(--t-dim); }
+
+  .modal-current {
+    padding: 4px 16px 5px;
+    display: flex; align-items: center; gap: 7px;
+    font-size: 12px;
+  }
+
+  .modal-group {
+    padding: 5px 16px 3px;
+    font-size: 12px; color: var(--t-purple);
+  }
+
+  .modal-row {
+    padding: 6px 16px;
+    display: flex; align-items: center; justify-content: space-between;
+    font-size: 12px; color: var(--t-text);
+  }
+  .modal-row.selected {
+    background: var(--t-orange);
+    color: #1a0800;
+  }
+  .modal-row.selected .rr { color: #1a0800; opacity: 0.55; }
+  .modal-row.disabled { color: var(--t-muted); }
+  .modal-row.disabled .rr { color: var(--t-muted); }
+  .rr { font-size: 11px; color: var(--t-dim); }
+
+  /* warn block inside modal */
+  .modal-warn {
+    margin: 4px 12px 6px;
+    padding: 8px 12px;
+    border-left: 3px solid var(--t-yellow);
+    font-size: 11px; line-height: 1.75; font-family: var(--font-mono);
+  }
+  .modal-warn .wt { color: var(--t-yellow); margin-bottom: 2px; }
+  .modal-warn .wb { color: var(--t-dim); }
+  .modal-warn .wb b { color: var(--t-yellow); font-weight: 400; }
+
+  /* lock pill */
+  .lock-line {
+    padding: 5px 14px;
+    font-family: var(--font-mono);
+    font-size: 11px; color: var(--t-red);
+    border-left: 3px solid var(--t-red);
+    margin-top: 4px;
+  }
+
+  /* ── SPEC / STATE TABLES ─────────────────────────── */
+  .table-wrap {
+    border: 1px solid var(--page-border);
+    border-radius: 6px; overflow: hidden;
+    background: var(--page-surface);
+  }
+  .spec-table {
+    width: 100%; border-collapse: collapse;
+    font-size: 12px;
+  }
+  .spec-table th {
+    text-align: left; padding: 7px 14px;
+    font-size: 11px; font-weight: 500;
+    text-transform: uppercase; letter-spacing: 0.07em;
+    color: var(--page-muted);
+    background: var(--page-tag-bg);
+    border-bottom: 1px solid var(--page-border);
+    font-family: var(--font-sans);
+  }
+  .spec-table td {
+    padding: 8px 14px; border-bottom: 1px solid var(--page-border);
+    vertical-align: top; line-height: 1.65; color: var(--page-muted);
+    font-family: var(--font-sans);
+  }
+  .spec-table tr:last-child td { border-bottom: none; }
+  .spec-table td:first-child { color: var(--page-text); font-weight: 500; white-space: nowrap; }
+  .kbd {
+    display: inline-block; font-family: var(--font-mono);
+    border: 1px solid var(--page-border); padding: 1px 6px;
+    border-radius: 3px; font-size: 11px; color: var(--page-text);
+    background: var(--page-surface); vertical-align: middle;
+  }
+
+  /* ── CODE BLOCK ──────────────────────────────────── */
+  .code-block {
+    background: #1a1a1a;
+    border-radius: 6px; padding: 16px 18px;
+    font-family: var(--font-mono); font-size: 12px;
+    line-height: 1.8; overflow-x: auto; color: #a9b1d6;
+  }
+  .ck { color: #9d7cd8; }
+  .cs { color: #9ece6a; }
+  .cc { color: #565f89; }
+  .ct { color: #7dcfff; }
+  .cn { color: #fab283; }
+  .cv { color: #e0af68; }
+
+  /* flow overview table */
+  .flow-table { width: 100%; }
+  .flow-row {
+    display: flex; gap: 12px; align-items: flex-start;
+    padding: 9px 0; border-bottom: 1px solid var(--page-border);
+  }
+  .flow-row:last-child { border-bottom: none; }
+  .flow-n {
+    width: 28px; height: 22px; flex-shrink: 0;
+    background: var(--page-tag-bg); border: 1px solid var(--page-border);
+    border-radius: 4px; display: flex; align-items: center; justify-content: center;
+    font-size: 10px; color: var(--page-muted); font-family: var(--font-mono);
+    margin-top: 1px;
+  }
+  .flow-b { flex: 1; font-size: 13px; color: var(--page-muted); line-height: 1.6; }
+  .flow-b b { color: var(--page-text); font-weight: 500; }
+  .flow-b code { font-family: var(--font-mono); font-size: 12px; color: #c96a2a;
+    background: #fef3ea; padding: 1px 5px; border-radius: 3px; }
+
+</style>
+</head>
+<body>
+
+<!-- ═══════════════ HEADER ═══════════════ -->
+<div class="doc-header">
+  <h1>OpenCode <code>/lsp-toggle</code> 交互设计方案</h1>
+  <p>LSP（Language Server Protocol）开关功能 · TUI 界面 · 交互流程说明</p>
+  <div class="meta">
+    <span class="meta-tag">版本 <b>v1.2</b></span>
+    <span class="meta-tag">平台 <b>opencode TUI</b></span>
+    <span class="meta-tag">状态 <b>设计稿</b></span>
+    <span class="meta-tag">步骤 <b>5 个主要界面</b></span>
+  </div>
+</div>
+
+<!-- ═══════════════ BODY ════════════════ -->
+<div class="doc-body">
+
+  <!-- 00 OVERVIEW -->
+  <div class="section">
+    <div class="section-title"><span class="num">00</span> &nbsp;整体交互流程</div>
+    <div class="flow-table">
+      <div class="flow-row">
+        <div class="flow-n">1</div>
+        <div class="flow-b">用户输入 <code>/lsp-toggle</code>，通过 slash 自动补全触发，弹出选择面板</div>
+      </div>
+      <div class="flow-row">
+        <div class="flow-n">2</div>
+        <div class="flow-b">选择面板：当前状态置灰，对侧选项<b>橙色实心行</b>高亮，<b>↑↓</b> 移动，<b>↵</b> 确认</div>
+      </div>
+      <div class="flow-row">
+        <div class="flow-n">3A</div>
+        <div class="flow-b"><b>关 → 开路径：</b>面板内插入黄色左线预警 + 二次确认选项，确认后写入配置</div>
+      </div>
+      <div class="flow-row">
+        <div class="flow-n">3B</div>
+        <div class="flow-b"><b>开 → 关路径：</b>无需预警，直接写入配置</div>
+      </div>
+      <div class="flow-row">
+        <div class="flow-n">4</div>
+        <div class="flow-b">消息区输出<b>绿色左线通知</b>，Sidebar LSP 变为黄色「⟳ 待重启」，提示按 <code>r</code> 立即重启</div>
+      </div>
+      <div class="flow-row">
+        <div class="flow-n">5</div>
+        <div class="flow-b">未重启再次执行 <code>/lsp-toggle</code>：命令<b>锁定</b>，不弹面板，输出红色左线错误提示</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 01 AUTOCOMPLETE -->
+  <div class="section">
+    <div class="section-title"><span class="num">01</span> &nbsp;步骤一 · 触发 — slash 自动补全</div>
+    <div class="step-wrap">
+      <div class="step">
+        <div class="step-num">→</div>
+        <div class="step-content">
+          <div class="step-label">用户输入 <b>/lsp</b>，补全下拉出现，<b>/lsp-toggle</b> 橙色高亮</div>
+          <div class="tui-wrap">
+            <div class="tui-bar">
+              <div class="tui-dots"><div class="tui-dot r"></div><div class="tui-dot y"></div><div class="tui-dot g"></div></div>
+              <div class="tui-wt">opencode</div>
+            </div>
+            <div class="tui-main">
+              <div class="tui-msgs">
+                <div class="tm tc-dim"># ~/project · 会话已恢复</div>
+                <div class="tm-gap"></div>
+              </div>
+              <div class="tui-sidebar">
+                <div class="sb-sec">
+                  <div class="sb-title">Context</div>
+                  <div class="sb-body">8,432 tokens<br>0% used<br>$0.00 spent</div>
+                </div>
+                <div class="sb-sec">
+                  <div class="sb-title">LSP</div>
+                  <div class="sb-body sb-off">已关闭</div>
+                </div>
+              </div>
+            </div>
+            <!-- autocomplete rows -->
+            <div style="border-top:1px solid var(--t-border); font-family:var(--font-mono);">
+              <div style="display:flex;align-items:center;justify-content:space-between;padding:6px 14px;background:var(--t-orange);font-size:12px;color:#1a0800;">
+                <span>/lsp-toggle</span>
+                <span style="font-size:11px;opacity:0.55;">切换 LSP 开关状态</span>
+              </div>
+              <div style="display:flex;align-items:center;justify-content:space-between;padding:6px 14px;font-size:12px;color:var(--t-dim);border-top:1px solid var(--t-border);">
+                <span>/lsp-status</span>
+                <span style="font-size:11px;">查看 LSP 当前状态</span>
+              </div>
+            </div>
+            <div class="tui-input">
+              <div class="tui-iline">
+                <span class="tc-dim">/lsp</span><span class="t-cursor"></span>
+              </div>
+            </div>
+            <div class="tui-status">
+              <div class="tui-sl"><span class="agent-lbl">Build</span><span>claude-sonnet-4-5</span></div>
+              <div class="tui-sr">
+                <span><span class="t-kbd">tab</span> agents</span>
+                <span><span class="t-kbd">ctrl+p</span> commands</span>
+              </div>
+            </div>
+          </div>
+          <div class="step-note">与 <code>/models</code>、<code>/themes</code> 等补全行为完全一致。<b>↑↓</b> 移动，<b>↵</b> 确认，<b>Esc</b> 关闭。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 02 SELECT PANEL -->
+  <div class="section">
+    <div class="section-title"><span class="num">02</span> &nbsp;步骤二 · 选择面板 — 开 / 关</div>
+    <div class="step-wrap">
+
+      <div class="step">
+        <div class="step-num">A</div>
+        <div class="step-content">
+          <div class="step-label">当前 LSP <b>关闭</b> — 默认高亮「开启 LSP」</div>
+          <div class="tui-wrap">
+            <div class="tui-bar">
+              <div class="tui-dots"><div class="tui-dot r"></div><div class="tui-dot y"></div><div class="tui-dot g"></div></div>
+              <div class="tui-wt">opencode</div>
+            </div>
+            <div class="tui-main">
+              <div class="tui-msgs" style="justify-content:center;align-items:center;padding:20px 18px;">
+                <div class="modal-wrap" style="width:100%;">
+                  <div class="modal-hdr"><span class="modal-title">LSP Toggle</span><span class="modal-esc">esc</span></div>
+                  <div class="modal-search"><div class="modal-search-box"><span class="t-cursor" style="background:var(--t-orange);"></span><span>Enter search term</span></div></div>
+                  <div class="modal-current"><span style="color:var(--t-red);">●</span><span style="color:var(--t-orange);font-size:12px;">LSP 已关闭</span></div>
+                  <div class="modal-group">选项</div>
+                  <div class="modal-row selected"><span>开启 LSP</span><span class="rr">重启后生效</span></div>
+                  <div class="modal-row disabled"><span>关闭 LSP</span><span class="rr">当前状态</span></div>
+                </div>
+              </div>
+              <div class="tui-sidebar">
+                <div class="sb-sec"><div class="sb-title">LSP</div><div class="sb-body sb-off">已关闭</div></div>
+              </div>
+            </div>
+            <div class="tui-status">
+              <div class="tui-sl"><span class="agent-lbl">Build</span><span>claude-sonnet-4-5</span></div>
+              <div class="tui-sr"><span><span class="t-kbd">↑↓</span> 移动</span><span><span class="t-kbd">↵</span> 确认</span><span><span class="t-kbd">esc</span> 取消</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">B</div>
+        <div class="step-content">
+          <div class="step-label">当前 LSP <b>开启</b> — 默认高亮「关闭 LSP」</div>
+          <div class="tui-wrap">
+            <div class="tui-bar">
+              <div class="tui-dots"><div class="tui-dot r"></div><div class="tui-dot y"></div><div class="tui-dot g"></div></div>
+              <div class="tui-wt">opencode</div>
+            </div>
+            <div class="tui-main">
+              <div class="tui-msgs" style="justify-content:center;align-items:center;padding:20px 18px;">
+                <div class="modal-wrap" style="width:100%;">
+                  <div class="modal-hdr"><span class="modal-title">LSP Toggle</span><span class="modal-esc">esc</span></div>
+                  <div class="modal-search"><div class="modal-search-box"><span class="t-cursor" style="background:var(--t-orange);"></span><span>Enter search term</span></div></div>
+                  <div class="modal-current"><span style="color:var(--t-green);">●</span><span style="color:var(--t-green);font-size:12px;">LSP 已开启</span></div>
+                  <div class="modal-group">选项</div>
+                  <div class="modal-row disabled"><span>开启 LSP</span><span class="rr">当前状态</span></div>
+                  <div class="modal-row selected"><span>关闭 LSP</span><span class="rr">重启后生效</span></div>
+                </div>
+              </div>
+              <div class="tui-sidebar">
+                <div class="sb-sec">
+                  <div class="sb-title">LSP</div>
+                  <div class="sb-body sb-on">● 已开启<br><span style="font-size:11px;color:var(--t-dim);">LSPs will activate<br>as files are read</span></div>
+                </div>
+              </div>
+            </div>
+            <div class="tui-status">
+              <div class="tui-sl"><span class="agent-lbl">Build</span><span>claude-sonnet-4-5</span></div>
+              <div class="tui-sr"><span><span class="t-kbd">↑↓</span> 移动</span><span><span class="t-kbd">↵</span> 确认</span><span><span class="t-kbd">esc</span> 取消</span></div>
+            </div>
+          </div>
+          <div class="step-note">当前状态对应选项置灰不可选。默认光标始终停在「切换目标」选项。搜索框支持模糊筛选，与 <code>/models</code> 面板一致。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 03 PATHS -->
+  <div class="section">
+    <div class="section-title"><span class="num">03</span> &nbsp;步骤三 · 路径分叉</div>
+
+    <div class="path-divider"><span>路径 3A · 关 → 开 · 内存预警 + 二次确认</span></div>
+    <div class="step-wrap" style="margin-bottom:28px;">
+      <div class="step">
+        <div class="step-num">3A</div>
+        <div class="step-content">
+          <div class="step-label">选择「开启 LSP」后，面板内容替换为：<b>黄色左线预警</b> + 确认/取消选项</div>
+          <div class="tui-wrap">
+            <div class="tui-bar">
+              <div class="tui-dots"><div class="tui-dot r"></div><div class="tui-dot y"></div><div class="tui-dot g"></div></div>
+              <div class="tui-wt">opencode</div>
+            </div>
+            <div class="tui-main">
+              <div class="tui-msgs" style="justify-content:center;align-items:center;padding:20px 18px;">
+                <div class="modal-wrap" style="width:100%;">
+                  <div class="modal-hdr"><span class="modal-title">开启 LSP — 确认</span><span class="modal-esc">esc</span></div>
+                  <div class="modal-warn">
+                    <div class="wt">内存使用提醒</div>
+                    <div class="wb">启用 LSP 后，每个语言服务器将额外占用 <b>150 – 500 MB</b> 内存。<br>大型项目或多语言同时运行时，消耗可能更高。</div>
+                  </div>
+                  <div class="modal-group">确认操作</div>
+                  <div class="modal-row selected"><span>✓ &nbsp;确认开启</span><span class="rr">重启后生效</span></div>
+                  <div class="modal-row"><span style="color:var(--t-dim);">✗ &nbsp;取消</span></div>
+                </div>
+              </div>
+              <div class="tui-sidebar">
+                <div class="sb-sec"><div class="sb-title">LSP</div><div class="sb-body sb-off">已关闭</div></div>
+              </div>
+            </div>
+            <div class="tui-status">
+              <div class="tui-sl"><span class="agent-lbl">Build</span><span>claude-sonnet-4-5</span></div>
+              <div class="tui-sr"><span><span class="t-kbd">↑↓</span> 移动</span><span><span class="t-kbd">↵</span> 确认</span><span><span class="t-kbd">esc</span> 取消</span></div>
+            </div>
+          </div>
+          <div class="step-note">预警用黄色左线，与 warning alert 样式一致。默认光标停在「确认开启」，快速回车即可通过。</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="path-divider"><span>路径 3B · 开 → 关 · 无需确认，直接进入步骤四</span></div>
+    <div style="padding:4px 0 0 42px; font-size:13px; color:var(--page-muted); line-height:1.7;">
+      关闭 LSP 属于资源释放操作，风险低。步骤二确认后直接写入配置，无二次确认。
+    </div>
+  </div>
+
+  <!-- 04 RESULT -->
+  <div class="section">
+    <div class="section-title"><span class="num">04</span> &nbsp;步骤四 · 变更通知 — 两条路径共用</div>
+    <div class="step-wrap">
+
+      <div class="step">
+        <div class="step-num">A</div>
+        <div class="step-content">
+          <div class="step-label">关 → 开成功，绿色左线通知，Sidebar 变黄色「待重启」</div>
+          <div class="tui-wrap">
+            <div class="tui-bar">
+              <div class="tui-dots"><div class="tui-dot r"></div><div class="tui-dot y"></div><div class="tui-dot g"></div></div>
+              <div class="tui-wt">opencode</div>
+            </div>
+            <div class="tui-main">
+              <div class="tui-msgs">
+                <div class="tm tc-dim"># ~/project</div>
+                <div class="tm-gap"></div>
+                <div class="oc-alert success">
+                  <div class="a-title">配置已更新</div>
+                  <div class="a-body">LSP 状态已从 <span class="hi-was">关闭</span> 更改为 <span class="hi-on">开启</span>。<br>此更改将在重启 OpenCode 后生效。</div>
+                </div>
+                <div class="tm-gap"></div>
+                <div class="tm tc-dim" style="font-size:11px;padding-left:14px;">按 <span style="border:1px solid var(--t-border2);padding:0 4px;border-radius:2px;color:var(--t-white);">r</span> 立即重启，或稍后手动重启。</div>
+              </div>
+              <div class="tui-sidebar">
+                <div class="sb-sec">
+                  <div class="sb-title">LSP</div>
+                  <div class="sb-body sb-pend">⟳ 待重启生效<br><span style="font-size:10px;color:var(--t-dim);">目标：开启</span></div>
+                </div>
+              </div>
+            </div>
+            <div class="tui-input"><div class="tui-iline"><span class="t-cursor"></span></div></div>
+            <div class="tui-status">
+              <div class="tui-sl"><span class="agent-lbl">Build</span><span>claude-sonnet-4-5</span></div>
+              <div class="tui-sr"><span><span class="t-kbd">r</span> 立即重启</span><span><span class="t-kbd">ctrl+p</span> commands</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">B</div>
+        <div class="step-content">
+          <div class="step-label">开 → 关成功，绿色左线通知，Sidebar 变黄色「待重启」</div>
+          <div class="tui-wrap">
+            <div class="tui-bar">
+              <div class="tui-dots"><div class="tui-dot r"></div><div class="tui-dot y"></div><div class="tui-dot g"></div></div>
+              <div class="tui-wt">opencode</div>
+            </div>
+            <div class="tui-main">
+              <div class="tui-msgs">
+                <div class="tm tc-dim"># ~/project</div>
+                <div class="tm-gap"></div>
+                <div class="oc-alert success">
+                  <div class="a-title">配置已更新</div>
+                  <div class="a-body">LSP 状态已从 <span class="hi-was" style="color:var(--t-green);">开启</span> 更改为 <span class="hi-off">关闭</span>。<br>此更改将在重启 OpenCode 后生效。</div>
+                </div>
+                <div class="tm-gap"></div>
+                <div class="tm tc-dim" style="font-size:11px;padding-left:14px;">按 <span style="border:1px solid var(--t-border2);padding:0 4px;border-radius:2px;color:var(--t-white);">r</span> 立即重启，或稍后手动重启。</div>
+              </div>
+              <div class="tui-sidebar">
+                <div class="sb-sec">
+                  <div class="sb-title">LSP</div>
+                  <div class="sb-body sb-pend">⟳ 待重启生效<br><span style="font-size:10px;color:var(--t-dim);">目标：关闭</span></div>
+                </div>
+              </div>
+            </div>
+            <div class="tui-input"><div class="tui-iline"><span class="t-cursor"></span></div></div>
+            <div class="tui-status">
+              <div class="tui-sl"><span class="agent-lbl">Build</span><span>claude-sonnet-4-5</span></div>
+              <div class="tui-sr"><span><span class="t-kbd">r</span> 立即重启</span><span><span class="t-kbd">ctrl+p</span> commands</span></div>
+            </div>
+          </div>
+          <div class="step-note">通知文案动态插值：<b>LSP 状态已从 ${previousState} 更改为 ${params.enable}。此更改将在重启 OpenCode 后生效。</b><br>Status bar 右侧 <code>tab agents</code> 临时替换为 <code>r 立即重启</code>，引导用户执行后续操作。</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 05 LOCKED -->
+  <div class="section">
+    <div class="section-title"><span class="num">05</span> &nbsp;步骤五 · 锁定 — 未重启再次执行 /lsp-toggle</div>
+    <div class="step-wrap">
+      <div class="step">
+        <div class="step-num">!</div>
+        <div class="step-content">
+          <div class="step-label">存在未生效的配置变更，命令被锁定，<b>不弹出选择面板</b></div>
+          <div class="tui-wrap">
+            <div class="tui-bar">
+              <div class="tui-dots"><div class="tui-dot r"></div><div class="tui-dot y"></div><div class="tui-dot g"></div></div>
+              <div class="tui-wt">opencode</div>
+            </div>
+            <div class="tui-main">
+              <div class="tui-msgs">
+                <div class="tm tc-dim"># ~/project</div>
+                <div class="tm-gap"></div>
+                <!-- previous operation reminder, info/blue -->
+                <div class="oc-alert info">
+                  <div class="a-title">上次变更（待生效）</div>
+                  <div class="a-body">LSP 状态已从 <span class="hi-was">关闭</span> 更改为 <span class="hi-on">开启</span>，等待重启。</div>
+                </div>
+                <div class="tm-gap"></div>
+                <!-- lock error, red -->
+                <div class="oc-alert error">
+                  <div class="a-title">操作被锁定</div>
+                  <div class="a-body">存在待生效的 LSP 配置变更（目标：<span class="hi-on">开启</span>）。<br>请先重启 OpenCode，再修改 LSP 状态。</div>
+                </div>
+                <div class="lock-line">⊘ 切换已锁定，重启后解锁</div>
+              </div>
+              <div class="tui-sidebar">
+                <div class="sb-sec">
+                  <div class="sb-title">LSP</div>
+                  <div class="sb-body sb-pend">⟳ 待重启生效<br><span style="font-size:10px;color:var(--t-dim);">目标：开启</span></div>
+                </div>
+              </div>
+            </div>
+            <div class="tui-input">
+              <div class="tui-iline"><span class="tc-dim">/lsp-toggle</span><span class="t-cursor"></span></div>
+            </div>
+            <div class="tui-status">
+              <div class="tui-sl"><span class="agent-lbl">Build</span><span>claude-sonnet-4-5</span></div>
+              <div class="tui-sr"><span><span class="t-kbd">r</span> 立即重启解锁</span><span><span class="t-kbd">ctrl+p</span> commands</span></div>
+            </div>
+          </div>
+          <div class="step-note">不弹出选择面板，避免叠加操作。消息区保留上次操作的蓝色 info 记录，帮助用户理解锁定原因。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 06 STATE MACHINE -->
+  <div class="section">
+    <div class="section-title"><span class="num">06</span> &nbsp;状态机 — 配置字段与判断逻辑</div>
+    <div class="code-block">
+<span class="cc">// opencode.json</span>
+{
+  <span class="ct">"lsp"</span>: {
+    <span class="ct">"enabled"</span>: <span class="cv">false</span>,          <span class="cc">// 当前运行时生效值（重启后读取）</span>
+    <span class="ct">"pendingEnabled"</span>: <span class="cv">false</span>   <span class="cc">// 用户设置的目标值</span>
+  }
+}
+
+<span class="cc">// 执行 /lsp-toggle 时的锁定判断</span>
+<span class="ck">const</span> <span class="cn">isLocked</span> = lsp.enabled !== lsp.pendingEnabled
+<span class="ck">if</span> (isLocked) <span class="ck">return</span> showErrorAlert()   <span class="cc">// 不弹面板，直接报错</span>
+
+<span class="cc">// 用户确认后写入</span>
+lsp.pendingEnabled = params.enable
+
+<span class="cc">// 重启后执行（两值同步 → 解除锁定）</span>
+lsp.enabled = lsp.pendingEnabled
+    </div>
+  </div>
+
+  <!-- 07 SIDEBAR STATES -->
+  <div class="section">
+    <div class="section-title"><span class="num">07</span> &nbsp;Sidebar LSP 区域状态汇总</div>
+    <div class="table-wrap">
+      <table class="spec-table">
+        <thead>
+          <tr><th>enabled</th><th>pendingEnabled</th><th>Sidebar 显示</th><th>颜色</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>false</td><td>false</td><td>已关闭</td><td style="color:var(--page-muted)">灰色</td></tr>
+          <tr><td>true</td><td>true</td><td>● 已开启 · LSPs will activate as files are read</td><td style="color:#4a8f2a">绿色</td></tr>
+          <tr><td>false</td><td>true</td><td>⟳ 待重启生效 · 目标：开启</td><td style="color:#b07d20">黄色</td></tr>
+          <tr><td>true</td><td>false</td><td>⟳ 待重启生效 · 目标：关闭</td><td style="color:#b07d20">黄色</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- 08 INTERACTION SPEC -->
+  <div class="section">
+    <div class="section-title"><span class="num">08</span> &nbsp;交互规格说明</div>
+    <div class="table-wrap">
+      <table class="spec-table">
+        <thead><tr><th>场景</th><th>行为</th><th>键位</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>/lsp-toggle（正常）</td>
+            <td>弹出选择面板，当前状态置灰，对侧橙色实心高亮</td>
+            <td><span class="kbd">↑↓</span> <span class="kbd">↵</span> <span class="kbd">Esc</span></td>
+          </tr>
+          <tr>
+            <td>关→开：选择「开启」</td>
+            <td>面板切换为黄色左线预警 + 二次确认，默认高亮「确认开启」</td>
+            <td><span class="kbd">↵</span> 直接确认 · <span class="kbd">Esc</span> 取消</td>
+          </tr>
+          <tr>
+            <td>开→关：选择「关闭」</td>
+            <td>无二次确认，直接写入 pendingEnabled = false</td>
+            <td>—</td>
+          </tr>
+          <tr>
+            <td>操作完成</td>
+            <td>绿色左线通知；Sidebar 变黄；status bar 出现 r 立即重启</td>
+            <td><span class="kbd">r</span> 立即重启</td>
+          </tr>
+          <tr>
+            <td>/lsp-toggle（锁定）</td>
+            <td>不弹面板；蓝色 info 显示上次记录；红色 error 说明锁定原因</td>
+            <td><span class="kbd">r</span> 立即重启解锁</td>
+          </tr>
+          <tr>
+            <td>任意步骤取消</td>
+            <td>Esc 退出，不修改任何配置，面板消失</td>
+            <td><span class="kbd">Esc</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
