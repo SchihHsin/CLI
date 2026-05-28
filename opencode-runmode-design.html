@@ -379,68 +379,91 @@
     </div>
   </div>
 
-  <!-- 03B: Custom network policy JSON view -->
+  <!-- 03B: Custom network policy two-step flow -->
   <div class="section">
-    <div class="section-title"><span class="num">03b</span> &nbsp;沙箱编辑 · 自定义策略 JSON 输入（选择「网络自定义访问」时）</div>
+    <div class="section-title"><span class="num">03b</span> &nbsp;沙箱编辑 · 自定义策略（选择「网络自定义访问」后进入第二步 JSON 编辑）</div>
     <div class="step-wrap">
       <div class="step">
         <div class="step-num">+</div>
         <div class="step-content">
-          <div class="step-label">当网络策略选择「网络自定义访问」时，下方<b>展开 JSON 配置输入区</b>；选择其余三项时直接确认即可，无需额外输入</div>
-          <div class="tui-wrap">
-            <div class="tui-bar">
-              <div class="tui-dots"><div class="tui-dot r"></div><div class="tui-dot y"></div><div class="tui-dot g"></div></div>
-              <div class="tui-wt">opencode</div>
-            </div>
-            <div class="tui-main">
-              <div class="tui-msgs" style="justify-content:center;align-items:center;padding:8px 12px;">
-                <div class="modal-form" style="width:100%;">
-                  <div class="modal-hdr"><span class="modal-title">Sandbox Configuration</span><span class="modal-esc">esc</span></div>
+          <div class="step-label">选中「网络自定义访问」后按<b>确认</b>，主配置弹框关闭，弹出独立的 <b>Custom Policy</b> JSON 编辑器；其余三项按确认直接生效</div>
 
-                  <div class="form-section" style="padding:4px 12px;">
-                    <div class="form-label" style="margin-bottom:2px;">白名单命令 ALLOWED COMMANDS</div>
-                    <div class="form-input multi" style="min-height:44px;color:var(--t-dim);">git status<br>git diff<br>npm test</div>
-                  </div>
+          <!-- Two-panel flow -->
+          <div style="display:flex;align-items:center;gap:12px;margin-top:10px;">
 
-                  <div class="form-divider" style="margin:3px 0;"></div>
-
-                  <div class="form-section" style="padding:3px 12px 1px;"><div class="form-label" style="margin-bottom:0;">网络访问策略 NETWORK POLICY</div></div>
-                  <div class="form-option-row" style="padding:3px 12px;"><span class="fo-dot">○</span><span>全网访问</span><span class="fo-desc">允许访问全部内外网络</span></div>
-                  <div class="form-option-row" style="padding:3px 12px;"><span class="fo-dot">○</span><span>本地网络访问</span><span class="fo-desc">仅支持访问本地服务网络</span></div>
-                  <div class="form-option-row" style="padding:3px 12px;"><span class="fo-dot">○</span><span>禁止网络访问</span><span class="fo-desc">禁止访问任何网络</span></div>
-                  <div class="form-option-row sel" style="padding:3px 12px;">
-                    <span class="fo-dot">●</span>
-                    <span>网络自定义访问</span>
-                    <span class="fo-desc">自定义访问任何网络</span>
-                  </div>
-
-                  <!-- expanded custom JSON input -->
-                  <div class="form-section" style="padding:4px 12px 3px;">
-                    <div class="form-label" style="margin-bottom:2px;">自定义策略 CUSTOM POLICY JSON</div>
-                    <div class="form-input multi" style="font-size:10px;line-height:1.5;padding:5px 8px;">{<br>&nbsp;&nbsp;"filesystem": {<br>&nbsp;&nbsp;&nbsp;&nbsp;"readWrite": [],<br>&nbsp;&nbsp;&nbsp;&nbsp;"readOnly": []<br>&nbsp;&nbsp;},<br>&nbsp;&nbsp;"network": {<br>&nbsp;&nbsp;&nbsp;&nbsp;"default": "allow",<br>&nbsp;&nbsp;&nbsp;&nbsp;"allow": [],<br>&nbsp;&nbsp;&nbsp;&nbsp;"deny": []<br>&nbsp;&nbsp;},<br>&nbsp;&nbsp;"resources": {<br>&nbsp;&nbsp;&nbsp;&nbsp;"cpu": 2,<br>&nbsp;&nbsp;&nbsp;&nbsp;"memory": "2GB"<br>&nbsp;&nbsp;}<br>}<span class="t-cursor" style="display:inline-block;vertical-align:middle;"></span></div>
-                    <div class="form-hint">支持 filesystem / network / resources 三块配置</div>
-                  </div>
-
-                  <div class="form-actions" style="padding:5px 12px 7px;">
-                    <button class="form-btn cancel">取消 Esc</button>
-                    <button class="form-btn confirm">确认 Enter</button>
+            <!-- Panel A: Main config with custom selected -->
+            <div class="tui-wrap" style="flex:1;">
+              <div class="tui-bar">
+                <div class="tui-dots"><div class="tui-dot r"></div><div class="tui-dot y"></div><div class="tui-dot g"></div></div>
+                <div class="tui-wt">opencode</div>
+              </div>
+              <div class="tui-main">
+                <div class="tui-msgs" style="justify-content:center;align-items:center;padding:8px 10px;">
+                  <div class="modal-form" style="width:100%;">
+                    <div class="modal-hdr"><span class="modal-title">Sandbox Configuration</span><span class="modal-esc">esc</span></div>
+                    <div class="form-section" style="padding:4px 10px;">
+                      <div class="form-label" style="margin-bottom:2px;">白名单命令 ALLOWED COMMANDS</div>
+                      <div class="form-input multi" style="min-height:40px;color:var(--t-dim);font-size:11px;">git status<br>git diff<br>npm test</div>
+                    </div>
+                    <div class="form-divider" style="margin:3px 0;"></div>
+                    <div class="form-section" style="padding:3px 10px 1px;"><div class="form-label" style="margin-bottom:0;">网络访问策略 NETWORK POLICY</div></div>
+                    <div class="form-option-row" style="padding:3px 10px;font-size:11px;"><span class="fo-dot">○</span><span>全网访问</span></div>
+                    <div class="form-option-row" style="padding:3px 10px;font-size:11px;"><span class="fo-dot">○</span><span>本地网络访问</span></div>
+                    <div class="form-option-row" style="padding:3px 10px;font-size:11px;"><span class="fo-dot">○</span><span>禁止网络访问</span></div>
+                    <div class="form-option-row sel" style="padding:3px 10px;font-size:11px;">
+                      <span class="fo-dot">●</span><span>网络自定义访问</span>
+                    </div>
+                    <div class="form-actions" style="padding:6px 10px 8px;">
+                      <button class="form-btn cancel">取消 Esc</button>
+                      <button class="form-btn confirm">确认 Enter</button>
+                    </div>
                   </div>
                 </div>
+                <div class="tui-sidebar" style="display:none;"></div>
               </div>
-              <div class="tui-sidebar">
-                <div class="sb-sec"><div class="sb-title">Context</div><div class="sb-body">12,830 tokens</div></div>
-              </div>
-            </div>
-            <div class="tui-status">
-              <div class="tui-sl"><span class="agent-lbl">Build</span><span>claude-sonnet-4-5</span></div>
-              <div class="tui-sr">
-                <span><span class="t-kbd">Tab</span> 切换区域</span>
-                <span><span class="t-kbd">↵</span> 确认</span>
-                <span><span class="t-kbd">esc</span> 取消</span>
+              <div class="tui-status">
+                <div class="tui-sl"><span class="agent-lbl">Build</span><span>claude-sonnet-4-5</span></div>
+                <div class="tui-sr"><span><span class="t-kbd">↵</span> 确认</span><span><span class="t-kbd">esc</span> 取消</span></div>
               </div>
             </div>
+
+            <!-- Arrow -->
+            <div style="flex-shrink:0;display:flex;flex-direction:column;align-items:center;gap:4px;color:var(--page-muted);font-size:11px;">
+              <span style="font-size:18px;color:var(--page-border);">→</span>
+              <span style="font-size:9px;letter-spacing:.04em;color:var(--page-muted);">确认后</span>
+            </div>
+
+            <!-- Panel B: Focused JSON editor -->
+            <div class="tui-wrap" style="flex:1;">
+              <div class="tui-bar">
+                <div class="tui-dots"><div class="tui-dot r"></div><div class="tui-dot y"></div><div class="tui-dot g"></div></div>
+                <div class="tui-wt">opencode</div>
+              </div>
+              <div class="tui-main">
+                <div class="tui-msgs" style="justify-content:center;align-items:center;padding:8px 10px;">
+                  <div class="modal-form" style="width:100%;">
+                    <div class="modal-hdr"><span class="modal-title">Custom Policy</span><span class="modal-esc">esc</span></div>
+                    <div class="form-section" style="padding:6px 10px 4px;">
+                      <div class="form-label" style="margin-bottom:3px;">策略配置 JSON</div>
+                      <div class="form-input multi" style="font-size:10px;line-height:1.55;padding:6px 8px;">{<br>&nbsp;&nbsp;"filesystem": {<br>&nbsp;&nbsp;&nbsp;&nbsp;"readWrite": [],<br>&nbsp;&nbsp;&nbsp;&nbsp;"readOnly": []<br>&nbsp;&nbsp;},<br>&nbsp;&nbsp;"network": {<br>&nbsp;&nbsp;&nbsp;&nbsp;"default": "allow",<br>&nbsp;&nbsp;&nbsp;&nbsp;"allow": [],<br>&nbsp;&nbsp;&nbsp;&nbsp;"deny": []<br>&nbsp;&nbsp;},<br>&nbsp;&nbsp;"resources": {<br>&nbsp;&nbsp;&nbsp;&nbsp;"cpu": 2,<br>&nbsp;&nbsp;&nbsp;&nbsp;"memory": "2GB"<br>&nbsp;&nbsp;}<br>}<span class="t-cursor" style="display:inline-block;vertical-align:middle;"></span></div>
+                      <div class="form-hint">支持 filesystem / network / resources 三块</div>
+                    </div>
+                    <div class="form-actions" style="padding:6px 10px 8px;">
+                      <button class="form-btn cancel">取消 Esc</button>
+                      <button class="form-btn confirm">保存 Enter</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="tui-sidebar" style="display:none;"></div>
+              </div>
+              <div class="tui-status">
+                <div class="tui-sl"><span class="agent-lbl">Build</span><span>claude-sonnet-4-5</span></div>
+                <div class="tui-sr"><span><span class="t-kbd">↵</span> 保存</span><span><span class="t-kbd">esc</span> 取消</span></div>
+              </div>
+            </div>
+
           </div>
-          <div class="step-note">JSON 输入框仅在选择「网络自定义访问」时展开，其余三种策略选中后直接点「确认」即可生效，无需额外输入。</div>
+          <div class="step-note" style="margin-top:10px;">「网络自定义访问」确认后单独弹出 JSON 编辑器，专注编辑策略；其余三项直接确认生效，无第二步。</div>
         </div>
       </div>
     </div>
