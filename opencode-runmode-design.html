@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OpenCode /RunMode 运行模式切换 交互设计方案</title>
+<style>
+  :root {
+    --page-bg:#f5f5f3;--page-surface:#ffffff;--page-border:#e2e2de;
+    --page-text:#1a1a18;--page-muted:#6b6b65;--page-faint:#b0b0aa;--page-tag-bg:#efefec;
+    --t-bg:#0e0e0e;--t-bg2:#161616;--t-bg3:#1c1c1c;--t-bg4:#222;
+    --t-border:#282828;--t-border2:#333;
+    --t-orange:#fab283;--t-blue:#5c9cf5;--t-purple:#9d7cd8;
+    --t-green:#9ece6a;--t-red:#f7768e;--t-yellow:#e0af68;--t-cyan:#7dcfff;
+    --t-text:#a9b1d6;--t-dim:#565f89;--t-muted:#3a3f5c;--t-white:#c0caf5;
+    --font-mono:'JetBrains Mono','Fira Code','Cascadia Code','Consolas',monospace;
+    --font-sans:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:var(--font-sans);background:var(--page-bg);color:var(--page-text);font-size:14px;line-height:1.6;}
+
+  /* ── PAGE ────────────────────────────────── */
+  .doc-header{background:var(--page-surface);border-bottom:1px solid var(--page-border);padding:40px 52px 32px;}
+  .doc-header h1{font-size:22px;font-weight:600;color:var(--page-text);margin-bottom:6px;letter-spacing:-0.02em;}
+  .doc-header h1 code{font-family:var(--font-mono);font-size:18px;font-weight:400;color:#c96a2a;background:#fef3ea;padding:1px 7px;border-radius:4px;}
+  .doc-header p{color:var(--page-muted);font-size:13px;}
+  .doc-header .meta{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap;}
+  .meta-tag{font-size:11px;color:var(--page-muted);padding:3px 10px;background:var(--page-tag-bg);border:1px solid var(--page-border);border-radius:4px;}
+  .meta-tag b{color:var(--page-text);font-weight:500;}
+  .doc-body{padding:36px 52px 60px;max-width:960px;}
+  .section{margin-bottom:52px;}
+  .section-title{font-size:11px;text-transform:uppercase;letter-spacing:0.1em;color:var(--page-muted);font-weight:500;margin-bottom:18px;padding-bottom:8px;border-bottom:1px solid var(--page-border);}
+  .section-title .num{color:#c96a2a;}
+  .step-wrap{display:flex;flex-direction:column;gap:28px;}
+  .step{display:flex;gap:18px;}
+  .step-num{flex-shrink:0;width:24px;height:24px;border:1px solid var(--page-border);border-radius:4px;background:var(--page-surface);display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--page-muted);margin-top:2px;font-family:var(--font-mono);}
+  .step-content{flex:1;min-width:0;}
+  .step-label{font-size:13px;color:var(--page-muted);margin-bottom:10px;line-height:1.5;}
+  .step-label b{color:var(--page-text);font-weight:500;}
+  .step-note{margin-top:10px;font-size:12px;color:var(--page-muted);line-height:1.7;padding:8px 12px;background:var(--page-tag-bg);border-left:3px solid var(--page-border);border-radius:0 4px 4px 0;}
+  .step-note b{color:var(--page-text);font-weight:500;}
+  .step-note code{font-family:var(--font-mono);font-size:11px;background:#e8e8e4;padding:1px 5px;border-radius:3px;color:#c96a2a;}
+  .path-divider{display:flex;align-items:center;gap:12px;margin:4px 0 18px;}
+  .path-divider::before,.path-divider::after{content:'';flex:1;height:1px;background:var(--page-border);}
+  .path-divider span{font-size:11px;color:var(--page-muted);letter-spacing:0.05em;white-space:nowrap;background:var(--page-bg);padding:0 4px;}
+  .flow-row{display:flex;gap:12px;align-items:flex-start;padding:9px 0;border-bottom:1px solid var(--page-border);}
+  .flow-row:last-child{border-bottom:none;}
+  .flow-n{width:28px;height:22px;flex-shrink:0;background:var(--page-tag-bg);border:1px solid var(--page-border);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--page-muted);font-family:var(--font-mono);margin-top:1px;}
+  .flow-b{flex:1;font-size:13px;color:var(--page-muted);line-height:1.6;}
+  .flow-b b{color:var(--page-text);font-weight:500;}
+  .flow-b code{font-family:var(--font-mono);font-size:12px;color:#c96a2a;background:#fef3ea;padding:1px 5px;border-radius:3px;}
+  .table-wrap{border:1px solid var(--page-border);border-radius:6px;overflow:hidden;background:var(--page-surface);}
+  .spec-table{width:100%;border-collapse:collapse;font-size:12px;}
+  .spec-table th{text-align:left;padding:7px 14px;font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:0.07em;color:var(--page-muted);background:var(--page-tag-bg);border-bottom:1px solid var(--page-border);font-family:var(--font-sans);}
+  .spec-table td{padding:8px 14px;border-bottom:1px solid var(--page-border);vertical-align:top;line-height:1.65;color:var(--page-muted);font-family:var(--font-sans);}
+  .spec-table tr:last-child td{border-bottom:none;}
+  .spec-table td:first-child{color:var(--page-text);font-weight:500;white-space:nowrap;}
+  .kbd{display:inline-block;font-family:var(--font-mono);border:1px solid var(--page-border);padding:1px 6px;border-radius:3px;font-size:11px;color:var(--page-text);background:var(--page-surface);vertical-align:middle;}
+  .code-block{background:#1a1a1a;border-radius:6px;padding:16px 18px;font-family:var(--font-mono);font-size:12px;line-height:1.8;overflow-x:auto;color:#a9b1d6;}
+  .ck{color:#9d7cd8;}.cs{color:#9ece6a;}.cc{color:#565f89;}.ct{color:#7dcfff;}.cn{color:#fab283;}.cv{color:#e0af68;}
+
+  /* ── TUI SHELL ──────────────────────────── */
+  .tui-wrap{background:var(--t-bg);border-radius:8px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,0.18),0 0 0 1px rgba(0,0,0,0.12);font-family:var(--font-mono);}
+  .tui-bar{background:var(--t-bg2);padding:9px 14px;display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--t-border);}
+  .tui-dots{display:flex;gap:6px;}
+  .tui-dot{width:12px;height:12px;border-radius:50%;}
+  .tui-dot.r{background:#ff5f57;}.tui-dot.y{background:#febc2e;}.tui-dot.g{background:#28c840;}
+  .tui-wt{flex:1;text-align:center;font-size:12px;color:var(--t-dim);}
+  .tui-main{display:flex;min-height:260px;}
+  .tui-msgs{flex:1;min-width:0;padding:14px 18px;border-right:1px solid var(--t-border);display:flex;flex-direction:column;gap:3px;}
+  .tui-sidebar{width:210px;flex-shrink:0;padding:14px 16px;font-family:var(--font-mono);}
+  .sb-sec{margin-bottom:16px;}
+  .sb-title{font-size:12px;color:var(--t-white);margin-bottom:3px;}
+  .sb-body{font-size:12px;color:var(--t-dim);line-height:1.8;}
+  .tui-input{border-top:1px solid var(--t-border);display:flex;}
+  .tui-iline{flex:1;border-left:2px solid var(--t-blue);padding:9px 14px;background:var(--t-bg2);font-size:12px;color:var(--t-white);min-height:40px;display:flex;align-items:center;}
+  .t-cursor{display:inline-block;width:7px;height:13px;background:var(--t-white);border-radius:1px;vertical-align:middle;margin-left:1px;opacity:0.85;}
+  .tui-status{background:var(--t-bg2);border-top:1px solid var(--t-border);padding:5px 14px;display:flex;align-items:center;justify-content:space-between;font-size:11px;color:var(--t-dim);font-family:var(--font-mono);}
+  .tui-sl{display:flex;align-items:center;gap:8px;}
+  .tui-sr{display:flex;align-items:center;gap:12px;}
+  .agent-lbl{color:var(--t-orange);}
+  .t-kbd{color:var(--t-white);}
+  .tm{font-size:12px;line-height:1.85;font-family:var(--font-mono);}
+  .tc-dim{color:var(--t-dim);}.tc-white{color:var(--t-white);}.tc-orange{color:var(--t-orange);}
+  .tc-green{color:var(--t-green);}.tc-red{color:var(--t-red);}.tc-yellow{color:var(--t-yellow);}.tc-blue{color:var(--t-blue);}
+  .tm-gap{height:5px;}
+
+  /* ── ALERT ──────────────────────────────── */
+  .oc-alert{padding:6px 14px;border-left:3px solid transparent;font-family:var(--font-mono);font-size:12px;line-height:1.8;}
+  .oc-alert.error{border-left-color:var(--t-red);}.oc-alert.warning{border-left-color:var(--t-yellow);}
+  .oc-alert.success{border-left-color:var(--t-green);}.oc-alert.info{border-left-color:var(--t-blue);}
+  .oc-alert .a-title{margin-bottom:1px;}
+  .oc-alert.error .a-title{color:var(--t-red);}.oc-alert.warning .a-title{color:var(--t-yellow);}
+  .oc-alert.success .a-title{color:var(--t-green);}.oc-alert.info .a-title{color:var(--t-blue);}
+  .oc-alert .a-body{color:var(--t-dim);}
+  .oc-alert .a-body .hi-on{color:var(--t-green);}.oc-alert .a-body .hi-off{color:var(--t-red);}
+
+  /* ── MODAL (opencode style) ─────────────── */
+  .modal-wrap{margin:8px auto;background:var(--t-bg3);border:1px solid #3a3a3a;border-radius:4px;overflow:hidden;max-width:420px;font-family:var(--font-mono);}
+  .modal-hdr{padding:10px 16px 8px;display:flex;justify-content:space-between;align-items:baseline;}
+  .modal-title{font-size:13px;color:var(--t-white);}.modal-esc{font-size:11px;color:var(--t-dim);}
+  .modal-search{padding:0 12px 8px;}
+  .modal-search-box{border:1px solid #3a3a3a;border-radius:3px;padding:5px 10px;display:flex;align-items:center;gap:6px;background:var(--t-bg4);}
+  .modal-search-box span{font-size:12px;color:var(--t-dim);}
+  .modal-current{padding:4px 16px 5px;display:flex;align-items:center;gap:7px;font-size:12px;}
+  .modal-group{padding:5px 16px 3px;font-size:12px;color:var(--t-purple);}
+  .modal-row{padding:6px 16px;display:flex;align-items:center;justify-content:space-between;font-size:12px;color:var(--t-text);}
+  .modal-row.selected{background:var(--t-orange);color:#1a0800;}
+  .modal-row.selected .rr{color:#1a0800;opacity:0.55;}
+  .modal-row.disabled{color:var(--t-muted);}
+  .modal-row.disabled .rr{color:var(--t-muted);}
+  .rr{font-size:11px;color:var(--t-dim);}
+  .modal-warn{margin:4px 12px 6px;padding:8px 12px;border-left:3px solid var(--t-yellow);font-size:11px;line-height:1.75;font-family:var(--font-mono);}
+  .modal-warn .wt{color:var(--t-yellow);margin-bottom:2px;}
+  .modal-warn .wb{color:var(--t-dim);}
+  .modal-warn .wb b{color:var(--t-yellow);font-weight:400;}
+
+  /* ── EDIT FORM (larger modal for sandbox config) ── */
+  .modal-form{margin:8px auto;background:var(--t-bg3);border:1px solid #3a3a3a;border-radius:4px;overflow:hidden;max-width:520px;font-family:var(--font-mono);}
+  .form-section{padding:8px 16px 4px;}
+  .form-label{font-size:11px;color:var(--t-dim);margin-bottom:5px;letter-spacing:0.04em;}
+  .form-input{border:1px solid #3a3a3a;border-radius:3px;padding:6px 10px;background:var(--t-bg4);font-size:12px;color:var(--t-white);font-family:var(--font-mono);width:100%;line-height:1.6;}
+  .form-input.multi{min-height:72px;white-space:pre-wrap;}
+  .form-hint{font-size:10px;color:var(--t-muted);margin-top:3px;line-height:1.5;}
+  .form-divider{height:1px;background:var(--t-border);margin:6px 0;}
+
+  /* radio-like row inside form */
+  .form-option-row{padding:5px 16px;display:flex;align-items:center;gap:10px;font-size:12px;color:var(--t-text);cursor:default;}
+  .form-option-row.sel{color:var(--t-white);}
+  .form-option-row.sel .fo-dot{color:var(--t-orange);}
+  .form-option-row .fo-dot{color:var(--t-muted);font-size:10px;width:12px;}
+  .form-option-row .fo-desc{margin-left:auto;font-size:10px;color:var(--t-dim);}
+
+  /* bottom buttons bar inside form */
+  .form-actions{padding:8px 16px 10px;display:flex;justify-content:flex-end;gap:10px;border-top:1px solid var(--t-border);margin-top:4px;}
+  .form-btn{font-family:var(--font-mono);font-size:12px;padding:4px 14px;border-radius:3px;border:none;cursor:pointer;}
+  .form-btn.cancel{background:transparent;color:var(--t-dim);border:1px solid var(--t-border2);}
+  .form-btn.confirm{background:var(--t-orange);color:#1a0800;}
+
+  /* ── STATUS BAR mode indicator ────────── */
+  .mode-pill{display:inline-flex;align-items:center;gap:4px;padding:1px 8px;border:1px solid var(--t-border2);border-radius:3px;font-size:10px;cursor:pointer;position:relative;}
+  .mode-pill .mp-dot{font-size:8px;}
+  .mode-pill.sandbox{color:var(--t-yellow);}
+  .mode-pill.sandbox .mp-dot{color:var(--t-yellow);}
+  .mode-pill.auto{color:var(--t-green);}
+  .mode-pill.auto .mp-dot{color:var(--t-green);}
+  .mode-pill.manual{color:var(--t-blue);}
+  .mode-pill.manual .mp-dot{color:var(--t-blue);}
+
+  /* quick switch popover above status bar */
+  .quick-pop{position:absolute;bottom:100%;left:0;margin-bottom:4px;background:var(--t-bg3);border:1px solid #3a3a3a;border-radius:4px;overflow:hidden;font-family:var(--font-mono);min-width:160px;z-index:20;}
+  .quick-pop .qp-title{padding:5px 12px 3px;font-size:10px;color:var(--t-dim);letter-spacing:0.06em;}
+  .quick-pop .qp-row{padding:5px 12px;font-size:12px;color:var(--t-text);display:flex;align-items:center;gap:8px;}
+  .quick-pop .qp-row.sel{background:var(--t-orange);color:#1a0800;}
+  .quick-pop .qp-row .qp-dot{font-size:8px;}
+
+  /* ── OPENCODE LOGO AREA (welcome screen) ── */
+  .welcome-center{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;flex:1;}
+  .oc-logo{font-family:var(--font-mono);font-size:20px;color:var(--t-dim);letter-spacing:0.15em;}
+  .oc-logo span{color:var(--t-white);}
+  .welcome-tip{font-size:11px;color:var(--t-dim);display:flex;align-items:center;gap:6px;}
+  .welcome-tip .wt-dot{color:var(--t-orange);font-size:8px;}
+</style>
+</head>
+<body>
+
+<!-- ═══ HEADER ═══ -->
+<div class="doc-header">
+  <h1>OpenCode <code>/RunMode</code> 运行模式切换 交互设计方案</h1>
+  <p>沙箱 · 自动 · 手动 三种运行模式 · 沙箱白名单编辑 · 底栏快捷切换</p>
+  <div class="meta">
+    <span class="meta-tag">版本 <b>v1.0</b></span>
+    <span class="meta-tag">平台 <b>opencode TUI</b></span>
+    <span class="meta-tag">状态 <b>设计稿</b></span>
+    <span class="meta-tag">步骤 <b>7 个主要界面</b></span>
+  </div>
+</div>
+
+<!-- ═══ BODY ═══ -->
+<div class="doc-body">
+
+  <!-- 00 OVERVIEW -->
+  <div class="section">
+    <div class="section-title"><span class="num">00</span> &nbsp;整体交互流程</div>
+    <div class="flow-row"><div class="flow-n">1</div><div class="flow-b">用户输入 <code>/RunMode</code>，通过 slash 自动补全触发，弹出运行模式选择面板</div></div>
+    <div class="flow-row"><div class="flow-n">2</div><div class="flow-b">选择面板展示三个选项：<b>沙箱</b>（Sandbox）、<b>自动</b>（Auto）、<b>手动</b>（Manual），当前模式标记</div></div>
+    <div class="flow-row"><div class="flow-n">3</div><div class="flow-b">选择「沙箱」后，按 <code>Enter</code> 进入<b>沙箱配置编辑弹框</b></div></div>
+    <div class="flow-row"><div class="flow-n">4</div><div class="flow-b">在编辑弹框中输入<b>白名单命令</b>，选择<b>网络访问策略</b>，按「确认」保存并回退</div></div>
+    <div class="flow-row"><div class="flow-n">5</div><div class="flow-b">返回主界面，底栏 status bar 展示当前运行模式标签，通知生效</div></div>
+    <div class="flow-row"><div class="flow-n">6</div><div class="flow-b"><b>首页</b>底边栏的模式标签支持<b>鼠标点击</b>弹出快捷切换浮窗</div></div>
+    <div class="flow-row"><div class="flow-n">7</div><div class="flow-b"><b>Session 对话</b>底边栏同理，模式标签可点击弹出快捷切换浮窗</div></div>
+  </div>
+
+  <!-- 01 AUTOCOMPLETE -->
+  <div class="section">
+    <div class="section-title"><span class="num">01</span> &nbsp;步骤一 · 触发 — slash 自动补全</div>
+    <div class="step-wrap">
+      <div class="step">
+        <div class="step-num">→</div>
+        <div class="step-content">
+          <div class="step-label">用户输入 <b>/Run</b>，补全下拉出现，<b>/RunMode</b> 橙色高亮</div>
+          <div class="tui-wrap">
+            <div class="tui-bar">
+              <div class="tui-dots"><div class="tui-dot r"></div><div class="tui-dot y"></div><div class="tui-dot g"></div></div>
+              <div class="tui-wt">opencode</div>
+            </div>
+            <div class="tui-main">
+              <div class="tui-msgs">
+                <div class="tm tc-dim"># ~/project · 会话已恢复</div>
+              </div>
+              <div class="tui-sidebar">
+                <div class="sb-sec"><div class="sb-title">Context</div><div class="sb-body">12,830 tokens<br>0% used<br>$0.00 spent</div></div>
+              </div>
+            </div>
+            <div style="border-top:1px solid var(--t-border);font-family:var(--font-mono);">
+              <div style="display:flex;align-items:center;justify-content:space-between;padding:6px 14px;background:var(--t-orange);font-size:12px;color:#1a0800;">
+                <span>/RunMode</span>
+                <span style="font-size:11px;opacity:0.55;">切换运行模式</span>
+              </div>
+              <div style="display:flex;align-items:center;justify-content:space-between;padding:6px 14px;font-size:12px;color:var(--t-dim);border-top:1px solid var(--t-border);">
+                <span>/RunCommand</span>
+                <span style="font-size:11px;">执行系统命令</span>
+              </div>
+            </div>
+            <div class="tui-input">
+              <div class="tui-iline"><span class="tc-dim">/Run</span><span class="t-cursor"></span></div>
+            </div>
+            <div class="tui-status">
+              <div class="tui-sl"><span class="agent-lbl">Build</span><span>claude-sonnet-4-5</span></div>
+              <div class="tui-sr">
+                <span class="mode-pill auto"><span class="mp-dot">●</span> Auto</span>
+                <span><span class="t-kbd">tab</span> agents</span>
+                <span><span class="t-kbd">ctrl+p</span> commands</span>
+              </div>
+            </div>
+          </div>
+          <div class="step-note">注意 status bar 右侧已展示当前运行模式标签 <code>● Auto</code>，贯穿全程可见。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 02 SELECT PANEL -->
+  <div class="section">
+    <div class="section-title"><span class="num">02</span> &nbsp;步骤二 · 运行模式选择面板</div>
+    <div class="step-wrap">
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <div class="step-label">三种模式展示，当前模式标记为 <b>当前状态</b>，其余可选。选择「沙箱」后可按 <b>Enter</b> 进入配置编辑</div>
+          <div class="tui-wrap">
+            <div class="tui-bar">
+              <div class="tui-dots"><div class="tui-dot r"></div><div class="tui-dot y"></div><div class="tui-dot g"></div></div>
+              <div class="tui-wt">opencode</div>
+            </div>
+            <div class="tui-main">
+              <div class="tui-msgs" style="justify-content:center;align-items:center;padding:20px 18px;">
+                <div class="modal-wrap" style="width:100%;max-width:440px;">
+                  <div class="modal-hdr"><span class="modal-title">Select run mode</span><span class="modal-esc">esc</span></div>
+                  <div class="modal-search"><div class="modal-search-box"><span class="t-cursor" style="background:var(--t-orange);"></span><span>Enter search term</span></div></div>
+                  <div class="modal-current"><span style="color:var(--t-green);">●</span><span style="color:var(--t-green);font-size:12px;">Auto（当前模式）</span></div>
+                  <div class="modal-group">运行模式</div>
+                  <div class="modal-row selected">
+                    <span>🛡 &nbsp;Sandbox 沙箱</span>
+                    <span class="rr">Enter 编辑配置</span>
+                  </div>
+                  <div class="modal-row disabled">
+                    <span>⚡ &nbsp;Auto 自动</span>
+                    <span class="rr">当前状态</span>
+                  </div>
+                  <div class="modal-row">
+                    <span>✋ &nbsp;Manual 手动</span>
+                    <span class="rr">每次执行前确认</span>
+                  </div>
+                </div>
+              </div>
+              <div class="tui-sidebar">
+                <div class="sb-sec"><div class="sb-title">Context</div><div class="sb-body">12,830 tokens<br>0% used</div></div>
+              </div>
+            </div>
+            <div class="tui-status">
+              <div class="tui-sl"><span class="agent-lbl">Build</span><span>claude-sonnet-4-5</span></div>
+              <div class="tui-sr">
+                <span><span class="t-kbd">↑↓</span> 移动</span>
+                <span><span class="t-kbd">↵</span> 确认</span>
+                <span><span class="t-kbd">esc</span> 取消</span>
+              </div>
+            </div>
+          </div>
+          <div class="step-note">
+            <b>选择「Auto」或「Manual」</b>：直接切换模式，弹出绿色通知（同 LSP toggle 流程）。<br>
+            <b>选择「Sandbox」</b>：按 <code>Enter</code> 不直接切换，而是先进入沙箱配置编辑弹框（步骤三），让用户配置白名单和网络策略后再生效。
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 03 SANDBOX EDIT -->
+  <div class="section">
+    <div class="section-title"><span class="num">03</span> &nbsp;步骤三 · 沙箱配置编辑弹框</div>
+    <div class="step-wrap">
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <div class="step-label">选择「Sandbox」后按 <b>Enter</b>，面板切换为沙箱配置编辑弹框：白名单命令输入 + 网络访问策略选择</div>
+          <div class="tui-wrap">
+            <div class="tui-bar">
+              <div class="tui-dots"><div class="tui-dot r"></div><div class="tui-dot y"></div><div class="tui-dot g"></div></div>
+              <div class="tui-wt">opencode</div>
+            </div>
+            <div class="tui-main">
+              <div class="tui-msgs" style="justify-content:center;align-items:center;padding:16px 18px;">
+                <div class="modal-form" style="width:100%;">
+                  <div class="modal-hdr"><span class="modal-title">Sandbox Configuration</span><span class="modal-esc">esc</span></div>
+
+                  <!-- Whitelist commands -->
+                  <div class="form-section">
+                    <div class="form-label">白名单命令 ALLOWED COMMANDS</div>
+                    <div class="form-input multi">git status<br>git diff<br>npm test<br>npm run build<br>go test ./...<span class="t-cursor" style="display:inline-block;vertical-align:middle;"></span></div>
+                    <div class="form-hint">每行一条命令。仅列出的命令可在沙箱模式下自动执行，其余命令将被拦截。</div>
+                  </div>
+
+                  <div class="form-divider"></div>
+
+                  <!-- Network policy -->
+                  <div class="form-section">
+                    <div class="form-label">网络访问策略 NETWORK POLICY</div>
+                  </div>
+                  <div class="form-option-row sel">
+                    <span class="fo-dot">●</span>
+                    <span style="color:var(--t-white);">禁止所有网络访问</span>
+                    <span class="fo-desc">No outbound connections</span>
+                  </div>
+                  <div class="form-option-row">
+                    <span class="fo-dot">○</span>
+                    <span>仅允许白名单域名</span>
+                    <span class="fo-desc">Specified domains only</span>
+                  </div>
+                  <div class="form-option-row">
+                    <span class="fo-dot">○</span>
+                    <span>允许所有网络访问</span>
+                    <span class="fo-desc">Unrestricted outbound</span>
+                  </div>
+
+                  <!-- Actions -->
+                  <div class="form-actions">
+                    <button class="form-btn cancel">取消 Esc</button>
+                    <button class="form-btn confirm">确认 Enter</button>
+                  </div>
+                </div>
+              </div>
+              <div class="tui-sidebar">
+                <div class="sb-sec"><div class="sb-title">Context</div><div class="sb-body">12,830 tokens<br>0% used</div></div>
+              </div>
+            </div>
+            <div class="tui-status">
+              <div class="tui-sl"><span class="agent-lbl">Build</span><span>claude-sonnet-4-5</span></div>
+              <div class="tui-sr">
+                <span><span class="t-kbd">Tab</span> 切换区域</span>
+                <span><span class="t-kbd">↵</span> 确认</span>
+                <span><span class="t-kbd">esc</span> 取消</span>
+              </div>
+            </div>
+          </div>
+          <div class="step-note">
+            <b>白名单输入区</b>：多行文本框，每行一条命令，光标可自由编辑。<br>
+            <b>网络策略</b>：三选一，<code>Tab</code> 从白名单区跳到策略区，<code>↑↓</code> 在选项间切换。<br>
+            <b>确认保存</b>：焦点在按钮行时按 <code>Enter</code>，或任意位置按 <code>Ctrl+S</code>。保存后自动退回主界面并切换到 Sandbox 模式。
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 03B: Second network policy view -->
+  <div class="section">
+    <div class="section-title"><span class="num">03b</span> &nbsp;沙箱编辑 · 白名单域名输入（选择「仅允许白名单域名」时）</div>
+    <div class="step-wrap">
+      <div class="step">
+        <div class="step-num">+</div>
+        <div class="step-content">
+          <div class="step-label">当网络策略选择「仅允许白名单域名」时，下方<b>展开域名输入区</b></div>
+          <div class="tui-wrap">
+            <div class="tui-bar">
+              <div class="tui-dots"><div class="tui-dot r"></div><div class="tui-dot y"></div><div class="tui-dot g"></div></div>
+              <div class="tui-wt">opencode</div>
+            </div>
+            <div class="tui-main">
+              <div class="tui-msgs" style="justify-content:center;align-items:center;padding:16px 18px;">
+                <div class="modal-form" style="width:100%;">
+                  <div class="modal-hdr"><span class="modal-title">Sandbox Configuration</span><span class="modal-esc">esc</span></div>
+
+                  <div class="form-section">
+                    <div class="form-label">白名单命令 ALLOWED COMMANDS</div>
+                    <div class="form-input multi" style="min-height:48px;color:var(--t-dim);">git status<br>git diff<br>npm test</div>
+                  </div>
+
+                  <div class="form-divider"></div>
+
+                  <div class="form-section"><div class="form-label">网络访问策略 NETWORK POLICY</div></div>
+                  <div class="form-option-row"><span class="fo-dot">○</span><span>禁止所有网络访问</span></div>
+                  <div class="form-option-row sel">
+                    <span class="fo-dot" style="color:var(--t-orange);">●</span>
+                    <span style="color:var(--t-white);">仅允许白名单域名</span>
+                  </div>
+                  <div class="form-option-row"><span class="fo-dot">○</span><span>允许所有网络访问</span></div>
+
+                  <!-- expanded domain input -->
+                  <div class="form-section" style="padding-top:4px;">
+                    <div class="form-label">允许的域名 ALLOWED DOMAINS</div>
+                    <div class="form-input multi" style="min-height:56px;">registry.npmjs.org<br>api.github.com<br>golang.org<span class="t-cursor" style="display:inline-block;vertical-align:middle;"></span></div>
+                    <div class="form-hint">每行一个域名，支持通配符 *.example.com</div>
+                  </div>
+
+                  <div class="form-actions">
+                    <button class="form-btn cancel">取消 Esc</button>
+                    <button class="form-btn confirm">确认 Enter</button>
+                  </div>
+                </div>
+              </div>
+              <div class="tui-sidebar">
+                <div class="sb-sec"><div class="sb-title">Context</div><div class="sb-body">12,830 tokens</div></div>
+              </div>
+            </div>
+            <div class="tui-status">
+              <div class="tui-sl"><span class="agent-lbl">Build</span><span>claude-sonnet-4-5</span></div>
+              <div class="tui-sr">
+                <span><span class="t-kbd">Tab</span> 切换区域</span>
+                <span><span class="t-kbd">↵</span> 确认</span>
+                <span><span class="t-kbd">esc</span> 取消</span>
+              </div>
+            </div>
+          </div>
+          <div class="step-note">域名输入框仅在选择「仅允许白名单域名」策略时展开，其余两种策略下隐藏，保持表单简洁。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 04 RESULT -->
+  <div class="section">
+    <div class="section-title"><span class="num">04</span> &nbsp;步骤四 · 保存确认 — 回退主界面</div>
+    <div class="step-wrap">
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-content">
+          <div class="step-label">确认保存后，弹框关闭，消息区输出绿色左线通知，底栏模式切换为 <b>Sandbox</b></div>
+          <div class="tui-wrap">
+            <div class="tui-bar">
+              <div class="tui-dots"><div class="tui-dot r"></div><div class="tui-dot y"></div><div class="tui-dot g"></div></div>
+              <div class="tui-wt">opencode</div>
+            </div>
+            <div class="tui-main">
+              <div class="tui-msgs">
+                <div class="tm tc-dim"># ~/project</div>
+                <div class="tm-gap"></div>
+                <div class="oc-alert success">
+                  <div class="a-title">运行模式已切换</div>
+                  <div class="a-body">
+                    模式：<span style="color:var(--t-dim);text-decoration:line-through;">Auto</span> → <span class="hi-on" style="color:var(--t-yellow);">Sandbox</span><br>
+                    白名单命令：git status, git diff, npm test, npm run build, go test ./...<br>
+                    网络策略：禁止所有网络访问
+                  </div>
+                </div>
+              </div>
+              <div class="tui-sidebar">
+                <div class="sb-sec"><div class="sb-title">Context</div><div class="sb-body">12,830 tokens<br>0% used<br>$0.00 spent</div></div>
+                <div class="sb-sec"><div class="sb-title">Run Mode</div><div class="sb-body" style="color:var(--t-yellow);">🛡 Sandbox<br><span style="font-size:10px;color:var(--t-dim);">5 commands allowed<br>Network: blocked</span></div></div>
+              </div>
+            </div>
+            <div class="tui-input"><div class="tui-iline"><span class="t-cursor"></span></div></div>
+            <div class="tui-status">
+              <div class="tui-sl"><span class="agent-lbl">Build</span><span>claude-sonnet-4-5</span></div>
+              <div class="tui-sr">
+                <span class="mode-pill sandbox"><span class="mp-dot">●</span> Sandbox</span>
+                <span><span class="t-kbd">tab</span> agents</span>
+                <span><span class="t-kbd">ctrl+p</span> commands</span>
+              </div>
+            </div>
+          </div>
+          <div class="step-note">
+            <b>通知</b>：绿色左线，列出变更摘要（模式、白名单、网络策略），用户一目了然。<br>
+            <b>Sidebar</b>：新增 Run Mode 区域，显示当前模式和摘要信息。<br>
+            <b>Status bar</b>：模式标签从 <code>● Auto</code> 变为 <code>● Sandbox</code>（黄色），立即生效。
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 05 HOME QUICK SWITCH -->
+  <div class="section">
+    <div class="section-title"><span class="num">05</span> &nbsp;步骤五 · 首页底栏快捷切换</div>
+    <div class="step-wrap">
+      <div class="step">
+        <div class="step-num">5</div>
+        <div class="step-content">
+          <div class="step-label"><b>首页（Welcome）</b>底边栏的模式标签支持鼠标点击，弹出快捷切换浮窗</div>
+          <div class="tui-wrap">
+            <div class="tui-bar">
+              <div class="tui-dots"><div class="tui-dot r"></div><div class="tui-dot y"></div><div class="tui-dot g"></div></div>
+              <div class="tui-wt">opencode</div>
+            </div>
+            <div class="tui-main" style="min-height:300px;">
+              <div class="tui-msgs" style="border-right:none;">
+                <div class="welcome-center">
+                  <div class="oc-logo">open<span>code</span></div>
+                  <div style="font-size:12px;color:var(--t-dim);text-align:center;">
+                    Ask anything... "Fix a TODO in the codebase"
+                  </div>
+                  <div style="font-size:12px;color:var(--t-dim);text-align:center;margin-top:4px;">
+                    <span class="agent-lbl">Build</span> &nbsp;claude-sonnet-4-5
+                  </div>
+                  <div style="margin-top:8px;display:flex;gap:16px;font-size:11px;color:var(--t-dim);">
+                    <span><span class="t-kbd">tab</span> agents</span>
+                    <span><span class="t-kbd">ctrl+p</span> commands</span>
+                  </div>
+                  <div class="welcome-tip" style="margin-top:16px;">
+                    <span class="wt-dot">●</span>
+                    Tip &nbsp;Create <span style="color:var(--t-white);">opencode.json</span> in project root for project-specific settings
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="tui-input">
+              <div class="tui-iline"><span class="t-cursor"></span></div>
+            </div>
+            <div class="tui-status" style="position:relative;">
+              <div class="tui-sl">
+                <span>~/project</span>
+              </div>
+              <div class="tui-sr">
+                <!-- mode pill with popover -->
+                <span class="mode-pill sandbox" style="position:relative;">
+                  <span class="mp-dot">●</span> Sandbox
+                  <!-- quick switch popover -->
+                  <div class="quick-pop">
+                    <div class="qp-title">SWITCH MODE</div>
+                    <div class="qp-row sel"><span class="qp-dot" style="color:var(--t-yellow);">●</span> Sandbox</div>
+                    <div class="qp-row"><span class="qp-dot" style="color:var(--t-green);">●</span> Auto</div>
+                    <div class="qp-row"><span class="qp-dot" style="color:var(--t-blue);">●</span> Manual</div>
+                  </div>
+                </span>
+                <span style="font-size:11px;">opencode v1.2.24</span>
+              </div>
+            </div>
+          </div>
+          <div class="step-note">
+            <b>点击交互</b>：鼠标点击底栏的模式标签（如 <code>● Sandbox</code>），向上弹出浮窗，列出三种模式供快捷切换。<br>
+            <b>切换逻辑</b>：选择「Auto」或「Manual」直接切换；选择「Sandbox」时，若此前未配置过，弹出编辑弹框；若已配置过，直接切换使用上次配置。<br>
+            <b>浮窗消失</b>：点击浮窗外任意区域、或按 <code>Esc</code>、或完成切换后自动关闭。
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 06 SESSION QUICK SWITCH -->
+  <div class="section">
+    <div class="section-title"><span class="num">06</span> &nbsp;步骤六 · Session 对话底栏快捷切换</div>
+    <div class="step-wrap">
+      <div class="step">
+        <div class="step-num">6</div>
+        <div class="step-content">
+          <div class="step-label"><b>Session 对话界面</b>底边栏同样展示模式标签，点击弹出快捷切换浮窗</div>
+          <div class="tui-wrap">
+            <div class="tui-bar">
+              <div class="tui-dots"><div class="tui-dot r"></div><div class="tui-dot y"></div><div class="tui-dot g"></div></div>
+              <div class="tui-wt">OC | Implementing auth middleware...</div>
+            </div>
+            <div class="tui-main">
+              <div class="tui-msgs">
+                <div class="tm tc-dim" style="font-size:11px;">Implementing auth middleware...</div>
+                <div class="tm-gap"></div>
+                <div class="tm" style="color:var(--t-text);">
+                  I'll create the authentication middleware. Let me<br>
+                  start by setting up the JWT verification logic.
+                </div>
+                <div class="tm-gap"></div>
+                <div class="oc-alert warning">
+                  <div class="a-title">命令被沙箱拦截</div>
+                  <div class="a-body">rm -rf node_modules 不在白名单中，已阻止执行。</div>
+                </div>
+              </div>
+              <div class="tui-sidebar">
+                <div class="sb-sec"><div class="sb-title">Context</div><div class="sb-body">45,220 tokens<br>12% used<br>$0.03 spent</div></div>
+                <div class="sb-sec">
+                  <div class="sb-title">Run Mode</div>
+                  <div class="sb-body" style="color:var(--t-yellow);">🛡 Sandbox<br><span style="font-size:10px;color:var(--t-dim);">5 commands allowed<br>Network: blocked</span></div>
+                </div>
+              </div>
+            </div>
+            <div class="tui-input">
+              <div class="tui-iline"><span class="t-cursor"></span></div>
+            </div>
+            <div class="tui-status" style="position:relative;">
+              <div class="tui-sl"><span class="agent-lbl">Build</span><span>claude-sonnet-4-5 · 22.4s</span></div>
+              <div class="tui-sr">
+                <span class="mode-pill sandbox" style="position:relative;">
+                  <span class="mp-dot">●</span> Sandbox
+                  <div class="quick-pop">
+                    <div class="qp-title">SWITCH MODE</div>
+                    <div class="qp-row sel"><span class="qp-dot" style="color:var(--t-yellow);">●</span> Sandbox</div>
+                    <div class="qp-row"><span class="qp-dot" style="color:var(--t-green);">●</span> Auto</div>
+                    <div class="qp-row"><span class="qp-dot" style="color:var(--t-blue);">●</span> Manual</div>
+                  </div>
+                </span>
+                <span><span class="t-kbd">tab</span> agents</span>
+                <span><span class="t-kbd">ctrl+p</span> commands</span>
+              </div>
+            </div>
+          </div>
+          <div class="step-note">
+            Session 界面与首页行为完全一致。同时注意：在沙箱模式下，非白名单命令会被<b>拦截</b>并输出黄色 warning alert（如图中 <code>rm -rf node_modules</code> 被阻止）。<br>
+            右侧 Sidebar 的 Run Mode 区域始终可见，展示当前模式和配置摘要。
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 07 MODE DESCRIPTIONS -->
+  <div class="section">
+    <div class="section-title"><span class="num">07</span> &nbsp;三种运行模式说明</div>
+    <div class="table-wrap">
+      <table class="spec-table">
+        <thead><tr><th>模式</th><th>颜色标识</th><th>行为</th><th>适用场景</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>🛡 Sandbox 沙箱</td>
+            <td style="color:#b07d20;">黄色</td>
+            <td>仅白名单命令自动执行，非白名单拦截并 warning；网络访问按策略限制</td>
+            <td>生产环境、安全敏感项目、不熟悉的代码库</td>
+          </tr>
+          <tr>
+            <td>⚡ Auto 自动</td>
+            <td style="color:#4a8f2a;">绿色</td>
+            <td>AI 生成的所有命令自动执行，不做拦截</td>
+            <td>开发阶段、个人项目、信任环境</td>
+          </tr>
+          <tr>
+            <td>✋ Manual 手动</td>
+            <td style="color:#3d7ac9;">蓝色</td>
+            <td>每条命令执行前弹出确认，用户逐条审批</td>
+            <td>初次接触项目、危险操作调试</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- 08 INTERACTION SPEC -->
+  <div class="section">
+    <div class="section-title"><span class="num">08</span> &nbsp;交互规格说明</div>
+    <div class="table-wrap">
+      <table class="spec-table">
+        <thead><tr><th>场景</th><th>行为</th><th>键位 / 操作</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>/RunMode 触发</td>
+            <td>弹出三选一面板，当前模式置灰</td>
+            <td><span class="kbd">↑↓</span> <span class="kbd">↵</span> <span class="kbd">Esc</span></td>
+          </tr>
+          <tr>
+            <td>选择 Sandbox</td>
+            <td>Enter 进入沙箱配置编辑弹框</td>
+            <td><span class="kbd">↵</span> 进入编辑</td>
+          </tr>
+          <tr>
+            <td>沙箱编辑弹框</td>
+            <td>多行输入白名单命令 + 单选网络策略 + 确认/取消</td>
+            <td><span class="kbd">Tab</span> 切换区域 · <span class="kbd">↑↓</span> 策略选项 · <span class="kbd">↵</span> 确认 · <span class="kbd">Esc</span> 取消</td>
+          </tr>
+          <tr>
+            <td>选择 Auto / Manual</td>
+            <td>直接切换，绿色通知</td>
+            <td><span class="kbd">↵</span> 确认</td>
+          </tr>
+          <tr>
+            <td>底栏模式标签</td>
+            <td>鼠标点击弹出快捷浮窗，支持三种模式快捷切换</td>
+            <td>鼠标点击 · <span class="kbd">Esc</span> / 点击外部 关闭</td>
+          </tr>
+          <tr>
+            <td>沙箱拦截命令</td>
+            <td>非白名单命令不执行，消息区输出黄色 warning alert</td>
+            <td>—</td>
+          </tr>
+          <tr>
+            <td>任意步骤取消</td>
+            <td>Esc 退出，不修改配置，面板/弹框消失</td>
+            <td><span class="kbd">Esc</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- 09 DATA MODEL -->
+  <div class="section">
+    <div class="section-title"><span class="num">09</span> &nbsp;数据模型 — 配置字段</div>
+    <div class="code-block">
+<span class="cc">// opencode.json</span>
+{
+  <span class="ct">"runMode"</span>: {
+    <span class="ct">"current"</span>: <span class="cs">"sandbox"</span>,        <span class="cc">// "sandbox" | "auto" | "manual"</span>
+    <span class="ct">"sandbox"</span>: {
+      <span class="ct">"allowedCommands"</span>: [     <span class="cc">// 白名单命令列表</span>
+        <span class="cs">"git status"</span>,
+        <span class="cs">"git diff"</span>,
+        <span class="cs">"npm test"</span>,
+        <span class="cs">"npm run build"</span>,
+        <span class="cs">"go test ./..."</span>
+      ],
+      <span class="ct">"networkPolicy"</span>: <span class="cs">"none"</span>,  <span class="cc">// "none" | "whitelist" | "all"</span>
+      <span class="ct">"allowedDomains"</span>: []      <span class="cc">// 仅 networkPolicy="whitelist" 时生效</span>
+    }
+  }
+}
+
+<span class="cc">// 运行时判断</span>
+<span class="ck">function</span> <span class="cn">canExecute</span>(cmd) {
+  <span class="ck">if</span> (runMode.current === <span class="cs">"auto"</span>) <span class="ck">return</span> <span class="cv">true</span>
+  <span class="ck">if</span> (runMode.current === <span class="cs">"manual"</span>) <span class="ck">return</span> <span class="cn">promptUser</span>(cmd)
+  <span class="ck">if</span> (runMode.current === <span class="cs">"sandbox"</span>) {
+    <span class="ck">return</span> runMode.sandbox.allowedCommands.<span class="cn">some</span>(
+      allowed => cmd.<span class="cn">startsWith</span>(allowed)
+    )
+  }
+}
+    </div>
+  </div>
+
+  <!-- 10 STATUS BAR STATES -->
+  <div class="section">
+    <div class="section-title"><span class="num">10</span> &nbsp;底栏模式标签样式汇总</div>
+    <div class="table-wrap">
+      <table class="spec-table">
+        <thead><tr><th>模式</th><th>标签样式</th><th>Sidebar 显示</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>Sandbox</td>
+            <td><span style="color:#b07d20;font-family:var(--font-mono);font-size:12px;">● Sandbox</span> 黄色</td>
+            <td>🛡 Sandbox · N commands allowed · Network: [policy]</td>
+          </tr>
+          <tr>
+            <td>Auto</td>
+            <td><span style="color:#4a8f2a;font-family:var(--font-mono);font-size:12px;">● Auto</span> 绿色</td>
+            <td>⚡ Auto · All commands allowed</td>
+          </tr>
+          <tr>
+            <td>Manual</td>
+            <td><span style="color:#3d7ac9;font-family:var(--font-mono);font-size:12px;">● Manual</span> 蓝色</td>
+            <td>✋ Manual · Confirm before each command</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
