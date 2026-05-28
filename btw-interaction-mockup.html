@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Claude Code /btw — 交互方案 Mockup</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0e0e0c;
+    --bg2: #181816;
+    --bg3: #222220;
+    --bg4: #2a2a28;
+    --border: #3a3a38;
+    --border-subtle: #2a2a28;
+    --text: #d3d1c7;
+    --text-muted: #7a7870;
+    --text-dim: #4a4a48;
+    --green: #97C459;
+    --green-dim: #3B6D1144;
+    --blue: #85B7EB;
+    --blue-dim: #185FA522;
+    --amber: #EF9F27;
+    --amber-dim: #854F0B33;
+    --amber-light: #FAC775;
+    --coral: #F0997B;
+    --purple: #AFA9EC;
+    --purple-deep: #534AB7;
+    --purple-dark: #26215C;
+    --purple-dim: #534AB733;
+    --purple-border: #534AB788;
+    --teal: #5DCAA5;
+    --teal-dim: #0F6E5622;
+    --white: #f1efe8;
+    --mono: 'JetBrains Mono', monospace;
+    --sans: 'DM Sans', sans-serif;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.6;
+    min-height: 100vh;
+    padding: 0;
+  }
+
+  /* Header */
+  header {
+    padding: 3rem 2.5rem 2rem;
+    border-bottom: 0.5px solid var(--border-subtle);
+    max-width: 860px;
+    margin: 0 auto;
+  }
+
+  .header-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--purple);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+  }
+
+  h1 {
+    font-size: 28px;
+    font-weight: 300;
+    color: var(--white);
+    letter-spacing: -0.02em;
+    margin-bottom: 0.5rem;
+  }
+
+  h1 code {
+    font-family: var(--mono);
+    font-size: 26px;
+    color: var(--purple);
+    font-weight: 400;
+  }
+
+  .header-desc {
+    font-size: 14px;
+    color: var(--text-muted);
+    max-width: 560px;
+    line-height: 1.7;
+    margin-top: 0.75rem;
+  }
+
+  .badge-row {
+    display: flex;
+    gap: 8px;
+    margin-top: 1.25rem;
+    flex-wrap: wrap;
+  }
+
+  .badge {
+    font-size: 11px;
+    font-family: var(--mono);
+    padding: 3px 9px;
+    border-radius: 4px;
+    border: 0.5px solid;
+  }
+
+  .badge-purple { color: var(--purple); border-color: var(--purple-deep); background: var(--purple-dim); }
+  .badge-teal { color: var(--teal); border-color: #0F6E5666; background: var(--teal-dim); }
+  .badge-amber { color: var(--amber-light); border-color: #854F0B66; background: var(--amber-dim); }
+
+  /* Layout */
+  main {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 2.5rem 2.5rem 4rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+  }
+
+  /* Step block */
+  .step {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    gap: 2rem;
+    align-items: start;
+    padding-bottom: 2.5rem;
+    border-bottom: 0.5px solid var(--border-subtle);
+  }
+
+  .step:last-child { border-bottom: none; }
+
+  .step-meta { padding-top: 2px; }
+
+  .step-num-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+
+  .step-num {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 0.5px solid var(--purple-deep);
+    background: var(--purple-dim);
+    color: var(--purple);
+    font-size: 12px;
+    font-family: var(--mono);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .step-title {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--white);
+    line-height: 1.4;
+  }
+
+  .step-note {
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.7;
+  }
+
+  .step-note code {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--purple);
+    background: var(--purple-dim);
+    padding: 1px 5px;
+    border-radius: 3px;
+  }
+
+  /* Terminal */
+  .term {
+    background: #131311;
+    border: 0.5px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    font-family: var(--mono);
+    font-size: 12.5px;
+    line-height: 1.75;
+  }
+
+  .term-titlebar {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    padding: 9px 14px;
+    background: #1a1a18;
+    border-bottom: 0.5px solid var(--border-subtle);
+  }
+
+  .dots { display: flex; gap: 6px; margin-right: auto; }
+  .dot { width: 10px; height: 10px; border-radius: 50%; }
+  .dot-r { background: #E24B4A55; border: 0.5px solid #E24B4A; }
+  .dot-y { background: #EF9F2755; border: 0.5px solid #EF9F27; }
+  .dot-g { background: #97C45955; border: 0.5px solid #97C459; }
+
+  .term-title-text {
+    font-size: 11px;
+    color: var(--text-dim);
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .term-body { padding: 14px 16px; }
+
+  /* Terminal text colors */
+  .c-muted { color: var(--text-muted); }
+  .c-green { color: var(--green); }
+  .c-blue { color: var(--blue); }
+  .c-amber { color: var(--amber); }
+  .c-amber-l { color: var(--amber-light); }
+  .c-coral { color: var(--coral); }
+  .c-purple { color: var(--purple); }
+  .c-teal { color: var(--teal); }
+  .c-white { color: var(--white); }
+  .c-dim { color: var(--text-dim); }
+
+  .line { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 1px; }
+  .indent { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 1px; padding-left: 16px; }
+
+  .tag-run {
+    font-size: 10px;
+    padding: 0px 6px;
+    border-radius: 3px;
+    background: var(--teal-dim);
+    color: var(--teal);
+    border: 0.5px solid #0F6E5655;
+    font-family: var(--mono);
+    vertical-align: 1px;
+    display: inline-block;
+    margin-left: 4px;
+  }
+
+  .divider { border-top: 0.5px solid var(--border-subtle); margin: 10px 0; }
+
+  .cursor {
+    display: inline-block;
+    width: 7px;
+    height: 13px;
+    background: var(--text);
+    vertical-align: -2px;
+    animation: blink 1.1s step-end infinite;
+  }
+
+  @keyframes blink { 50% { opacity: 0; } }
+
+  .autocomplete {
+    background: #1e1e1c;
+    border: 0.5px solid var(--border);
+    border-radius: 5px;
+    padding: 7px 10px;
+    margin-top: 6px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+
+  /* Overlay */
+  .overlay {
+    border-radius: 7px;
+    padding: 10px 12px;
+    margin-top: 10px;
+  }
+
+  .overlay-purple {
+    border: 0.5px solid var(--purple-border);
+    background: linear-gradient(135deg, #26215c22, #1d1c1988);
+  }
+
+  .overlay-amber {
+    border: 0.5px solid #854F0B88;
+    background: #854F0B1a;
+  }
+
+  .overlay-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    padding-bottom: 7px;
+    font-size: 11px;
+  }
+
+  .overlay-header-purple {
+    border-bottom: 0.5px solid var(--purple-deep);
+    color: var(--purple);
+  }
+
+  .overlay-header-amber {
+    border-bottom: 0.5px solid #854F0B66;
+    color: var(--amber);
+  }
+
+  .mini-badges { display: flex; gap: 5px; flex-wrap: wrap; margin-bottom: 8px; }
+
+  .mini-badge {
+    font-size: 10px;
+    padding: 1px 7px;
+    border-radius: 3px;
+    background: var(--purple-dim);
+    color: #CECBF6;
+    border: 0.5px solid var(--purple-deep);
+  }
+
+  .overlay-body { font-size: 12px; color: #CECBF6; line-height: 1.7; }
+  .overlay-body-amber { font-size: 12px; color: var(--amber-light); line-height: 1.7; }
+
+  .warning-bar {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    color: var(--amber-light);
+    background: var(--amber-dim);
+    border: 0.5px solid #854F0B55;
+    padding: 4px 9px;
+    border-radius: 4px;
+    margin-bottom: 8px;
+  }
+
+  .spinner-anim {
+    display: inline-block;
+    animation: spin-frames 0.8s steps(8) infinite;
+  }
+
+  @keyframes spin-frames {
+    0%  { content: '⠋'; }
+    12% { content: '⠙'; }
+    25% { content: '⠹'; }
+    37% { content: '⠸'; }
+    50% { content: '⠼'; }
+    62% { content: '⠴'; }
+    75% { content: '⠦'; }
+    87% { content: '⠧'; }
+  }
+
+  /* Footer note */
+  .step-footer-note {
+    font-size: 11px;
+    font-family: var(--mono);
+    color: var(--teal);
+    margin-top: 8px;
+    padding-left: 16px;
+  }
+
+  /* Responsive */
+  @media (max-width: 640px) {
+    header { padding: 2rem 1.25rem 1.5rem; }
+    main { padding: 2rem 1.25rem 3rem; gap: 2rem; }
+    .step { grid-template-columns: 1fr; gap: 1rem; }
+    .step-meta { padding-top: 0; }
+    h1 { font-size: 22px; }
+    h1 code { font-size: 20px; }
+  }
+
+  /* Page divider line */
+  .page-rule {
+    width: 32px;
+    height: 1px;
+    background: var(--border);
+    margin: 0 2.5rem;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-label">Claude Code CLI · Interaction Design</div>
+  <h1><code>/btw</code> 交互方案 Mockup</h1>
+  <p class="header-desc">
+    在主任务进行中插入侧链问答——答案以临时浮层呈现，问答双向不进入对话历史，上下文窗口零污染。
+  </p>
+  <div class="badge-row">
+    <span class="badge badge-purple">ephemeral agent</span>
+    <span class="badge badge-teal">inherits full context</span>
+    <span class="badge badge-amber">no tools</span>
+    <span class="badge badge-purple">won't enter history</span>
+  </div>
+</header>
+
+<main>
+
+  <!-- Step 1 -->
+  <div class="step">
+    <div class="step-meta">
+      <div class="step-num-row">
+        <div class="step-num">1</div>
+        <div class="step-title">主任务进行中，用户输入 /btw</div>
+      </div>
+      <p class="step-note">
+        Claude 正在执行多文件重构任务。底部输入框中输入 <code>/btw</code> 后，自动补全提示命令用途。<br><br>
+        主任务<strong style="color:var(--white);font-weight:500">不会中断</strong>，状态栏持续滚动。
+      </p>
+    </div>
+    <div class="term">
+      <div class="term-titlebar" style="position:relative;">
+        <div class="dots">
+          <span class="dot dot-r"></span>
+          <span class="dot dot-y"></span>
+          <span class="dot dot-g"></span>
+        </div>
+        <span class="term-title-text">claude — ~/project</span>
+      </div>
+      <div class="term-body">
+        <div class="line"><span class="c-green">●</span><span class="c-muted">Refactoring auth module across 4 files...</span></div>
+        <div class="indent"><span class="c-dim">✓</span><span class="c-muted">updated session.ts</span></div>
+        <div class="indent"><span class="c-amber spinner-anim">⠋</span><span class="c-muted">editing middleware.ts</span><span class="tag-run">running</span></div>
+        <div class="divider"></div>
+        <div class="line"><span class="c-green">&gt;</span><span class="c-white">/btw</span><span class="cursor"></span></div>
+        <div class="autocomplete">
+          <span class="c-blue">/btw</span>
+          <span class="c-muted">&lt;question&gt;</span>
+          <span class="c-dim">—</span>
+          <span class="c-dim">ask a side question, no tools, won't enter history</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 2 -->
+  <div class="step">
+    <div class="step-meta">
+      <div class="step-num-row">
+        <div class="step-num">2</div>
+        <div class="step-title">提交问题 → fork 上下文，派生临时 agent</div>
+      </div>
+      <p class="step-note">
+        回车后系统 fork 当前会话上下文，派生一个 ephemeral agent：<br><br>
+        继承全部已读代码与历史决策，但禁用所有工具调用。浮层出现，主任务继续在后台运行。
+      </p>
+    </div>
+    <div class="term">
+      <div class="term-titlebar" style="position:relative;">
+        <div class="dots">
+          <span class="dot dot-r"></span>
+          <span class="dot dot-y"></span>
+          <span class="dot dot-g"></span>
+        </div>
+        <span class="term-title-text">claude — ~/project</span>
+      </div>
+      <div class="term-body">
+        <div class="line"><span class="c-green">●</span><span class="c-muted">Refactoring auth module...</span><span class="tag-run">still running</span></div>
+        <div class="divider"></div>
+        <div class="line"><span class="c-green">&gt;</span><span class="c-white">/btw what was that config file we read earlier called?</span></div>
+        <div class="overlay overlay-purple">
+          <div class="overlay-header overlay-header-purple">
+            <span><span class="c-purple">◆</span>&nbsp; Side question</span>
+            <span class="c-purple"><span class="spinner-anim">⠋</span>&nbsp;thinking</span>
+          </div>
+          <div class="mini-badges">
+            <span class="mini-badge">ephemeral</span>
+            <span class="mini-badge">no tools</span>
+            <span class="mini-badge">won't enter history</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 3 -->
+  <div class="step">
+    <div class="step-meta">
+      <div class="step-num-row">
+        <div class="step-num">3</div>
+        <div class="step-title">答案在浮层中呈现</div>
+      </div>
+      <p class="step-note">
+        侧链 agent 基于已有上下文回答，结果渲染在独立浮层中，与主任务流视觉隔离。<br><br>
+        主任务始终未受影响，继续推进。按 <code>esc</code> 可随时关闭浮层。
+      </p>
+    </div>
+    <div class="term">
+      <div class="term-titlebar" style="position:relative;">
+        <div class="dots">
+          <span class="dot dot-r"></span>
+          <span class="dot dot-y"></span>
+          <span class="dot dot-g"></span>
+        </div>
+        <span class="term-title-text">claude — ~/project</span>
+      </div>
+      <div class="term-body">
+        <div class="line"><span class="c-green">●</span><span class="c-muted">Refactoring auth module...</span></div>
+        <div class="indent"><span class="c-dim">✓</span><span class="c-muted">updated middleware.ts</span></div>
+        <div class="indent"><span class="c-amber spinner-anim">⠋</span><span class="c-muted">editing routes.ts</span><span class="tag-run">running</span></div>
+        <div class="overlay overlay-purple">
+          <div class="overlay-header overlay-header-purple">
+            <span><span class="c-purple">◆</span>&nbsp; Side question</span>
+            <span class="c-dim" style="font-size:10px;">esc to dismiss</span>
+          </div>
+          <div class="mini-badges">
+            <span class="mini-badge">ephemeral</span>
+            <span class="mini-badge">no tools</span>
+            <span class="mini-badge">won't enter history</span>
+          </div>
+          <div class="overlay-body">
+            It was <span class="c-white" style="font-weight:500;">app.config.ts</span> in the project root — the one defining the session timeout and JWT secret loader.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 4 -->
+  <div class="step">
+    <div class="step-meta">
+      <div class="step-num-row">
+        <div class="step-num">4</div>
+        <div class="step-title">工具被请求 → 客户端拒绝态</div>
+      </div>
+      <p class="step-note">
+        若侧链问题隐含需要工具（如"读一下那个文件"），客户端层硬拦截 <code>tool_use</code>。<br><br>
+        Agent 基于已有上下文回答，并提示改用主对话或 subagent。浮层变为琥珀警告色。
+      </p>
+    </div>
+    <div class="term">
+      <div class="term-titlebar" style="position:relative;">
+        <div class="dots">
+          <span class="dot dot-r"></span>
+          <span class="dot dot-y"></span>
+          <span class="dot dot-g"></span>
+        </div>
+        <span class="term-title-text">claude — ~/project</span>
+      </div>
+      <div class="term-body">
+        <div class="line"><span class="c-green">&gt;</span><span class="c-white">/btw open routes.ts and tell me line 40</span></div>
+        <div class="overlay overlay-amber">
+          <div class="overlay-header overlay-header-amber">
+            <span><span class="c-amber">◆</span>&nbsp; Side question</span>
+            <span class="c-dim" style="font-size:10px;">esc to dismiss</span>
+          </div>
+          <div class="warning-bar">
+            <span>⚠</span>
+            <span>Side questions cannot use tools</span>
+          </div>
+          <div class="overlay-body-amber">
+            I can't read files here. From what's already in context, routes.ts handles the login redirect. To read it live, ask in the main thread or use a subagent.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 5 -->
+  <div class="step">
+    <div class="step-meta">
+      <div class="step-num-row">
+        <div class="step-num">5</div>
+        <div class="step-title">关闭浮层 → 历史保持干净</div>
+      </div>
+      <p class="step-note">
+        按 <code>esc</code> 关闭浮层。问答双向都不入栈——既不进 history，也不进 context window，完全 ephemeral。<br><br>
+        主对话从中断处无缝继续，终端底部提示零 token 被写入历史。
+      </p>
+    </div>
+    <div class="term">
+      <div class="term-titlebar" style="position:relative;">
+        <div class="dots">
+          <span class="dot dot-r"></span>
+          <span class="dot dot-y"></span>
+          <span class="dot dot-g"></span>
+        </div>
+        <span class="term-title-text">claude — ~/project</span>
+      </div>
+      <div class="term-body">
+        <div class="line"><span class="c-green">●</span><span class="c-muted">Refactoring auth module...</span></div>
+        <div class="indent"><span class="c-dim">✓</span><span class="c-muted">updated routes.ts</span></div>
+        <div class="indent"><span class="c-dim">✓</span><span class="c-muted">updated config.ts</span></div>
+        <div style="height:6px;"></div>
+        <div class="line"><span class="c-green">●</span><span class="c-white">Done — refactored 4 files. All auth flows now use app.config.ts.</span></div>
+        <div style="height:4px;"></div>
+        <div class="line" style="font-size:11px;"><span class="c-teal">↳</span><span class="c-teal">side question dismissed · 0 tokens added to history</span></div>
+        <div class="divider"></div>
+        <div class="line"><span class="c-green">&gt;</span><span class="cursor"></span></div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+</body>
+</html>
