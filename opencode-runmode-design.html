@@ -318,8 +318,8 @@
                   <!-- Whitelist commands -->
                   <div class="form-section">
                     <div class="form-label">白名单命令 ALLOWED COMMANDS</div>
-                    <div class="form-input multi">git status<br>git diff<br>npm test<br>npm run build<br>go test ./...<span class="t-cursor" style="display:inline-block;vertical-align:middle;"></span></div>
-                    <div class="form-hint">每行一条命令。仅列出的命令可在沙箱模式下自动执行，其余命令将被拦截。</div>
+                    <div class="form-input" style="color:var(--t-dim);">添加命令（如 ls、pwd）<span class="t-cursor" style="display:inline-block;vertical-align:middle;"></span></div>
+                    <div class="form-hint">仅列出的命令可在沙箱模式下自动执行，其余命令将被拦截。</div>
                   </div>
 
                   <div class="form-divider"></div>
@@ -351,8 +351,7 @@
 
                   <!-- Actions -->
                   <div class="form-actions">
-                    <button class="form-btn cancel">取消 Esc</button>
-                    <button class="form-btn confirm">确认 Enter</button>
+<button class="form-btn confirm">确认 Enter</button>
                   </div>
                 </div>
               </div>
@@ -403,7 +402,7 @@
                     <div class="modal-hdr"><span class="modal-title">Sandbox Configuration</span><span class="modal-esc">esc</span></div>
                     <div class="form-section" style="padding:4px 10px;">
                       <div class="form-label" style="margin-bottom:2px;">白名单命令 ALLOWED COMMANDS</div>
-                      <div class="form-input multi" style="min-height:40px;color:var(--t-dim);font-size:11px;">git status<br>git diff<br>npm test</div>
+                      <div class="form-input" style="color:var(--t-dim);font-size:11px;">添加命令（如 ls、pwd）</div>
                     </div>
                     <div class="form-divider" style="margin:3px 0;"></div>
                     <div class="form-section" style="padding:3px 10px 1px;"><div class="form-label" style="margin-bottom:0;">网络访问策略 NETWORK POLICY</div></div>
@@ -414,8 +413,7 @@
                       <span class="fo-dot">●</span><span>网络自定义访问</span>
                     </div>
                     <div class="form-actions" style="padding:6px 10px 8px;">
-                      <button class="form-btn cancel">取消 Esc</button>
-                      <button class="form-btn confirm">确认 Enter</button>
+    <button class="form-btn confirm">确认 Enter</button>
                     </div>
                   </div>
                 </div>
@@ -449,8 +447,7 @@
                       <div class="form-hint">支持 filesystem / network / resources 三块</div>
                     </div>
                     <div class="form-actions" style="padding:6px 10px 8px;">
-                      <button class="form-btn cancel">取消 Esc</button>
-                      <button class="form-btn confirm">保存 Enter</button>
+    <button class="form-btn confirm">保存 Enter</button>
                     </div>
                   </div>
                 </div>
