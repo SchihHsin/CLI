@@ -329,18 +329,23 @@
                   </div>
                   <div class="form-option-row sel">
                     <span class="fo-dot">●</span>
-                    <span style="color:var(--t-white);">禁止所有网络访问</span>
-                    <span class="fo-desc">No outbound connections</span>
+                    <span style="color:var(--t-white);">全网访问</span>
+                    <span class="fo-desc">允许访问全部内外网络</span>
                   </div>
                   <div class="form-option-row">
                     <span class="fo-dot">○</span>
-                    <span>仅允许白名单域名</span>
-                    <span class="fo-desc">Specified domains only</span>
+                    <span>本地网络访问</span>
+                    <span class="fo-desc">仅支持访问本地服务网络</span>
                   </div>
                   <div class="form-option-row">
                     <span class="fo-dot">○</span>
-                    <span>允许所有网络访问</span>
-                    <span class="fo-desc">Unrestricted outbound</span>
+                    <span>禁止网络访问</span>
+                    <span class="fo-desc">禁止访问任何网络</span>
+                  </div>
+                  <div class="form-option-row">
+                    <span class="fo-dot">○</span>
+                    <span>网络自定义访问</span>
+                    <span class="fo-desc">自定义访问任何网络</span>
                   </div>
 
                   <!-- Actions -->
@@ -365,7 +370,7 @@
           </div>
           <div class="step-note">
             <b>白名单输入区</b>：多行文本框，每行一条命令，光标可自由编辑。<br>
-            <b>网络策略</b>：三选一，<code>Tab</code> 从白名单区跳到策略区，<code>↑↓</code> 在选项间切换。<br>
+            <b>网络策略</b>：四选一，<code>Tab</code> 从白名单区跳到策略区，<code>↑↓</code> 在选项间切换。<br>
             <b>确认保存</b>：焦点在按钮行时按 <code>Enter</code>，或任意位置按 <code>Ctrl+S</code>。保存后自动退回主界面并切换到 Sandbox 模式。
           </div>
         </div>
@@ -373,14 +378,14 @@
     </div>
   </div>
 
-  <!-- 03B: Second network policy view -->
+  <!-- 03B: Custom network policy JSON view -->
   <div class="section">
-    <div class="section-title"><span class="num">03b</span> &nbsp;沙箱编辑 · 白名单域名输入（选择「仅允许白名单域名」时）</div>
+    <div class="section-title"><span class="num">03b</span> &nbsp;沙箱编辑 · 自定义策略 JSON 输入（选择「网络自定义访问」时）</div>
     <div class="step-wrap">
       <div class="step">
         <div class="step-num">+</div>
         <div class="step-content">
-          <div class="step-label">当网络策略选择「仅允许白名单域名」时，下方<b>展开域名输入区</b></div>
+          <div class="step-label">当网络策略选择「网络自定义访问」时，下方<b>展开 JSON 配置输入区</b>；选择其余三项时直接确认即可，无需额外输入</div>
           <div class="tui-wrap">
             <div class="tui-bar">
               <div class="tui-dots"><div class="tui-dot r"></div><div class="tui-dot y"></div><div class="tui-dot g"></div></div>
@@ -399,18 +404,20 @@
                   <div class="form-divider"></div>
 
                   <div class="form-section"><div class="form-label">网络访问策略 NETWORK POLICY</div></div>
-                  <div class="form-option-row"><span class="fo-dot">○</span><span>禁止所有网络访问</span></div>
+                  <div class="form-option-row"><span class="fo-dot">○</span><span>全网访问</span><span class="fo-desc">允许访问全部内外网络</span></div>
+                  <div class="form-option-row"><span class="fo-dot">○</span><span>本地网络访问</span><span class="fo-desc">仅支持访问本地服务网络</span></div>
+                  <div class="form-option-row"><span class="fo-dot">○</span><span>禁止网络访问</span><span class="fo-desc">禁止访问任何网络</span></div>
                   <div class="form-option-row sel">
                     <span class="fo-dot" style="color:var(--t-orange);">●</span>
-                    <span style="color:var(--t-white);">仅允许白名单域名</span>
+                    <span style="color:var(--t-white);">网络自定义访问</span>
+                    <span class="fo-desc">自定义访问任何网络</span>
                   </div>
-                  <div class="form-option-row"><span class="fo-dot">○</span><span>允许所有网络访问</span></div>
 
-                  <!-- expanded domain input -->
+                  <!-- expanded custom JSON input -->
                   <div class="form-section" style="padding-top:4px;">
-                    <div class="form-label">允许的域名 ALLOWED DOMAINS</div>
-                    <div class="form-input multi" style="min-height:56px;">registry.npmjs.org<br>api.github.com<br>golang.org<span class="t-cursor" style="display:inline-block;vertical-align:middle;"></span></div>
-                    <div class="form-hint">每行一个域名，支持通配符 *.example.com</div>
+                    <div class="form-label">自定义策略 CUSTOM POLICY JSON</div>
+                    <div class="form-input multi" style="min-height:120px;font-size:11px;line-height:1.6;">{<br>&nbsp;&nbsp;"filesystem": {<br>&nbsp;&nbsp;&nbsp;&nbsp;"readWrite": [],<br>&nbsp;&nbsp;&nbsp;&nbsp;"readOnly": []<br>&nbsp;&nbsp;},<br>&nbsp;&nbsp;"network": {<br>&nbsp;&nbsp;&nbsp;&nbsp;"default": "allow",<br>&nbsp;&nbsp;&nbsp;&nbsp;"allow": [],<br>&nbsp;&nbsp;&nbsp;&nbsp;"deny": []<br>&nbsp;&nbsp;},<br>&nbsp;&nbsp;"resources": {<br>&nbsp;&nbsp;&nbsp;&nbsp;"cpu": 2,<br>&nbsp;&nbsp;&nbsp;&nbsp;"memory": "2GB"<br>&nbsp;&nbsp;}<br>}<span class="t-cursor" style="display:inline-block;vertical-align:middle;"></span></div>
+                    <div class="form-hint">JSON 格式，支持 filesystem / network / resources 三块配置</div>
                   </div>
 
                   <div class="form-actions">
@@ -432,7 +439,7 @@
               </div>
             </div>
           </div>
-          <div class="step-note">域名输入框仅在选择「仅允许白名单域名」策略时展开，其余两种策略下隐藏，保持表单简洁。</div>
+          <div class="step-note">JSON 输入框仅在选择「网络自定义访问」时展开，其余三种策略选中后直接点「确认」即可生效，无需额外输入。</div>
         </div>
       </div>
     </div>
@@ -460,7 +467,7 @@
                   <div class="a-body">
                     模式：<span style="color:var(--t-dim);text-decoration:line-through;">Auto</span> → <span class="hi-on" style="color:var(--t-yellow);">Sandbox</span><br>
                     白名单命令：git status, git diff, npm test, npm run build, go test ./...<br>
-                    网络策略：禁止所有网络访问
+                    网络策略：全网访问
                   </div>
                 </div>
               </div>
@@ -713,8 +720,8 @@
         <span class="cs">"npm run build"</span>,
         <span class="cs">"go test ./..."</span>
       ],
-      <span class="ct">"networkPolicy"</span>: <span class="cs">"none"</span>,  <span class="cc">// "none" | "whitelist" | "all"</span>
-      <span class="ct">"allowedDomains"</span>: []      <span class="cc">// 仅 networkPolicy="whitelist" 时生效</span>
+      <span class="ct">"networkPolicy"</span>: <span class="cs">"all"</span>,    <span class="cc">// "all" | "local" | "none" | "custom"</span>
+      <span class="ct">"customPolicy"</span>: {}          <span class="cc">// 仅 networkPolicy="custom" 时生效，含 filesystem/network/resources</span>
     }
   }
 }
