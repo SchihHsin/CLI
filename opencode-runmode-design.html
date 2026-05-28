@@ -126,8 +126,9 @@
 
   /* radio-like row inside form */
   .form-option-row{padding:5px 16px;display:flex;align-items:center;gap:10px;font-size:12px;color:var(--t-text);cursor:default;}
-  .form-option-row.sel{color:var(--t-white);}
-  .form-option-row.sel .fo-dot{color:var(--t-orange);}
+  .form-option-row.sel{background:var(--t-orange);color:#1a0800;}
+  .form-option-row.sel .fo-dot{color:#1a0800;}
+  .form-option-row.sel .fo-desc{color:rgba(26,8,0,.55);}
   .form-option-row .fo-dot{color:var(--t-muted);font-size:10px;width:12px;}
   .form-option-row .fo-desc{margin-left:auto;font-size:10px;color:var(--t-dim);}
 
@@ -261,15 +262,15 @@
                   <div class="modal-current"><span style="color:var(--t-green);">●</span><span style="color:var(--t-green);font-size:12px;">Auto（当前模式）</span></div>
                   <div class="modal-group">运行模式</div>
                   <div class="modal-row selected">
-                    <span>🛡 &nbsp;Sandbox 沙箱</span>
+                    <span>Sandbox 沙箱</span>
                     <span class="rr">Enter 编辑配置</span>
                   </div>
                   <div class="modal-row disabled">
-                    <span>⚡ &nbsp;Auto 自动</span>
+                    <span>Auto 自动</span>
                     <span class="rr">当前状态</span>
                   </div>
                   <div class="modal-row">
-                    <span>✋ &nbsp;Manual 手动</span>
+                    <span>Manual 手动</span>
                     <span class="rr">每次执行前确认</span>
                   </div>
                 </div>
@@ -329,7 +330,7 @@
                   </div>
                   <div class="form-option-row sel">
                     <span class="fo-dot">●</span>
-                    <span style="color:var(--t-white);">全网访问</span>
+                    <span>全网访问</span>
                     <span class="fo-desc">允许访问全部内外网络</span>
                   </div>
                   <div class="form-option-row">
@@ -392,35 +393,35 @@
               <div class="tui-wt">opencode</div>
             </div>
             <div class="tui-main">
-              <div class="tui-msgs" style="justify-content:center;align-items:center;padding:16px 18px;">
+              <div class="tui-msgs" style="justify-content:center;align-items:center;padding:8px 12px;">
                 <div class="modal-form" style="width:100%;">
                   <div class="modal-hdr"><span class="modal-title">Sandbox Configuration</span><span class="modal-esc">esc</span></div>
 
-                  <div class="form-section">
-                    <div class="form-label">白名单命令 ALLOWED COMMANDS</div>
-                    <div class="form-input multi" style="min-height:48px;color:var(--t-dim);">git status<br>git diff<br>npm test</div>
+                  <div class="form-section" style="padding:4px 12px;">
+                    <div class="form-label" style="margin-bottom:2px;">白名单命令 ALLOWED COMMANDS</div>
+                    <div style="font-family:var(--font-mono);font-size:11px;color:var(--t-dim);padding:4px 8px;background:var(--t-bg4);border:1px solid #3a3a3a;border-radius:3px;">git status &nbsp;·&nbsp; git diff &nbsp;·&nbsp; npm test &nbsp;·&nbsp; npm run build</div>
                   </div>
 
-                  <div class="form-divider"></div>
+                  <div class="form-divider" style="margin:3px 0;"></div>
 
-                  <div class="form-section"><div class="form-label">网络访问策略 NETWORK POLICY</div></div>
-                  <div class="form-option-row"><span class="fo-dot">○</span><span>全网访问</span><span class="fo-desc">允许访问全部内外网络</span></div>
-                  <div class="form-option-row"><span class="fo-dot">○</span><span>本地网络访问</span><span class="fo-desc">仅支持访问本地服务网络</span></div>
-                  <div class="form-option-row"><span class="fo-dot">○</span><span>禁止网络访问</span><span class="fo-desc">禁止访问任何网络</span></div>
-                  <div class="form-option-row sel">
-                    <span class="fo-dot" style="color:var(--t-orange);">●</span>
-                    <span style="color:var(--t-white);">网络自定义访问</span>
+                  <div class="form-section" style="padding:3px 12px 1px;"><div class="form-label" style="margin-bottom:0;">网络访问策略 NETWORK POLICY</div></div>
+                  <div class="form-option-row" style="padding:3px 12px;"><span class="fo-dot">○</span><span>全网访问</span><span class="fo-desc">允许访问全部内外网络</span></div>
+                  <div class="form-option-row" style="padding:3px 12px;"><span class="fo-dot">○</span><span>本地网络访问</span><span class="fo-desc">仅支持访问本地服务网络</span></div>
+                  <div class="form-option-row" style="padding:3px 12px;"><span class="fo-dot">○</span><span>禁止网络访问</span><span class="fo-desc">禁止访问任何网络</span></div>
+                  <div class="form-option-row sel" style="padding:3px 12px;">
+                    <span class="fo-dot">●</span>
+                    <span>网络自定义访问</span>
                     <span class="fo-desc">自定义访问任何网络</span>
                   </div>
 
                   <!-- expanded custom JSON input -->
-                  <div class="form-section" style="padding-top:4px;">
-                    <div class="form-label">自定义策略 CUSTOM POLICY JSON</div>
-                    <div class="form-input multi" style="min-height:120px;font-size:11px;line-height:1.6;">{<br>&nbsp;&nbsp;"filesystem": {<br>&nbsp;&nbsp;&nbsp;&nbsp;"readWrite": [],<br>&nbsp;&nbsp;&nbsp;&nbsp;"readOnly": []<br>&nbsp;&nbsp;},<br>&nbsp;&nbsp;"network": {<br>&nbsp;&nbsp;&nbsp;&nbsp;"default": "allow",<br>&nbsp;&nbsp;&nbsp;&nbsp;"allow": [],<br>&nbsp;&nbsp;&nbsp;&nbsp;"deny": []<br>&nbsp;&nbsp;},<br>&nbsp;&nbsp;"resources": {<br>&nbsp;&nbsp;&nbsp;&nbsp;"cpu": 2,<br>&nbsp;&nbsp;&nbsp;&nbsp;"memory": "2GB"<br>&nbsp;&nbsp;}<br>}<span class="t-cursor" style="display:inline-block;vertical-align:middle;"></span></div>
-                    <div class="form-hint">JSON 格式，支持 filesystem / network / resources 三块配置</div>
+                  <div class="form-section" style="padding:4px 12px 3px;">
+                    <div class="form-label" style="margin-bottom:2px;">自定义策略 CUSTOM POLICY JSON</div>
+                    <div class="form-input multi" style="font-size:10px;line-height:1.55;padding:5px 8px;">{<br>&nbsp;&nbsp;"filesystem": { "readWrite": [], "readOnly": [] },<br>&nbsp;&nbsp;"network": {<br>&nbsp;&nbsp;&nbsp;&nbsp;"default": "allow", "allow": [], "deny": []<br>&nbsp;&nbsp;},<br>&nbsp;&nbsp;"resources": { "cpu": 2, "memory": "2GB" }<br>}<span class="t-cursor" style="display:inline-block;vertical-align:middle;"></span></div>
+                    <div class="form-hint">支持 filesystem / network / resources 三块配置</div>
                   </div>
 
-                  <div class="form-actions">
+                  <div class="form-actions" style="padding:5px 12px 7px;">
                     <button class="form-btn cancel">取消 Esc</button>
                     <button class="form-btn confirm">确认 Enter</button>
                   </div>
