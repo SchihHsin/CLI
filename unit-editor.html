@@ -1,0 +1,1553 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>可视化编辑器 · CSS 单位输入方案 v2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600&family=Geist:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d0f13;
+    --bg-2: #14171c;
+    --surface: #1a1d23;
+    --surface-2: #22262e;
+    --surface-3: #2c313a;
+    --border: #2a2e35;
+    --border-2: #3a3f49;
+    --border-strong: #4a4f59;
+    --text: #ecebe5;
+    --text-2: #9a9890;
+    --text-3: #62656c;
+    --text-4: #42454c;
+    --accent: #d4a574;
+    --accent-2: #8a7050;
+    --accent-soft: rgba(212, 165, 116, 0.12);
+    --sage: #a8c47e;
+    --violet: #c89aff;
+    --rose: #e88f8f;
+    --blue: #7eb6c4;
+
+    --mono: 'JetBrains Mono', ui-monospace, Menlo, monospace;
+    --sans: 'Geist', -apple-system, system-ui, sans-serif;
+    --serif: 'Fraunces', Georgia, serif;
+
+    --shadow-lg: 0 24px 60px -16px rgba(0,0,0,0.6), 0 8px 24px -8px rgba(0,0,0,0.4);
+    --shadow-pop: 0 16px 40px -8px rgba(0,0,0,0.55), 0 4px 12px -4px rgba(0,0,0,0.4);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-feature-settings: "ss01", "ss02", "cv11";
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+    line-height: 1.5;
+  }
+
+  body {
+    background-image:
+      radial-gradient(ellipse 100% 60% at 50% -10%, rgba(212, 165, 116, 0.05), transparent),
+      radial-gradient(ellipse 80% 50% at 10% 100%, rgba(168, 196, 126, 0.03), transparent);
+  }
+
+  .page {
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 56px 40px 96px;
+  }
+
+  /* ─── Hero ───────────────────────────────────── */
+  header.hero {
+    margin-bottom: 48px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: end;
+    gap: 48px;
+    padding-bottom: 24px;
+  }
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .eyebrow::before {
+    content: "";
+    width: 24px;
+    height: 1px;
+    background: var(--accent);
+  }
+  h1 {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-variation-settings: "opsz" 96;
+    font-size: clamp(36px, 4.5vw, 56px);
+    letter-spacing: -0.02em;
+    line-height: 1.02;
+  }
+  h1 em {
+    font-style: italic;
+    font-weight: 300;
+    color: var(--accent);
+  }
+  .hero-meta {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-3);
+    text-align: right;
+    line-height: 1.8;
+    letter-spacing: 0.04em;
+  }
+  .hero-meta strong {
+    color: var(--text-2);
+    font-weight: 500;
+  }
+
+  /* ─── Editor (main feature) ──────────────────── */
+  .editor {
+    background: var(--bg-2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+  }
+  .editor-toolbar {
+    height: 42px;
+    border-bottom: 1px solid var(--border);
+    background: var(--bg);
+    display: flex;
+    align-items: center;
+    padding: 0 18px;
+    gap: 12px;
+  }
+  .traffic { display: flex; gap: 6px; }
+  .traffic span {
+    width: 11px; height: 11px; border-radius: 50%;
+    background: var(--surface-3);
+  }
+  .traffic span:nth-child(1) { background: #e07070; }
+  .traffic span:nth-child(2) { background: #d4a574; }
+  .traffic span:nth-child(3) { background: #a8c47e; }
+  .tb-divider { width: 1px; height: 18px; background: var(--border); margin: 0 8px; }
+  .tb-title {
+    font-family: var(--mono);
+    font-size: 11.5px;
+    color: var(--text-2);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .tb-title .dot { color: var(--accent); }
+  .tb-spacer { flex: 1; }
+  .tb-tag {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text-3);
+    padding: 4px 10px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    letter-spacing: 0.06em;
+  }
+
+  .editor-body {
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    min-height: 640px;
+  }
+
+  /* ─── Canvas ─────────────────────────────────── */
+  .canvas {
+    background:
+      linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+    background-size: 24px 24px;
+    background-color: #0a0c10;
+    padding: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .canvas::before {
+    content: "";
+    position: absolute;
+    inset: 16px;
+    border: 1px dashed rgba(255,255,255,0.03);
+    pointer-events: none;
+    border-radius: 4px;
+  }
+
+  .canvas-frame {
+    background: var(--surface);
+    border: 1px dashed var(--border-2);
+    width: 520px;
+    height: 420px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .canvas-frame::before {
+    content: "PARENT · 520 × 420";
+    position: absolute;
+    top: -24px; left: 0;
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text-3);
+    letter-spacing: 0.08em;
+  }
+  .canvas-frame::after {
+    content: "";
+    position: absolute;
+    top: -8px; left: -8px;
+    width: 16px; height: 16px;
+    border-top: 1px solid var(--text-3);
+    border-left: 1px solid var(--text-3);
+  }
+
+  .target {
+    background: linear-gradient(135deg, #2a2e37 0%, #1f232a 100%);
+    border: 1px solid var(--accent-2);
+    box-shadow:
+      0 0 0 1px rgba(212,165,116,0.15) inset,
+      0 12px 32px -8px rgba(0,0,0,0.5);
+    color: var(--text);
+    font-family: var(--mono);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition:
+      width 0.22s cubic-bezier(0.4, 0, 0.2, 1),
+      height 0.22s cubic-bezier(0.4, 0, 0.2, 1),
+      padding 0.22s cubic-bezier(0.4, 0, 0.2, 1),
+      font-size 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+  }
+  .target .label {
+    color: var(--accent);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+  .target .dims {
+    color: var(--text);
+    letter-spacing: 0.04em;
+  }
+
+  /* corner ticks on target */
+  .target .corner {
+    position: absolute;
+    width: 8px; height: 8px;
+    border: 1px solid var(--accent);
+    background: var(--bg);
+  }
+  .target .corner.tl { top: -4px; left: -4px; }
+  .target .corner.tr { top: -4px; right: -4px; }
+  .target .corner.bl { bottom: -4px; left: -4px; }
+  .target .corner.br { bottom: -4px; right: -4px; }
+
+  /* dimension badge */
+  .dim-badge {
+    position: absolute;
+    bottom: 24px; left: 24px;
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text-3);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 6px 10px;
+    border-radius: 4px;
+    letter-spacing: 0.05em;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .dim-badge .row { display: flex; gap: 8px; }
+  .dim-badge .k { color: var(--text-4); }
+  .dim-badge .v { color: var(--text-2); }
+
+  /* ─── Panel ──────────────────────────────────── */
+  .panel {
+    background: var(--surface);
+    border-left: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+  }
+  .panel-section { border-bottom: 1px solid var(--border); }
+  .panel-section:last-child { border-bottom: none; }
+
+  .panel-section-title {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--text-3);
+    padding: 16px 22px 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .panel-section-title .reset {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text-3);
+    cursor: pointer;
+    padding: 2px 8px;
+    border-radius: 3px;
+    text-transform: none;
+    letter-spacing: 0;
+    transition: all 0.15s;
+  }
+  .panel-section-title .reset:hover {
+    background: var(--surface-3);
+    color: var(--text);
+  }
+
+  /* ─── Property row ───────────────────────────── */
+  .prop {
+    display: grid;
+    grid-template-columns: 88px 1fr;
+    align-items: center;
+    padding: 4px 22px;
+    gap: 14px;
+    height: 36px;
+  }
+  .prop-label {
+    font-family: var(--mono);
+    font-size: 11.5px;
+    color: var(--text-2);
+    cursor: ew-resize;
+    user-select: none;
+    transition: color 0.15s;
+  }
+  .prop-label:hover { color: var(--accent); }
+  .prop-label.scrubbing { color: var(--accent); }
+
+  /* The Figma-style value field: a SINGLE editable input */
+  .field {
+    position: relative;
+    height: 28px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    transition: border-color 0.15s, box-shadow 0.15s, background 0.15s;
+  }
+  .field:hover {
+    border-color: var(--border-2);
+    background: #0c0e12;
+  }
+  .field:focus-within {
+    border-color: var(--accent-2);
+    box-shadow: 0 0 0 2px rgba(212, 165, 116, 0.12);
+    background: var(--bg);
+  }
+  .field.invalid {
+    border-color: var(--rose) !important;
+    box-shadow: 0 0 0 2px rgba(232, 144, 144, 0.12);
+  }
+  .field.expression {
+    background: rgba(200, 154, 255, 0.04);
+    border-color: rgba(200, 154, 255, 0.25);
+  }
+  .field.expression:hover { border-color: var(--violet); }
+  .field.keyword {
+    background: rgba(126, 182, 196, 0.03);
+  }
+
+  .field-input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: var(--text);
+    font-family: var(--mono);
+    font-size: 12px;
+    padding: 0 30px 0 10px;
+    width: 100%;
+    height: 100%;
+    cursor: text;
+    letter-spacing: 0.01em;
+  }
+  /* keyword styling */
+  .field.keyword .field-input { color: var(--blue); font-style: italic; }
+  /* expression styling */
+  .field.expression .field-input { color: var(--text); }
+  .field.expression .fn-prefix {
+    position: absolute;
+    left: 8px;
+    color: var(--violet);
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 13px;
+    pointer-events: none;
+  }
+  .field.expression .field-input { padding-left: 22px; }
+
+  /* Chevron — the secondary affordance */
+  .field-chev {
+    position: absolute;
+    right: 4px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 22px;
+    height: 22px;
+    border: none;
+    background: transparent;
+    color: var(--text-4);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 3px;
+    transition: all 0.15s;
+    opacity: 0;
+  }
+  .field:hover .field-chev,
+  .field:focus-within .field-chev,
+  .field-chev.is-open {
+    opacity: 1;
+  }
+  .field-chev:hover {
+    background: var(--surface-3);
+    color: var(--text);
+  }
+  .field-chev.is-open {
+    background: var(--surface-3);
+    color: var(--accent);
+  }
+  .field-chev svg {
+    width: 10px;
+    height: 10px;
+  }
+
+  /* Computed value tooltip — below field on focus/hover */
+  .prop-computed {
+    grid-column: 2;
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text-4);
+    letter-spacing: 0.02em;
+    height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: opacity 0.15s, height 0.15s;
+    margin-left: 2px;
+  }
+  .prop:hover .prop-computed,
+  .prop:focus-within .prop-computed {
+    height: 14px;
+    opacity: 1;
+  }
+  .prop-computed .arrow { color: var(--text-4); margin-right: 6px; }
+  .prop-computed .val { color: var(--text-2); }
+  .prop-computed.error .val { color: var(--rose); }
+
+  /* ─── Floating popover ───────────────────────── */
+  .popover {
+    position: fixed;
+    background: var(--surface-2);
+    border: 1px solid var(--border-strong);
+    border-radius: 8px;
+    box-shadow: var(--shadow-pop);
+    min-width: 240px;
+    max-width: 280px;
+    padding: 6px;
+    z-index: 1000;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    opacity: 0;
+    transform: translateX(-4px) scale(0.98);
+    transform-origin: right center;
+    transition: opacity 0.14s ease-out, transform 0.14s ease-out;
+    pointer-events: none;
+  }
+  .popover.open {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+    pointer-events: auto;
+  }
+  .popover.flip-right {
+    transform-origin: left center;
+    transform: translateX(4px) scale(0.98);
+  }
+  .popover.flip-right.open {
+    transform: translateX(0) scale(1);
+  }
+
+  /* Connector arrow */
+  .popover-arrow {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background: var(--surface-2);
+    border-right: 1px solid var(--border-strong);
+    border-top: 1px solid var(--border-strong);
+    transform: rotate(45deg);
+    top: 50%;
+    margin-top: -5px;
+  }
+  .popover:not(.flip-right) .popover-arrow {
+    right: -6px;
+    transform: rotate(45deg);
+  }
+  .popover.flip-right .popover-arrow {
+    left: -6px;
+    transform: rotate(-135deg);
+  }
+
+  .pop-header {
+    padding: 8px 12px 6px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .pop-header .title {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text-3);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .pop-header .hint {
+    font-family: var(--mono);
+    font-size: 9px;
+    color: var(--text-4);
+    letter-spacing: 0.05em;
+  }
+
+  .pop-group {
+    padding: 2px 4px;
+  }
+  .pop-group-title {
+    font-family: var(--mono);
+    font-size: 9px;
+    color: var(--text-4);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    padding: 6px 10px 4px;
+  }
+  .pop-option {
+    display: grid;
+    grid-template-columns: 44px 1fr auto;
+    align-items: center;
+    gap: 10px;
+    padding: 7px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    color: var(--text);
+    transition: background 0.1s;
+  }
+  .pop-option:hover { background: var(--bg-2); }
+  .pop-option.active { background: var(--surface-3); }
+  .pop-option .u {
+    font-family: var(--mono);
+    font-size: 11.5px;
+    color: var(--accent);
+  }
+  .pop-option .desc {
+    font-size: 11px;
+    color: var(--text-3);
+  }
+  .pop-option .equiv {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text-2);
+  }
+  .pop-option .equiv.placeholder { color: var(--text-4); }
+  .pop-option.kw .u { color: var(--blue); font-style: italic; }
+  .pop-option.expr .u { color: var(--violet); }
+
+  .pop-divider {
+    height: 1px;
+    background: var(--border);
+    margin: 4px 8px;
+  }
+
+  .pop-footer {
+    padding: 10px 12px 8px;
+    border-top: 1px solid var(--border);
+    margin-top: 4px;
+  }
+  .pop-footer-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text-3);
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .conv-toggle {
+    display: flex;
+    gap: 2px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 2px;
+  }
+  .conv-toggle button {
+    flex: 1;
+    background: transparent;
+    border: none;
+    color: var(--text-3);
+    font-family: var(--mono);
+    font-size: 10px;
+    padding: 4px 6px;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .conv-toggle button.active {
+    background: var(--surface-3);
+    color: var(--accent);
+  }
+  .conv-toggle button:hover:not(.active) { color: var(--text-2); }
+
+  /* ─── Notes section ──────────────────────────── */
+  .notes {
+    margin-top: 64px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 0;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .note {
+    padding: 28px 28px 32px;
+    border-right: 1px solid var(--border);
+    background: var(--bg-2);
+  }
+  .note:last-child { border-right: none; }
+  .note .badge {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .note .badge::before {
+    content: "";
+    width: 16px;
+    height: 1px;
+    background: var(--accent);
+  }
+  .note h3 {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 21px;
+    line-height: 1.2;
+    margin-bottom: 12px;
+    letter-spacing: -0.01em;
+  }
+  .note p {
+    font-size: 13px;
+    line-height: 1.7;
+    color: var(--text-2);
+    margin-bottom: 10px;
+  }
+  .note p strong { color: var(--text); font-weight: 500; }
+  .note code {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent);
+    background: var(--bg);
+    padding: 1px 5px;
+    border-radius: 2px;
+    border: 1px solid var(--border);
+  }
+  .note kbd {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text);
+    background: var(--surface-3);
+    padding: 2px 6px;
+    border-radius: 3px;
+    border: 1px solid var(--border-2);
+    border-bottom-width: 2px;
+  }
+
+  /* ─── Try-it tips ─────────────────────────────── */
+  .try-strip {
+    margin-top: 24px;
+    padding: 16px 24px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 28px;
+    align-items: center;
+  }
+  .try-strip .label {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 14px;
+    color: var(--accent);
+    margin-right: 4px;
+  }
+  .try-strip .tip {
+    font-size: 12px;
+    color: var(--text-2);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .try-strip .tip kbd {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text);
+    background: var(--bg);
+    padding: 2px 6px;
+    border-radius: 3px;
+    border: 1px solid var(--border-2);
+  }
+
+  /* ─── Footer ─────────────────────────────────── */
+  footer {
+    margin-top: 80px;
+    padding-top: 32px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text-4);
+    letter-spacing: 0.1em;
+  }
+  footer .v {
+    color: var(--accent);
+  }
+
+  /* Responsive */
+  @media (max-width: 1100px) {
+    .editor-body { grid-template-columns: 1fr; }
+    .panel { border-left: none; border-top: 1px solid var(--border); }
+    .notes { grid-template-columns: 1fr; }
+    .note { border-right: none; border-bottom: 1px solid var(--border); }
+    .note:last-child { border-bottom: none; }
+    .canvas-frame { width: 90%; max-width: 460px; height: 360px; }
+  }
+  @media (max-width: 640px) {
+    .page { padding: 32px 16px 64px; }
+    .hero-meta { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- ─── HERO ─── -->
+  <header class="hero">
+    <div>
+      <div class="eyebrow">Interaction Spec · v2</div>
+      <h1>把单位<em> 还给</em>键盘。</h1>
+    </div>
+    <div class="hero-meta">
+      <div><strong>v1</strong>　数字框 + 单位下拉</div>
+      <div><strong>v2</strong>　CSS 值文本输入 + 浮动选择器</div>
+      <div style="margin-top:8px;">REVISION · MAY 2026</div>
+    </div>
+  </header>
+
+  <!-- ─── MAIN EDITOR ─── -->
+  <section class="editor">
+
+    <div class="editor-toolbar">
+      <div class="traffic"><span></span><span></span><span></span></div>
+      <div class="tb-divider"></div>
+      <div class="tb-title"><span class="dot">●</span>App.tsx · &lt;HeroCard /&gt;</div>
+      <div class="tb-spacer"></div>
+      <div class="tb-tag">INSPECTOR</div>
+    </div>
+
+    <div class="editor-body">
+
+      <!-- LEFT: Canvas -->
+      <div class="canvas">
+        <div class="canvas-frame">
+          <div class="target" id="target">
+            <span class="corner tl"></span>
+            <span class="corner tr"></span>
+            <span class="corner bl"></span>
+            <span class="corner br"></span>
+            <span class="label">target</span>
+            <span class="dims" id="target-dims">280 × 180</span>
+          </div>
+        </div>
+        <div class="dim-badge">
+          <div class="row"><span class="k">computed</span></div>
+          <div class="row"><span class="k">W</span><span class="v" id="badge-w">280px</span></div>
+          <div class="row"><span class="k">H</span><span class="v" id="badge-h">180px</span></div>
+          <div class="row"><span class="k">P</span><span class="v" id="badge-p">24px</span></div>
+        </div>
+      </div>
+
+      <!-- RIGHT: Panel -->
+      <div class="panel" id="panel">
+
+        <div class="panel-section">
+          <div class="panel-section-title">
+            <span>LAYOUT</span>
+            <span class="reset" id="reset-btn">↺ reset</span>
+          </div>
+
+          <div class="prop" data-prop="width">
+            <span class="prop-label" data-scrub="width">width</span>
+            <div class="field" data-field="width">
+              <input class="field-input" data-input="width" type="text" value="60%" spellcheck="false">
+              <button class="field-chev" data-chev="width" tabindex="-1" aria-label="选择单位">
+                <svg viewBox="0 0 10 10"><path d="M2 4 L5 7 L8 4" stroke="currentColor" stroke-width="1.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+            </div>
+            <div class="prop-computed" data-computed="width">
+              <span class="arrow">→</span><span class="val">312px</span>
+            </div>
+          </div>
+
+          <div class="prop" data-prop="height">
+            <span class="prop-label" data-scrub="height">height</span>
+            <div class="field" data-field="height">
+              <input class="field-input" data-input="height" type="text" value="50vh" spellcheck="false">
+              <button class="field-chev" data-chev="height" tabindex="-1" aria-label="选择单位">
+                <svg viewBox="0 0 10 10"><path d="M2 4 L5 7 L8 4" stroke="currentColor" stroke-width="1.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+            </div>
+            <div class="prop-computed" data-computed="height">
+              <span class="arrow">→</span><span class="val">≈ 418px</span>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="panel-section">
+          <div class="panel-section-title">
+            <span>SPACING</span>
+          </div>
+
+          <div class="prop" data-prop="padding">
+            <span class="prop-label" data-scrub="padding">padding</span>
+            <div class="field" data-field="padding">
+              <input class="field-input" data-input="padding" type="text" value="1.5rem" spellcheck="false">
+              <button class="field-chev" data-chev="padding" tabindex="-1" aria-label="选择单位">
+                <svg viewBox="0 0 10 10"><path d="M2 4 L5 7 L8 4" stroke="currentColor" stroke-width="1.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+            </div>
+            <div class="prop-computed" data-computed="padding">
+              <span class="arrow">→</span><span class="val">24px</span>
+            </div>
+          </div>
+
+          <div class="prop" data-prop="marginTop">
+            <span class="prop-label">margin-top</span>
+            <div class="field expression" data-field="marginTop">
+              <span class="fn-prefix">ƒ</span>
+              <input class="field-input" data-input="marginTop" type="text" value="calc(50% - 100px)" spellcheck="false">
+              <button class="field-chev" data-chev="marginTop" tabindex="-1" aria-label="选择单位">
+                <svg viewBox="0 0 10 10"><path d="M2 4 L5 7 L8 4" stroke="currentColor" stroke-width="1.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+            </div>
+            <div class="prop-computed" data-computed="marginTop">
+              <span class="arrow">→</span><span class="val">≈ 110px · expression</span>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="panel-section">
+          <div class="panel-section-title">
+            <span>TYPOGRAPHY</span>
+          </div>
+
+          <div class="prop" data-prop="fontSize">
+            <span class="prop-label" data-scrub="fontSize">font-size</span>
+            <div class="field" data-field="fontSize">
+              <input class="field-input" data-input="fontSize" type="text" value="14px" spellcheck="false">
+              <button class="field-chev" data-chev="fontSize" tabindex="-1" aria-label="选择单位">
+                <svg viewBox="0 0 10 10"><path d="M2 4 L5 7 L8 4" stroke="currentColor" stroke-width="1.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+            </div>
+            <div class="prop-computed" data-computed="fontSize">
+              <span class="arrow">→</span><span class="val">0.875rem</span>
+            </div>
+          </div>
+
+          <div class="prop" data-prop="lineHeight">
+            <span class="prop-label">line-height</span>
+            <div class="field keyword" data-field="lineHeight">
+              <input class="field-input" data-input="lineHeight" type="text" value="normal" spellcheck="false">
+              <button class="field-chev" data-chev="lineHeight" tabindex="-1" aria-label="选择单位">
+                <svg viewBox="0 0 10 10"><path d="M2 4 L5 7 L8 4" stroke="currentColor" stroke-width="1.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+            </div>
+            <div class="prop-computed" data-computed="lineHeight">
+              <span class="arrow">→</span><span class="val">≈ 21px · UA default</span>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Try-it strip ─── -->
+  <div class="try-strip">
+    <span class="label">试一下：</span>
+    <span class="tip">三击选中 <kbd>60%</kbd>，输入 <kbd>1.5rem</kbd> 回车</span>
+    <span class="tip">悬停字段右侧出现 <kbd>▾</kbd>，点击打开单位浮层</span>
+    <span class="tip">按住 <kbd>width</kbd> 拖动调值</span>
+    <span class="tip">聚焦后 <kbd>↑↓</kbd> 步进，<kbd>⇧</kbd>×10，<kbd>⌥</kbd>×0.1</span>
+  </div>
+
+  <!-- ─── Notes ─── -->
+  <section class="notes">
+
+    <article class="note">
+      <div class="badge">01　文本即数据</div>
+      <h3>整个字段就是<br>一段可编辑的 CSS 值</h3>
+      <p>不再把数字和单位拆成两个控件。整个字段是<strong>一个文本输入</strong>，你可以三击选中再输入 <code>1.5rem</code>，或者只输入 <code>120</code> 保留当前单位 —— 完全是 Figma / DevTools 的成熟范式。</p>
+      <p>解析在 <kbd>Enter</kbd> 或失焦时发生。支持 <code>px</code> / <code>%</code> / <code>em</code> / <code>rem</code> / <code>vh</code> / <code>vw</code> / 关键字 / <code>calc(...)</code>。无效输入边框变红，但不阻止继续编辑。</p>
+    </article>
+
+    <article class="note">
+      <div class="badge">02　浮层而非内嵌</div>
+      <h3>单位选择器是悬浮的，<br>不占布局空间</h3>
+      <p>下拉打开时<strong>不会把下面的属性挤下去</strong>。它是一个 <code>position: fixed</code> 的浮层，带连接箭头指向触发它的字段，自动避让屏幕边界。</p>
+      <p>这样设计有两个好处：一是面板布局稳定，眼睛不必重新定位；二是浮层可以做得更宽更舒展，承载单位说明、等效值预览、换算策略切换等丰富信息。</p>
+    </article>
+
+    <article class="note">
+      <div class="badge">03　两种入口共存</div>
+      <h3>键盘直达，<br>鼠标辅助发现</h3>
+      <p><strong>熟练用户</strong>用键盘：选中输入新值，一气呵成。这是主要交互。</p>
+      <p><strong>新手或忘记单位名</strong>时，鼠标悬停字段右侧出现 <kbd>▾</kbd>，点击打开浮层，里面有所有单位的中文说明、当前值在新单位下的等效预览，以及"保视觉/保数值"的换算策略 —— 一个完整的发现入口。</p>
+    </article>
+
+  </section>
+
+  <footer>
+    <span>INTERACTION SPEC · VISUAL EDITOR</span>
+    <span>VERSION <span class="v">2.0</span> · REVISED</span>
+  </footer>
+
+</div>
+
+<!-- Popover template (cloned at runtime) -->
+<div class="popover" id="popover">
+  <div class="popover-arrow"></div>
+  <div class="pop-header">
+    <span class="title">选择单位</span>
+    <span class="hint">━ 也可直接键入</span>
+  </div>
+  <div class="pop-body" id="pop-body"></div>
+  <div class="pop-footer">
+    <div class="pop-footer-label">
+      <span>切换单位时</span>
+      <span style="color:var(--text-4);">⌘Z 撤销</span>
+    </div>
+    <div class="conv-toggle">
+      <button data-conv="size" class="active">保持视觉尺寸</button>
+      <button data-conv="number">保持数值</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ════════════════════════════════════════════════════════════
+// STATE
+// ════════════════════════════════════════════════════════════
+const state = {
+  width:      { kind: 'length',     num: 60,    unit: '%' },
+  height:     { kind: 'length',     num: 50,    unit: 'vh' },
+  padding:    { kind: 'length',     num: 1.5,   unit: 'rem' },
+  marginTop:  { kind: 'expression', value: 'calc(50% - 100px)' },
+  fontSize:   { kind: 'length',     num: 14,    unit: 'px' },
+  lineHeight: { kind: 'keyword',    value: 'normal' },
+};
+
+// Simulation context for px conversion
+const CTX = {
+  parentW: 520,
+  parentH: 420,
+  viewportW: 1440,
+  viewportH: 836,
+  rootFontSize: 16,
+  parentFontSize: 16,
+};
+
+let convStrategy = 'size'; // 'size' or 'number'
+let currentPopover = null;
+
+// ════════════════════════════════════════════════════════════
+// UNIT REGISTRY
+// ════════════════════════════════════════════════════════════
+const UNIT_REGISTRY = [
+  { u: 'px',  desc: '像素 · 绝对长度',    group: 'absolute' },
+  { u: '%',   desc: '父元素百分比',        group: 'relative' },
+  { u: 'em',  desc: '父字号倍数',          group: 'relative' },
+  { u: 'rem', desc: '根字号倍数',          group: 'relative' },
+  { u: 'vh',  desc: '视口高度百分比',      group: 'viewport' },
+  { u: 'vw',  desc: '视口宽度百分比',      group: 'viewport' },
+  { u: 'dvh', desc: '动态视口高',          group: 'viewport' },
+];
+const KEYWORDS_BY_PROP = {
+  width:      ['auto'],
+  height:     ['auto'],
+  padding:    [],
+  marginTop:  ['auto'],
+  fontSize:   ['inherit'],
+  lineHeight: ['normal'],
+};
+const KNOWN_KEYWORDS = new Set(['auto','inherit','initial','normal','none','unset']);
+
+// ════════════════════════════════════════════════════════════
+// PARSER — the heart of the Figma-style input
+// ════════════════════════════════════════════════════════════
+function parseValue(text, currentState) {
+  text = text.trim();
+  if (!text) return { error: 'empty' };
+
+  // Keyword
+  if (KNOWN_KEYWORDS.has(text.toLowerCase())) {
+    return { kind: 'keyword', value: text.toLowerCase() };
+  }
+
+  // Expression
+  if (/^(calc|min|max|clamp)\s*\(/i.test(text)) {
+    // Naive balance check
+    const open = (text.match(/\(/g) || []).length;
+    const close = (text.match(/\)/g) || []).length;
+    if (open !== close) return { error: 'unbalanced' };
+    return { kind: 'expression', value: text };
+  }
+
+  // Number with optional unit
+  const match = text.match(/^(-?\d+\.?\d*)\s*(px|%|em|rem|vh|vw|dvh|svh|lvh|ch|ex|pt)?$/i);
+  if (match) {
+    const num = parseFloat(match[1]);
+    let unit = match[2] ? match[2].toLowerCase() : null;
+    // If no unit given, keep current unit (if currentState had one)
+    if (!unit) {
+      if (currentState.kind === 'length') unit = currentState.unit;
+      else unit = 'px'; // sensible default
+    }
+    return { kind: 'length', num, unit };
+  }
+
+  return { error: 'invalid' };
+}
+
+// ════════════════════════════════════════════════════════════
+// PX CONVERSION
+// ════════════════════════════════════════════════════════════
+function toPx(num, unit, prop) {
+  const n = parseFloat(num);
+  if (isNaN(n)) return 0;
+  switch (unit) {
+    case 'px': return n;
+    case '%':
+      if (prop === 'width')   return n / 100 * CTX.parentW;
+      if (prop === 'height')  return n / 100 * CTX.parentH;
+      if (prop === 'padding') return n / 100 * CTX.parentW;
+      if (prop === 'marginTop') return n / 100 * CTX.parentH;
+      return n;
+    case 'em':  return n * CTX.parentFontSize;
+    case 'rem': return n * CTX.rootFontSize;
+    case 'vh':  return n / 100 * CTX.viewportH;
+    case 'vw':  return n / 100 * CTX.viewportW;
+    case 'dvh': return n / 100 * CTX.viewportH;
+    default:    return n;
+  }
+}
+function fromPx(px, unit, prop) {
+  switch (unit) {
+    case 'px':  return px;
+    case '%':
+      if (prop === 'width')   return px / CTX.parentW * 100;
+      if (prop === 'height')  return px / CTX.parentH * 100;
+      if (prop === 'padding') return px / CTX.parentW * 100;
+      if (prop === 'marginTop') return px / CTX.parentH * 100;
+      return px;
+    case 'em':  return px / CTX.parentFontSize;
+    case 'rem': return px / CTX.rootFontSize;
+    case 'vh':  return px / CTX.viewportH * 100;
+    case 'vw':  return px / CTX.viewportW * 100;
+    case 'dvh': return px / CTX.viewportH * 100;
+    default:    return px;
+  }
+}
+function fmt(n) {
+  if (isNaN(n)) return '0';
+  const r = Math.round(n * 100) / 100;
+  return r.toString();
+}
+
+// Evaluate expression for display (very naive)
+function evalExpression(expr, prop) {
+  // Only handles "calc(A op B)" style with two terms
+  const m = expr.match(/calc\s*\(\s*(.+?)\s*([+\-*/])\s*(.+?)\s*\)/i);
+  if (!m) return 0;
+  const [, a, op, b] = m;
+  const termPx = (term) => {
+    const tm = term.match(/^(-?\d+\.?\d*)\s*(px|%|em|rem|vh|vw)?$/i);
+    if (!tm) return 0;
+    return toPx(parseFloat(tm[1]), (tm[2]||'px').toLowerCase(), prop);
+  };
+  const av = termPx(a), bv = termPx(b);
+  switch (op) {
+    case '+': return av + bv;
+    case '-': return av - bv;
+    case '*': return av * bv;
+    case '/': return bv === 0 ? 0 : av / bv;
+  }
+  return 0;
+}
+
+// ════════════════════════════════════════════════════════════
+// RENDER
+// ════════════════════════════════════════════════════════════
+function renderProp(prop) {
+  const s = state[prop];
+  const input = document.querySelector(`[data-input="${prop}"]`);
+  const field = document.querySelector(`[data-field="${prop}"]`);
+  const comp = document.querySelector(`[data-computed="${prop}"] .val`);
+  if (!input || !field) return;
+
+  // Reset visual classes
+  field.classList.remove('expression', 'keyword', 'invalid');
+
+  let displayText = '';
+  let computedText = '';
+
+  if (s.kind === 'length') {
+    displayText = fmt(s.num) + s.unit;
+    if (s.unit === 'px') {
+      if (prop === 'fontSize') computedText = '→ ' + fmt(s.num / CTX.rootFontSize) + 'rem';
+      else computedText = '→ ' + fmt(s.num) + 'px';
+    } else {
+      const px = toPx(s.num, s.unit, prop);
+      const approx = (s.unit === 'vh' || s.unit === 'vw' || s.unit === 'dvh') ? '≈ ' : '';
+      computedText = '→ ' + approx + fmt(px) + 'px';
+    }
+  } else if (s.kind === 'keyword') {
+    displayText = s.value;
+    field.classList.add('keyword');
+    computedText = '→ keyword';
+  } else if (s.kind === 'expression') {
+    displayText = s.value;
+    field.classList.add('expression');
+    const px = evalExpression(s.value, prop);
+    computedText = '→ ≈ ' + fmt(px) + 'px · expression';
+  }
+
+  // Don't overwrite while user is editing
+  if (document.activeElement !== input) {
+    input.value = displayText;
+  }
+  if (comp) comp.textContent = computedText;
+}
+
+function renderTarget() {
+  const w = state.width.kind === 'length'
+    ? toPx(state.width.num, state.width.unit, 'width')
+    : 200;
+  const h = state.height.kind === 'length'
+    ? toPx(state.height.num, state.height.unit, 'height')
+    : 150;
+  const p = state.padding.kind === 'length'
+    ? toPx(state.padding.num, state.padding.unit, 'padding')
+    : 16;
+  const f = state.fontSize.kind === 'length'
+    ? toPx(state.fontSize.num, state.fontSize.unit, 'fontSize')
+    : 14;
+
+  const t = document.getElementById('target');
+  const wClamp = Math.max(80, Math.min(480, w));
+  const hClamp = Math.max(60, Math.min(380, h));
+  const pClamp = Math.max(0, Math.min(40, p));
+  const fClamp = Math.max(9, Math.min(28, f));
+  t.style.width = wClamp + 'px';
+  t.style.height = hClamp + 'px';
+  t.style.padding = pClamp + 'px';
+  t.style.fontSize = fClamp + 'px';
+  document.getElementById('target-dims').textContent =
+    `${Math.round(w)} × ${Math.round(h)}`;
+  document.getElementById('badge-w').textContent = Math.round(w) + 'px';
+  document.getElementById('badge-h').textContent = Math.round(h) + 'px';
+  document.getElementById('badge-p').textContent = Math.round(p) + 'px';
+}
+
+function renderAll() {
+  Object.keys(state).forEach(renderProp);
+  renderTarget();
+}
+
+// ════════════════════════════════════════════════════════════
+// INPUT BEHAVIOR (Figma-style)
+// ════════════════════════════════════════════════════════════
+document.querySelectorAll('.field-input').forEach(input => {
+  const prop = input.dataset.input;
+
+  // Select all on focus
+  input.addEventListener('focus', () => {
+    setTimeout(() => input.select(), 0);
+  });
+
+  // Live parse on Enter
+  input.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      commitInput(input, prop);
+      input.blur();
+    } else if (e.key === 'Escape') {
+      renderProp(prop); // revert
+      input.blur();
+    } else if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+      // Only step if state is length
+      const s = state[prop];
+      if (s.kind !== 'length') return;
+      e.preventDefault();
+      let step = 1;
+      if (e.shiftKey) step = 10;
+      if (e.altKey) step = 0.1;
+      const dir = e.key === 'ArrowUp' ? 1 : -1;
+      state[prop] = { ...s, num: Math.round((s.num + dir * step) * 100) / 100 };
+      renderProp(prop);
+      // Re-render input even though focused
+      input.value = fmt(state[prop].num) + state[prop].unit;
+      input.select();
+      renderTarget();
+    }
+  });
+
+  input.addEventListener('blur', () => {
+    commitInput(input, prop);
+  });
+
+  input.addEventListener('wheel', (e) => {
+    if (document.activeElement !== input) return;
+    const s = state[prop];
+    if (s.kind !== 'length') return;
+    e.preventDefault();
+    const step = e.shiftKey ? 10 : (e.altKey ? 0.1 : 1);
+    const delta = e.deltaY < 0 ? step : -step;
+    state[prop] = { ...s, num: Math.round((s.num + delta) * 100) / 100 };
+    renderProp(prop);
+    input.value = fmt(state[prop].num) + state[prop].unit;
+    renderTarget();
+  }, { passive: false });
+});
+
+function commitInput(input, prop) {
+  const field = document.querySelector(`[data-field="${prop}"]`);
+  const parsed = parseValue(input.value, state[prop]);
+
+  if (parsed.error) {
+    field.classList.add('invalid');
+    setTimeout(() => {
+      field.classList.remove('invalid');
+      renderProp(prop);
+    }, 1200);
+    return;
+  }
+
+  state[prop] = parsed;
+  field.classList.remove('invalid');
+  renderProp(prop);
+  renderTarget();
+}
+
+// ════════════════════════════════════════════════════════════
+// LABEL SCRUBBING
+// ════════════════════════════════════════════════════════════
+document.querySelectorAll('[data-scrub]').forEach(label => {
+  const prop = label.dataset.scrub;
+  let startX = 0, startVal = 0, dragging = false;
+
+  label.addEventListener('mousedown', (e) => {
+    if (state[prop].kind !== 'length') return;
+    dragging = true;
+    startX = e.clientX;
+    startVal = state[prop].num;
+    label.classList.add('scrubbing');
+    document.body.style.cursor = 'ew-resize';
+    e.preventDefault();
+  });
+
+  document.addEventListener('mousemove', (e) => {
+    if (!dragging) return;
+    const dx = e.clientX - startX;
+    const step = e.shiftKey ? 1 : (e.altKey ? 0.01 : 0.5);
+    state[prop] = {
+      ...state[prop],
+      num: Math.round((startVal + dx * step) * 100) / 100
+    };
+    renderProp(prop);
+    renderTarget();
+  });
+
+  document.addEventListener('mouseup', () => {
+    if (dragging) {
+      dragging = false;
+      label.classList.remove('scrubbing');
+      document.body.style.cursor = '';
+    }
+  });
+});
+
+// ════════════════════════════════════════════════════════════
+// POPOVER (floating unit selector)
+// ════════════════════════════════════════════════════════════
+const popover = document.getElementById('popover');
+const popBody = document.getElementById('pop-body');
+
+function buildPopoverBody(prop) {
+  const s = state[prop];
+  let html = '';
+
+  const sectionsByGroup = {
+    absolute: { title: '绝对', items: UNIT_REGISTRY.filter(u => u.group === 'absolute') },
+    relative: { title: '相对父级 / 根', items: UNIT_REGISTRY.filter(u => u.group === 'relative') },
+    viewport: { title: '相对视口', items: UNIT_REGISTRY.filter(u => u.group === 'viewport') },
+  };
+
+  Object.entries(sectionsByGroup).forEach(([key, sec], i) => {
+    if (i > 0) html += '<div class="pop-divider"></div>';
+    html += `<div class="pop-group"><div class="pop-group-title">${sec.title}</div>`;
+    sec.items.forEach(u => {
+      const isActive = s.kind === 'length' && u.u === s.unit;
+      let equiv = '';
+      if (s.kind === 'length' && !isActive) {
+        const currPx = toPx(s.num, s.unit, prop);
+        const newNum = convStrategy === 'size' ? fromPx(currPx, u.u, prop) : s.num;
+        const prefix = (u.u === 'vh' || u.u === 'vw' || u.u === 'dvh') ? '≈ ' : '';
+        equiv = `<span class="equiv">${prefix}${fmt(newNum)}${u.u}</span>`;
+      } else if (isActive) {
+        equiv = '<span class="equiv">当前</span>';
+      } else {
+        equiv = '<span class="equiv placeholder">—</span>';
+      }
+      html += `
+        <div class="pop-option ${isActive ? 'active' : ''}" data-u="${u.u}">
+          <span class="u">${u.u}</span>
+          <span class="desc">${u.desc}</span>
+          ${equiv}
+        </div>`;
+    });
+    html += '</div>';
+  });
+
+  // Keywords for this prop
+  const kws = KEYWORDS_BY_PROP[prop] || [];
+  if (kws.length > 0) {
+    html += '<div class="pop-divider"></div>';
+    html += '<div class="pop-group"><div class="pop-group-title">关键字</div>';
+    kws.forEach(kw => {
+      const isActive = s.kind === 'keyword' && s.value === kw;
+      html += `
+        <div class="pop-option kw ${isActive ? 'active' : ''}" data-kw="${kw}">
+          <span class="u">${kw}</span>
+          <span class="desc">CSS keyword</span>
+          <span class="equiv placeholder">${isActive ? '当前' : ''}</span>
+        </div>`;
+    });
+    html += '</div>';
+  }
+
+  // Expression option
+  html += '<div class="pop-divider"></div>';
+  html += '<div class="pop-group">';
+  const isExpr = s.kind === 'expression';
+  html += `
+    <div class="pop-option expr ${isExpr ? 'active' : ''}" data-expr="1">
+      <span class="u">ƒ()</span>
+      <span class="desc">${isExpr ? '正在使用表达式' : '改为 calc() 表达式…'}</span>
+      <span class="equiv placeholder">${isExpr ? '当前' : ''}</span>
+    </div>`;
+  html += '</div>';
+
+  popBody.innerHTML = html;
+
+  // Wire option clicks
+  popBody.querySelectorAll('.pop-option').forEach(opt => {
+    opt.addEventListener('click', () => {
+      handlePopChoice(prop, opt);
+    });
+  });
+}
+
+function handlePopChoice(prop, opt) {
+  const s = state[prop];
+  if (opt.dataset.u) {
+    const newU = opt.dataset.u;
+    if (s.kind === 'length' && newU === s.unit) { closePopover(); return; }
+    let newNum = 0;
+    if (s.kind === 'length') {
+      const currPx = toPx(s.num, s.unit, prop);
+      newNum = convStrategy === 'size'
+        ? Math.round(fromPx(currPx, newU, prop) * 100) / 100
+        : s.num;
+    } else if (s.kind === 'keyword' || s.kind === 'expression') {
+      // From keyword/expr to a unit, start at sensible default
+      newNum = prop === 'fontSize' ? 14 : 100;
+    }
+    state[prop] = { kind: 'length', num: newNum, unit: newU };
+    renderProp(prop);
+    renderTarget();
+  } else if (opt.dataset.kw) {
+    state[prop] = { kind: 'keyword', value: opt.dataset.kw };
+    renderProp(prop);
+    renderTarget();
+  } else if (opt.dataset.expr) {
+    if (s.kind !== 'expression') {
+      state[prop] = { kind: 'expression', value: 'calc(50% - 0px)' };
+      renderProp(prop);
+      renderTarget();
+      // Focus input to let user edit
+      setTimeout(() => {
+        const input = document.querySelector(`[data-input="${prop}"]`);
+        if (input) { input.focus(); input.select(); }
+      }, 100);
+    }
+  }
+  closePopover();
+}
+
+function openPopover(triggerBtn, prop) {
+  if (currentPopover === prop) {
+    closePopover();
+    return;
+  }
+  closePopover();
+
+  buildPopoverBody(prop);
+
+  // Show first to measure
+  popover.classList.add('open');
+  popover.classList.remove('flip-right');
+
+  const popW = popover.offsetWidth;
+  const popH = popover.offsetHeight;
+  const rect = triggerBtn.getBoundingClientRect();
+
+  // Default: place to the LEFT of the field (over canvas), centered vertically with field
+  let left = rect.left - popW - 14;
+  let flipRight = false;
+  if (left < 12) {
+    // Flip to right side
+    left = rect.right + 14;
+    flipRight = true;
+  }
+
+  let top = rect.top + rect.height / 2 - popH / 2;
+  // Clamp to viewport
+  const margin = 12;
+  if (top < margin) top = margin;
+  if (top + popH > window.innerHeight - margin) {
+    top = window.innerHeight - margin - popH;
+  }
+
+  // Arrow vertical position relative to popover
+  const arrow = popover.querySelector('.popover-arrow');
+  const arrowTop = (rect.top + rect.height / 2) - top;
+  arrow.style.top = arrowTop + 'px';
+  arrow.style.marginTop = '-5px';
+
+  popover.style.left = left + 'px';
+  popover.style.top = top + 'px';
+  if (flipRight) popover.classList.add('flip-right');
+
+  triggerBtn.classList.add('is-open');
+  currentPopover = prop;
+}
+
+function closePopover() {
+  if (currentPopover) {
+    popover.classList.remove('open', 'flip-right');
+    document.querySelectorAll('.field-chev.is-open')
+      .forEach(b => b.classList.remove('is-open'));
+    currentPopover = null;
+  }
+}
+
+// Wire chevrons
+document.querySelectorAll('.field-chev').forEach(btn => {
+  const prop = btn.dataset.chev;
+  btn.addEventListener('mousedown', (e) => {
+    // Prevent the input from stealing focus
+    e.preventDefault();
+  });
+  btn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    openPopover(btn, prop);
+  });
+});
+
+// Close on outside click
+document.addEventListener('mousedown', (e) => {
+  if (!currentPopover) return;
+  if (popover.contains(e.target)) return;
+  if (e.target.closest('.field-chev')) return;
+  closePopover();
+});
+
+// Close on Escape
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') closePopover();
+});
+
+// Conv toggle
+document.querySelectorAll('.conv-toggle button').forEach(b => {
+  b.addEventListener('click', (e) => {
+    e.stopPropagation();
+    convStrategy = b.dataset.conv;
+    document.querySelectorAll('.conv-toggle button').forEach(x => {
+      x.classList.toggle('active', x.dataset.conv === convStrategy);
+    });
+    if (currentPopover) buildPopoverBody(currentPopover);
+  });
+});
+
+// Reset
+document.getElementById('reset-btn').addEventListener('click', () => {
+  state.width      = { kind: 'length',     num: 60,    unit: '%' };
+  state.height     = { kind: 'length',     num: 50,    unit: 'vh' };
+  state.padding    = { kind: 'length',     num: 1.5,   unit: 'rem' };
+  state.marginTop  = { kind: 'expression', value: 'calc(50% - 100px)' };
+  state.fontSize   = { kind: 'length',     num: 14,    unit: 'px' };
+  state.lineHeight = { kind: 'keyword',    value: 'normal' };
+  renderAll();
+});
+
+// Reposition popover on resize/scroll
+window.addEventListener('resize', closePopover);
+window.addEventListener('scroll', closePopover, true);
+
+// Init
+renderAll();
+</script>
+
+</body>
+</html>
