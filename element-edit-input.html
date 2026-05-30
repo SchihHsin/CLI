@@ -1,0 +1,1256 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>元素精细化调整 · 表单编辑交互方案</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600&family=Geist:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d0f13;
+    --bg-2: #14171c;
+    --surface: #1a1d23;
+    --surface-2: #22262e;
+    --surface-3: #2c313a;
+    --border: #2a2e35;
+    --border-2: #3a3f49;
+    --border-strong: #4a4f59;
+    --text: #ecebe5;
+    --text-2: #9a9890;
+    --text-3: #62656c;
+    --text-4: #42454c;
+    --accent: #d4a574;
+    --accent-2: #8a7050;
+    --violet: #c89aff;
+    --violet-bg: rgba(200,154,255,0.12);
+    --violet-border: rgba(200,154,255,0.30);
+    --rose: #e88f8f;
+    --blue: #7eb6c4;
+    --blue-bg: rgba(126,182,196,0.10);
+    --blue-border: rgba(126,182,196,0.30);
+    --mono: 'JetBrains Mono', ui-monospace, Menlo, monospace;
+    --sans: 'Geist', -apple-system, system-ui, sans-serif;
+    --serif: 'Fraunces', Georgia, serif;
+    --shadow-lg: 0 24px 60px -16px rgba(0,0,0,0.6), 0 8px 24px -8px rgba(0,0,0,0.4);
+    --shadow-pop: 0 16px 40px -8px rgba(0,0,0,0.6), 0 4px 12px -4px rgba(0,0,0,0.4);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--bg); color: var(--text); font-family: var(--sans); -webkit-font-smoothing: antialiased; min-height: 100vh; line-height: 1.5; }
+  body { background-image: radial-gradient(ellipse 100% 60% at 50% -10%, rgba(212,165,116,0.05), transparent), radial-gradient(ellipse 80% 50% at 10% 100%, rgba(168,196,126,0.03), transparent); }
+  .page { max-width: 1440px; margin: 0 auto; padding: 56px 40px 96px; }
+
+  /* ─── Hero ─── */
+  header.hero { margin-bottom: 48px; display: grid; grid-template-columns: 1fr auto; align-items: end; gap: 48px; }
+  .eyebrow { font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin-bottom: 18px; display: flex; align-items: center; gap: 12px; }
+  .eyebrow::before { content: ""; width: 24px; height: 1px; background: var(--accent); }
+  h1 { font-family: var(--serif); font-weight: 400; font-variation-settings: "opsz" 96; font-size: clamp(30px, 3.6vw, 46px); letter-spacing: -0.02em; line-height: 1.08; }
+  h1 em { font-style: italic; font-weight: 300; color: var(--accent); }
+  .hero-meta { font-family: var(--mono); font-size: 11px; color: var(--text-3); text-align: right; line-height: 1.8; letter-spacing: 0.04em; }
+
+  /* ─── Editor ─── */
+  .editor { background: var(--bg-2); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; box-shadow: var(--shadow-lg); }
+  .editor-toolbar { height: 42px; border-bottom: 1px solid var(--border); background: var(--bg); display: flex; align-items: center; padding: 0 18px; gap: 12px; }
+  .traffic { display: flex; gap: 6px; }
+  .traffic span { width: 11px; height: 11px; border-radius: 50%; background: var(--surface-3); }
+  .traffic span:nth-child(1) { background: #e07070; }
+  .traffic span:nth-child(2) { background: #d4a574; }
+  .traffic span:nth-child(3) { background: #a8c47e; }
+  .tb-divider { width: 1px; height: 18px; background: var(--border); margin: 0 8px; }
+  .tb-title { font-family: var(--mono); font-size: 11.5px; color: var(--text-2); display: flex; align-items: center; gap: 8px; }
+  .tb-title .dot { color: var(--accent); }
+  .tb-spacer { flex: 1; }
+  .tb-tag { font-family: var(--mono); font-size: 10px; color: var(--text-3); padding: 4px 10px; border: 1px solid var(--border); border-radius: 4px; letter-spacing: 0.06em; }
+  .editor-body { display: grid; grid-template-columns: 1fr 380px; min-height: 640px; }
+
+  /* ─── Canvas ─── */
+  .canvas { background: linear-gradient(rgba(255,255,255,0.015) 1px,transparent 1px), linear-gradient(90deg,rgba(255,255,255,0.015) 1px,transparent 1px); background-size: 24px 24px; background-color: #0a0c10; padding: 56px; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
+  .canvas::before { content: ""; position: absolute; inset: 16px; border: 1px dashed rgba(255,255,255,0.03); pointer-events: none; border-radius: 4px; }
+  .canvas-frame { background: var(--surface); border: 1px dashed var(--border-2); width: 520px; height: 420px; position: relative; display: flex; align-items: center; justify-content: center; }
+  .canvas-frame::before { content: "PARENT · 520 × 420"; position: absolute; top: -24px; left: 0; font-family: var(--mono); font-size: 10px; color: var(--text-3); letter-spacing: 0.08em; }
+  .canvas-frame::after { content: ""; position: absolute; top: -8px; left: -8px; width: 16px; height: 16px; border-top: 1px solid var(--text-3); border-left: 1px solid var(--text-3); }
+  .target { background: linear-gradient(135deg,#2a2e37 0%,#1f232a 100%); border: 1px solid var(--accent-2); box-shadow: 0 0 0 1px rgba(212,165,116,0.15) inset, 0 12px 32px -8px rgba(0,0,0,0.5); color: var(--text); font-family: var(--mono); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; transition: width 0.22s cubic-bezier(0.4,0,0.2,1), height 0.22s cubic-bezier(0.4,0,0.2,1), padding 0.22s cubic-bezier(0.4,0,0.2,1), font-size 0.22s cubic-bezier(0.4,0,0.2,1); position: relative; }
+  .target .label { color: var(--accent); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; }
+  .target .corner { position: absolute; width: 8px; height: 8px; border: 1px solid var(--accent); background: var(--bg); }
+  .target .corner.tl { top:-4px;left:-4px; } .target .corner.tr { top:-4px;right:-4px; }
+  .target .corner.bl { bottom:-4px;left:-4px; } .target .corner.br { bottom:-4px;right:-4px; }
+  .dim-badge { position: absolute; bottom: 24px; left: 24px; font-family: var(--mono); font-size: 10px; color: var(--text-3); background: var(--surface); border: 1px solid var(--border); padding: 6px 10px; border-radius: 4px; letter-spacing: 0.05em; display: flex; flex-direction: column; gap: 2px; }
+  .dim-badge .row { display: flex; gap: 8px; }
+  .dim-badge .k { color: var(--text-4); }
+  .dim-badge .v { color: var(--text-2); }
+
+  /* ─── Panel ─── */
+  .panel { background: var(--surface); border-left: 1px solid var(--border); display: flex; flex-direction: column; }
+  .panel-section { border-bottom: 1px solid var(--border); }
+  .panel-section:last-child { border-bottom: none; }
+  .panel-section-title { font-family: var(--mono); font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--text-3); padding: 16px 22px 10px; display: flex; align-items: center; justify-content: space-between; }
+  .panel-section-title .reset { font-family: var(--mono); font-size: 10px; color: var(--text-3); cursor: pointer; padding: 2px 8px; border-radius: 3px; text-transform: none; letter-spacing: 0; transition: all 0.15s; }
+  .panel-section-title .reset:hover { background: var(--surface-3); color: var(--text); }
+
+  /* ─── Property row (single column, label now inside field) ─── */
+  .prop-row { display: flex; gap: 6px; padding: 4px 22px; height: 36px; align-items: center; }
+  .prop { flex: 1; display: flex; align-items: center; min-width: 0; }
+
+  /* Property identifier — sits INSIDE the field at the front as a muted inline label */
+  .prop-badge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 22px;
+    padding-left: 10px;
+    padding-right: 4px;
+    color: var(--text-3);
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    user-select: none;
+    flex-shrink: 0;
+    cursor: ew-resize;
+    transition: color 0.15s;
+  }
+  .prop-badge:hover { color: var(--text); }
+  .prop-badge.scrubbing { color: var(--accent); }
+  .prop-badge svg { width: 13px; height: 13px; display: block; }
+  /* When the prop has a badge inside, the input doesn't need its own left padding */
+  .field:has(.prop-badge) .field-input { padding-left: 4px; }
+
+  /* ─── Field ─── */
+  .field { position: relative; flex: 1; height: 28px; background: var(--bg); border: 1px solid var(--border); border-radius: 4px; display: flex; align-items: stretch; transition: border-color 0.15s, box-shadow 0.15s; overflow: hidden; }
+  .field:hover { border-color: var(--border-2); }
+  .field:focus-within { border-color: var(--accent-2); box-shadow: 0 0 0 2px rgba(212,165,116,0.12); }
+  .field.invalid { border-color: var(--rose) !important; box-shadow: 0 0 0 2px rgba(232,144,144,0.12); }
+  .field.keyword { background: rgba(126,182,196,0.03); }
+
+  /* Expression badge — inset pill, floats inside the field (not full height) */
+  .fn-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    align-self: center;
+    height: 20px;
+    margin-left: 6px;
+    padding: 0 7px;
+    background: var(--violet-bg);
+    border: 1px solid var(--violet-border);
+    border-radius: 4px;
+    color: var(--violet);
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.04em;
+    user-select: none;
+    flex-shrink: 0;
+    transition: background 0.15s;
+    cursor: default;
+  }
+  .fn-badge:hover { background: rgba(200,154,255,0.18); }
+  .fn-badge .fn-icon { font-family: var(--serif); font-style: italic; font-size: 12px; font-weight: 500; line-height: 1; }
+  .prop-badge + .fn-badge { margin-left: 4px; }
+
+  /* Keyword — shown as blue italic text in the field (not a badge) */
+  .field.keyword .field-input { color: var(--blue); font-style: italic; }
+
+  .field-input { flex: 1; background: transparent; border: none; outline: none; color: var(--text); font-family: var(--mono); font-size: 12px; padding: 0 30px 0 10px; width: 100%; height: 100%; cursor: text; letter-spacing: 0.01em; min-width: 0; }
+
+  /* Chevron */
+  .field-chev { position: absolute; right: 4px; top: 50%; transform: translateY(-50%); width: 22px; height: 22px; border: none; background: transparent; color: var(--text-4); cursor: pointer; display: flex; align-items: center; justify-content: center; border-radius: 3px; transition: all 0.15s; opacity: 0; }
+  .field:hover .field-chev, .field:focus-within .field-chev, .field-chev.is-open { opacity: 1; }
+  .field-chev:hover { background: var(--surface-3); color: var(--text); }
+  .field-chev.is-open { background: var(--surface-3); color: var(--accent); }
+  .field-chev svg { width: 10px; height: 10px; }
+
+  /* Computed values are shown via tooltip — see #tooltip */
+
+  /* ─── Floating popover ─── */
+  .popover { position: fixed; background: var(--surface-2); border: 1px solid var(--border-strong); border-radius: 8px; box-shadow: var(--shadow-pop); width: 260px; z-index: 1000; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); opacity: 0; transform: translateX(-4px) scale(0.98); transform-origin: right center; transition: opacity 0.14s ease-out, transform 0.14s ease-out; pointer-events: none; }
+  .popover.open { opacity: 1; transform: translateX(0) scale(1); pointer-events: auto; }
+  .popover.flip-right { transform-origin: left center; transform: translateX(4px) scale(0.98); }
+  .popover.flip-right.open { transform: translateX(0) scale(1); }
+  .popover-arrow { position: absolute; width: 10px; height: 10px; background: var(--surface-2); border-right: 1px solid var(--border-strong); border-top: 1px solid var(--border-strong); top: 50%; margin-top: -5px; }
+  .popover:not(.flip-right) .popover-arrow { right: -6px; transform: rotate(45deg); }
+  .popover.flip-right .popover-arrow { left: -6px; transform: rotate(-135deg); }
+
+  /* Strategy (top) */
+  .pop-strategy { padding: 10px 12px 10px; border-bottom: 1px solid var(--border); }
+  .pop-strategy-label { font-family: var(--mono); font-size: 10px; color: var(--text-3); margin-bottom: 6px; display: flex; align-items: center; gap: 6px; }
+  .pop-strategy-hint { color: var(--text-4); font-size: 9px; }
+  .conv-toggle { display: flex; gap: 2px; background: var(--bg); border: 1px solid var(--border); border-radius: 4px; padding: 2px; }
+  .conv-toggle button { flex: 1; background: transparent; border: none; color: var(--text-3); font-family: var(--mono); font-size: 10px; padding: 4px 4px; border-radius: 3px; cursor: pointer; transition: all 0.15s; }
+  .conv-toggle button.active { background: var(--surface-3); color: var(--accent); }
+  .conv-toggle button:hover:not(.active) { color: var(--text-2); }
+
+  /* Search */
+  .pop-search-wrap { display: flex; align-items: center; gap: 8px; padding: 8px 12px; border-bottom: 1px solid var(--border); }
+  .pop-search-icon { color: var(--text-3); font-size: 14px; flex-shrink: 0; line-height: 1; }
+  .pop-search { flex: 1; background: transparent; border: none; outline: none; color: var(--text); font-family: var(--mono); font-size: 11.5px; padding: 0; }
+  .pop-search::placeholder { color: var(--text-4); }
+  .pop-search-clear { background: transparent; border: none; color: var(--text-3); cursor: pointer; font-size: 14px; line-height: 1; padding: 0 2px; border-radius: 3px; transition: color 0.12s; }
+  .pop-search-clear:hover { color: var(--text); }
+
+  /* Body — chips, no scroll */
+  .pop-body { padding: 6px 8px 4px; }
+
+  /* Chip group */
+  .chip-group { padding: 6px 0; }
+  .chip-group-title {
+    font-family: var(--mono);
+    font-size: 9px;
+    color: var(--text-4);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    padding: 0 4px 6px;
+  }
+  .chip-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 26px;
+    padding: 0 10px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-2);
+    cursor: pointer;
+    transition: all 0.12s;
+    letter-spacing: 0.02em;
+    user-select: none;
+  }
+  .chip:hover {
+    background: var(--surface-3);
+    color: var(--text);
+    border-color: var(--border-2);
+  }
+  .chip.active {
+    background: rgba(212,165,116,0.12);
+    border-color: var(--accent-2);
+    color: var(--accent);
+  }
+  .chip.recent {
+    border-color: rgba(212,165,116,0.3);
+    color: var(--text);
+  }
+  .chip.kw {
+    color: var(--blue);
+    font-style: italic;
+    border-color: var(--blue-border);
+  }
+  .chip.kw:hover { background: rgba(126,182,196,0.08); }
+  .chip.kw.active { background: rgba(126,182,196,0.15); color: var(--blue); }
+  .chip.fn { color: var(--violet); border-color: var(--violet-border); }
+  .chip.fn::before {
+    content: "ƒ";
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 12px;
+    margin-right: 4px;
+    line-height: 1;
+  }
+  .chip.fn:hover { background: rgba(200,154,255,0.10); }
+  .chip.fn.active { background: rgba(200,154,255,0.15); color: var(--violet); }
+
+  /* Divider between groups (subtle) */
+  .chip-divider {
+    height: 1px;
+    background: var(--border);
+    margin: 2px 0;
+  }
+
+  /* Preview line — sits at the TOP of pop-body so the eye picks it up on entry */
+  .pop-preview {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border);
+    background: linear-gradient(180deg, rgba(212,165,116,0.04), transparent);
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-2);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 36px;
+    line-height: 1.4;
+    transition: background 0.15s;
+  }
+  .pop-preview.hovering { background: linear-gradient(180deg, rgba(212,165,116,0.08), transparent); }
+  .pop-preview .pv-u { color: var(--accent); font-weight: 500; }
+  .pop-preview .pv-desc { color: var(--text-2); }
+  .pop-preview .pv-arrow { color: var(--text-4); margin: 0 2px; }
+  .pop-preview .pv-eq { color: var(--text); }
+  .pop-preview .pv-curr { color: var(--text-4); font-size: 9.5px; letter-spacing: 0.08em; text-transform: uppercase; }
+
+  .pop-empty { font-family: var(--mono); font-size: 11px; color: var(--text-3); padding: 16px 12px; text-align: center; }
+  .pop-footer-hint { padding: 6px 12px 8px; border-top: 1px solid var(--border); font-family: var(--mono); font-size: 9px; color: var(--text-4); text-align: right; letter-spacing: 0.04em; }
+
+  /* ─── Notes ─── */
+  .notes { margin-top: 64px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+  .note { padding: 28px 24px 32px; border-right: 1px solid var(--border); background: var(--bg-2); }
+  .note:last-child { border-right: none; }
+  .note .badge { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; color: var(--accent); margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+  .note .badge::before { content: ""; width: 16px; height: 1px; background: currentColor; }
+  .note h3 { font-family: var(--serif); font-weight: 500; font-size: 19px; line-height: 1.2; margin-bottom: 12px; letter-spacing: -0.01em; }
+  .note p { font-size: 12.5px; line-height: 1.7; color: var(--text-2); margin-bottom: 10px; }
+  .note p strong { color: var(--text); font-weight: 500; }
+  .note code { font-family: var(--mono); font-size: 11px; color: var(--accent); background: var(--bg); padding: 1px 5px; border-radius: 2px; border: 1px solid var(--border); }
+  .note kbd { font-family: var(--mono); font-size: 10px; color: var(--text); background: var(--surface-3); padding: 2px 6px; border-radius: 3px; border: 1px solid var(--border-2); border-bottom-width: 2px; }
+
+  /* Popover preview inside notes */
+  .mini-pop { background: var(--surface-2); border: 1px solid var(--border-strong); border-radius: 6px; overflow: hidden; margin: 14px 0 4px; font-family: var(--mono); font-size: 10px; }
+  .mini-pop .mp-row { display: flex; align-items: center; gap: 6px; padding: 5px 10px; border-bottom: 1px solid var(--border); }
+  .mini-pop .mp-row:last-child { border-bottom: none; }
+  .mini-pop .mp-row.header { color: var(--text-4); letter-spacing: 0.08em; font-size: 9px; text-transform: uppercase; background: var(--bg); }
+  .mini-pop .mp-row.active { background: var(--surface-3); }
+  .mini-pop .mp-u { color: var(--accent); min-width: 36px; }
+  .mini-pop .mp-desc { color: var(--text-3); flex: 1; }
+  .mini-pop .mp-eq { color: var(--text-2); }
+  .mini-pop .mp-search { display: flex; align-items: center; gap: 6px; padding: 6px 10px; border-bottom: 1px solid var(--border); color: var(--text-3); font-size: 10px; }
+  .mini-pop .mp-search input { background: transparent; border: none; outline: none; color: var(--violet); font-family: var(--mono); font-size: 10px; width: 24px; }
+
+  .try-strip { margin-top: 24px; padding: 14px 22px; background: var(--surface); border: 1px solid var(--border); border-radius: 6px; display: flex; flex-wrap: wrap; gap: 8px 24px; align-items: center; }
+  .try-strip .label { font-family: var(--serif); font-style: italic; font-size: 14px; color: var(--accent); }
+  .try-strip .tip { font-size: 12px; color: var(--text-2); display: inline-flex; align-items: center; gap: 6px; }
+  .try-strip .tip kbd { font-family: var(--mono); font-size: 10px; color: var(--text); background: var(--bg); padding: 2px 6px; border-radius: 3px; border: 1px solid var(--border-2); }
+
+  footer { margin-top: 72px; padding-top: 28px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; font-family: var(--mono); font-size: 10px; color: var(--text-4); letter-spacing: 0.08em; }
+
+  @media (max-width: 1100px) {
+    .editor-body { grid-template-columns: 1fr; }
+    .panel { border-left: none; border-top: 1px solid var(--border); }
+    .notes { grid-template-columns: 1fr 1fr; }
+    .note:nth-child(2) { border-right: none; }
+    .note:nth-child(1),.note:nth-child(2) { border-bottom: 1px solid var(--border); }
+  }
+  @media (max-width: 640px) {
+    .page { padding: 32px 16px 64px; }
+    .notes { grid-template-columns: 1fr; }
+    .note { border-right: none; border-bottom: 1px solid var(--border); }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header class="hero">
+    <div>
+      <div class="eyebrow">Visual Editor · Property Inspector</div>
+      <h1>元素<em> 精细化</em>调整<br>表单编辑交互方案</h1>
+    </div>
+    <div class="hero-meta">
+      <div>属性面板交互规范</div>
+      <div style="margin-top:4px">单位输入 · 浮层选择 · 表达式</div>
+    </div>
+  </header>
+
+  <section class="editor">
+    <div class="editor-toolbar">
+      <div class="traffic"><span></span><span></span><span></span></div>
+      <div class="tb-divider"></div>
+      <div class="tb-title"><span class="dot">●</span>App.tsx · &lt;HeroCard /&gt;</div>
+      <div class="tb-spacer"></div>
+      <div class="tb-tag">INSPECTOR</div>
+    </div>
+    <div class="editor-body">
+
+      <div class="canvas">
+        <div class="canvas-frame">
+          <div class="target" id="target">
+            <span class="corner tl"></span><span class="corner tr"></span>
+            <span class="corner bl"></span><span class="corner br"></span>
+            <span class="label">target</span>
+            <span class="dims" id="target-dims">280 × 180</span>
+          </div>
+        </div>
+        <div class="dim-badge">
+          <div class="row"><span class="k">computed</span></div>
+          <div class="row"><span class="k">W</span><span class="v" id="badge-w">280px</span></div>
+          <div class="row"><span class="k">H</span><span class="v" id="badge-h">180px</span></div>
+          <div class="row"><span class="k">P</span><span class="v" id="badge-p">24px</span></div>
+        </div>
+      </div>
+
+      <div class="panel" id="panel">
+        <div class="panel-section">
+          <div class="panel-section-title">
+            <span>LAYOUT</span>
+            <span class="reset" id="reset-btn">↺ reset</span>
+          </div>
+          <div class="prop-row">
+            <div class="prop" data-prop="width">
+              <div class="field" data-field="width">
+                <input class="field-input" data-input="width" type="text" value="60%" spellcheck="false">
+                <button class="field-chev" data-chev="width" tabindex="-1"><svg viewBox="0 0 10 10"><path d="M2 4L5 7L8 4" stroke="currentColor" stroke-width="1.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+              </div>
+            </div>
+            <div class="prop" data-prop="height">
+              <div class="field" data-field="height">
+                <input class="field-input" data-input="height" type="text" value="50vh" spellcheck="false">
+                <button class="field-chev" data-chev="height" tabindex="-1"><svg viewBox="0 0 10 10"><path d="M2 4L5 7L8 4" stroke="currentColor" stroke-width="1.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+              </div>
+            </div>
+          </div>
+          <div class="prop-row">
+            <div class="prop" data-prop="maxWidth">
+              <div class="field" data-field="maxWidth">
+                <input class="field-input" data-input="maxWidth" type="text" value="" spellcheck="false">
+                <button class="field-chev" data-chev="maxWidth" tabindex="-1"><svg viewBox="0 0 10 10"><path d="M2 4L5 7L8 4" stroke="currentColor" stroke-width="1.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel-section">
+          <div class="panel-section-title"><span>SPACING</span></div>
+          <div class="prop-row">
+            <div class="prop" data-prop="padding">
+              <div class="field" data-field="padding">
+                <input class="field-input" data-input="padding" type="text" value="1.5rem" spellcheck="false">
+                <button class="field-chev" data-chev="padding" tabindex="-1"><svg viewBox="0 0 10 10"><path d="M2 4L5 7L8 4" stroke="currentColor" stroke-width="1.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+              </div>
+            </div>
+            <div class="prop" data-prop="marginTop">
+              <div class="field" data-field="marginTop">
+                <input class="field-input" data-input="marginTop" type="text" value="" spellcheck="false">
+                <button class="field-chev" data-chev="marginTop" tabindex="-1"><svg viewBox="0 0 10 10"><path d="M2 4L5 7L8 4" stroke="currentColor" stroke-width="1.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel-section">
+          <div class="panel-section-title"><span>TYPOGRAPHY</span></div>
+          <div class="prop-row">
+            <div class="prop" data-prop="fontSize">
+              <div class="field" data-field="fontSize">
+                <input class="field-input" data-input="fontSize" type="text" value="14px" spellcheck="false">
+                <button class="field-chev" data-chev="fontSize" tabindex="-1"><svg viewBox="0 0 10 10"><path d="M2 4L5 7L8 4" stroke="currentColor" stroke-width="1.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+              </div>
+            </div>
+            <div class="prop" data-prop="lineHeight">
+              <div class="field" data-field="lineHeight">
+                <input class="field-input" data-input="lineHeight" type="text" value="" spellcheck="false">
+                <button class="field-chev" data-chev="lineHeight" tabindex="-1"><svg viewBox="0 0 10 10"><path d="M2 4L5 7L8 4" stroke="currentColor" stroke-width="1.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="try-strip">
+    <span class="label">试一下：</span>
+    <span class="tip">三击输入框 → 输入 <kbd>1.5rem</kbd> 回车</span>
+    <span class="tip">点 <kbd>▾</kbd> 打开浮层 → 搜索 <kbd>vmin</kbd> 或 <kbd>cq</kbd></span>
+    <span class="tip">选几个不同单位，再打开浮层看"最近使用"</span>
+    <span class="tip">按住 <kbd>width</kbd> 横向拖动 · <kbd>↑↓</kbd> 步进</span>
+  </div>
+
+  <!-- ─── Notes ─── -->
+  <section class="notes">
+
+    <article class="note">
+      <div class="badge">01 · 默认列表</div>
+      <h3>8 个常用，覆盖 90%</h3>
+      <p>浮层默认展示 <strong>8 个高频单位</strong>：<code>px</code> <code>%</code> <code>rem</code> <code>em</code> <code>vh</code> <code>vw</code> <code>vmin</code> <code>ch</code>，以及属性对应的关键字（如 <code>auto</code>）和表达式选项。</p>
+      <p>列表始终保持短小，不因单位库的扩充而变长。</p>
+      <div class="mini-pop">
+        <div class="mp-row header"><span class="mp-u">单位</span><span class="mp-desc">说明</span><span class="mp-eq">等效值</span></div>
+        <div class="mp-row active"><span class="mp-u">%</span><span class="mp-desc">父元素百分比</span><span class="mp-eq">当前</span></div>
+        <div class="mp-row"><span class="mp-u">px</span><span class="mp-desc">像素</span><span class="mp-eq">312px</span></div>
+        <div class="mp-row"><span class="mp-u">rem</span><span class="mp-desc">根字号倍数</span><span class="mp-eq">19.5rem</span></div>
+        <div class="mp-row"><span class="mp-u">em</span><span class="mp-desc">父字号倍数</span><span class="mp-eq">19.5em</span></div>
+      </div>
+    </article>
+
+    <article class="note">
+      <div class="badge">02 · 搜索</div>
+      <h3>输入即过滤，全库可达</h3>
+      <p>浮层顶部有搜索框，输入字母实时过滤所有 <strong>30+ 个单位</strong>。搜索范围包含单位名称和中文描述——输入 <code>容器</code> 能找到 <code>cqw</code>，输入 <code>vmin</code> 直接精确命中。</p>
+      <p>按 <kbd>ESC</kbd> 清空搜索回到默认视图。</p>
+      <div class="mini-pop">
+        <div class="mp-search"><span>⌕</span><input value="cq" readonly></div>
+        <div class="mp-row header"><span style="color:var(--text-4);font-size:9px;letter-spacing:.08em">容器查询</span></div>
+        <div class="mp-row"><span class="mp-u" style="color:var(--violet)">cqw</span><span class="mp-desc">容器宽度 %</span><span class="mp-eq">—</span></div>
+        <div class="mp-row"><span class="mp-u" style="color:var(--violet)">cqh</span><span class="mp-desc">容器高度 %</span><span class="mp-eq">—</span></div>
+        <div class="mp-row"><span class="mp-u" style="color:var(--violet)">cqi</span><span class="mp-desc">容器行向尺寸</span><span class="mp-eq">—</span></div>
+      </div>
+    </article>
+
+    <article class="note">
+      <div class="badge">03 · 最近使用</div>
+      <h3>越用越快，不需要记</h3>
+      <p>每次切换单位，该单位被记录到<strong>最近使用</strong>列表（会话内，最多 4 条），下次打开浮层时出现在最顶部。</p>
+      <p>真实工作中，一个项目通常反复用同几个单位。最近使用让常用单位"自然浮上来"，不需要搜索。</p>
+      <div class="mini-pop">
+        <div class="mp-row header"><span>最近使用</span></div>
+        <div class="mp-row"><span class="mp-u">rem</span><span class="mp-desc">根字号倍数</span><span class="mp-eq">1.5rem</span></div>
+        <div class="mp-row"><span class="mp-u">vh</span><span class="mp-desc">视口高度 %</span><span class="mp-eq">19.5vh</span></div>
+        <div class="mp-row header" style="margin-top:2px"><span>常用</span></div>
+        <div class="mp-row active"><span class="mp-u">%</span><span class="mp-desc">父元素百分比</span><span class="mp-eq">当前</span></div>
+      </div>
+    </article>
+
+    <article class="note">
+      <div class="badge">04 · 换算策略</div>
+      <h3>先设模式，再看等效值</h3>
+      <p>浮层顶部的切换始终在搜索框和单位列表<strong>上方</strong>，因为每个单位右侧显示的等效值依赖于这个策略。</p>
+      <p><strong>保持视觉尺寸</strong>（默认）：<code>16px → 1rem</code>，元素外观不变。<strong>保持数值</strong>：<code>16px → 16rem</code>，元素会变大。用户先看到模式，再看数字，理解是顺畅的。</p>
+    </article>
+
+  </section>
+
+  <footer>
+    <span>元素精细化调整 · 表单编辑交互方案</span>
+    <span>px · % · em · rem · vh · vw · cqw · fr · calc()</span>
+  </footer>
+
+</div>
+
+<!-- Popover -->
+<div class="popover" id="popover">
+  <div class="popover-arrow"></div>
+  <div class="pop-strategy">
+    <div class="pop-strategy-label">切换时 <span class="pop-strategy-hint">影响右侧等效值</span></div>
+    <div class="conv-toggle">
+      <button data-conv="size" class="active">保持视觉尺寸</button>
+      <button data-conv="number">保持数值</button>
+    </div>
+  </div>
+  <div class="pop-search-wrap">
+    <span class="pop-search-icon">⌕</span>
+    <input class="pop-search" id="pop-search" type="text" placeholder="搜索单位…" spellcheck="false" autocomplete="off">
+    <button class="pop-search-clear" id="pop-search-clear" style="display:none">×</button>
+  </div>
+  <div class="pop-preview" id="pop-preview"></div>
+  <div class="pop-body" id="pop-body"></div>
+  <div class="pop-footer-hint">⌘Z 撤销 · ESC 关闭</div>
+</div>
+
+<!-- Tooltip -->
+<div id="tooltip">
+  <div class="tt-arrow"></div>
+  <div class="tt-text"></div>
+</div>
+<style>
+  #tooltip { position: fixed; z-index: 9999; pointer-events: none; opacity: 0; transition: opacity 0.12s ease; }
+  #tooltip.visible { opacity: 1; }
+  .tt-text { background: var(--surface-3); border: 1px solid var(--border-strong); color: var(--text-2); font-family: var(--mono); font-size: 10.5px; padding: 5px 9px; border-radius: 4px; white-space: nowrap; box-shadow: 0 6px 16px -4px rgba(0,0,0,0.4); }
+  .tt-arrow { width: 8px; height: 8px; background: var(--surface-3); border: 1px solid var(--border-strong); position: absolute; left: 50%; transform: translateX(-50%) rotate(45deg); }
+  #tooltip.above .tt-arrow { bottom: -5px; border-top-color: transparent; border-left-color: transparent; }
+  #tooltip.below .tt-arrow { top: -5px; border-bottom-color: transparent; border-right-color: transparent; }
+</style>
+
+<script>
+// ════════════════════════════════════════════════════════
+// UNIT REGISTRY — complete
+// ════════════════════════════════════════════════════════
+const UNIT_REGISTRY = [
+  // Absolute
+  { u:'px',   desc:'像素',           group:'absolute', common:true  },
+  { u:'pt',   desc:'点（印刷）',     group:'print'                  },
+  { u:'cm',   desc:'厘米',           group:'print'                  },
+  { u:'mm',   desc:'毫米',           group:'print'                  },
+  { u:'in',   desc:'英寸',           group:'print'                  },
+  // Relative to font/parent
+  { u:'%',    desc:'父元素百分比',   group:'relative', common:true  },
+  { u:'em',   desc:'父字号倍数',     group:'relative', common:true  },
+  { u:'rem',  desc:'根字号倍数',     group:'relative', common:true  },
+  { u:'ch',   desc:'"0"字符宽度',    group:'relative', common:true  },
+  { u:'ex',   desc:'小写字母高度',   group:'relative'               },
+  { u:'cap',  desc:'大写字母高度',   group:'relative'               },
+  { u:'lh',   desc:'当前行高',       group:'relative'               },
+  { u:'rlh',  desc:'根行高',         group:'relative'               },
+  // Viewport
+  { u:'vh',   desc:'视口高度 %',     group:'viewport', common:true  },
+  { u:'vw',   desc:'视口宽度 %',     group:'viewport', common:true  },
+  { u:'vmin', desc:'视口短边 %',     group:'viewport', common:true  },
+  { u:'vmax', desc:'视口长边 %',     group:'viewport'               },
+  { u:'dvh',  desc:'动态视口高',     group:'viewport'               },
+  { u:'dvw',  desc:'动态视口宽',     group:'viewport'               },
+  { u:'svh',  desc:'小视口高',       group:'viewport'               },
+  { u:'svw',  desc:'小视口宽',       group:'viewport'               },
+  { u:'lvh',  desc:'大视口高',       group:'viewport'               },
+  { u:'lvw',  desc:'大视口宽',       group:'viewport'               },
+  // Container query
+  { u:'cqw',  desc:'容器宽度 %',     group:'container'              },
+  { u:'cqh',  desc:'容器高度 %',     group:'container'              },
+  { u:'cqi',  desc:'容器行向尺寸',   group:'container'              },
+  { u:'cqb',  desc:'容器块向尺寸',   group:'container'              },
+  { u:'cqmin',desc:'容器短边 %',     group:'container'              },
+  { u:'cqmax',desc:'容器长边 %',     group:'container'              },
+  // Grid
+  { u:'fr',   desc:'栅格分数单位',   group:'grid'                   },
+];
+
+const GROUP_LABELS = {
+  absolute: '绝对单位', relative: '相对字体 / 父级',
+  viewport: '视口单位', container: '容器查询 (cq)',
+  grid: '栅格', print: '印刷单位',
+};
+const ALL_KEYWORDS    = ['auto','inherit','initial','unset','normal','none','min-content','max-content','fit-content','stretch'];
+const KEYWORDS_BY_PROP = {
+  width:['auto','min-content','max-content','fit-content'],
+  height:['auto','min-content','max-content','fit-content'],
+  maxWidth:['none','min-content','max-content','fit-content'],
+  padding:[], marginTop:['auto'],
+  fontSize:['inherit'], lineHeight:['normal'],
+};
+const KNOWN_FNS = ['calc','min','max','clamp'];
+const KNOWN_KEYWORDS = new Set(ALL_KEYWORDS);
+
+// ════════════════════════════════════════════════════════
+// STATE
+// ════════════════════════════════════════════════════════
+const state = {
+  width:     { kind:'length',     num:60,   unit:'%'   },
+  height:    { kind:'length',     num:50,   unit:'vh'  },
+  maxWidth:  { kind:'expression', fn:'min', args:'100%, 720px' },
+  padding:   { kind:'length',     num:1.5,  unit:'rem' },
+  marginTop: { kind:'keyword',    value:'auto' },
+  fontSize:  { kind:'length',     num:14,   unit:'px'  },
+  lineHeight:{ kind:'keyword',    value:'normal' },
+};
+const CTX = { parentW:520, parentH:420, viewportW:1440, viewportH:836, rootFontSize:16, parentFontSize:16 };
+let convStrategy = 'size';
+let currentPopover = null;
+let currentProp = null;
+let recentlyUsed = []; // session memory
+
+// ════════════════════════════════════════════════════════
+// CONVERSIONS
+// ════════════════════════════════════════════════════════
+function toPx(num, unit, prop) {
+  const n = parseFloat(num); if (isNaN(n)) return 0;
+  switch (unit) {
+    case 'px': return n;
+    case '%':
+      if (prop==='width'||prop==='maxWidth') return n/100*CTX.parentW;
+      if (prop==='height') return n/100*CTX.parentH;
+      return n/100*CTX.parentW;
+    case 'em': return n*CTX.parentFontSize;
+    case 'rem': return n*CTX.rootFontSize;
+    case 'vh': case 'dvh': case 'svh': case 'lvh': return n/100*CTX.viewportH;
+    case 'vw': case 'dvw': case 'svw': case 'lvw': return n/100*CTX.viewportW;
+    case 'vmin': return n/100*Math.min(CTX.viewportW,CTX.viewportH);
+    case 'vmax': return n/100*Math.max(CTX.viewportW,CTX.viewportH);
+    case 'cqw': return n/100*CTX.parentW;
+    case 'cqh': return n/100*CTX.parentH;
+    case 'cqi': case 'cqb': case 'cqmin': case 'cqmax': return n/100*CTX.parentW;
+    case 'fr': return n*CTX.parentW/12;
+    case 'ch': return n*8; case 'ex': return n*7;
+    case 'lh': case 'rlh': return n*21;
+    case 'cap': return n*11;
+    case 'pt': return n*1.333; case 'pc': return n*16;
+    case 'cm': return n*37.8; case 'mm': return n*3.78; case 'in': return n*96;
+    default: return n;
+  }
+}
+function fromPx(px, unit, prop) {
+  const t = toPx(1, unit, prop); return t===0 ? px : px/t;
+}
+const fmt = n => isNaN(n) ? '0' : (Math.round(n*100)/100).toString();
+
+function termToPx(term, prop) {
+  const m = term.trim().match(/^(-?\d+\.?\d*)\s*([a-z%]+)?$/i);
+  if (!m) return 0;
+  return toPx(parseFloat(m[1]), (m[2]||'px').toLowerCase(), prop);
+}
+function evalExpression(s, prop) {
+  if (s.fn==='calc') {
+    const m = s.args.match(/^(.+?)\s*([+\-*/])\s*(.+)$/);
+    if (!m) return termToPx(s.args, prop);
+    const a=termToPx(m[1],prop), b=termToPx(m[3],prop);
+    switch(m[2]){case'+':return a+b;case'-':return a-b;case'*':return a*b;case'/':return b===0?0:a/b;}
+  }
+  if (s.fn==='min'||s.fn==='max') {
+    const vals=s.args.split(',').map(t=>termToPx(t,prop));
+    return s.fn==='min'?Math.min(...vals):Math.max(...vals);
+  }
+  if (s.fn==='clamp') {
+    const [lo,mid,hi]=s.args.split(',').map(t=>termToPx(t,prop));
+    return Math.max(lo,Math.min(hi,mid));
+  }
+  return 0;
+}
+
+// ════════════════════════════════════════════════════════
+// PARSER
+// ════════════════════════════════════════════════════════
+function parseValue(text, currentState) {
+  text = text.trim();
+  if (!text) return { error:'empty' };
+  if (KNOWN_KEYWORDS.has(text.toLowerCase())) return { kind:'keyword', value:text.toLowerCase() };
+  const fnM = text.match(/^(calc|min|max|clamp)\s*\((.*)\)\s*$/i);
+  if (fnM) return { kind:'expression', fn:fnM[1].toLowerCase(), args:fnM[2].trim() };
+  if (/^(calc|min|max|clamp)\s*\(/i.test(text)) return { error:'unbalanced' };
+  const m = text.match(/^(-?\d+\.?\d*)\s*([a-z%]+)?$/i);
+  if (m) {
+    const num=parseFloat(m[1]);
+    let unit=m[2]?m[2].toLowerCase():null;
+    if (!unit) { if (currentState.kind==='length') unit=currentState.unit; else unit='px'; }
+    return { kind:'length', num, unit };
+  }
+  return { error:'invalid' };
+}
+
+// ════════════════════════════════════════════════════════
+// RENDER
+// ════════════════════════════════════════════════════════
+function renderField(prop) {
+  const s = state[prop];
+  const field = document.querySelector(`[data-field="${prop}"]`);
+  const input = field.querySelector('.field-input');
+  // Clean up any badges from prior render
+  field.querySelector('.fn-badge')?.remove();
+  field.querySelector('.prop-badge')?.remove();
+  field.classList.remove('expression','keyword','invalid');
+
+  // ALWAYS insert the property identifier badge first
+  const pb = createPropBadge(prop);
+  if (pb) {
+    if (s.kind !== 'length') pb.style.cursor = 'default'; // can't scrub non-length
+    field.insertBefore(pb, input);
+  }
+
+  if (s.kind === 'length') {
+    if (document.activeElement !== input) input.value = fmt(s.num) + s.unit;
+    input.style.display = '';
+  } else if (s.kind === 'expression') {
+    field.classList.add('expression');
+    // Expression "tab" sits AFTER the prop-badge, before input
+    const badge = document.createElement('span');
+    badge.className = 'fn-badge';
+    badge.setAttribute('data-tip', `ƒ ${s.fn}(${s.args})`);
+    badge.innerHTML = `<span class="fn-icon">ƒ</span><span class="fn-name">${s.fn}</span>`;
+    field.insertBefore(badge, input);
+    if (document.activeElement !== input) input.value = s.args;
+    input.style.display = '';
+  } else if (s.kind === 'keyword') {
+    field.classList.add('keyword');
+    if (document.activeElement !== input) input.value = s.value;
+    input.style.display = '';
+  }
+}
+function renderTarget() {
+  const wS=state.width, hS=state.height, pS=state.padding, fS=state.fontSize;
+  const w=wS.kind==='length'?toPx(wS.num,wS.unit,'width'):200;
+  const h=hS.kind==='length'?toPx(hS.num,hS.unit,'height'):150;
+  const p=pS.kind==='length'?toPx(pS.num,pS.unit,'padding'):16;
+  const f=fS.kind==='length'?toPx(fS.num,fS.unit,'fontSize'):14;
+  const t=document.getElementById('target');
+  t.style.width=Math.max(80,Math.min(480,w))+'px';
+  t.style.height=Math.max(60,Math.min(380,h))+'px';
+  t.style.padding=Math.max(0,Math.min(40,p))+'px';
+  t.style.fontSize=Math.max(9,Math.min(28,f))+'px';
+  document.getElementById('target-dims').textContent=`${Math.round(w)} × ${Math.round(h)}`;
+  document.getElementById('badge-w').textContent=Math.round(w)+'px';
+  document.getElementById('badge-h').textContent=Math.round(h)+'px';
+  document.getElementById('badge-p').textContent=Math.round(p)+'px';
+}
+function renderAll() { Object.keys(state).forEach(renderField); renderTarget(); }
+
+// ════════════════════════════════════════════════════════
+// INPUT BEHAVIOR
+// ════════════════════════════════════════════════════════
+// Click on keyword field focuses the input naturally (input is always visible)
+
+
+document.querySelectorAll('.field-input').forEach(input => {
+  const prop=input.dataset.input;
+  input.addEventListener('focus',()=>setTimeout(()=>input.select(),0));
+  input.addEventListener('keydown', e => {
+    if (e.key==='Enter') { e.preventDefault(); commitInput(input,prop); input.blur(); }
+    else if (e.key==='Escape') { renderField(prop); input.blur(); }
+    else if (e.key==='ArrowUp'||e.key==='ArrowDown') {
+      const s=state[prop]; if (s.kind!=='length') return;
+      e.preventDefault();
+      const step=e.shiftKey?10:e.altKey?0.1:1;
+      const dir=e.key==='ArrowUp'?1:-1;
+      state[prop]={...s,num:Math.round((s.num+dir*step)*100)/100};
+      renderField(prop); input.value=fmt(state[prop].num)+state[prop].unit; input.select(); renderTarget();
+    }
+  });
+  input.addEventListener('blur',()=>commitInput(input,prop));
+  input.addEventListener('wheel',e=>{
+    if (document.activeElement!==input) return;
+    const s=state[prop]; if (s.kind!=='length') return;
+    e.preventDefault();
+    const step=e.shiftKey?10:e.altKey?0.1:1;
+    state[prop]={...s,num:Math.round((s.num+(e.deltaY<0?step:-step))*100)/100};
+    renderField(prop); input.value=fmt(state[prop].num)+state[prop].unit; renderTarget();
+  },{passive:false});
+});
+
+function commitInput(input, prop) {
+  const field=document.querySelector(`[data-field="${prop}"]`);
+  const s=state[prop];
+  let text=input.value;
+  if (s.kind==='expression') {
+    const looksPlain=/^-?\d+\.?\d*\s*[a-z%]*$/i.test(text.trim());
+    if (!looksPlain && !/^(calc|min|max|clamp)\s*\(/i.test(text.trim()) && !KNOWN_KEYWORDS.has(text.trim().toLowerCase())) {
+      text=`${s.fn}(${text})`;
+    }
+  }
+  const parsed=parseValue(text,s);
+  if (parsed.error) {
+    field.classList.add('invalid');
+    setTimeout(()=>{ field.classList.remove('invalid'); renderField(prop); },1200);
+    return;
+  }
+  state[prop]=parsed;
+  field.classList.remove('invalid');
+  renderField(prop); renderTarget();
+}
+
+// ════════════════════════════════════════════════════════
+// SCRUBBING
+// ════════════════════════════════════════════════════════
+// SCRUBBING — event delegation since prop-badge is dynamically created
+let scrubState = null;
+document.addEventListener('mousedown', e => {
+  const el = e.target.closest('[data-scrub]');
+  if (!el) return;
+  const prop = el.dataset.scrub;
+  if (state[prop]?.kind !== 'length') return;
+  scrubState = { prop, startX: e.clientX, startVal: state[prop].num, el };
+  el.classList.add('scrubbing');
+  document.body.style.cursor = 'ew-resize';
+  e.preventDefault();
+});
+document.addEventListener('mousemove', e => {
+  if (!scrubState) return;
+  const dx = e.clientX - scrubState.startX;
+  const step = e.shiftKey ? 1 : e.altKey ? 0.01 : 0.5;
+  state[scrubState.prop] = {
+    ...state[scrubState.prop],
+    num: Math.round((scrubState.startVal + dx * step) * 100) / 100
+  };
+  renderField(scrubState.prop);
+  renderTarget();
+});
+document.addEventListener('mouseup', () => {
+  if (scrubState) {
+    scrubState.el.classList.remove('scrubbing');
+    document.body.style.cursor = '';
+    scrubState = null;
+  }
+});
+
+// ════════════════════════════════════════════════════════
+// POPOVER
+// ════════════════════════════════════════════════════════
+const popover=document.getElementById('popover');
+const popBody=document.getElementById('pop-body');
+const popSearch=document.getElementById('pop-search');
+const popSearchClear=document.getElementById('pop-search-clear');
+
+const VIEWPORT_UNITS=['vh','vw','dvh','dvw','svh','svw','lvh','lvw','vmin','vmax'];
+
+function getEquiv(u, prop) {
+  const s=state[prop];
+  if (s.kind!=='length') return '';
+  if (s.unit===u.u) return '当前';
+  const px=toPx(s.num,s.unit,prop);
+  const newNum=convStrategy==='size'?fromPx(px,u.u,prop):s.num;
+  const approx=VIEWPORT_UNITS.includes(u.u)?'≈ ':'';
+  return approx+fmt(newNum)+u.u;
+}
+
+function renderUnitOption(u, prop, isRecent) {
+  const s=state[prop];
+  const isActive=s.kind==='length'&&s.unit===u.u;
+  const equiv=getEquiv(u,prop);
+  return `<div class="pop-option ${isActive?'active':''} ${isRecent?'recent':''}" data-u="${u.u}">
+    <span class="u">${u.u}</span>
+    <span class="desc">${u.desc}</span>
+    <span class="equiv ${isActive?'curr':equiv?'':'placeholder'}">${equiv||'—'}</span>
+  </div>`;
+}
+
+// Property identifier badges (sit INSIDE the field at the front)
+const PROP_LABELS = {
+  width:      { text: 'W' },
+  height:     { text: 'H' },
+  maxWidth:   { icon: '<svg viewBox="0 0 14 14"><line x1="2" y1="3" x2="2" y2="11" stroke="currentColor" stroke-width="1.4"/><line x1="12" y1="3" x2="12" y2="11" stroke="currentColor" stroke-width="1.4"/><path d="M4.5 7 L7 5 M4.5 7 L7 9 M9.5 7 L7 5 M9.5 7 L7 9" stroke="currentColor" stroke-width="1" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>' },
+  padding:    { icon: '<svg viewBox="0 0 14 14"><rect x="1.5" y="1.5" width="11" height="11" stroke="currentColor" stroke-width="1" fill="none"/><rect x="4.5" y="4.5" width="5" height="5" stroke="currentColor" stroke-width="1" fill="currentColor" fill-opacity="0.25"/></svg>' },
+  marginTop:  { icon: '<svg viewBox="0 0 14 14"><line x1="2" y1="2" x2="12" y2="2" stroke="currentColor" stroke-width="1.4"/><rect x="2.5" y="5" width="9" height="7" stroke="currentColor" stroke-width="1" fill="none"/></svg>' },
+  fontSize:   { text: 'T' },
+  lineHeight: { icon: '<svg viewBox="0 0 14 14"><line x1="3" y1="3" x2="11" y2="3" stroke="currentColor" stroke-width="1.2"/><line x1="3" y1="7" x2="11" y2="7" stroke="currentColor" stroke-width="1.2"/><line x1="3" y1="11" x2="11" y2="11" stroke="currentColor" stroke-width="1.2"/></svg>' },
+};
+
+const PROP_FULL_NAMES = {
+  width: 'width', height: 'height', maxWidth: 'max-width',
+  padding: 'padding', marginTop: 'margin-top',
+  fontSize: 'font-size', lineHeight: 'line-height',
+};
+
+function createPropBadge(prop) {
+  const def = PROP_LABELS[prop];
+  if (!def) return null;
+  const el = document.createElement('span');
+  el.className = 'prop-badge';
+  el.setAttribute('data-scrub', prop);
+  el.setAttribute('title', PROP_FULL_NAMES[prop] || prop);
+  if (def.text) el.textContent = def.text;
+  else if (def.icon) el.innerHTML = def.icon;
+  return el;
+}
+const CHIP_GROUPS = [
+  { title: '常用',         units: ['px','%','rem','em','vh','vw']      },
+  { title: '视口扩展',     units: ['vmin','vmax','dvh','svh','lvh']    },
+  { title: '容器查询',     units: ['cqw','cqh','cqi','cqb','cqmin','cqmax'] },
+  { title: '排版 · 栅格',  units: ['ch','ex','lh','cap','fr']          },
+  { title: '印刷',         units: ['pt','cm','mm','in']                },
+];
+
+function renderChip(uDef, prop, classes='') {
+  const s = state[prop];
+  const isActive = s.kind === 'length' && s.unit === uDef.u;
+  const isRecent = recentlyUsed.includes(uDef.u);
+  const cls = ['chip', isActive ? 'active' : '', isRecent && !isActive ? 'recent' : '', classes].filter(Boolean).join(' ');
+  return `<span class="${cls}" data-u="${uDef.u}" data-desc="${uDef.desc}">${uDef.u}</span>`;
+}
+
+function buildPopoverBody(prop, query) {
+  const s = state[prop];
+  const q = (query || '').trim().toLowerCase();
+  let html = '';
+
+  if (q) {
+    // ── Search mode: filtered chips ──
+    const matched = UNIT_REGISTRY.filter(u =>
+      u.u.toLowerCase().includes(q) || u.desc.toLowerCase().includes(q)
+    );
+    const kwMatched = ALL_KEYWORDS.filter(kw => kw.includes(q));
+    const fnMatched = KNOWN_FNS.filter(fn => fn.includes(q));
+
+    if (!matched.length && !kwMatched.length && !fnMatched.length) {
+      html = '<div class="pop-empty">无匹配单位</div>';
+    } else {
+      if (matched.length) {
+        const byGroup = {};
+        matched.forEach(u => { (byGroup[u.group] = byGroup[u.group] || []).push(u); });
+        Object.entries(byGroup).forEach(([g, items]) => {
+          html += '<div class="chip-group">';
+          html += `<div class="chip-group-title">${GROUP_LABELS[g] || g}</div>`;
+          html += '<div class="chip-row">';
+          items.forEach(u => { html += renderChip(u, prop); });
+          html += '</div></div>';
+        });
+      }
+      if (kwMatched.length || fnMatched.length) {
+        html += '<div class="chip-group">';
+        html += '<div class="chip-group-title">关键字 & 表达式</div>';
+        html += '<div class="chip-row">';
+        kwMatched.forEach(kw => {
+          const isActive = s.kind === 'keyword' && s.value === kw;
+          html += `<span class="chip kw ${isActive ? 'active' : ''}" data-kw="${kw}" data-desc="CSS 关键字">${kw}</span>`;
+        });
+        fnMatched.forEach(fn => {
+          const isActive = s.kind === 'expression' && s.fn === fn;
+          html += `<span class="chip fn ${isActive ? 'active' : ''}" data-fn="${fn}" data-desc="${fn}() 表达式">${fn}</span>`;
+        });
+        html += '</div></div>';
+      }
+    }
+  } else {
+    // ── Default mode: all chip groups + recently used ──
+
+    // Recently used (when present)
+    if (recentlyUsed.length > 0) {
+      html += '<div class="chip-group">';
+      html += '<div class="chip-group-title">最近使用</div>';
+      html += '<div class="chip-row">';
+      recentlyUsed.slice(0, 6).forEach(uStr => {
+        const u = UNIT_REGISTRY.find(r => r.u === uStr);
+        if (u) html += renderChip(u, prop);
+      });
+      html += '</div></div>';
+    }
+
+    // All defined chip groups
+    CHIP_GROUPS.forEach(grp => {
+      html += '<div class="chip-group">';
+      html += `<div class="chip-group-title">${grp.title}</div>`;
+      html += '<div class="chip-row">';
+      grp.units.forEach(uStr => {
+        const u = UNIT_REGISTRY.find(r => r.u === uStr);
+        if (u) html += renderChip(u, prop);
+      });
+      html += '</div></div>';
+    });
+
+    // Keywords (per-prop)
+    const kws = KEYWORDS_BY_PROP[prop] || [];
+    if (kws.length) {
+      html += '<div class="chip-group">';
+      html += '<div class="chip-group-title">关键字</div>';
+      html += '<div class="chip-row">';
+      kws.forEach(kw => {
+        const isActive = s.kind === 'keyword' && s.value === kw;
+        html += `<span class="chip kw ${isActive ? 'active' : ''}" data-kw="${kw}" data-desc="CSS 关键字">${kw}</span>`;
+      });
+      html += '</div></div>';
+    }
+
+    // Expressions
+    html += '<div class="chip-group">';
+    html += '<div class="chip-group-title">表达式</div>';
+    html += '<div class="chip-row">';
+    KNOWN_FNS.forEach(fn => {
+      const isActive = s.kind === 'expression' && s.fn === fn;
+      html += `<span class="chip fn ${isActive ? 'active' : ''}" data-fn="${fn}" data-desc="${fn}() 表达式">${fn}</span>`;
+    });
+    html += '</div></div>';
+  }
+
+  popBody.innerHTML = html;
+  popBody.querySelectorAll('.chip').forEach(chip => {
+    chip.addEventListener('click', () => handlePopChoice(prop, chip));
+    chip.addEventListener('mouseenter', () => updatePreview(prop, chip));
+    chip.addEventListener('mouseleave', () => updatePreview(prop, null));
+  });
+
+  // Reset preview to current state
+  updatePreview(prop, null);
+}
+
+function updatePreview(prop, hoveredChip) {
+  const previewEl = document.getElementById('pop-preview');
+  if (!previewEl) return;
+  const s = state[prop];
+
+  if (hoveredChip) {
+    previewEl.classList.add('hovering');
+    const desc = hoveredChip.dataset.desc || '';
+    if (hoveredChip.dataset.u) {
+      const u = hoveredChip.dataset.u;
+      let eq = '';
+      if (s.kind === 'length' && u !== s.unit) {
+        const px = toPx(s.num, s.unit, prop);
+        const newNum = convStrategy === 'size' ? fromPx(px, u, prop) : s.num;
+        const approx = VIEWPORT_UNITS.includes(u) ? '≈ ' : '';
+        eq = `<span class="pv-arrow">→</span><span class="pv-eq">${approx}${fmt(newNum)}${u}</span>`;
+      } else if (s.kind === 'length' && u === s.unit) {
+        eq = `<span class="pv-arrow">·</span><span class="pv-curr">当前</span>`;
+      }
+      previewEl.innerHTML = `<span class="pv-u">${u}</span><span class="pv-desc">${desc}</span>${eq}`;
+    } else if (hoveredChip.dataset.kw) {
+      previewEl.innerHTML = `<span class="pv-u" style="color:var(--blue);font-style:italic">${hoveredChip.dataset.kw}</span><span class="pv-desc">${desc}</span>`;
+    } else if (hoveredChip.dataset.fn) {
+      previewEl.innerHTML = `<span class="pv-u" style="color:var(--violet)">ƒ ${hoveredChip.dataset.fn}</span><span class="pv-desc">${desc}</span>`;
+    }
+  } else {
+    previewEl.classList.remove('hovering');
+    // No hover — show current value
+    if (s.kind === 'length') {
+      const px = toPx(s.num, s.unit, prop);
+      const approx = VIEWPORT_UNITS.includes(s.unit) ? '≈ ' : '';
+      previewEl.innerHTML = `<span class="pv-curr">当前</span><span class="pv-u">${fmt(s.num)}${s.unit}</span><span class="pv-arrow">=</span><span class="pv-eq">${approx}${fmt(px)}px</span>`;
+    } else if (s.kind === 'expression') {
+      const px = evalExpression(s, prop);
+      previewEl.innerHTML = `<span class="pv-curr">当前</span><span class="pv-u" style="color:var(--violet)">ƒ ${s.fn}(${s.args})</span><span class="pv-arrow">≈</span><span class="pv-eq">${fmt(px)}px</span>`;
+    } else if (s.kind === 'keyword') {
+      previewEl.innerHTML = `<span class="pv-curr">当前</span><span class="pv-u" style="color:var(--blue);font-style:italic">${s.value}</span>`;
+    }
+  }
+}
+
+function handlePopChoice(prop, opt) {
+  const s = state[prop];
+  if (opt.dataset.u) {
+    const newU = opt.dataset.u;
+    recentlyUsed = recentlyUsed.filter(u => u !== newU);
+    recentlyUsed.unshift(newU);
+    if (recentlyUsed.length > 6) recentlyUsed.length = 6;
+    let newNum = 0;
+    if (s.kind === 'length') {
+      const px = toPx(s.num, s.unit, prop);
+      newNum = convStrategy === 'size' ? Math.round(fromPx(px, newU, prop) * 100) / 100 : s.num;
+    } else newNum = prop === 'fontSize' ? 14 : 100;
+    state[prop] = { kind: 'length', num: newNum, unit: newU };
+  } else if (opt.dataset.kw) {
+    state[prop] = { kind: 'keyword', value: opt.dataset.kw };
+  } else if (opt.dataset.fn) {
+    const fn = opt.dataset.fn;
+    const defaults = { calc:'50% - 100px', min:'100%, 720px', max:'0px, 100%', clamp:'1rem, 2vw, 2rem' };
+    state[prop] = { kind: 'expression', fn, args: defaults[fn] || '50% - 0px' };
+  }
+  renderField(prop); renderTarget();
+  closePopover();
+}
+
+function openPopover(triggerBtn, prop) {
+  if (currentPopover===prop) { closePopover(); return; }
+  closePopover();
+  currentProp=prop;
+  popSearch.value='';
+  popSearchClear.style.display='none';
+  buildPopoverBody(prop,'');
+  popover.classList.add('open'); popover.classList.remove('flip-right');
+
+  const popW=popover.offsetWidth, popH=popover.offsetHeight;
+  const rect=triggerBtn.getBoundingClientRect();
+  let left=rect.left-popW-14, flipRight=false;
+  if (left<12) { left=rect.right+14; flipRight=true; }
+  let top=rect.top+rect.height/2-popH/2;
+  if (top<12) top=12;
+  if (top+popH>window.innerHeight-12) top=window.innerHeight-12-popH;
+
+  const arrow=popover.querySelector('.popover-arrow');
+  arrow.style.top=((rect.top+rect.height/2)-top)+'px';
+  popover.style.left=left+'px'; popover.style.top=top+'px';
+  if (flipRight) popover.classList.add('flip-right');
+  triggerBtn.classList.add('is-open');
+  currentPopover=prop;
+
+  // Focus search after open
+  setTimeout(()=>popSearch.focus(),80);
+}
+
+function closePopover() {
+  if (currentPopover) {
+    popover.classList.remove('open','flip-right');
+    document.querySelectorAll('.field-chev.is-open').forEach(b=>b.classList.remove('is-open'));
+    currentPopover=null; currentProp=null;
+  }
+}
+
+// Search wiring
+popSearch.addEventListener('input', ()=>{
+  const q=popSearch.value;
+  popSearchClear.style.display=q?'':'none';
+  if (currentProp) buildPopoverBody(currentProp,q);
+});
+popSearch.addEventListener('keydown',e=>{
+  if (e.key==='Escape') {
+    if (popSearch.value) { popSearch.value=''; popSearchClear.style.display='none'; if (currentProp) buildPopoverBody(currentProp,''); }
+    else closePopover();
+  }
+});
+popSearchClear.addEventListener('click',()=>{
+  popSearch.value=''; popSearchClear.style.display='none';
+  if (currentProp) buildPopoverBody(currentProp,'');
+  popSearch.focus();
+});
+
+// Chevrons
+document.querySelectorAll('.field-chev').forEach(btn=>{
+  btn.addEventListener('mousedown',e=>e.preventDefault());
+  btn.addEventListener('click',e=>{ e.stopPropagation(); openPopover(btn,btn.dataset.chev); });
+});
+
+// Dismiss
+document.addEventListener('mousedown',e=>{
+  if (!currentPopover) return;
+  if (popover.contains(e.target)) return;
+  if (e.target.closest('.field-chev')) return;
+  closePopover();
+});
+
+// Conv toggle
+document.querySelectorAll('.conv-toggle button').forEach(b=>{
+  b.addEventListener('click',e=>{
+    e.stopPropagation();
+    convStrategy=b.dataset.conv;
+    document.querySelectorAll('.conv-toggle button').forEach(x=>x.classList.toggle('active',x.dataset.conv===convStrategy));
+    if (currentProp) buildPopoverBody(currentProp, popSearch.value);
+  });
+});
+
+// Reset
+document.getElementById('reset-btn').addEventListener('click',()=>{
+  Object.assign(state,{
+    width:{kind:'length',num:60,unit:'%'},height:{kind:'length',num:50,unit:'vh'},
+    maxWidth:{kind:'expression',fn:'min',args:'100%, 720px'},
+    padding:{kind:'length',num:1.5,unit:'rem'},
+    marginTop:{kind:'keyword',value:'auto'},
+    fontSize:{kind:'length',num:14,unit:'px'},lineHeight:{kind:'keyword',value:'normal'},
+  });
+  renderAll();
+});
+
+window.addEventListener('resize', closePopover);
+window.addEventListener('scroll', (e) => {
+  // Ignore scrolls inside the popover itself (e.g. pop-body list)
+  if (popover.contains(e.target)) return;
+  closePopover();
+}, true);
+
+// ════════════════════════════════════════════════════════
+// TOOLTIP (above field on hover)
+// ════════════════════════════════════════════════════════
+const tooltip=document.getElementById('tooltip');
+const ttText=tooltip.querySelector('.tt-text');
+const ttArrow=tooltip.querySelector('.tt-arrow');
+
+function getComputedLabel(prop) {
+  const s = state[prop]; if (!s) return '';
+  const name = PROP_FULL_NAMES[prop] || prop;
+  if (s.kind === 'length') {
+    const px = toPx(s.num, s.unit, prop);
+    if (s.unit === 'px') {
+      if (prop === 'fontSize') return `${name} · ${fmt(s.num)}px = ${fmt(s.num/CTX.rootFontSize)}rem`;
+      return `${name} · ${fmt(s.num)}px`;
+    }
+    const approx = VIEWPORT_UNITS.includes(s.unit) ? '≈ ' : '';
+    return `${name} · ${fmt(s.num)}${s.unit} = ${approx}${fmt(px)}px`;
+  }
+  if (s.kind === 'expression') {
+    const px = evalExpression(s, prop);
+    return `${name} · ƒ ${s.fn}(${s.args}) = ≈${fmt(px)}px`;
+  }
+  if (s.kind === 'keyword') return `${name} · ${s.value} · keyword`;
+  return '';
+}
+
+function showTooltip(fieldEl, prop) {
+  const label=getComputedLabel(prop); if (!label) return;
+  ttText.textContent=label;
+  tooltip.classList.remove('above','below','visible');
+  const r=fieldEl.getBoundingClientRect();
+  const gap=6;
+  tooltip.style.top='0'; tooltip.style.left='0';
+  const ttW=tooltip.offsetWidth;
+  const margin=8;
+  let left=r.left+r.width/2-ttW/2;
+  left=Math.max(margin,Math.min(left,window.innerWidth-ttW-margin));
+  const arrowLeft=Math.max(10,Math.min((r.left+r.width/2)-left,ttW-10));
+  ttArrow.style.left=arrowLeft+'px';
+  tooltip.style.left=left+'px';
+  tooltip.style.top=(r.top-gap-tooltip.offsetHeight)+'px';
+  tooltip.classList.add('above','visible');
+}
+function hideTooltip(){ tooltip.classList.remove('visible'); }
+
+document.querySelectorAll('.field').forEach(field=>{
+  const prop=field.dataset.field; if (!prop) return;
+  field.addEventListener('mouseenter',()=>{
+    if (field.querySelector('.field-input')===document.activeElement) return;
+    showTooltip(field,prop);
+  });
+  field.addEventListener('mouseleave',()=>hideTooltip());
+  const input=field.querySelector('.field-input');
+  if (input) {
+    input.addEventListener('focus',()=>hideTooltip());
+    input.addEventListener('blur',()=>{
+      setTimeout(()=>{ if (field.matches(':hover')&&document.activeElement!==input) showTooltip(field,prop); },80);
+    });
+  }
+});
+window.addEventListener('resize', hideTooltip);
+window.addEventListener('scroll', (e) => {
+  if (popover.contains(e.target)) return;
+  hideTooltip();
+}, true);
+
+renderAll();
+</script>
+</body>
+</html>

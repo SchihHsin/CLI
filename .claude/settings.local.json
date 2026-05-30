@@ -30,7 +30,9 @@
       "Bash(npx playwright *)",
       "Bash(where playwright *)",
       "Bash(where node *)",
-      "Bash(python3 *)"
+      "Bash(python3 *)",
+      "Bash(Start-Process *)",
+      "PowerShell(Start-Process \"D:\\\\HW\\\\AICLI\\\\ai-cli-report \\(1\\)\\\\report\\\\opencode-runmode-design.html\")"
     ]
   }
 }
