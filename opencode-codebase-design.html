@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OpenCode /codebase 代码库索引 交互设计方案</title>
+<style>
+  :root {
+    --page-bg:#f5f5f3;--page-surface:#ffffff;--page-border:#e2e2de;
+    --page-text:#1a1a18;--page-muted:#6b6b65;--page-faint:#b0b0aa;--page-tag-bg:#efefec;
+    --t-bg:#0e0e0e;--t-bg2:#161616;--t-bg3:#1c1c1c;--t-bg4:#222;
+    --t-border:#282828;--t-border2:#333;
+    --t-orange:#fab283;--t-blue:#5c9cf5;--t-purple:#9d7cd8;
+    --t-green:#9ece6a;--t-red:#f7768e;--t-yellow:#e0af68;--t-cyan:#7dcfff;
+    --t-text:#a9b1d6;--t-dim:#565f89;--t-muted:#3a3f5c;--t-white:#c0caf5;
+    /* theme accents per latest spec */
+    --t-theme:#B494F5;       /* 主题紫 — 构建中 / 进行中 */
+    --t-warn:#FF8800;        /* warning 橙 — 警告 / 非致命错误 */
+    --t-ok:#5BA854;          /* 绿 — 构建完成 / 成功 */
+    --font-mono:'JetBrains Mono','Fira Code','Cascadia Code','Consolas',monospace;
+    --font-sans:'Microsoft YaHei','微软雅黑',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:var(--font-sans);background:var(--page-bg);color:var(--page-text);font-size:14px;line-height:1.6;}
+
+  /* ── PAGE ─────────────────────────────── */
+  .doc-header{background:var(--page-surface);border-bottom:1px solid var(--page-border);padding:40px 52px 32px;}
+  .doc-header h1{font-size:22px;font-weight:600;color:var(--page-text);margin-bottom:6px;letter-spacing:-0.02em;}
+  .doc-header h1 code{font-family:var(--font-mono);font-size:18px;font-weight:400;color:#c96a2a;background:#fef3ea;padding:1px 7px;border-radius:4px;}
+  .doc-header p{color:var(--page-muted);font-size:13px;}
+  .doc-header .meta{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap;}
+  .meta-tag{font-size:11px;color:var(--page-muted);padding:3px 10px;background:var(--page-tag-bg);border:1px solid var(--page-border);border-radius:4px;}
+  .meta-tag b{color:var(--page-text);font-weight:500;}
+  .doc-body{padding:36px 52px 60px;max-width:960px;}
+  .section{margin-bottom:52px;}
+  .section-title{font-size:11px;text-transform:uppercase;letter-spacing:0.1em;color:var(--page-muted);font-weight:500;margin-bottom:18px;padding-bottom:8px;border-bottom:1px solid var(--page-border);}
+  .section-title .num{color:#c96a2a;}
+  .step-wrap{display:flex;flex-direction:column;gap:28px;}
+  .step{display:flex;gap:18px;}
+  .step-num{flex-shrink:0;width:24px;height:24px;border:1px solid var(--page-border);border-radius:4px;background:var(--page-surface);display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--page-muted);margin-top:2px;font-family:var(--font-mono);}
+  .step-content{flex:1;min-width:0;}
+  .step-label{font-size:13px;color:var(--page-muted);margin-bottom:10px;line-height:1.5;}
+  .step-label b{color:var(--page-text);font-weight:500;}
+  .step-note{margin-top:10px;font-size:12px;color:var(--page-muted);line-height:1.7;padding:8px 12px;background:var(--page-tag-bg);border-left:3px solid var(--page-border);border-radius:0 4px 4px 0;}
+  .step-note b{color:var(--page-text);font-weight:500;}
+  .step-note code{font-family:var(--font-mono);font-size:11px;background:#e8e8e4;padding:1px 5px;border-radius:3px;color:#c96a2a;}
+  .path-divider{display:flex;align-items:center;gap:12px;margin:4px 0 18px;}
+  .path-divider::before,.path-divider::after{content:'';flex:1;height:1px;background:var(--page-border);}
+  .path-divider span{font-size:11px;color:var(--page-muted);letter-spacing:0.05em;white-space:nowrap;background:var(--page-bg);padding:0 4px;}
+  .flow-row{display:flex;gap:12px;align-items:flex-start;padding:9px 0;border-bottom:1px solid var(--page-border);}
+  .flow-row:last-child{border-bottom:none;}
+  .flow-n{width:28px;height:22px;flex-shrink:0;background:var(--page-tag-bg);border:1px solid var(--page-border);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--page-muted);font-family:var(--font-mono);margin-top:1px;}
+  .flow-b{flex:1;font-size:13px;color:var(--page-muted);line-height:1.6;}
+  .flow-b b{color:var(--page-text);font-weight:500;}
+  .flow-b code{font-family:var(--font-mono);font-size:12px;color:#c96a2a;background:#fef3ea;padding:1px 5px;border-radius:3px;}
+  .table-wrap{border:1px solid var(--page-border);border-radius:6px;overflow:hidden;background:var(--page-surface);}
+  .spec-table{width:100%;border-collapse:collapse;font-size:12px;}
+  .spec-table th{text-align:left;padding:7px 14px;font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:0.07em;color:var(--page-muted);background:var(--page-tag-bg);border-bottom:1px solid var(--page-border);}
+  .spec-table td{padding:8px 14px;border-bottom:1px solid var(--page-border);vertical-align:top;line-height:1.65;color:var(--page-muted);}
+  .spec-table tr:last-child td{border-bottom:none;}
+  .spec-table td:first-child{color:var(--page-text);font-weight:500;white-space:nowrap;}
+  .spec-table code{font-family:var(--font-mono);font-size:11px;color:#c96a2a;background:#fef3ea;padding:1px 4px;border-radius:3px;}
+  .kbd{display:inline-block;font-family:var(--font-mono);border:1px solid var(--page-border);padding:1px 6px;border-radius:3px;font-size:11px;color:var(--page-text);background:var(--page-surface);vertical-align:middle;}
+  .code-block{background:#1a1a1a;border-radius:6px;padding:16px 18px;font-family:var(--font-mono);font-size:12px;line-height:1.8;overflow-x:auto;color:#a9b1d6;}
+  .ck{color:#9d7cd8;}.cs{color:#9ece6a;}.cc{color:#565f89;}.ct{color:#7dcfff;}.cn{color:#fab283;}.cv{color:#e0af68;}
+
+  /* ── TUI SHELL ──────────────────────────── */
+  .tui-wrap{background:var(--t-bg);border-radius:8px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,0.18),0 0 0 1px rgba(0,0,0,0.12);font-family:var(--font-mono);}
+  .tui-bar{background:var(--t-bg2);padding:9px 14px;display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--t-border);}
+  .tui-dots{display:flex;gap:6px;}
+  .tui-dot{width:12px;height:12px;border-radius:50%;}
+  .tui-dot.r{background:#ff5f57;}.tui-dot.y{background:#febc2e;}.tui-dot.g{background:#28c840;}
+  .tui-wt{flex:1;text-align:center;font-size:12px;color:var(--t-dim);}
+  .tui-main{display:flex;min-height:240px;}
+  .tui-msgs{flex:1;min-width:0;padding:14px 18px;border-right:1px solid var(--t-border);display:flex;flex-direction:column;gap:3px;}
+  .tui-sidebar{width:212px;flex-shrink:0;padding:14px 16px;}
+  .sb-sec{margin-bottom:16px;}
+  .sb-title{font-size:12px;color:var(--t-white);margin-bottom:5px;}
+  .sb-body{font-size:12px;color:var(--t-dim);line-height:1.8;}
+  /* ──────────────────────────────────────────────────────────
+     CLI-AUTHENTIC ANIMATIONS
+     在终端里没有渐变透明度——所有"动效"都是字符逐帧重绘。
+     下面用 JS 每隔固定帧间隔替换字符内容，模拟终端重绘。
+     CSS 仅负责颜色，不做 opacity/transform 渐变。
+  ─────────────────────────────────────────────────────────── */
+  .cli-anim{font-family:var(--font-mono);white-space:pre;}
+  .cli-breathe{color:var(--t-theme);}      /* 呼吸点：字符亮度逐帧切换 */
+  .cli-spin{color:var(--t-theme);}          /* spinner：Braille 帧序列 */
+  .cli-bar{color:var(--t-theme);letter-spacing:0;}
+  .cli-bar .bar-empty{color:var(--t-muted);}
+
+  /* sidebar state radio list */
+  .sb-state-row{display:flex;align-items:center;gap:7px;font-size:12px;padding:1px 0;color:var(--t-muted);}
+  .sb-state-row.active{color:var(--t-white);}
+  .sb-state-row .sb-dot{font-size:11px;font-family:var(--font-mono);}
+  .sb-state-row.active.building .sb-dot{color:var(--t-theme);}
+  .sb-state-row.active.done .sb-dot{color:var(--t-ok);}
+  .sb-state-row.active.none .sb-dot{color:var(--t-dim);}
+  .sb-progress-mini{margin-top:4px;font-size:10px;color:var(--t-theme);font-family:var(--font-mono);}
+
+  .tui-input{border-top:1px solid var(--t-border);display:flex;}
+  .tui-iline{flex:1;border-left:2px solid var(--t-blue);padding:9px 14px;background:var(--t-bg2);font-size:12px;color:var(--t-white);min-height:40px;display:flex;align-items:center;}
+  .t-cursor{display:inline-block;width:7px;height:13px;background:var(--t-white);border-radius:1px;vertical-align:middle;margin-left:1px;opacity:0.85;}
+  .tui-status{background:var(--t-bg2);border-top:1px solid var(--t-border);padding:5px 14px;display:flex;align-items:center;justify-content:space-between;font-size:11px;color:var(--t-dim);}
+  .tui-sl{display:flex;align-items:center;gap:8px;}
+  .tui-sr{display:flex;align-items:center;gap:12px;}
+  .agent-lbl{color:var(--t-orange);}
+  .t-kbd{color:var(--t-white);}
+  .tm{font-size:12px;line-height:1.85;}
+  .tc-dim{color:var(--t-dim);}.tc-white{color:var(--t-white);}.tc-orange{color:var(--t-orange);}
+  .tc-green{color:var(--t-green);}.tc-red{color:var(--t-red);}.tc-yellow{color:var(--t-yellow);}.tc-blue{color:var(--t-blue);}
+  .tm-gap{height:5px;}
+
+  /* prompt echo */
+  .p-line{display:flex;gap:8px;}
+  .p-sym{color:var(--t-blue);flex-shrink:0;}
+  .p-txt{color:var(--t-dim);}
+
+  /* ── ALERT (left border only) ─────────── */
+  .oc-alert{padding:6px 14px;border-left:3px solid transparent;font-size:12px;line-height:1.8;}
+  .oc-alert.error{border-left-color:var(--t-warn);}.oc-alert.warning{border-left-color:var(--t-warn);}
+  .oc-alert.success{border-left-color:var(--t-ok);}.oc-alert.info{border-left-color:var(--t-dim);}
+  .oc-alert .a-title{margin-bottom:1px;}
+  .oc-alert.error .a-title{color:var(--t-warn);}.oc-alert.warning .a-title{color:var(--t-warn);}
+  .oc-alert.success .a-title{color:var(--t-ok);}.oc-alert.info .a-title{color:var(--t-white);}
+  .oc-alert .a-body{color:var(--t-dim);}
+  .oc-alert .a-body b{color:var(--t-text);font-weight:400;}
+
+  /* ── PROGRESS BAR (character-frame style) ──── */
+  .progress-block{padding:6px 14px;border-left:3px solid var(--t-theme);font-size:12px;line-height:1.8;}
+  .progress-block .pb-title{color:var(--t-theme);margin-bottom:4px;font-family:var(--font-mono);}
+  .progress-block .pb-hint{color:var(--t-dim);font-size:11px;margin-top:3px;}
+
+  /* confirm row (Y/N) */
+  .confirm-inline{padding:4px 14px;font-size:12px;color:var(--t-dim);}
+  .confirm-inline b{color:var(--t-white);font-weight:400;}
+</style>
+</head>
+<body>
+
+<!-- ═══ HEADER ═══ -->
+<div class="doc-header">
+  <h1>OpenCode <code>/codebase</code> 代码库索引 交互设计方案</h1>
+  <p>端云协同代码检索 · 单命令多选项架构 · 三种索引状态 · 异常场景处理</p>
+  <div class="meta">
+    <span class="meta-tag">版本 <b>v1.0</b></span>
+    <span class="meta-tag">平台 <b>opencode TUI</b></span>
+    <span class="meta-tag">状态 <b>设计稿</b></span>
+    <span class="meta-tag">界面 <b>9 个主要场景</b></span>
+  </div>
+</div>
+
+<!-- ═══ BODY ═══ -->
+<div class="doc-body">
+
+  <!-- 00 COMMAND OVERVIEW -->
+  <div class="section">
+    <div class="section-title"><span class="num">00</span> &nbsp;命令架构</div>
+    <div style="font-size:13px;color:var(--page-muted);line-height:1.8;margin-bottom:16px;">
+      单一命令 <code>/codebase</code> 配合子命令/选项，对标 opencode 的 Command.register 单命令架构。
+    </div>
+    <div class="table-wrap">
+      <table class="spec-table">
+        <thead><tr><th>命令</th><th>功能</th><th>说明</th></tr></thead>
+        <tbody>
+          <tr><td>/codebase</td><td>查看索引状态（默认）</td><td>不带参数，简要展示当前三态之一</td></tr>
+          <tr><td>/codebase/init</td><td>初始化索引</td><td>本地代码上传云端并向量化（上传过程不单独呈现）</td></tr>
+          <tr><td>/codebase/detail</td><td>查看状态详情</td><td>进度百分比、索引时间、统计信息</td></tr>
+          <tr><td>/codebase/update</td><td>更新索引（增量）</td><td>仅对变更文件增量更新</td></tr>
+          <tr><td>/codebase/delete</td><td>删除索引</td><td>释放云端配额</td></tr>
+          <tr><td>/codebase/help</td><td>查看帮助</td><td>列出所有子命令</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="step-note" style="margin-top:14px;">
+      <b>三种索引状态（不呈现上传中状态）：</b><code>未构建索引</code> → <code>索引构建中</code>（显示进度%）→ <code>索引构建完成</code>。上传过程作为索引构建的前置步骤，对用户透明，仅感知这三态。
+    </div>
+  </div>
+
+  <!-- 01 AUTO TRIGGER -->
+  <div class="section">
+    <div class="section-title"><span class="num">01</span> &nbsp;场景一 · 首次打开项目自动触发索引</div>
+    <div class="step-wrap">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <div class="step-label">首次打开未建索引的项目，<b>自动触发</b>上传与索引，无需用户手动确认。右侧栏展示「构建中」，消息区显示进度</div>
+          <div class="tui-wrap">
+            <div class="tui-bar">
+              <div class="tui-dots"><div class="tui-dot r"></div><div class="tui-dot y"></div><div class="tui-dot g"></div></div>
+              <div class="tui-wt">opencode — ~/project</div>
+            </div>
+            <div class="tui-main">
+              <div class="tui-msgs">
+                <div class="tm tc-dim"># ~/project · 首次打开</div>
+                <div class="tm-gap"></div>
+                <div class="progress-block">
+                  <div class="pb-title"><span class="cli-spin" data-spin>⠋</span> 正在构建代码库索引...</div>
+                  <div class="cli-anim cli-bar" data-bar data-progress="30" data-width="40"></div>
+                  <div class="pb-hint">提示：索引完成后可使用端云协同检索，提升代码生成准确率。</div>
+                </div>
+              </div>
+              <div class="tui-sidebar">
+                <div class="sb-sec">
+                  <div class="sb-title">代码库索引</div>
+                  <div class="sb-state-row none"><span class="sb-dot">○</span><span>未构建</span></div>
+                  <div class="sb-state-row active building"><span class="sb-dot cli-breathe" data-breathe>●</span><span>构建中</span></div>
+                  <div class="sb-state-row done"><span class="sb-dot">○</span><span>构建完成</span></div>
+                  <div class="sb-progress-mini">进度 <span data-progress-num="30">30</span>% · /codebase/detail 查看</div>
+                </div>
+              </div>
+            </div>
+            <div class="tui-input"><div class="tui-iline"><span class="t-cursor"></span></div></div>
+            <div class="tui-status">
+              <div class="tui-sl"><span class="agent-lbl">Build</span><span>claude-sonnet-4-5</span></div>
+              <div class="tui-sr"><span><span class="t-kbd">Ctrl+C</span> 取消</span><span><span class="t-kbd">ctrl+p</span> commands</span></div>
+            </div>
+          </div>
+          <div class="step-note">
+            <b>自动触发</b>：不弹确认框，直接开始（符合需求「无需用户手动确认」）。<br>
+            <b>右侧栏</b>：新增「代码库索引」区域，三态单选列表，当前态高亮——构建中为主题紫呼吸灯 ●（字符在 ●◉◎○ 间逐帧切换，模拟终端明暗），下方显示进度百分比。<br>
+            <b>不显示上传</b>：进度条只反映索引构建进度，不显示上传进度。<br>
+            <b>可取消</b>：status bar 提示 <code>Ctrl+C</code> 取消当前操作。
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 02 BUILD COMPLETE -->
+  <div class="section">
+    <div class="section-title"><span class="num">02</span> &nbsp;场景二 · 索引构建完成</div>
+    <div class="step-wrap">
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <div class="step-label">索引完成，绿色左线通知 + 索引信息，右侧栏切换为「构建完成」</div>
+          <div class="tui-wrap">
+            <div class="tui-bar">
+              <div class="tui-dots"><div class="tui-dot r"></div><div class="tui-dot y"></div><div class="tui-dot g"></div></div>
+              <div class="tui-wt">opencode — ~/project</div>
+            </div>
+            <div class="tui-main">
+              <div class="tui-msgs">
+                <div class="tm tc-dim"># ~/project</div>
+                <div class="tm-gap"></div>
+                <div class="oc-alert success">
+                  <div class="a-title">✓ 索引构建完成</div>
+                  <div class="a-body">索引时间：<b>2026-05-28 10:00</b><br>可使用端云协同检索，提升代码生成准确率。</div>
+                </div>
+              </div>
+              <div class="tui-sidebar">
+                <div class="sb-sec">
+                  <div class="sb-title">代码库索引</div>
+                  <div class="sb-state-row none"><span class="sb-dot">○</span><span>未构建</span></div>
+                  <div class="sb-state-row building"><span class="sb-dot">○</span><span>构建中</span></div>
+                  <div class="sb-state-row active done"><span class="sb-dot">●</span><span>构建完成</span></div>
+                  <div class="sb-progress-mini" style="color:var(--t-dim);">2026-05-28 10:00</div>
+                </div>
+              </div>
+            </div>
+            <div class="tui-input"><div class="tui-iline"><span class="t-cursor"></span></div></div>
+            <div class="tui-status">
+              <div class="tui-sl"><span class="agent-lbl">Build</span><span>claude-sonnet-4-5</span></div>
+              <div class="tui-sr"><span><span class="t-kbd">tab</span> agents</span><span><span class="t-kbd">ctrl+p</span> commands</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 03 /codebase default -->
+  <div class="section">
+    <div class="section-title"><span class="num">03</span> &nbsp;场景三 · /codebase 查看状态（默认）</div>
+    <div class="step-wrap">
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <div class="step-label">用户输入 <b>/codebase</b>，简要展示当前状态（detail 交互简化）</div>
+          <div class="tui-wrap">
+            <div class="tui-bar">
+              <div class="tui-dots"><div class="tui-dot r"></div><div class="tui-dot y"></div><div class="tui-dot g"></div></div>
+              <div class="tui-wt">opencode — ~/project</div>
+            </div>
+            <div class="tui-main">
+              <div class="tui-msgs">
+                <div class="p-line"><span class="p-sym">&gt;</span><span class="p-txt">/codebase</span></div>
+                <div class="tm-gap"></div>
+                <div class="oc-alert info">
+                  <div class="a-title">代码库索引状态</div>
+                  <div class="a-body">状态：<b>索引构建完成</b>。索引时间：2026-05-28 10:00。<br>使用 <span class="tc-cyan" style="color:var(--t-cyan);">/codebase/detail</span> 查看统计信息。</div>
+                </div>
+              </div>
+              <div class="tui-sidebar">
+                <div class="sb-sec">
+                  <div class="sb-title">代码库索引</div>
+                  <div class="sb-state-row none"><span class="sb-dot">○</span><span>未构建</span></div>
+                  <div class="sb-state-row building"><span class="sb-dot">○</span><span>构建中</span></div>
+                  <div class="sb-state-row active done"><span class="sb-dot">●</span><span>构建完成</span></div>
+                </div>
+              </div>
+            </div>
+            <div class="tui-input"><div class="tui-iline"><span class="tc-dim">/codebase</span><span class="t-cursor"></span></div></div>
+            <div class="tui-status">
+              <div class="tui-sl"><span class="agent-lbl">Build</span><span>claude-sonnet-4-5</span></div>
+              <div class="tui-sr"><span><span class="t-kbd">tab</span> agents</span><span><span class="t-kbd">ctrl+p</span> commands</span></div>
+            </div>
+          </div>
+          <div class="step-note">
+            <b>三态简化展示文案：</b><br>
+            · 未构建 → <code>状态：未构建索引。使用 /codebase/detail 查看详细信息。</code><br>
+            · 构建中 → <code>状态：索引构建中（进度：30%）。</code><br>
+            · 构建完成 → <code>状态：索引构建完成。索引时间：2026-05-28 10:00。</code>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 04 /codebase/detail -->
+  <div class="section">
+    <div class="section-title"><span class="num">04</span> &nbsp;场景四 · /codebase/detail 状态详情</div>
+    <div class="step-wrap">
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-content">
+          <div class="step-label">展示完整统计信息（进度、时间、文件数等）</div>
+          <div class="tui-wrap">
+            <div class="tui-bar">
+              <div class="tui-dots"><div class="tui-dot r"></div><div class="tui-dot y"></div><div class="tui-dot g"></div></div>
+              <div class="tui-wt">opencode — ~/project</div>
+            </div>
+            <div class="tui-main">
+              <div class="tui-msgs">
+                <div class="p-line"><span class="p-sym">&gt;</span><span class="p-txt">/codebase/detail</span></div>
+                <div class="tm-gap"></div>
+                <div class="oc-alert info">
+                  <div class="a-title">代码库索引详情</div>
+                  <div class="a-body" style="line-height:1.9;">
+                    状态：<b>索引构建完成</b><br>
+                    索引时间：<b>2026-05-28 10:00</b><br>
+                    已索引文件：<b>1,284 个</b><br>
+                    向量片段：<b>8,612 段</b><br>
+                    占用配额：<b>1 / 5</b>
+                  </div>
+                </div>
+              </div>
+              <div class="tui-sidebar">
+                <div class="sb-sec">
+                  <div class="sb-title">代码库索引</div>
+                  <div class="sb-state-row none"><span class="sb-dot">○</span><span>未构建</span></div>
+                  <div class="sb-state-row building"><span class="sb-dot">○</span><span>构建中</span></div>
+                  <div class="sb-state-row active done"><span class="sb-dot">●</span><span>构建完成</span></div>
+                </div>
+              </div>
+            </div>
+            <div class="tui-input"><div class="tui-iline"><span class="t-cursor"></span></div></div>
+            <div class="tui-status">
+              <div class="tui-sl"><span class="agent-lbl">Build</span><span>claude-sonnet-4-5</span></div>
+              <div class="tui-sr"><span><span class="t-kbd">tab</span> agents</span><span><span class="t-kbd">ctrl+p</span> commands</span></div>
+            </div>
+          </div>
+          <div class="step-note">构建中状态下 detail 自动显示进度百分比；完成状态显示统计信息。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 05 /codebase/update -->
+  <div class="section">
+    <div class="section-title"><span class="num">05</span> &nbsp;场景五 · /codebase/update 增量更新</div>
+    <div class="step-wrap">
+
+      <div class="path-divider"><span>5A · 有变更 · 正常更新</span></div>
+      <div class="step">
+        <div class="step-num">5A</div>
+        <div class="step-content">
+          <div class="step-label">检测到变更，增量更新并显示进度</div>
+          <div class="tui-wrap">
+            <div class="tui-bar">
+              <div class="tui-dots"><div class="tui-dot r"></div><div class="tui-dot y"></div><div class="tui-dot g"></div></div>
+              <div class="tui-wt">opencode — ~/project</div>
+            </div>
+            <div class="tui-main">
+              <div class="tui-msgs">
+                <div class="p-line"><span class="p-sym">&gt;</span><span class="p-txt">/codebase/update</span></div>
+                <div class="tm-gap"></div>
+                <div class="progress-block">
+                  <div class="pb-title"><span class="cli-spin" data-spin>⠋</span> 正在增量更新索引...</div>
+                  <div class="cli-anim cli-bar" data-bar data-progress="65" data-width="40"></div>
+                  <div class="pb-hint">检测到 12 个文件变更。</div>
+                </div>
+              </div>
+              <div class="tui-sidebar">
+                <div class="sb-sec">
+                  <div class="sb-title">代码库索引</div>
+                  <div class="sb-state-row none"><span class="sb-dot">○</span><span>未构建</span></div>
+                  <div class="sb-state-row active building"><span class="sb-dot cli-breathe" data-breathe>●</span><span>构建中</span></div>
+                  <div class="sb-state-row done"><span class="sb-dot">○</span><span>构建完成</span></div>
+                  <div class="sb-progress-mini">进度 <span data-progress-num="65">65</span>%</div>
+                </div>
+              </div>
+            </div>
+            <div class="tui-input"><div class="tui-iline"><span class="t-cursor"></span></div></div>
+            <div class="tui-status">
+              <div class="tui-sl"><span class="agent-lbl">Build</span><span>claude-sonnet-4-5</span></div>
+              <div class="tui-sr"><span><span class="t-kbd">Ctrl+C</span> 取消</span><span><span class="t-kbd">ctrl+p</span> commands</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="path-divider"><span>5B · 无变更</span></div>
+      <div class="step">
+        <div class="step-num">5B</div>
+        <div class="step-content">
+          <div class="step-label">无变更，提示无需更新</div>
+          <div class="tui-wrap">
+            <div class="tui-bar">
+              <div class="tui-dots"><div class="tui-dot r"></div><div class="tui-dot y"></div><div class="tui-dot g"></div></div>
+              <div class="tui-wt">opencode — ~/project</div>
+            </div>
+            <div class="tui-main">
+              <div class="tui-msgs">
+                <div class="p-line"><span class="p-sym">&gt;</span><span class="p-txt">/codebase/update</span></div>
+                <div class="tm-gap"></div>
+                <div class="oc-alert info">
+                  <div class="a-title">提示</div>
+                  <div class="a-body">代码库无变更，无需更新索引。</div>
+                </div>
+              </div>
+              <div class="tui-sidebar">
+                <div class="sb-sec">
+                  <div class="sb-title">代码库索引</div>
+                  <div class="sb-state-row active done"><span class="sb-dot">●</span><span>构建完成</span></div>
+                </div>
+              </div>
+            </div>
+            <div class="tui-input"><div class="tui-iline"><span class="t-cursor"></span></div></div>
+            <div class="tui-status">
+              <div class="tui-sl"><span class="agent-lbl">Build</span><span>claude-sonnet-4-5</span></div>
+              <div class="tui-sr"><span><span class="t-kbd">tab</span> agents</span><span><span class="t-kbd">ctrl+p</span> commands</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 06 ERRORS -->
+  <div class="section">
+    <div class="section-title"><span class="num">06</span> &nbsp;场景六 · 异常处理（warning 橙色左线）</div>
+    <div class="step-wrap">
+
+      <div class="path-divider"><span>6A · 网络异常</span></div>
+      <div class="step">
+        <div class="step-num">6A</div>
+        <div class="step-content">
+          <div class="tui-wrap">
+            <div class="tui-bar">
+              <div class="tui-dots"><div class="tui-dot r"></div><div class="tui-dot y"></div><div class="tui-dot g"></div></div>
+              <div class="tui-wt">opencode — ~/project</div>
+            </div>
+            <div class="tui-main">
+              <div class="tui-msgs">
+                <div class="p-line"><span class="p-sym">&gt;</span><span class="p-txt">/codebase/init</span></div>
+                <div class="tm-gap"></div>
+                <div class="oc-alert warning">
+                  <div class="a-title">网络连接失败（超时）</div>
+                  <div class="a-body">请检查网络连接或稍后重试。可使用 <b>Ctrl+C</b> 取消当前操作。</div>
+                </div>
+              </div>
+              <div class="tui-sidebar">
+                <div class="sb-sec">
+                  <div class="sb-title">代码库索引</div>
+                  <div class="sb-state-row active none"><span class="sb-dot">●</span><span>未构建</span></div>
+                </div>
+              </div>
+            </div>
+            <div class="tui-input"><div class="tui-iline"><span class="t-cursor"></span></div></div>
+            <div class="tui-status">
+              <div class="tui-sl"><span class="agent-lbl">Build</span><span>claude-sonnet-4-5</span></div>
+              <div class="tui-sr"><span><span class="t-kbd">ctrl+p</span> commands</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="path-divider"><span>6B · 配额超限</span></div>
+      <div class="step">
+        <div class="step-num">6B</div>
+        <div class="step-content">
+          <div class="tui-wrap">
+            <div class="tui-bar">
+              <div class="tui-dots"><div class="tui-dot r"></div><div class="tui-dot y"></div><div class="tui-dot g"></div></div>
+              <div class="tui-wt">opencode — ~/project</div>
+            </div>
+            <div class="tui-main">
+              <div class="tui-msgs">
+                <div class="p-line"><span class="p-sym">&gt;</span><span class="p-txt">/codebase/init</span></div>
+                <div class="tm-gap"></div>
+                <div class="oc-alert warning">
+                  <div class="a-title">提醒：云端索引配额超限</div>
+                  <div class="a-body">建议：<br>· 删除其他索引释放配额<br>· 在码道 Portal 升级套餐</div>
+                </div>
+              </div>
+              <div class="tui-sidebar">
+                <div class="sb-sec">
+                  <div class="sb-title">代码库索引</div>
+                  <div class="sb-state-row active none"><span class="sb-dot">●</span><span>未构建</span></div>
+                </div>
+              </div>
+            </div>
+            <div class="tui-input"><div class="tui-iline"><span class="t-cursor"></span></div></div>
+            <div class="tui-status">
+              <div class="tui-sl"><span class="agent-lbl">Build</span><span>claude-sonnet-4-5</span></div>
+              <div class="tui-sr"><span><span class="t-kbd">ctrl+p</span> commands</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="path-divider"><span>6C · 索引失败</span></div>
+      <div class="step">
+        <div class="step-num">6C</div>
+        <div class="step-content">
+          <div class="tui-wrap">
+            <div class="tui-bar">
+              <div class="tui-dots"><div class="tui-dot r"></div><div class="tui-dot y"></div><div class="tui-dot g"></div></div>
+              <div class="tui-wt">opencode — ~/project</div>
+            </div>
+            <div class="tui-main">
+              <div class="tui-msgs">
+                <div class="p-line"><span class="p-sym">&gt;</span><span class="p-txt">/codebase/init</span></div>
+                <div class="tm-gap"></div>
+                <div class="oc-alert warning">
+                  <div class="a-title">索引构建失败</div>
+                  <div class="a-body">请检查代码仓语言，或联系管理员。查看详情：<b>/codebase/detail</b></div>
+                </div>
+              </div>
+              <div class="tui-sidebar">
+                <div class="sb-sec">
+                  <div class="sb-title">代码库索引</div>
+                  <div class="sb-state-row active none"><span class="sb-dot">●</span><span>未构建</span></div>
+                </div>
+              </div>
+            </div>
+            <div class="tui-input"><div class="tui-iline"><span class="t-cursor"></span></div></div>
+            <div class="tui-status">
+              <div class="tui-sl"><span class="agent-lbl">Build</span><span>claude-sonnet-4-5</span></div>
+              <div class="tui-sr"><span><span class="t-kbd">ctrl+p</span> commands</span></div>
+            </div>
+          </div>
+          <div class="step-note">这些场景都不是致命错误，统一降级为 <b>warning（橙色左线）</b>，无圆角无 icon。文案对标 opencode UI.error/UI.println 格式：<code>错误：[内容]。建议：[内容]。</code></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 07 init when exists -->
+  <div class="section">
+    <div class="section-title"><span class="num">07</span> &nbsp;场景七 · 索引已存在时执行 init</div>
+    <div class="step-wrap">
+      <div class="step">
+        <div class="step-num">7</div>
+        <div class="step-content">
+          <div class="step-label">索引已存在或正在构建，提示无需重复初始化</div>
+          <div class="tui-wrap">
+            <div class="tui-bar">
+              <div class="tui-dots"><div class="tui-dot r"></div><div class="tui-dot y"></div><div class="tui-dot g"></div></div>
+              <div class="tui-wt">opencode — ~/project</div>
+            </div>
+            <div class="tui-main">
+              <div class="tui-msgs">
+                <div class="p-line"><span class="p-sym">&gt;</span><span class="p-txt">/codebase/init</span></div>
+                <div class="tm-gap"></div>
+                <div class="oc-alert info">
+                  <div class="a-title">提示：索引已存在</div>
+                  <div class="a-body">状态：<b>索引构建完成</b>。无需重新初始化。<br>查看状态：<b>/codebase/detail</b> · 更新索引：<b>/codebase/update</b></div>
+                </div>
+              </div>
+              <div class="tui-sidebar">
+                <div class="sb-sec">
+                  <div class="sb-title">代码库索引</div>
+                  <div class="sb-state-row active done"><span class="sb-dot">●</span><span>构建完成</span></div>
+                </div>
+              </div>
+            </div>
+            <div class="tui-input"><div class="tui-iline"><span class="t-cursor"></span></div></div>
+            <div class="tui-status">
+              <div class="tui-sl"><span class="agent-lbl">Build</span><span>claude-sonnet-4-5</span></div>
+              <div class="tui-sr"><span><span class="t-kbd">ctrl+p</span> commands</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 08 delete -->
+  <div class="section">
+    <div class="section-title"><span class="num">08</span> &nbsp;场景八 · /codebase/delete 删除索引</div>
+    <div class="step-wrap">
+      <div class="step">
+        <div class="step-num">8</div>
+        <div class="step-content">
+          <div class="step-label">删除前 Y/N 二次确认，删除后右侧栏回到「未构建」</div>
+          <div class="tui-wrap">
+            <div class="tui-bar">
+              <div class="tui-dots"><div class="tui-dot r"></div><div class="tui-dot y"></div><div class="tui-dot g"></div></div>
+              <div class="tui-wt">opencode — ~/project</div>
+            </div>
+            <div class="tui-main">
+              <div class="tui-msgs">
+                <div class="p-line"><span class="p-sym">&gt;</span><span class="p-txt">/codebase/delete</span></div>
+                <div class="tm-gap"></div>
+                <div class="oc-alert warning">
+                  <div class="a-title">确认删除索引？</div>
+                  <div class="a-body">删除后将释放云端配额，需重新 init 才能再次检索。</div>
+                </div>
+                <div class="confirm-inline">是否继续？ <b>[Y]</b> 确认 &nbsp;<b>[N]</b> 取消 &nbsp;<span class="t-cursor"></span></div>
+              </div>
+              <div class="tui-sidebar">
+                <div class="sb-sec">
+                  <div class="sb-title">代码库索引</div>
+                  <div class="sb-state-row active done"><span class="sb-dot">●</span><span>构建完成</span></div>
+                </div>
+              </div>
+            </div>
+            <div class="tui-input"><div class="tui-iline"><span class="t-cursor"></span></div></div>
+            <div class="tui-status">
+              <div class="tui-sl"><span class="agent-lbl">Build</span><span>claude-sonnet-4-5</span></div>
+              <div class="tui-sr"><span><span class="t-kbd">Y</span> / <span class="t-kbd">N</span></span><span><span class="t-kbd">ctrl+p</span> commands</span></div>
+            </div>
+          </div>
+          <div class="step-note">删除为破坏性操作，使用 Y/N 键盘确认（符合需求「键盘输入：Y/N/Ctrl+C」）。确认后输出绿色「索引已删除」通知，右侧栏切回「未构建」。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 09 help -->
+  <div class="section">
+    <div class="section-title"><span class="num">09</span> &nbsp;场景九 · /codebase/help 帮助</div>
+    <div class="step-wrap">
+      <div class="step">
+        <div class="step-num">9</div>
+        <div class="step-content">
+          <div class="tui-wrap">
+            <div class="tui-bar">
+              <div class="tui-dots"><div class="tui-dot r"></div><div class="tui-dot y"></div><div class="tui-dot g"></div></div>
+              <div class="tui-wt">opencode — ~/project</div>
+            </div>
+            <div class="tui-main">
+              <div class="tui-msgs">
+                <div class="p-line"><span class="p-sym">&gt;</span><span class="p-txt">/codebase/help</span></div>
+                <div class="tm-gap"></div>
+                <div class="tm tc-white">代码库索引 — 端云协同代码检索</div>
+                <div class="tm-gap"></div>
+                <div class="tm"><span class="tc-cyan" style="color:var(--t-cyan);">/codebase</span><span class="tc-dim">          查看索引状态（默认）</span></div>
+                <div class="tm"><span class="tc-cyan" style="color:var(--t-cyan);">/codebase/init</span><span class="tc-dim">     初始化索引</span></div>
+                <div class="tm"><span class="tc-cyan" style="color:var(--t-cyan);">/codebase/detail</span><span class="tc-dim">   查看状态详情</span></div>
+                <div class="tm"><span class="tc-cyan" style="color:var(--t-cyan);">/codebase/update</span><span class="tc-dim">   更新索引（增量）</span></div>
+                <div class="tm"><span class="tc-cyan" style="color:var(--t-cyan);">/codebase/delete</span><span class="tc-dim">   删除索引</span></div>
+                <div class="tm"><span class="tc-cyan" style="color:var(--t-cyan);">/codebase/help</span><span class="tc-dim">     查看帮助</span></div>
+              </div>
+              <div class="tui-sidebar">
+                <div class="sb-sec">
+                  <div class="sb-title">代码库索引</div>
+                  <div class="sb-state-row active done"><span class="sb-dot">●</span><span>构建完成</span></div>
+                </div>
+              </div>
+            </div>
+            <div class="tui-input"><div class="tui-iline"><span class="t-cursor"></span></div></div>
+            <div class="tui-status">
+              <div class="tui-sl"><span class="agent-lbl">Build</span><span>claude-sonnet-4-5</span></div>
+              <div class="tui-sr"><span><span class="t-kbd">ctrl+p</span> commands</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 10 CLI vs TUI -->
+  <div class="section">
+    <div class="section-title"><span class="num">10</span> &nbsp;CLI 与 TUI 交互差异</div>
+    <div class="table-wrap">
+      <table class="spec-table">
+        <thead><tr><th>交互形态</th><th>进度展示</th><th>错误提示</th><th>用户操作</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>CLI（纯命令行）</td>
+            <td>文本进度条：<code>进度：45%</code></td>
+            <td>纯文本：<code>错误：[内容]。建议：[内容]。</code></td>
+            <td>键盘输入 Y / N / Ctrl+C</td>
+          </tr>
+          <tr>
+            <td>TUI（终端 UI，本方案）</td>
+            <td>右侧栏三态 + 消息区进度条</td>
+            <td>左线 alert（warning 橙），多行详情</td>
+            <td>键盘输入，可交互式处理</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="step-note" style="margin-top:14px;">
+      上方所有 mockup 为 <b>TUI 形态</b>。纯 CLI 形态下无右侧栏、无 alert 框，所有提示降级为单行纯文本（如 <code>进度：45%</code>、<code>错误：网络连接失败。建议：请检查网络连接或稍后重试。</code>）。
+    </div>
+  </div>
+
+  <!-- 11 state machine -->
+  <div class="section">
+    <div class="section-title"><span class="num">11</span> &nbsp;状态机 — 三态流转</div>
+    <div class="code-block">
+<span class="cc">// 索引状态（不对用户呈现「上传中」）</span>
+<span class="ck">type</span> <span class="ct">IndexState</span> = <span class="cs">"none"</span> | <span class="cs">"building"</span> | <span class="cs">"done"</span>
+
+<span class="cc">// 状态流转</span>
+none  ──[首次打开 / init]──▶  building ──[完成]──▶  done
+done  ──[update 有变更]─────▶  building ──[完成]──▶  done
+done  ──[delete 确认]───────▶  none
+
+<span class="cc">// building 状态展示进度，done 状态展示索引时间</span>
+{
+  <span class="ct">"state"</span>: <span class="cs">"building"</span>,
+  <span class="ct">"progress"</span>: <span class="cv">30</span>,            <span class="cc">// 仅 building 时有效，反映索引进度（非上传进度）</span>
+  <span class="ct">"indexedAt"</span>: <span class="cv">null</span>,         <span class="cc">// done 时填充时间戳</span>
+  <span class="ct">"quota"</span>: { <span class="ct">"used"</span>: <span class="cv">1</span>, <span class="ct">"total"</span>: <span class="cv">5</span> }
+}
+
+<span class="cc">// 异常码（云端返回）</span>
+QUOTA_INSUFFICIENT  ──▶  warning 橙：配额超限
+NETWORK_TIMEOUT     ──▶  warning 橙：网络连接失败
+INDEX_FAILED        ──▶  warning 橙：索引构建失败
+    </div>
+    <div class="step-note" style="margin-top:14px;">
+      <b>颜色语义：</b>构建中 = <span style="color:#8a5fd6;font-weight:500;">主题紫呼吸灯 #B494F5</span>（进行中/活动）· 构建完成 = <span style="color:#4a8f3f;font-weight:500;">绿色 #5BA854</span>（稳定常亮）· 未构建 = 灰色（静默）。所有异常均为非致命问题，统一用 <span style="color:#cc6d00;font-weight:500;">warning 橙 #FF8800</span>，不使用红色，避免过度告警。
+    </div>
+    <div class="step-note" style="margin-top:14px;border-left-color:#8a5fd6;">
+      <b>关于动效的实现（CLI 渲染方式）：</b>终端无法做 GUI 的透明度渐变或填充补间，所有"动效"本质是<b>字符逐帧重绘</b>。本文档的动效均按真实 CLI 方式实现——<br>
+      · <b>Spinner</b>：Braille 帧序列 <code>⠋⠙⠹⠸⠼⠴⠦⠧⠇⠏</code> 循环切换（~11fps），与 opencode / Claude Code 实际所用一致。<br>
+      · <b>呼吸灯</b>：圆点字符在 <code>● ◉ ◎ ○</code> 之间逐帧切换并回弹，用字符"亮度"模拟明暗，而非 opacity。<br>
+      · <b>进度条</b>：<code>█</code> / <code>░</code> 字符按帧重排，填充边缘在 <code>▏▎▍▌▋▊▉</code> 子格字符间切换，模拟终端做平滑进度的 sub-cell 重绘手法。
+  </div>
+
+</div>
+<script>
+/* ════════════════════════════════════════════════════════════
+   CLI 动效 = 字符逐帧重绘（不是 GUI 的 opacity/transform 渐变）
+   每个 ticker 在固定帧间隔替换 textContent，模拟终端按帧重画。
+   ════════════════════════════════════════════════════════════ */
+
+// 1) Spinner —— Braille 点阵帧序列（与 opencode / claude code 实际所用一致）
+const SPIN_FRAMES = ['⠋','⠙','⠹','⠸','⠼','⠴','⠦','⠧','⠇','⠏'];
+function startSpinners(){
+  const els = document.querySelectorAll('[data-spin]');
+  let i = 0;
+  setInterval(() => {
+    i = (i + 1) % SPIN_FRAMES.length;
+    els.forEach(el => { el.textContent = SPIN_FRAMES[i]; });
+  }, 90);   // ~11 fps，终端常见 spinner 速度
+}
+
+// 2) 呼吸灯 —— 用不同"亮度"的圆点字符逐帧切换，模拟终端无法渐变、只能换字符
+//    终端里通过切换 ●(实心) → ◉ → ◎ → ○(空心) 表达明暗，再回弹
+const BREATHE_FRAMES = ['●','●','◉','◎','○','◎','◉','●'];
+function startBreathers(){
+  const els = document.querySelectorAll('[data-breathe]');
+  let i = 0;
+  setInterval(() => {
+    i = (i + 1) % BREATHE_FRAMES.length;
+    els.forEach(el => { el.textContent = BREATHE_FRAMES[i]; });
+  }, 190);  // 慢一些，呼吸节奏
+}
+
+// 3) 进度条 —— █ / ░ 字符按帧重排。这里演示进度在目标值附近"流动"，
+//    并让填充边缘字符在 ▏▎▍▌▋▊▉ 之间切换，模拟 sub-cell 重绘（终端做平滑进度的常见手法）
+const SUBCELL = ['▏','▎','▍','▌','▋','▊','▉','█'];
+function startBars(){
+  const els = document.querySelectorAll('[data-bar]');
+  els.forEach(el => {
+    const target = parseInt(el.dataset.progress, 10);
+    const width  = parseInt(el.dataset.width || '40', 10);
+    let phase = 0;
+    const render = () => {
+      // 进度在 target 附近小幅浮动，体现"仍在跑"
+      const p = Math.min(99, Math.max(1, target + Math.round(Math.sin(phase) * 2)));
+      const exact = (p / 100) * width;
+      const full  = Math.floor(exact);
+      const frac  = exact - full;
+      const edge  = frac > 0 ? SUBCELL[Math.floor(frac * (SUBCELL.length - 1))] : '';
+      const fullStr  = '█'.repeat(full);
+      const emptyStr = '░'.repeat(Math.max(0, width - full - (edge ? 1 : 0)));
+      el.innerHTML =
+        '<span style="color:var(--t-theme)">' + fullStr + edge + '</span>' +
+        '<span class="bar-empty">' + emptyStr + '</span>' +
+        ' <span style="color:var(--t-theme)">' + p + '%</span>';
+      phase += 0.25;
+    };
+    render();
+    setInterval(render, 130);
+  });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  startSpinners();
+  startBreathers();
+  startBars();
+});
+</script>
+</body>
+</html>
