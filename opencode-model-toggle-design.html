@@ -340,6 +340,7 @@
     background: linear-gradient(90deg, var(--t-green), var(--t-yellow), var(--t-orange));
   }
   .usage-fill.low { background: linear-gradient(90deg, var(--t-blue), var(--t-cyan)); }
+  .usage-fill.mid { background: linear-gradient(90deg, var(--t-green), var(--t-yellow)); }
   .usage-fill.warn { background: linear-gradient(90deg, var(--t-yellow), var(--t-orange)); }
   .usage-fill.danger { background: linear-gradient(90deg, var(--t-orange), var(--t-red)); }
   .quota-chip {
@@ -587,7 +588,7 @@
                     </div>
                     <div class="usage-row">
                       <div class="usage-line"><span>7d usage <b>41%</b></span><span class="usage-reset">周一 09:00 重置</span></div>
-                      <div class="usage-bar"><div class="usage-fill" style="width:41%;"></div></div>
+                      <div class="usage-bar"><div class="usage-fill low" style="width:41%;"></div></div>
                     </div>
                   </div>
                 </div>
@@ -643,7 +644,7 @@
                     </div>
                     <div class="usage-row">
                       <div class="usage-line"><span>7d usage <b>52%</b></span><span class="usage-reset">周二 00:00 重置</span></div>
-                      <div class="usage-bar"><div class="usage-fill" style="width:52%;"></div></div>
+                      <div class="usage-bar"><div class="usage-fill mid" style="width:52%;"></div></div>
                     </div>
                   </div>
                 </div>
@@ -777,7 +778,10 @@
 
 <span class="cc">// ↑↓ 移动时</span>
 highlightedModel = nextModel
-renderUsagePanel(modelUsage[highlightedModel])
+usage = modelUsage[highlightedModel]
+risk = Math.max(usage.window5h.percent, usage.window7d.percent)
+color = risk >= 85 ? <span class="cs">"danger"</span> : risk >= 70 ? <span class="cs">"warn"</span> : risk >= 50 ? <span class="cs">"mid"</span> : <span class="cs">"low"</span>
+renderUsagePanel(usage, color)
 
 <span class="cc">// ↵ 确认时</span>
 previousModel = currentModel
@@ -792,21 +796,40 @@ showSuccessAlert(previousModel, currentModel, modelUsage[currentModel])
     <div class="table-wrap">
       <table class="spec-table">
         <thead>
-          <tr><th>模型</th><th>5h 用量</th><th>5h 重置</th><th>7d 用量</th><th>7d 重置</th><th>状态</th></tr>
+          <tr><th>模型</th><th>5h 用量</th><th>5h 重置</th><th>7d 用量</th><th>7d 重置</th><th>最高风险色</th><th>状态</th></tr>
         </thead>
         <tbody>
-          <tr><td>claude-sonnet-4-5</td><td>36%</td><td>14:00</td><td>29%</td><td>周一 09:00</td><td style="color:#4a8f2a">当前模型</td></tr>
-          <tr><td>claude-opus-4-1</td><td>68%</td><td>14:00</td><td>41%</td><td>周一 09:00</td><td style="color:#b07d20">偏高</td></tr>
-          <tr><td>gpt-5</td><td>24%</td><td>15:30</td><td>52%</td><td>周二 00:00</td><td style="color:#4a8f2a">健康</td></tr>
-          <tr><td>gpt-5-mini</td><td>12%</td><td>15:30</td><td>88%</td><td>周二 00:00</td><td style="color:#b92d45">7d 接近上限</td></tr>
+          <tr><td>claude-sonnet-4-5</td><td>36%</td><td>14:00</td><td>29%</td><td>周一 09:00</td><td style="color:#4a8f2a">蓝绿</td><td>当前模型</td></tr>
+          <tr><td>claude-opus-4-1</td><td>68%</td><td>14:00</td><td>41%</td><td>周一 09:00</td><td style="color:#b07d20">绿黄</td><td>偏高</td></tr>
+          <tr><td>gpt-5</td><td>24%</td><td>15:30</td><td>52%</td><td>周二 00:00</td><td style="color:#4a8f2a">绿黄</td><td>健康</td></tr>
+          <tr><td>gpt-5-mini</td><td>12%</td><td>15:30</td><td>88%</td><td>周二 00:00</td><td style="color:#b92d45">橙红</td><td>7d 接近上限</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="step-note" style="margin-top:12px;">模型整体状态取 <b>5h</b> 与 <b>7d</b> 两个窗口中风险更高的一档。例如 5h=12% 但 7d=88%，整体 chip 显示「7d 接近上限」，并使用橙红色。</div>
+  </div>
+
+  <!-- 07 COLOR RULES -->
+  <div class="section">
+    <div class="section-title"><span class="num">07</span> &nbsp;用量颜色规则</div>
+    <div class="table-wrap">
+      <table class="spec-table">
+        <thead>
+          <tr><th>百分比区间</th><th>状态文案</th><th>Usage bar 颜色</th><th>交互处理</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>0 – 49%</td><td>健康 / 充足</td><td style="color:var(--t-cyan)">蓝绿</td><td>只显示用量，不额外提示</td></tr>
+          <tr><td>50 – 69%</td><td>中等 / 正常消耗</td><td style="color:var(--t-green)">绿黄</td><td>显示百分比与重置时间，不弹提醒</td></tr>
+          <tr><td>70 – 84%</td><td>偏高 / 建议注意</td><td style="color:var(--t-yellow)">黄橙</td><td>chip 显示「预估偏高」</td></tr>
+          <tr><td>85 – 100%</td><td>接近上限</td><td style="color:var(--t-red)">橙红</td><td>插入黄色左线用量提醒；仍允许按 ↵ 切换</td></tr>
         </tbody>
       </table>
     </div>
   </div>
 
-  <!-- 07 INTERACTION SPEC -->
+  <!-- 08 INTERACTION SPEC -->
   <div class="section">
-    <div class="section-title"><span class="num">07</span> &nbsp;交互规格说明</div>
+    <div class="section-title"><span class="num">08</span> &nbsp;交互规格说明</div>
     <div class="table-wrap">
       <table class="spec-table">
         <thead><tr><th>场景</th><th>行为</th><th>键位</th></tr></thead>
