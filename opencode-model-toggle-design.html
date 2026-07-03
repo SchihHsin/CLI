@@ -78,6 +78,31 @@
 
   .doc-body { padding: 36px 52px 60px; max-width: 920px; }
 
+  .tab-shell {
+    display: inline-flex; align-items: center; gap: 4px;
+    padding: 4px; margin-bottom: 30px;
+    background: var(--page-tag-bg);
+    border: 1px solid var(--page-border);
+    border-radius: 6px;
+  }
+  .version-tab {
+    appearance: none; border: 0; cursor: pointer;
+    padding: 7px 14px; border-radius: 4px;
+    background: transparent; color: var(--page-muted);
+    font-family: var(--font-sans); font-size: 12px;
+  }
+  .version-tab.is-active {
+    background: var(--page-surface);
+    color: var(--page-text);
+    box-shadow: 0 0 0 1px var(--page-border);
+  }
+  .version-tab:focus-visible {
+    outline: 2px solid #c96a2a;
+    outline-offset: 2px;
+  }
+  .version-panel { display: none; }
+  .version-panel.is-active { display: block; }
+
   .section { margin-bottom: 52px; }
 
   .section-title {
@@ -472,6 +497,12 @@
 
 <!-- ═══════════════ BODY ════════════════ -->
 <div class="doc-body">
+  <div class="tab-shell" role="tablist" aria-label="Model switch design versions">
+    <button class="version-tab is-active" type="button" data-target="v1" role="tab" aria-selected="true">V1 · 单模型额度</button>
+    <button class="version-tab" type="button" data-target="v2" role="tab" aria-selected="false">V2 · 后续：分组共享额度</button>
+  </div>
+
+  <div class="version-panel is-active" id="panel-v1" data-panel="v1">
 
   <!-- 00 OVERVIEW -->
   <div class="section">
@@ -888,6 +919,9 @@ showSuccessAlert(previousModel, currentModel, modelUsage[currentModel])
     </div>
   </div>
 
+  </div>
+
+  <div class="version-panel" id="panel-v2" data-panel="v2">
   <!-- 09 V2 OVERVIEW -->
   <div class="section">
     <div class="section-title"><span class="num">09</span> &nbsp;V2.0 · 模型组共享额度方案</div>
@@ -1117,7 +1151,26 @@ renderPoolUsage(targetPool, colorByRisk(risk))
       </table>
     </div>
   </div>
-
 </div>
+</div>
+<script>
+  (function initVersionTabs() {
+    const tabs = Array.from(document.querySelectorAll('.version-tab'));
+    const panels = Array.from(document.querySelectorAll('.version-panel'));
+    tabs.forEach((tab) => {
+      tab.addEventListener('click', () => {
+        const target = tab.dataset.target;
+        tabs.forEach((item) => {
+          const active = item === tab;
+          item.classList.toggle('is-active', active);
+          item.setAttribute('aria-selected', String(active));
+        });
+        panels.forEach((panel) => {
+          panel.classList.toggle('is-active', panel.dataset.panel === target);
+        });
+      });
+    });
+  })();
+</script>
 </body>
 </html>
