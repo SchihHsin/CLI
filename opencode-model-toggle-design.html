@@ -348,6 +348,25 @@
     border: 1px solid var(--t-border2); border-radius: 999px;
     padding: 1px 7px; color: var(--t-dim); font-size: 10px;
   }
+  .group-card {
+    margin: 6px 12px 0;
+    border: 1px solid var(--t-border2);
+    background: rgba(255,255,255,.025);
+  }
+  .group-card.active { border-color: rgba(250,178,131,.55); }
+  .group-top {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 8px 10px 6px; font-size: 11px;
+  }
+  .group-name { color: var(--t-white); }
+  .group-meta { color: var(--t-dim); }
+  .group-card .usage-row { padding: 0 10px 9px; margin-top: 0; }
+  .pool-tag {
+    display: inline-flex; align-items: center;
+    padding: 1px 6px; border-radius: 3px;
+    background: rgba(157,124,216,.12);
+    color: var(--t-purple); font-size: 10px;
+  }
 
   /* warn block inside modal */
   .modal-warn {
@@ -442,12 +461,12 @@
 <!-- ═══════════════ HEADER ═══════════════ -->
 <div class="doc-header">
   <h1>OpenCode <code>/model</code> 交互设计方案</h1>
-  <p>模型切换功能 · TUI 弹窗选择 · 5h / 7d 用量可视化</p>
+  <p>模型切换功能 · TUI 弹窗选择 · 单模型额度 / 模型组共享额度可视化</p>
   <div class="meta">
-    <span class="meta-tag">版本 <b>v1.0</b></span>
+    <span class="meta-tag">版本 <b>v2.0</b></span>
     <span class="meta-tag">平台 <b>opencode TUI</b></span>
     <span class="meta-tag">状态 <b>设计稿</b></span>
-    <span class="meta-tag">步骤 <b>4 个主要界面</b></span>
+    <span class="meta-tag">方案 <b>V1 单模型 + V2 共享池</b></span>
   </div>
 </div>
 
@@ -864,6 +883,236 @@ showSuccessAlert(previousModel, currentModel, modelUsage[currentModel])
             <td>Esc 退出，不修改当前模型，也不输出消息</td>
             <td><span class="kbd">Esc</span></td>
           </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- 09 V2 OVERVIEW -->
+  <div class="section">
+    <div class="section-title"><span class="num">09</span> &nbsp;V2.0 · 模型组共享额度方案</div>
+    <div class="flow-table">
+      <div class="flow-row">
+        <div class="flow-n">V2</div>
+        <div class="flow-b">当产品额度按<b>模型组</b>计算时，列表不再只显示单个模型用量，而是展示「基础模型池 / 高阶模型池」两组共享额度</div>
+      </div>
+      <div class="flow-row">
+        <div class="flow-n">1</div>
+        <div class="flow-b">弹窗按 quota pool 分组：每组顶部固定显示共享池 5h / 7d 用量，组内列出可选模型</div>
+      </div>
+      <div class="flow-row">
+        <div class="flow-n">2</div>
+        <div class="flow-b">移动高亮到某个模型时，底部说明「切换到该模型将消耗哪个池」，并显示该池的重置时间</div>
+      </div>
+      <div class="flow-row">
+        <div class="flow-n">3</div>
+        <div class="flow-b">如果目标模型所在组接近上限，整组卡片和底部 usage panel 同步变为 warning / danger，而不是只标记单个模型</div>
+      </div>
+      <div class="flow-row">
+        <div class="flow-n">4</div>
+        <div class="flow-b">确认切换后，成功通知写明「模型已切换」和「当前消耗池：基础 / 高阶」，减少用户对额度来源的误解</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 10 V2 GROUP MODAL -->
+  <div class="section">
+    <div class="section-title"><span class="num">10</span> &nbsp;V2.0 · 组额度弹窗 — 基础池 / 高阶池</div>
+    <div class="step-wrap">
+      <div class="step">
+        <div class="step-num">A</div>
+        <div class="step-content">
+          <div class="step-label">模型按共享额度池分组；组头直接显示该池的 5h / 7d 用量，用户先看池状态，再选模型</div>
+          <div class="tui-wrap">
+            <div class="tui-bar">
+              <div class="tui-dots"><div class="tui-dot r"></div><div class="tui-dot y"></div><div class="tui-dot g"></div></div>
+              <div class="tui-wt">opencode</div>
+            </div>
+            <div class="tui-main">
+              <div class="tui-msgs" style="justify-content:center;align-items:center;padding:20px 18px;">
+                <div class="modal-wrap model-modal" style="width:100%;">
+                  <div class="modal-hdr"><span class="modal-title">Switch Model</span><span class="modal-esc">esc</span></div>
+                  <div class="modal-search"><div class="modal-search-box"><span class="t-cursor" style="background:var(--t-orange);"></span><span>Search models or pools</span></div></div>
+
+                  <div class="group-card active">
+                    <div class="group-top">
+                      <span class="group-name">基础模型池 <span class="pool-tag">shared</span></span>
+                      <span class="group-meta">gpt-5-mini / gpt-5-fast / sonnet-lite</span>
+                    </div>
+                    <div class="usage-row">
+                      <div class="usage-line"><span>5h pool <b>38%</b></span><span class="usage-reset">15:30 重置</span></div>
+                      <div class="usage-bar"><div class="usage-fill low" style="width:38%;"></div></div>
+                    </div>
+                    <div class="usage-row">
+                      <div class="usage-line"><span>7d pool <b>57%</b></span><span class="usage-reset">周二 00:00 重置</span></div>
+                      <div class="usage-bar"><div class="usage-fill mid" style="width:57%;"></div></div>
+                    </div>
+                  </div>
+                  <div class="modal-row selected">
+                    <span class="model-row-left"><span class="model-name">gpt-5-mini</span><span class="model-meta">fast · uses 基础模型池</span></span>
+                    <span class="rr">enter</span>
+                  </div>
+                  <div class="modal-row">
+                    <span class="model-row-left"><span class="model-name">gpt-5-fast</span><span class="model-meta">coding · uses 基础模型池</span></span>
+                    <span class="rr">available</span>
+                  </div>
+
+                  <div class="group-card">
+                    <div class="group-top">
+                      <span class="group-name">高阶模型池 <span class="pool-tag">shared</span></span>
+                      <span class="group-meta">gpt-5 / claude-opus-4-1</span>
+                    </div>
+                    <div class="usage-row">
+                      <div class="usage-line"><span>5h pool <b>71%</b></span><span class="usage-reset">14:00 重置</span></div>
+                      <div class="usage-bar"><div class="usage-fill warn" style="width:71%;"></div></div>
+                    </div>
+                    <div class="usage-row">
+                      <div class="usage-line"><span>7d pool <b>64%</b></span><span class="usage-reset">周一 09:00 重置</span></div>
+                      <div class="usage-bar"><div class="usage-fill mid" style="width:64%;"></div></div>
+                    </div>
+                  </div>
+                  <div class="modal-row">
+                    <span class="model-row-left"><span class="model-name"><span class="model-check">✓</span>gpt-5</span><span class="model-meta">当前模型 · uses 高阶模型池</span></span>
+                    <span class="rr">active</span>
+                  </div>
+                  <div class="modal-row">
+                    <span class="model-row-left"><span class="model-name">claude-opus-4-1</span><span class="model-meta">deep reasoning · uses 高阶模型池</span></span>
+                    <span class="rr">available</span>
+                  </div>
+
+                  <div class="usage-panel">
+                    <div class="usage-head"><span class="usage-title">将切换到 gpt-5-mini</span><span class="quota-chip">消耗：基础模型池</span></div>
+                    <div class="usage-sub">该模型不占用高阶模型池；适合在高阶池偏高时继续轻量任务。</div>
+                  </div>
+                </div>
+              </div>
+              <div class="tui-sidebar">
+                <div class="sb-sec"><div class="sb-title">Model</div><div class="sb-body sb-on">● gpt-5<br><span style="font-size:11px;color:var(--t-dim);">高阶模型池</span></div></div>
+                <div class="sb-sec"><div class="sb-title">Pools</div><div class="sb-body">基础 57% · 周二<br>高阶 71% · 14:00</div></div>
+              </div>
+            </div>
+            <div class="tui-status">
+              <div class="tui-sl"><span class="agent-lbl">Build</span><span>gpt-5 · 高阶池</span></div>
+              <div class="tui-sr"><span><span class="t-kbd">↑↓</span> 移动</span><span><span class="t-kbd">↵</span> 切换</span><span><span class="t-kbd">esc</span> 取消</span></div>
+            </div>
+          </div>
+          <div class="step-note">V2 的关键变化：用量条属于「组」，不是属于单个模型。模型行只说明它消耗哪个 pool，避免同组模型重复显示同一份额度。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 11 V2 DANGER GROUP -->
+  <div class="section">
+    <div class="section-title"><span class="num">11</span> &nbsp;V2.0 · 高阶池接近上限 — 组级提醒</div>
+    <div class="step-wrap">
+      <div class="step">
+        <div class="step-num">B</div>
+        <div class="step-content">
+          <div class="step-label">当高亮移动到高阶模型时，底部面板展示高阶池已接近上限；提醒作用在整组，不是某个模型单独超额</div>
+          <div class="tui-wrap">
+            <div class="tui-bar">
+              <div class="tui-dots"><div class="tui-dot r"></div><div class="tui-dot y"></div><div class="tui-dot g"></div></div>
+              <div class="tui-wt">opencode</div>
+            </div>
+            <div class="tui-main">
+              <div class="tui-msgs" style="justify-content:center;align-items:center;padding:20px 18px;">
+                <div class="modal-wrap model-modal" style="width:100%;">
+                  <div class="modal-hdr"><span class="modal-title">Switch Model</span><span class="modal-esc">esc</span></div>
+                  <div class="modal-search"><div class="modal-search-box"><span>opus</span><span class="t-cursor" style="background:var(--t-orange);"></span></div></div>
+
+                  <div class="group-card active" style="border-color:rgba(247,118,142,.65);">
+                    <div class="group-top">
+                      <span class="group-name">高阶模型池 <span class="pool-tag" style="color:var(--t-red);background:rgba(247,118,142,.12);">shared</span></span>
+                      <span class="group-meta">gpt-5 / claude-opus-4-1</span>
+                    </div>
+                    <div class="usage-row">
+                      <div class="usage-line"><span>5h pool <b>86%</b></span><span class="usage-reset">14:00 重置</span></div>
+                      <div class="usage-bar"><div class="usage-fill danger" style="width:86%;"></div></div>
+                    </div>
+                    <div class="usage-row">
+                      <div class="usage-line"><span>7d pool <b>79%</b></span><span class="usage-reset">周一 09:00 重置</span></div>
+                      <div class="usage-bar"><div class="usage-fill warn" style="width:79%;"></div></div>
+                    </div>
+                  </div>
+                  <div class="modal-row">
+                    <span class="model-row-left"><span class="model-name"><span class="model-check">✓</span>gpt-5</span><span class="model-meta">当前模型 · uses 高阶模型池</span></span>
+                    <span class="rr">active</span>
+                  </div>
+                  <div class="modal-row selected">
+                    <span class="model-row-left"><span class="model-name">claude-opus-4-1</span><span class="model-meta">deep reasoning · uses 高阶模型池</span></span>
+                    <span class="rr">enter</span>
+                  </div>
+
+                  <div class="usage-panel">
+                    <div class="usage-head"><span class="usage-title">高阶模型池用量</span><span class="quota-chip" style="color:var(--t-red);border-color:#59313a;">5h 接近上限</span></div>
+                    <div class="usage-row">
+                      <div class="usage-line"><span>5h shared pool <b>86%</b></span><span class="usage-reset">14:00 重置</span></div>
+                      <div class="usage-bar"><div class="usage-fill danger" style="width:86%;"></div></div>
+                    </div>
+                    <div class="usage-row">
+                      <div class="usage-line"><span>7d shared pool <b>79%</b></span><span class="usage-reset">周一 09:00 重置</span></div>
+                      <div class="usage-bar"><div class="usage-fill warn" style="width:79%;"></div></div>
+                    </div>
+                  </div>
+                  <div class="modal-warn">
+                    <div class="wt">共享池提醒</div>
+                    <div class="wb">gpt-5 与 claude-opus-4-1 共用高阶模型池。切换仍可继续，但接下来的高阶任务都会消耗同一组额度。</div>
+                  </div>
+                </div>
+              </div>
+              <div class="tui-sidebar">
+                <div class="sb-sec"><div class="sb-title">Pools</div><div class="sb-body">基础 57% · 周二<br><span class="tc-red">高阶 86% · 14:00</span></div></div>
+              </div>
+            </div>
+            <div class="tui-status">
+              <div class="tui-sl"><span class="agent-lbl">Build</span><span>gpt-5 · 高阶池</span></div>
+              <div class="tui-sr"><span><span class="t-kbd">↵</span> 仍可切换</span><span><span class="t-kbd">esc</span> 取消</span></div>
+            </div>
+          </div>
+          <div class="step-note">这里不写「claude-opus-4-1 用量 86%」，而写「高阶模型池 86%」。这样能准确表达额度是组级共享的。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 12 V2 SPEC -->
+  <div class="section">
+    <div class="section-title"><span class="num">12</span> &nbsp;V2.0 · 数据模型与规格</div>
+    <div class="code-block">
+<span class="cc">// quota pools</span>
+{
+  <span class="ct">"currentModel"</span>: <span class="cs">"gpt-5"</span>,
+  <span class="ct">"modelPools"</span>: {
+    <span class="ct">"basic"</span>: {
+      <span class="ct">"label"</span>: <span class="cs">"基础模型池"</span>,
+      <span class="ct">"models"</span>: [<span class="cs">"gpt-5-mini"</span>, <span class="cs">"gpt-5-fast"</span>, <span class="cs">"sonnet-lite"</span>],
+      <span class="ct">"window5h"</span>: { <span class="ct">"percent"</span>: <span class="cv">38</span>, <span class="ct">"resetAt"</span>: <span class="cs">"15:30"</span> },
+      <span class="ct">"window7d"</span>: { <span class="ct">"percent"</span>: <span class="cv">57</span>, <span class="ct">"resetAt"</span>: <span class="cs">"周二 00:00"</span> }
+    },
+    <span class="ct">"advanced"</span>: {
+      <span class="ct">"label"</span>: <span class="cs">"高阶模型池"</span>,
+      <span class="ct">"models"</span>: [<span class="cs">"gpt-5"</span>, <span class="cs">"claude-opus-4-1"</span>],
+      <span class="ct">"window5h"</span>: { <span class="ct">"percent"</span>: <span class="cv">86</span>, <span class="ct">"resetAt"</span>: <span class="cs">"14:00"</span> },
+      <span class="ct">"window7d"</span>: { <span class="ct">"percent"</span>: <span class="cv">79</span>, <span class="ct">"resetAt"</span>: <span class="cs">"周一 09:00"</span> }
+    }
+  }
+}
+
+<span class="cc">// ↑↓ 移动时</span>
+targetPool = findPoolByModel(highlightedModel)
+risk = Math.max(targetPool.window5h.percent, targetPool.window7d.percent)
+renderPoolUsage(targetPool, colorByRisk(risk))
+    </div>
+    <div class="table-wrap" style="margin-top:16px;">
+      <table class="spec-table">
+        <thead><tr><th>场景</th><th>V2 行为</th></tr></thead>
+        <tbody>
+          <tr><td>组头</td><td>显示共享池名称、组内模型、5h / 7d 池级用量和重置时间</td></tr>
+          <tr><td>模型行</td><td>显示模型名、当前状态、消耗哪个 pool；不重复显示独立 quota</td></tr>
+          <tr><td>移动高亮</td><td>底部 usage panel 跟随目标模型所属 pool 刷新</td></tr>
+          <tr><td>跨池切换</td><td>底部文案明确「将从高阶模型池切换到基础模型池」或相反</td></tr>
+          <tr><td>接近上限</td><td>组卡片、底部 panel、Sidebar pool 三处同时变黄/红</td></tr>
         </tbody>
       </table>
     </div>
