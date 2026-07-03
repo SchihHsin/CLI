@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OpenCode /model 交互设计方案</title>
+<style>
+  /* ── TOKENS ───────────────────────────────────────── */
+  :root {
+    /* page (light) */
+    --page-bg:       #f5f5f3;
+    --page-surface:  #ffffff;
+    --page-border:   #e2e2de;
+    --page-text:     #1a1a18;
+    --page-muted:    #6b6b65;
+    --page-faint:    #b0b0aa;
+    --page-tag-bg:   #efefec;
+
+    /* terminal (dark — opencode palette) */
+    --t-bg:          #0e0e0e;
+    --t-bg2:         #161616;
+    --t-bg3:         #1c1c1c;
+    --t-bg4:         #222;
+    --t-border:      #282828;
+    --t-border2:     #333;
+    --t-orange:      #fab283;
+    --t-blue:        #5c9cf5;
+    --t-purple:      #9d7cd8;
+    --t-green:       #9ece6a;
+    --t-red:         #f7768e;
+    --t-yellow:      #e0af68;
+    --t-cyan:        #7dcfff;
+    --t-text:        #a9b1d6;
+    --t-dim:         #565f89;
+    --t-muted:       #3a3f5c;
+    --t-white:       #c0caf5;
+
+    --font-mono: 'JetBrains Mono','Fira Code','Cascadia Code','Consolas',monospace;
+    --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: var(--font-sans);
+    background: var(--page-bg);
+    color: var(--page-text);
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  /* ── PAGE CHROME ────────────────────────────────── */
+  .doc-header {
+    background: var(--page-surface);
+    border-bottom: 1px solid var(--page-border);
+    padding: 40px 52px 32px;
+  }
+  .doc-header h1 {
+    font-size: 22px; font-weight: 600;
+    color: var(--page-text); margin-bottom: 6px; letter-spacing: -0.02em;
+  }
+  .doc-header h1 code {
+    font-family: var(--font-mono);
+    font-size: 18px; font-weight: 400;
+    color: #c96a2a;
+    background: #fef3ea; padding: 1px 7px; border-radius: 4px;
+  }
+  .doc-header p { color: var(--page-muted); font-size: 13px; }
+  .doc-header .meta {
+    display: flex; gap: 10px; margin-top: 14px; flex-wrap: wrap;
+  }
+  .meta-tag {
+    font-size: 11px; color: var(--page-muted);
+    padding: 3px 10px; background: var(--page-tag-bg);
+    border: 1px solid var(--page-border); border-radius: 4px;
+  }
+  .meta-tag b { color: var(--page-text); font-weight: 500; }
+
+  .doc-body { padding: 36px 52px 60px; max-width: 920px; }
+
+  .section { margin-bottom: 52px; }
+
+  .section-title {
+    font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em;
+    color: var(--page-muted); font-weight: 500;
+    margin-bottom: 18px; padding-bottom: 8px;
+    border-bottom: 1px solid var(--page-border);
+  }
+  .section-title .num { color: #c96a2a; }
+
+  /* step layout */
+  .step-wrap { display: flex; flex-direction: column; gap: 28px; }
+  .step { display: flex; gap: 18px; }
+  .step-num {
+    flex-shrink: 0; width: 24px; height: 24px;
+    border: 1px solid var(--page-border);
+    border-radius: 4px; background: var(--page-surface);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; color: var(--page-muted); margin-top: 2px;
+    font-family: var(--font-mono);
+  }
+  .step-content { flex: 1; min-width: 0; }
+  .step-label {
+    font-size: 13px; color: var(--page-muted);
+    margin-bottom: 10px; line-height: 1.5;
+  }
+  .step-label b { color: var(--page-text); font-weight: 500; }
+  .step-note {
+    margin-top: 10px; font-size: 12px; color: var(--page-muted);
+    line-height: 1.7; padding: 8px 12px;
+    background: var(--page-tag-bg);
+    border-left: 3px solid var(--page-border);
+    border-radius: 0 4px 4px 0;
+  }
+  .step-note b { color: var(--page-text); font-weight: 500; }
+  .step-note code {
+    font-family: var(--font-mono); font-size: 11px;
+    background: #e8e8e4; padding: 1px 5px; border-radius: 3px;
+    color: #c96a2a;
+  }
+
+  .path-divider {
+    display: flex; align-items: center; gap: 12px; margin: 4px 0 18px;
+  }
+  .path-divider::before, .path-divider::after {
+    content:''; flex:1; height:1px; background: var(--page-border);
+  }
+  .path-divider span {
+    font-size: 11px; color: var(--page-muted);
+    letter-spacing: 0.05em; white-space: nowrap;
+    background: var(--page-bg); padding: 0 4px;
+  }
+
+  /* ══════════════════════════════════════════════════
+     TERMINAL SHELL
+  ══════════════════════════════════════════════════ */
+  .tui-wrap {
+    background: var(--t-bg);
+    border-radius: 8px;
+    overflow: hidden;
+    /* subtle shadow so it lifts off the page */
+    box-shadow: 0 2px 12px rgba(0,0,0,0.18), 0 0 0 1px rgba(0,0,0,0.12);
+    font-family: var(--font-mono);
+  }
+
+  /* mac titlebar */
+  .tui-bar {
+    background: var(--t-bg2);
+    padding: 9px 14px;
+    display: flex; align-items: center; gap: 8px;
+    border-bottom: 1px solid var(--t-border);
+  }
+  .tui-dots { display: flex; gap: 6px; }
+  .tui-dot { width: 12px; height: 12px; border-radius: 50%; }
+  .tui-dot.r { background: #ff5f57; }
+  .tui-dot.y { background: #febc2e; }
+  .tui-dot.g { background: #28c840; }
+  .tui-wt { flex:1; text-align:center; font-size:12px; color:var(--t-dim); }
+
+  /* main split */
+  .tui-main { display: flex; min-height: 260px; }
+  .tui-msgs {
+    flex: 1; min-width: 0;
+    padding: 14px 18px;
+    border-right: 1px solid var(--t-border);
+    display: flex; flex-direction: column; gap: 3px;
+  }
+  .tui-sidebar {
+    width: 210px; flex-shrink: 0;
+    padding: 14px 16px;
+    font-family: var(--font-mono);
+  }
+  .sb-sec { margin-bottom: 16px; }
+  .sb-title { font-size: 12px; color: var(--t-white); margin-bottom: 3px; }
+  .sb-body  { font-size: 12px; color: var(--t-dim); line-height: 1.8; }
+  .sb-off   { color: var(--t-dim); }
+  .sb-on    { color: var(--t-green); }
+  .sb-pend  { color: var(--t-yellow); }
+
+  /* input line */
+  .tui-input {
+    border-top: 1px solid var(--t-border);
+    display: flex;
+  }
+  .tui-iline {
+    flex: 1;
+    border-left: 2px solid var(--t-blue);
+    padding: 9px 14px;
+    background: var(--t-bg2);
+    font-size: 12px; color: var(--t-white);
+    min-height: 40px; display: flex; align-items: center;
+  }
+  .t-cursor {
+    display: inline-block; width: 7px; height: 13px;
+    background: var(--t-white); border-radius: 1px;
+    vertical-align: middle; margin-left: 1px; opacity: 0.85;
+  }
+
+  /* status bar */
+  .tui-status {
+    background: var(--t-bg2); border-top: 1px solid var(--t-border);
+    padding: 5px 14px;
+    display: flex; align-items: center; justify-content: space-between;
+    font-size: 11px; color: var(--t-dim); font-family: var(--font-mono);
+  }
+  .tui-sl { display: flex; align-items: center; gap: 8px; }
+  .tui-sr { display: flex; align-items: center; gap: 12px; }
+  .agent-lbl { color: var(--t-orange); }
+  .t-kbd { color: var(--t-white); }
+
+  /* terminal text helpers */
+  .tm { font-size: 12px; line-height: 1.85; font-family: var(--font-mono); }
+  .tc-dim    { color: var(--t-dim); }
+  .tc-white  { color: var(--t-white); }
+  .tc-orange { color: var(--t-orange); }
+  .tc-green  { color: var(--t-green); }
+  .tc-red    { color: var(--t-red); }
+  .tc-yellow { color: var(--t-yellow); }
+  .tc-blue   { color: var(--t-blue); }
+  .tm-gap    { height: 5px; }
+
+  /* ── OPENCODE ALERT (left border only, no radius/outline/icon) ── */
+  /*   border color = semantic: error=red, warning=yellow,
+       success=green, info=blue                                      */
+  .oc-alert {
+    padding: 6px 14px;
+    border-left: 3px solid transparent;
+    font-family: var(--font-mono);
+    font-size: 12px; line-height: 1.8;
+  }
+  .oc-alert.error   { border-left-color: var(--t-red); }
+  .oc-alert.warning { border-left-color: var(--t-yellow); }
+  .oc-alert.success { border-left-color: var(--t-green); }
+  .oc-alert.info    { border-left-color: var(--t-blue); }
+
+  .oc-alert .a-title { margin-bottom: 1px; }
+  .oc-alert.error   .a-title { color: var(--t-red); }
+  .oc-alert.warning .a-title { color: var(--t-yellow); }
+  .oc-alert.success .a-title { color: var(--t-green); }
+  .oc-alert.info    .a-title { color: var(--t-blue); }
+  .oc-alert .a-body { color: var(--t-dim); }
+  .oc-alert .a-body .hi-on  { color: var(--t-green); }
+  .oc-alert .a-body .hi-off { color: var(--t-red); }
+  .oc-alert .a-body .hi-was { color: var(--t-dim); text-decoration: line-through; }
+
+  /* ── MODAL (matching real opencode select modal) ───── */
+  .modal-wrap {
+    /* floats inside .tui-msgs */
+    margin: 8px auto;
+    background: var(--t-bg3);
+    border: 1px solid #3a3a3a;
+    border-radius: 4px;
+    overflow: hidden;
+    max-width: 400px;
+    font-family: var(--font-mono);
+  }
+  .modal-hdr {
+    padding: 10px 16px 8px;
+    display: flex; justify-content: space-between; align-items: baseline;
+  }
+  .modal-title { font-size: 13px; color: var(--t-white); }
+  .modal-esc   { font-size: 11px; color: var(--t-dim); }
+
+  .modal-search {
+    padding: 0 12px 8px;
+  }
+  .modal-search-box {
+    border: 1px solid #3a3a3a; border-radius: 3px;
+    padding: 5px 10px;
+    display: flex; align-items: center; gap: 6px;
+    background: var(--t-bg4);
+  }
+  .modal-search-box span { font-size: 12px; color: var(--t-dim); }
+
+  .modal-current {
+    padding: 4px 16px 5px;
+    display: flex; align-items: center; gap: 7px;
+    font-size: 12px;
+  }
+
+  .modal-group {
+    padding: 5px 16px 3px;
+    font-size: 12px; color: var(--t-purple);
+  }
+
+  .modal-row {
+    padding: 6px 16px;
+    display: flex; align-items: center; justify-content: space-between;
+    font-size: 12px; color: var(--t-text);
+  }
+  .modal-row.selected {
+    background: var(--t-orange);
+    color: #1a0800;
+  }
+  .modal-row.selected .rr { color: #1a0800; opacity: 0.55; }
+  .modal-row.disabled { color: var(--t-muted); }
+  .modal-row.disabled .rr { color: var(--t-muted); }
+  .rr { font-size: 11px; color: var(--t-dim); }
+
+  .model-modal { max-width: 460px; }
+  .model-provider {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 5px 16px 3px;
+    font-size: 12px; color: var(--t-purple);
+  }
+  .model-provider span:last-child { color: var(--t-dim); font-size: 10px; }
+  .model-row-left { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
+  .model-name { font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .model-meta { font-size: 10px; color: var(--t-dim); }
+  .modal-row.selected .model-meta { color: #1a0800; opacity: .6; }
+  .model-check { color: var(--t-green); margin-right: 6px; }
+  .modal-row.selected .model-check { color: #1a0800; }
+
+  .usage-panel {
+    margin: 6px 12px 12px;
+    padding: 10px 12px 11px;
+    background: var(--t-bg4);
+    border-top: 1px solid #343434;
+    font-family: var(--font-mono);
+  }
+  .usage-head {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 8px; font-size: 11px;
+  }
+  .usage-title { color: var(--t-white); }
+  .usage-sub { color: var(--t-dim); }
+  .usage-row { margin-top: 8px; }
+  .usage-line {
+    display: flex; align-items: baseline; justify-content: space-between;
+    font-size: 11px; color: var(--t-text); margin-bottom: 4px;
+  }
+  .usage-line b { color: var(--t-orange); font-weight: 400; }
+  .usage-reset { color: var(--t-dim); }
+  .usage-bar {
+    height: 6px; border-radius: 999px; overflow: hidden;
+    background: #111; border: 1px solid var(--t-border2);
+  }
+  .usage-fill {
+    height: 100%; border-radius: 999px;
+    background: linear-gradient(90deg, var(--t-green), var(--t-yellow), var(--t-orange));
+  }
+  .usage-fill.low { background: linear-gradient(90deg, var(--t-blue), var(--t-cyan)); }
+  .usage-fill.warn { background: linear-gradient(90deg, var(--t-yellow), var(--t-orange)); }
+  .usage-fill.danger { background: linear-gradient(90deg, var(--t-orange), var(--t-red)); }
+  .quota-chip {
+    display: inline-flex; align-items: center; gap: 5px;
+    border: 1px solid var(--t-border2); border-radius: 999px;
+    padding: 1px 7px; color: var(--t-dim); font-size: 10px;
+  }
+
+  /* warn block inside modal */
+  .modal-warn {
+    margin: 4px 12px 6px;
+    padding: 8px 12px;
+    border-left: 3px solid var(--t-yellow);
+    font-size: 11px; line-height: 1.75; font-family: var(--font-mono);
+  }
+  .modal-warn .wt { color: var(--t-yellow); margin-bottom: 2px; }
+  .modal-warn .wb { color: var(--t-dim); }
+  .modal-warn .wb b { color: var(--t-yellow); font-weight: 400; }
+
+  /* lock pill */
+  .lock-line {
+    padding: 5px 14px;
+    font-family: var(--font-mono);
+    font-size: 11px; color: var(--t-red);
+    border-left: 3px solid var(--t-red);
+    margin-top: 4px;
+  }
+
+  /* ── SPEC / STATE TABLES ─────────────────────────── */
+  .table-wrap {
+    border: 1px solid var(--page-border);
+    border-radius: 6px; overflow: hidden;
+    background: var(--page-surface);
+  }
+  .spec-table {
+    width: 100%; border-collapse: collapse;
+    font-size: 12px;
+  }
+  .spec-table th {
+    text-align: left; padding: 7px 14px;
+    font-size: 11px; font-weight: 500;
+    text-transform: uppercase; letter-spacing: 0.07em;
+    color: var(--page-muted);
+    background: var(--page-tag-bg);
+    border-bottom: 1px solid var(--page-border);
+    font-family: var(--font-sans);
+  }
+  .spec-table td {
+    padding: 8px 14px; border-bottom: 1px solid var(--page-border);
+    vertical-align: top; line-height: 1.65; color: var(--page-muted);
+    font-family: var(--font-sans);
+  }
+  .spec-table tr:last-child td { border-bottom: none; }
+  .spec-table td:first-child { color: var(--page-text); font-weight: 500; white-space: nowrap; }
+  .kbd {
+    display: inline-block; font-family: var(--font-mono);
+    border: 1px solid var(--page-border); padding: 1px 6px;
+    border-radius: 3px; font-size: 11px; color: var(--page-text);
+    background: var(--page-surface); vertical-align: middle;
+  }
+
+  /* ── CODE BLOCK ──────────────────────────────────── */
+  .code-block {
+    background: #1a1a1a;
+    border-radius: 6px; padding: 16px 18px;
+    font-family: var(--font-mono); font-size: 12px;
+    line-height: 1.8; overflow-x: auto; color: #a9b1d6;
+  }
+  .ck { color: #9d7cd8; }
+  .cs { color: #9ece6a; }
+  .cc { color: #565f89; }
+  .ct { color: #7dcfff; }
+  .cn { color: #fab283; }
+  .cv { color: #e0af68; }
+
+  /* flow overview table */
+  .flow-table { width: 100%; }
+  .flow-row {
+    display: flex; gap: 12px; align-items: flex-start;
+    padding: 9px 0; border-bottom: 1px solid var(--page-border);
+  }
+  .flow-row:last-child { border-bottom: none; }
+  .flow-n {
+    width: 28px; height: 22px; flex-shrink: 0;
+    background: var(--page-tag-bg); border: 1px solid var(--page-border);
+    border-radius: 4px; display: flex; align-items: center; justify-content: center;
+    font-size: 10px; color: var(--page-muted); font-family: var(--font-mono);
+    margin-top: 1px;
+  }
+  .flow-b { flex: 1; font-size: 13px; color: var(--page-muted); line-height: 1.6; }
+  .flow-b b { color: var(--page-text); font-weight: 500; }
+  .flow-b code { font-family: var(--font-mono); font-size: 12px; color: #c96a2a;
+    background: #fef3ea; padding: 1px 5px; border-radius: 3px; }
+
+</style>
+</head>
+<body>
+
+<!-- ═══════════════ HEADER ═══════════════ -->
+<div class="doc-header">
+  <h1>OpenCode <code>/model</code> 交互设计方案</h1>
+  <p>模型切换功能 · TUI 弹窗选择 · 5h / 7d 用量可视化</p>
+  <div class="meta">
+    <span class="meta-tag">版本 <b>v1.0</b></span>
+    <span class="meta-tag">平台 <b>opencode TUI</b></span>
+    <span class="meta-tag">状态 <b>设计稿</b></span>
+    <span class="meta-tag">步骤 <b>4 个主要界面</b></span>
+  </div>
+</div>
+
+<!-- ═══════════════ BODY ════════════════ -->
+<div class="doc-body">
+
+  <!-- 00 OVERVIEW -->
+  <div class="section">
+    <div class="section-title"><span class="num">00</span> &nbsp;整体交互流程</div>
+    <div class="flow-table">
+      <div class="flow-row">
+        <div class="flow-n">1</div>
+        <div class="flow-b">用户输入 <code>/model</code>，通过 slash 自动补全触发，弹出模型选择面板</div>
+      </div>
+      <div class="flow-row">
+        <div class="flow-n">2</div>
+        <div class="flow-b">选择面板：按 provider 分组，当前模型带 <b>✓</b> 标记，候选模型用<b>橙色实心行</b>高亮</div>
+      </div>
+      <div class="flow-row">
+        <div class="flow-n">3</div>
+        <div class="flow-b">用户用 <b>↑↓</b> 移动高亮时，面板底部实时刷新该模型的 <b>5h 用量百分比 + 重置时间</b> 与 <b>7d 用量百分比 + 重置时间</b></div>
+      </div>
+      <div class="flow-row">
+        <div class="flow-n">4</div>
+        <div class="flow-b">按 <b>↵</b> 确认后立即切换当前会话模型，消息区输出绿色左线通知，Sidebar Model 同步更新</div>
+      </div>
+      <div class="flow-row">
+        <div class="flow-n">5</div>
+        <div class="flow-b">当候选模型接近上限时，底部 usage panel 变为 warning / danger，不阻断选择，只让风险在确认前可见</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 01 AUTOCOMPLETE -->
+  <div class="section">
+    <div class="section-title"><span class="num">01</span> &nbsp;步骤一 · 触发 — slash 自动补全</div>
+    <div class="step-wrap">
+      <div class="step">
+        <div class="step-num">→</div>
+        <div class="step-content">
+          <div class="step-label">用户输入 <b>/mo</b>，补全下拉出现，<b>/model</b> 橙色高亮</div>
+          <div class="tui-wrap">
+            <div class="tui-bar">
+              <div class="tui-dots"><div class="tui-dot r"></div><div class="tui-dot y"></div><div class="tui-dot g"></div></div>
+              <div class="tui-wt">opencode</div>
+            </div>
+            <div class="tui-main">
+              <div class="tui-msgs">
+                <div class="tm tc-dim"># ~/project · 会话已恢复</div>
+                <div class="tm tc-dim">assistant: 正在读取 repo 结构…</div>
+                <div class="tm-gap"></div>
+              </div>
+              <div class="tui-sidebar">
+                <div class="sb-sec">
+                  <div class="sb-title">Context</div>
+                  <div class="sb-body">8,432 tokens<br>18% used<br>$0.00 spent</div>
+                </div>
+                <div class="sb-sec">
+                  <div class="sb-title">Model</div>
+                  <div class="sb-body"><span class="tc-orange">claude-sonnet-4-5</span><br><span style="font-size:11px;color:var(--t-dim);">balanced</span></div>
+                </div>
+              </div>
+            </div>
+            <div style="border-top:1px solid var(--t-border); font-family:var(--font-mono);">
+              <div style="display:flex;align-items:center;justify-content:space-between;padding:6px 14px;background:var(--t-orange);font-size:12px;color:#1a0800;">
+                <span>/model</span>
+                <span style="font-size:11px;opacity:0.55;">切换当前会话模型</span>
+              </div>
+              <div style="display:flex;align-items:center;justify-content:space-between;padding:6px 14px;font-size:12px;color:var(--t-dim);border-top:1px solid var(--t-border);">
+                <span>/models</span>
+                <span style="font-size:11px;">查看可用模型列表</span>
+              </div>
+            </div>
+            <div class="tui-input">
+              <div class="tui-iline">
+                <span class="tc-dim">/mo</span><span class="t-cursor"></span>
+              </div>
+            </div>
+            <div class="tui-status">
+              <div class="tui-sl"><span class="agent-lbl">Build</span><span>claude-sonnet-4-5</span></div>
+              <div class="tui-sr">
+                <span><span class="t-kbd">tab</span> agents</span>
+                <span><span class="t-kbd">ctrl+p</span> commands</span>
+              </div>
+            </div>
+          </div>
+          <div class="step-note">保持与现有 slash command 补全一致。<b>↑↓</b> 移动，<b>↵</b> 打开，<b>Esc</b> 关闭。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 02 SELECT PANEL -->
+  <div class="section">
+    <div class="section-title"><span class="num">02</span> &nbsp;步骤二 · 模型选择弹窗 — 列表 + 底部用量</div>
+    <div class="step-wrap">
+      <div class="step">
+        <div class="step-num">A</div>
+        <div class="step-content">
+          <div class="step-label">默认打开时，高亮停在当前模型下方的推荐候选；底部展示该高亮模型的用量</div>
+          <div class="tui-wrap">
+            <div class="tui-bar">
+              <div class="tui-dots"><div class="tui-dot r"></div><div class="tui-dot y"></div><div class="tui-dot g"></div></div>
+              <div class="tui-wt">opencode</div>
+            </div>
+            <div class="tui-main">
+              <div class="tui-msgs" style="justify-content:center;align-items:center;padding:20px 18px;">
+                <div class="modal-wrap model-modal" style="width:100%;">
+                  <div class="modal-hdr"><span class="modal-title">Switch Model</span><span class="modal-esc">esc</span></div>
+                  <div class="modal-search"><div class="modal-search-box"><span class="t-cursor" style="background:var(--t-orange);"></span><span>Search models</span></div></div>
+                  <div class="modal-current"><span style="color:var(--t-green);">✓</span><span style="color:var(--t-green);font-size:12px;">当前：claude-sonnet-4-5</span></div>
+                  <div class="model-provider"><span>Anthropic</span><span>recommended</span></div>
+                  <div class="modal-row disabled">
+                    <span class="model-row-left"><span class="model-name"><span class="model-check">✓</span>claude-sonnet-4-5</span><span class="model-meta">balanced · 当前模型</span></span>
+                    <span class="rr">active</span>
+                  </div>
+                  <div class="modal-row selected">
+                    <span class="model-row-left"><span class="model-name">claude-opus-4-1</span><span class="model-meta">deep reasoning · higher quota cost</span></span>
+                    <span class="rr">enter</span>
+                  </div>
+                  <div class="model-provider"><span>OpenAI</span><span>fast alternatives</span></div>
+                  <div class="modal-row">
+                    <span class="model-row-left"><span class="model-name">gpt-5</span><span class="model-meta">general · strong coding</span></span>
+                    <span class="rr">available</span>
+                  </div>
+                  <div class="modal-row">
+                    <span class="model-row-left"><span class="model-name">gpt-5-mini</span><span class="model-meta">fast · lower usage pressure</span></span>
+                    <span class="rr">available</span>
+                  </div>
+                  <div class="usage-panel">
+                    <div class="usage-head">
+                      <span class="usage-title">claude-opus-4-1 用量</span>
+                      <span class="quota-chip">预估偏高</span>
+                    </div>
+                    <div class="usage-row">
+                      <div class="usage-line"><span>5h usage <b>68%</b></span><span class="usage-reset">14:00 重置</span></div>
+                      <div class="usage-bar"><div class="usage-fill warn" style="width:68%;"></div></div>
+                    </div>
+                    <div class="usage-row">
+                      <div class="usage-line"><span>7d usage <b>41%</b></span><span class="usage-reset">周一 09:00 重置</span></div>
+                      <div class="usage-bar"><div class="usage-fill" style="width:41%;"></div></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="tui-sidebar">
+                <div class="sb-sec">
+                  <div class="sb-title">Model</div>
+                  <div class="sb-body"><span class="tc-orange">claude-sonnet-4-5</span><br><span style="font-size:11px;color:var(--t-dim);">当前会话</span></div>
+                </div>
+              </div>
+            </div>
+            <div class="tui-status">
+              <div class="tui-sl"><span class="agent-lbl">Build</span><span>claude-sonnet-4-5</span></div>
+              <div class="tui-sr"><span><span class="t-kbd">↑↓</span> 移动</span><span><span class="t-kbd">↵</span> 切换</span><span><span class="t-kbd">esc</span> 取消</span></div>
+            </div>
+          </div>
+          <div class="step-note">当前模型保留在列表中但置灰，并用 <b>✓</b> 标记。用户移动到任何候选行时，底部 usage panel 即时显示该模型对应的限额状态。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 03 USAGE STATES -->
+  <div class="section">
+    <div class="section-title"><span class="num">03</span> &nbsp;步骤三 · 移动高亮 — 用量面板实时刷新</div>
+    <div class="step-wrap">
+
+      <div class="step">
+        <div class="step-num">B</div>
+        <div class="step-content">
+          <div class="step-label">高亮移动到 <b>gpt-5</b>：5h 低压、7d 中等，底部用量条更新为蓝绿色</div>
+          <div class="tui-wrap">
+            <div class="tui-bar">
+              <div class="tui-dots"><div class="tui-dot r"></div><div class="tui-dot y"></div><div class="tui-dot g"></div></div>
+              <div class="tui-wt">opencode</div>
+            </div>
+            <div class="tui-main">
+              <div class="tui-msgs" style="justify-content:center;align-items:center;padding:20px 18px;">
+                <div class="modal-wrap model-modal" style="width:100%;">
+                  <div class="modal-hdr"><span class="modal-title">Switch Model</span><span class="modal-esc">esc</span></div>
+                  <div class="modal-search"><div class="modal-search-box"><span>gpt</span><span class="t-cursor" style="background:var(--t-orange);"></span></div></div>
+                  <div class="model-provider"><span>Anthropic</span><span>2 models</span></div>
+                  <div class="modal-row disabled"><span class="model-row-left"><span class="model-name"><span class="model-check">✓</span>claude-sonnet-4-5</span><span class="model-meta">balanced · 当前模型</span></span><span class="rr">active</span></div>
+                  <div class="modal-row"><span class="model-row-left"><span class="model-name">claude-opus-4-1</span><span class="model-meta">deep reasoning</span></span><span class="rr">available</span></div>
+                  <div class="model-provider"><span>OpenAI</span><span>2 models</span></div>
+                  <div class="modal-row selected"><span class="model-row-left"><span class="model-name">gpt-5</span><span class="model-meta">general · strong coding</span></span><span class="rr">enter</span></div>
+                  <div class="modal-row"><span class="model-row-left"><span class="model-name">gpt-5-mini</span><span class="model-meta">fast · lower usage pressure</span></span><span class="rr">available</span></div>
+                  <div class="usage-panel">
+                    <div class="usage-head"><span class="usage-title">gpt-5 用量</span><span class="quota-chip">健康</span></div>
+                    <div class="usage-row">
+                      <div class="usage-line"><span>5h usage <b>24%</b></span><span class="usage-reset">15:30 重置</span></div>
+                      <div class="usage-bar"><div class="usage-fill low" style="width:24%;"></div></div>
+                    </div>
+                    <div class="usage-row">
+                      <div class="usage-line"><span>7d usage <b>52%</b></span><span class="usage-reset">周二 00:00 重置</span></div>
+                      <div class="usage-bar"><div class="usage-fill" style="width:52%;"></div></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="tui-sidebar">
+                <div class="sb-sec"><div class="sb-title">Model</div><div class="sb-body"><span class="tc-orange">claude-sonnet-4-5</span><br><span style="font-size:11px;color:var(--t-dim);">当前会话</span></div></div>
+              </div>
+            </div>
+            <div class="tui-status">
+              <div class="tui-sl"><span class="agent-lbl">Build</span><span>claude-sonnet-4-5</span></div>
+              <div class="tui-sr"><span><span class="t-kbd">↑↓</span> 移动</span><span><span class="t-kbd">↵</span> 切换</span><span><span class="t-kbd">/</span> 搜索</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">C</div>
+        <div class="step-content">
+          <div class="step-label">高亮移动到 <b>gpt-5-mini</b>：5h 充足，但 7d 接近上限，用红色条提前提示</div>
+          <div class="tui-wrap">
+            <div class="tui-bar">
+              <div class="tui-dots"><div class="tui-dot r"></div><div class="tui-dot y"></div><div class="tui-dot g"></div></div>
+              <div class="tui-wt">opencode</div>
+            </div>
+            <div class="tui-main">
+              <div class="tui-msgs" style="justify-content:center;align-items:center;padding:20px 18px;">
+                <div class="modal-wrap model-modal" style="width:100%;">
+                  <div class="modal-hdr"><span class="modal-title">Switch Model</span><span class="modal-esc">esc</span></div>
+                  <div class="modal-search"><div class="modal-search-box"><span>gpt</span><span class="t-cursor" style="background:var(--t-orange);"></span></div></div>
+                  <div class="model-provider"><span>OpenAI</span><span>filtered</span></div>
+                  <div class="modal-row"><span class="model-row-left"><span class="model-name">gpt-5</span><span class="model-meta">general · strong coding</span></span><span class="rr">available</span></div>
+                  <div class="modal-row selected"><span class="model-row-left"><span class="model-name">gpt-5-mini</span><span class="model-meta">fast · lower usage pressure</span></span><span class="rr">enter</span></div>
+                  <div class="usage-panel">
+                    <div class="usage-head"><span class="usage-title">gpt-5-mini 用量</span><span class="quota-chip" style="color:var(--t-red);border-color:#59313a;">7d 接近上限</span></div>
+                    <div class="usage-row">
+                      <div class="usage-line"><span>5h usage <b>12%</b></span><span class="usage-reset">15:30 重置</span></div>
+                      <div class="usage-bar"><div class="usage-fill low" style="width:12%;"></div></div>
+                    </div>
+                    <div class="usage-row">
+                      <div class="usage-line"><span>7d usage <b>88%</b></span><span class="usage-reset">周二 00:00 重置</span></div>
+                      <div class="usage-bar"><div class="usage-fill danger" style="width:88%;"></div></div>
+                    </div>
+                  </div>
+                  <div class="modal-warn">
+                    <div class="wt">用量提醒</div>
+                    <div class="wb">该模型 7d 用量已到 <b>88%</b>。仍可切换，但连续长任务可能更快触顶。</div>
+                  </div>
+                </div>
+              </div>
+              <div class="tui-sidebar">
+                <div class="sb-sec"><div class="sb-title">Model</div><div class="sb-body"><span class="tc-orange">claude-sonnet-4-5</span><br><span style="font-size:11px;color:var(--t-dim);">当前会话</span></div></div>
+              </div>
+            </div>
+            <div class="tui-status">
+              <div class="tui-sl"><span class="agent-lbl">Build</span><span>claude-sonnet-4-5</span></div>
+              <div class="tui-sr"><span><span class="t-kbd">↵</span> 仍可切换</span><span><span class="t-kbd">esc</span> 取消</span></div>
+            </div>
+          </div>
+          <div class="step-note">usage panel 只反映当前高亮模型，不显示所有模型的配额，避免列表变得太吵。接近上限时加黄色/红色提醒，但不替用户做决策。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 04 RESULT -->
+  <div class="section">
+    <div class="section-title"><span class="num">04</span> &nbsp;步骤四 · 确认切换 — 当前会话立即生效</div>
+    <div class="step-wrap">
+      <div class="step">
+        <div class="step-num">✓</div>
+        <div class="step-content">
+          <div class="step-label">按 <b>↵</b> 确认后，弹窗关闭，消息区给出成功通知，Sidebar 与 status bar 同步新模型</div>
+          <div class="tui-wrap">
+            <div class="tui-bar">
+              <div class="tui-dots"><div class="tui-dot r"></div><div class="tui-dot y"></div><div class="tui-dot g"></div></div>
+              <div class="tui-wt">opencode</div>
+            </div>
+            <div class="tui-main">
+              <div class="tui-msgs">
+                <div class="tm tc-dim"># ~/project</div>
+                <div class="tm-gap"></div>
+                <div class="oc-alert success">
+                  <div class="a-title">模型已切换</div>
+                  <div class="a-body">当前会话模型已从 <span class="hi-was">claude-sonnet-4-5</span> 切换为 <span class="hi-on">gpt-5</span>。<br>后续回复将使用新模型，历史上下文保留。</div>
+                </div>
+                <div class="tm-gap"></div>
+                <div class="oc-alert info">
+                  <div class="a-title">gpt-5 当前用量</div>
+                  <div class="a-body">5h usage：<span class="tc-blue">24%</span>，15:30 重置。<br>7d usage：<span class="tc-blue">52%</span>，周二 00:00 重置。</div>
+                </div>
+              </div>
+              <div class="tui-sidebar">
+                <div class="sb-sec">
+                  <div class="sb-title">Model</div>
+                  <div class="sb-body sb-on">● gpt-5<br><span style="font-size:11px;color:var(--t-dim);">当前会话</span></div>
+                </div>
+                <div class="sb-sec">
+                  <div class="sb-title">Usage</div>
+                  <div class="sb-body">5h 24% · 15:30<br>7d 52% · 周二</div>
+                </div>
+              </div>
+            </div>
+            <div class="tui-input"><div class="tui-iline"><span class="t-cursor"></span></div></div>
+            <div class="tui-status">
+              <div class="tui-sl"><span class="agent-lbl">Build</span><span>gpt-5</span></div>
+              <div class="tui-sr"><span><span class="t-kbd">tab</span> agents</span><span><span class="t-kbd">ctrl+p</span> commands</span></div>
+            </div>
+          </div>
+          <div class="step-note">模型切换是会话级即时生效，不需要重启。成功通知中保留「旧模型 → 新模型」和 usage 快照，方便用户确认刚才选择没有选错。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 05 STATE MODEL -->
+  <div class="section">
+    <div class="section-title"><span class="num">05</span> &nbsp;状态模型 — 字段与刷新逻辑</div>
+    <div class="code-block">
+<span class="cc">// runtime state</span>
+{
+  <span class="ct">"currentModel"</span>: <span class="cs">"claude-sonnet-4-5"</span>,
+  <span class="ct">"highlightedModel"</span>: <span class="cs">"gpt-5"</span>,
+  <span class="ct">"modelUsage"</span>: {
+    <span class="ct">"gpt-5"</span>: {
+      <span class="ct">"window5h"</span>: { <span class="ct">"percent"</span>: <span class="cv">24</span>, <span class="ct">"resetAt"</span>: <span class="cs">"15:30"</span> },
+      <span class="ct">"window7d"</span>: { <span class="ct">"percent"</span>: <span class="cv">52</span>, <span class="ct">"resetAt"</span>: <span class="cs">"周二 00:00"</span> }
+    }
+  }
+}
+
+<span class="cc">// ↑↓ 移动时</span>
+highlightedModel = nextModel
+renderUsagePanel(modelUsage[highlightedModel])
+
+<span class="cc">// ↵ 确认时</span>
+previousModel = currentModel
+currentModel = highlightedModel
+showSuccessAlert(previousModel, currentModel, modelUsage[currentModel])
+    </div>
+  </div>
+
+  <!-- 06 MODEL USAGE STATES -->
+  <div class="section">
+    <div class="section-title"><span class="num">06</span> &nbsp;模型用量状态汇总</div>
+    <div class="table-wrap">
+      <table class="spec-table">
+        <thead>
+          <tr><th>模型</th><th>5h 用量</th><th>5h 重置</th><th>7d 用量</th><th>7d 重置</th><th>状态</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>claude-sonnet-4-5</td><td>36%</td><td>14:00</td><td>29%</td><td>周一 09:00</td><td style="color:#4a8f2a">当前模型</td></tr>
+          <tr><td>claude-opus-4-1</td><td>68%</td><td>14:00</td><td>41%</td><td>周一 09:00</td><td style="color:#b07d20">偏高</td></tr>
+          <tr><td>gpt-5</td><td>24%</td><td>15:30</td><td>52%</td><td>周二 00:00</td><td style="color:#4a8f2a">健康</td></tr>
+          <tr><td>gpt-5-mini</td><td>12%</td><td>15:30</td><td>88%</td><td>周二 00:00</td><td style="color:#b92d45">7d 接近上限</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- 07 INTERACTION SPEC -->
+  <div class="section">
+    <div class="section-title"><span class="num">07</span> &nbsp;交互规格说明</div>
+    <div class="table-wrap">
+      <table class="spec-table">
+        <thead><tr><th>场景</th><th>行为</th><th>键位</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>/model</td>
+            <td>弹出模型选择面板，当前模型置灰并带 ✓，默认高亮第一个推荐候选</td>
+            <td><span class="kbd">↑↓</span> <span class="kbd">↵</span> <span class="kbd">Esc</span></td>
+          </tr>
+          <tr>
+            <td>移动高亮</td>
+            <td>底部 usage panel 立即刷新当前高亮模型的 5h / 7d 用量百分比与重置时间</td>
+            <td><span class="kbd">↑↓</span></td>
+          </tr>
+          <tr>
+            <td>搜索筛选</td>
+            <td>输入关键字后保留 provider 分组；usage panel 跟随筛选后的高亮项</td>
+            <td><span class="kbd">/</span> 或直接输入</td>
+          </tr>
+          <tr>
+            <td>接近上限</td>
+            <td>usage bar 变黄/红，插入黄色左线提醒；仍允许确认切换</td>
+            <td><span class="kbd">↵</span> 仍可切换</td>
+          </tr>
+          <tr>
+            <td>确认切换</td>
+            <td>弹窗关闭；绿色左线通知；Sidebar Model 与 status bar 同步新模型</td>
+            <td><span class="kbd">↵</span></td>
+          </tr>
+          <tr>
+            <td>取消</td>
+            <td>Esc 退出，不修改当前模型，也不输出消息</td>
+            <td><span class="kbd">Esc</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

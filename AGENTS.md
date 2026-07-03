@@ -458,6 +458,12 @@ grep -n "id=\"s-m" file.html | head    # 快速列出所有 section
 
 ## 已完成（本轮会话）
 
+### OpenCode TUI 交互方案
+
+| commit | 内容 |
+|---|---|
+| *(2026-07-03)* | 新增 `opencode-model-toggle-design.html`：复用 `opencode-lsp-toggle-design.html` 的文档式 TUI 原型形式，设计 `/model` 模型切换流程；弹窗按 provider 分组展示模型，当前模型置灰并带 ✓，高亮候选使用橙色实心行；底部 usage panel 随 ↑↓ 高亮实时刷新，展示 5h 用量百分比 + 重置时间、7d 用量百分比 + 重置时间；包含健康/偏高/接近上限三种用量状态、成功切换通知、状态模型与交互规格表。 |
+
 ### hai-operator-design.html 专项工作
 
 | commit | 内容 |
