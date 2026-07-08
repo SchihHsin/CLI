@@ -463,6 +463,7 @@ grep -n "id=\"s-m" file.html | head    # 快速列出所有 section
 | commit | 内容 |
 |---|---|
 | *(2026-07-08)* | GitHub Pages 首页新增 **分析与探索** 分组，总卡片数更新为 22；新增 `cli-analysis-report.html`、`tp-context/startup/intent/execute/review/multiagent/wrapup.html`、`ai-dev-tools-design-original.html`、`hai-cli-design.html`、`hai-operator-design.html`、`ux-in-ai-community-report.html`、`style-demos.html`、`terminal_theme_inspector_v2.html`；`sharing-slides.html` / `sharing-slides-print.html` 属于沉淀材料，不放入分析与探索分组。 |
+| *(2026-07-08)* | GitHub Pages 首页新增 **沉淀材料** 分组，总卡片数更新为 24、分类数更新为 4；新增 `sharing-slides.html` 与 `sharing-slides-print.html` 两张卡片和首屏缩略图，用于承载方法论分享、打印版与可复用归档材料。 |
 | *(2026-07-08)* | GitHub Pages 首页名称改为「码道交互设计原型集」，同步更新 HTML title 与首页 H1。 |
 | *(2026-07-08)* | GitHub Pages 首页 `index.html` 改为交互原型集合页：包含 8 个卡片，卡片带截图、名称、说明和跳转链接；分类为 **CLI 交互方案**（`opencode-model-toggle-design.html`、`opencode-codebase-design.html`、`opencode-runmode-design.html`、`btw-interaction-mockup.html`、`opencode-lsp-toggle-design.html`）与 **内置浏览器相关**（`element-editing-prototype-12.html`、`element-edit-input.html`、`unit-editor.html`）；缩略图存放在 `assets/page-thumbs/`。 |
 | *(2026-07-03)* | 新增 `opencode-model-toggle-design.html`：复用 `opencode-lsp-toggle-design.html` 的文档式 TUI 原型形式，设计 `/model` 模型切换流程；弹窗按 provider 分组展示模型，当前模型置灰并带 ✓，高亮候选使用橙色实心行；底部 usage panel 随 ↑↓ 高亮实时刷新，展示 5h 用量百分比 + 重置时间、7d 用量百分比 + 重置时间；包含健康/偏高/接近上限三种用量状态、成功切换通知、状态模型与交互规格表。 |
