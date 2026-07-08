@@ -462,6 +462,7 @@ grep -n "id=\"s-m" file.html | head    # 快速列出所有 section
 
 | commit | 内容 |
 |---|---|
+| *(2026-07-08)* | GitHub Pages 首页名称改为「码道交互设计原型集」，同步更新 HTML title 与首页 H1。 |
 | *(2026-07-08)* | GitHub Pages 首页 `index.html` 改为交互原型集合页：包含 8 个卡片，卡片带截图、名称、说明和跳转链接；分类为 **CLI 交互方案**（`opencode-model-toggle-design.html`、`opencode-codebase-design.html`、`opencode-runmode-design.html`、`btw-interaction-mockup.html`、`opencode-lsp-toggle-design.html`）与 **内置浏览器相关**（`element-editing-prototype-12.html`、`element-edit-input.html`、`unit-editor.html`）；缩略图存放在 `assets/page-thumbs/`。 |
 | *(2026-07-03)* | 新增 `opencode-model-toggle-design.html`：复用 `opencode-lsp-toggle-design.html` 的文档式 TUI 原型形式，设计 `/model` 模型切换流程；弹窗按 provider 分组展示模型，当前模型置灰并带 ✓，高亮候选使用橙色实心行；底部 usage panel 随 ↑↓ 高亮实时刷新，展示 5h 用量百分比 + 重置时间、7d 用量百分比 + 重置时间；包含健康/偏高/接近上限三种用量状态、成功切换通知、状态模型与交互规格表。 |
 | *(2026-07-03)* | `/model` 用量颜色规则补充：0–49% 蓝绿（健康/充足），50–69% 绿黄（中等/正常消耗），70–84% 黄橙（偏高/建议注意），85–100% 橙红（接近上限）；模型整体状态取 5h 与 7d 两个窗口中风险更高的一档。 |
