@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>码道 work｜AI 工作台 Logo 竞品分析</title>
+  <style>
+    :root { --ink:#171a22; --muted:#687083; --line:#dfe3ea; --paper:#f7f7f5; --violet:#6c4dff; --blue:#2b66f6; --mint:#35d5b2; --gold:#ffbf4a; }
+    *{box-sizing:border-box} html{scroll-behavior:smooth} body{margin:0;background:var(--paper);color:var(--ink);font-family:Inter,"PingFang SC","Microsoft YaHei",Arial,sans-serif;line-height:1.5}
+    a{color:inherit;text-decoration-color:#a8aebb;text-underline-offset:3px} .wrap{max-width:1240px;margin:auto;padding:0 34px}
+    .hero{min-height:690px;padding:34px 0 66px;background:radial-gradient(circle at 78% 17%,#f1edff 0 13%,transparent 35%),linear-gradient(120deg,#fbfbf9 0%,#f8f8f6 58%,#f2f1ff 100%);border-bottom:1px solid var(--line);position:relative;overflow:hidden}
+    .eyebrow{font-size:12px;letter-spacing:.15em;text-transform:uppercase;color:#5d6372;font-weight:750}.hero h1{font-size:clamp(42px,7vw,86px);line-height:.98;letter-spacing:-.075em;margin:86px 0 24px;max-width:900px}.hero h1 i{font-style:normal;color:var(--violet)}.hero .lead{max-width:680px;font-size:20px;color:#4e5667;margin:0}
+    .signal{margin-top:70px;display:grid;grid-template-columns:1.2fr .8fr;gap:16px}.signal-main,.signal-note{background:#171a22;color:#fff;border-radius:20px;padding:26px}.signal-main b{display:block;font-size:27px;letter-spacing:-.04em;line-height:1.15;margin-bottom:20px}.signal-main p,.signal-note p{margin:0;color:#c9cdd6;font-size:14px}.signal-note{background:#e8e4ff;color:var(--ink)}.signal-note b{font-size:13px;letter-spacing:.08em;text-transform:uppercase}.signal-note p{margin-top:16px;color:#4a4768}
+    .evolution{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;align-items:stretch}.evo-card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:18px;min-height:286px}.evo-card h3{font-size:15px;margin:0 0 16px}.evo-pair{display:grid;grid-template-columns:1fr 22px 1fr;align-items:center;gap:5px}.evo-logo{height:68px;border:1px solid #e0e4ec;border-radius:14px;background:#fafafa;display:grid;place-items:center}.evo-logo img{width:48px;height:48px;object-fit:contain}.evo-arrow{text-align:center;color:#9299a8;font-size:16px}.evo-card small{display:block;color:#737c8c;font-size:11px;margin-top:5px}.evo-card p{font-size:12px;color:#505969;margin:16px 0 0}.evo-card b{color:#20232e}.same{display:inline-block;margin-top:11px;border-radius:99px;background:#e5f7f1;color:#087c5f;padding:3px 8px;font-size:10px;font-weight:800;letter-spacing:.04em}.evo-chain{display:grid;grid-template-columns:minmax(0,1fr) 15px minmax(0,1fr) 15px minmax(0,1fr);align-items:center;gap:4px}.evo-chain .evo-logo{height:74px}.evo-chain .evo-logo img{width:60px;height:60px}.evo-chain .evo-logo img.install{width:65px;height:62px;object-fit:cover;object-position:23% 47%;border-radius:10px}.evo-chain .evo-logo img.work-cat{width:65px;height:62px;object-fit:cover;object-position:26% 51%;border-radius:10px}.evo-ali{grid-template-columns:minmax(0,1.55fr) 18px minmax(0,.7fr)}.ali-products{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px}.ali-products .evo-logo{height:58px;border-radius:12px;overflow:hidden;background:#f7faf7}.ali-products .evo-logo img{width:54px;height:54px;object-fit:cover;border-radius:10px}.ali-products small{text-align:center;font-size:10px;white-space:nowrap}
+    section{padding:84px 0;border-bottom:1px solid var(--line)}.section-head{display:grid;grid-template-columns:240px 1fr;gap:35px;margin-bottom:34px}.section-head h2{font-size:13px;letter-spacing:.12em;text-transform:uppercase;margin:0;padding-top:7px}.section-head p{font-size:28px;letter-spacing:-.045em;line-height:1.22;max-width:810px;margin:0}.section-head p em{font-style:normal;color:#6254c8}
+    .matrix{border-top:2px solid var(--ink)}.matrix-row{display:grid;grid-template-columns:1.05fr 1.2fr 1.1fr 1.7fr;border-bottom:1px solid var(--line);min-height:126px}.matrix-row>div{padding:22px 18px 20px 0;font-size:14px}.matrix-row>div+div{padding-left:18px;border-left:1px solid var(--line)}.matrix-row.header{min-height:auto;color:var(--muted);font-size:11px;letter-spacing:.09em;text-transform:uppercase;font-weight:700}.matrix-row.header>div{padding-top:12px;padding-bottom:12px}.brand{display:flex;gap:14px;align-items:center;font-weight:760;font-size:17px;letter-spacing:-.025em}.logo-box{flex:0 0 46px;width:46px;height:46px;border-radius:12px;border:1px solid #e1e3e8;background:#fff;display:grid;place-items:center;overflow:hidden}.logo-box img{width:32px;height:32px;object-fit:contain}.brand small{display:block;color:var(--muted);font-weight:500;font-size:11px;letter-spacing:0;margin-top:2px}.tag{display:inline-block;border-radius:99px;padding:3px 9px;font-size:11px;font-weight:750;letter-spacing:.04em;background:#e7e9ee;color:#394050}.tag.keep{background:#e7e3ff;color:#5340cc}.tag.new{background:#e2f8f1;color:#087c5f}.tag.absorb{background:#fff1cf;color:#805500}.finding{color:#3e4655}.finding b{color:var(--ink)}
+    .strategy-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.strategy{min-height:310px;border:1px solid var(--line);border-radius:18px;padding:26px;position:relative;background:#fff}.strategy:nth-child(2){background:#1c1e27;color:#fff;border-color:#1c1e27}.strategy:nth-child(3){background:#eceaff}.strategy .n{font-size:12px;letter-spacing:.12em;font-weight:800;color:#7a8291}.strategy:nth-child(2) .n{color:#c2bbff}.strategy h3{font-size:25px;letter-spacing:-.04em;margin:50px 0 12px;line-height:1.1}.strategy p{margin:0;color:#5d6574;font-size:14px}.strategy:nth-child(2) p{color:#cfd2dc}.strategy strong{display:block;margin-top:24px;font-size:13px}.route{margin-top:20px;border-left:3px solid var(--violet);padding:3px 0 3px 13px;font-size:13px;color:#5e6574}.strategy:nth-child(2) .route{border-color:var(--mint);color:#d9dce5}
+    .concept-page{background:#f0f0ed}.concepts{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.concept{background:#fff;border:1px solid var(--line);border-radius:16px;overflow:hidden;min-width:0}.concept.baseline{border:2px dashed #a8afb9;background:#f9f9f6}.concept.baseline .concept-body{background:#eef0ec}.concept.baseline .label{color:#536071}.concept-art{height:214px;background:#fbfbfa;display:grid;place-items:center;padding:25px}.concept-art img{width:150px;height:150px;object-fit:contain}.concept:nth-child(3) .concept-art img{width:166px;height:166px}.concept-body{padding:17px}.concept-body h3{margin:0;font-size:17px;letter-spacing:-.025em}.concept-body .label{font-size:10px;color:#777f8e;letter-spacing:.1em;text-transform:uppercase;margin:5px 0 12px}.concept-body p{font-size:12px;line-height:1.55;color:#576071;margin:0}.concept-body b{color:#20242e}.concept-conclusion{margin-top:22px;padding:20px 24px;background:#191c24;border-radius:16px;color:#fff;display:grid;grid-template-columns:1fr 1fr;gap:28px}.concept-conclusion b{font-size:17px;letter-spacing:-.02em}.concept-conclusion p{font-size:13px;color:#c5cbd7;margin:5px 0 0}
+    .direction{background:#181b24;color:#fff}.direction .section-head h2{color:#aeb5c5}.direction .section-head p{color:#fff}.recommend{display:grid;grid-template-columns:1.05fr .95fr;gap:45px}.recommend h3{font-size:38px;line-height:1.08;letter-spacing:-.055em;margin:0 0 22px}.recommend p{color:#c4c9d5;font-size:16px}.principles{border-top:1px solid #4a5162}.principle{padding:17px 0;border-bottom:1px solid #4a5162;display:flex;gap:20px}.principle span{color:#a8b0c2;font-size:12px;width:26px}.principle b{font-size:16px}.principle p{margin:4px 0 0;font-size:13px;color:#b8becc}
+    .sources{font-size:12px;color:#707889}.sources ol{padding-left:19px;columns:2;gap:34px}.sources li{padding:6px 0;break-inside:avoid}.foot{padding:26px 0 50px;font-size:12px;color:#737b8c;display:flex;justify-content:space-between;gap:20px}
+    @media(max-width:760px){.wrap{padding:0 18px}.hero{min-height:auto}.hero h1{margin-top:56px}.signal,.recommend,.evolution,.concepts,.concept-conclusion{grid-template-columns:1fr}.section-head{grid-template-columns:1fr;gap:12px}.section-head p{font-size:24px}.matrix{overflow-x:auto}.matrix-row{min-width:830px}.strategy-grid{grid-template-columns:1fr}.sources ol{columns:1}.foot{display:block}.foot div+div{margin-top:5px}}
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <div class="wrap">
+      <div class="eyebrow">码道 work · brand intelligence / 2026.08.12</div>
+      <h1>AI 工作台进入 <i>Work</i> 模式后，<br>图标应该怎么做？</h1>
+      <p class="lead">研究对象：能够接收任务、持续执行并回收交付物的 AI 工作入口。</p>
+      <div class="signal">
+        <div class="signal-main"><b>Work 图标的核心：让“可托付的 Agent”成为可识别的工作入口。</b><p>WorkBuddy 强化角色；TRAE 用同源图形区分 Work / Code；千问办公以独立 IP 收束入口。</p></div>
+        <div class="signal-note"><b>码道 work 的机会</b><p>在<strong>任务入口、伙伴身份与交付闭环</strong>之间，建立一枚稳定、可扩展的图标。</p></div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section>
+      <div class="wrap">
+        <div class="section-head"><h2>00 / 先看 Logo 对比</h2><p><em>“旧”</em>指 Work 模式出现前的母产品 Logo；右侧是 Work 模式上线后的当前入口。腾讯这条线明确经历了从“工具符号”到“AI 伙伴”，再到“Work 伙伴”的三次视觉变化。</p></div>
+        <div class="evolution">
+          <article class="evo-card evo-wide"><h3>腾讯品牌演进｜CodeBuddy → WorkBuddy</h3><div class="evo-chain"><div><div class="evo-logo"><img src="ai-workbench-logo-assets/user-supplied/codebuddy-green-lightning.png" alt="CodeBuddy 早期绿色闪电标志"></div><small>阶段 1：绿色闪电<br>代码效率工具</small></div><div class="evo-arrow">→</div><div><div class="evo-logo"><img src="ai-workbench-logo-assets/user-supplied/codebuddy-blue-cat-equal.png" alt="CodeBuddy 蓝紫色猫图标"></div><small>阶段 2：蓝紫色猫<br>AI 编程伙伴</small></div><div class="evo-arrow">→</div><div><div class="evo-logo"><img src="ai-workbench-logo-assets/user-supplied/workbuddy-green-cat-equal.png" alt="WorkBuddy 绿色猫标志"></div><small>阶段 3：绿色猫<br>AI 工作伙伴</small></div></div><span class="same">用户提供的历史 / 当前标志素材</span><p><b>真正的演进不是“有没有换标”，而是三个明确的身份迁移：</b>闪电=速度与功能；蓝猫=开发者的 AI Buddy；绿猫=面向更广泛工作场景的 Work Buddy。<b>猫这一角色资产被保留，颜色与业务边界被重新定义。</b></p></article>
+          <article class="evo-card"><h3>TRAE｜TraeCode ↔ TraeWork</h3><div class="evo-pair"><div><div class="evo-logo"><img src="ai-workbench-logo-assets/user-supplied/traecode-green.png" alt="TraeCode 绿色 App 图标"></div><small>TraeCode：绿色<br>AI 编程</small></div><div class="evo-arrow">↔</div><div><div class="evo-logo"><img src="ai-workbench-logo-assets/user-supplied/traework-black-white.png" alt="TraeWork 黑白 App 图标"></div><small>TraeWork：黑白<br>办公工作台</small></div></div><span class="same">同一符号骨架，双产品色彩系统</span><p><b>不是同一 Logo。</b> 两者复用“屏幕 + 双菱形”的图形语法，以绿色 / 黑白和深 / 浅容器，明确区分代码与办公。</p></article>
+          <article class="evo-card"><h3>阿里｜多产品 → 千问办公</h3><div class="evo-pair evo-ali"><div class="ali-products"><div><div class="evo-logo"><img src="ai-workbench-logo-assets/qoder-legacy-mark.jpg" alt="Qoder 旧入口图标"></div><small>Qoder</small></div><div><div class="evo-logo"><img src="ai-workbench-logo-assets/wukong-legacy-mark.jpg" alt="悟空旧入口图标"></div><small>悟空</small></div><div><div class="evo-logo"><img src="ai-workbench-logo-assets/mulerun-legacy-mark.jpg" alt="MuleRun 骡子快跑旧入口图标"></div><small>MuleRun</small></div></div><div class="evo-arrow">→</div><div><div class="evo-logo"><img src="ai-workbench-logo-assets/qwenwork-octopus.svg" alt="千问办公绿色章鱼图标"></div><small>现：千问办公<br>绿色章鱼入口</small></div></div><span class="same">能力收束 + 独立 IP</span><p><b>不是“千问通用图标升级”。</b> Qoder、悟空、MuleRun（骡子快跑）等能力收束到千问办公，以绿色章鱼建立统一的 AI 办公入口。</p></article>
+        </div>
+      </div>
+    </section>
+    <section>
+      <div class="wrap">
+        <div class="section-head"><h2>01 / 关键问题</h2><p>不是“有没有 AI 感”，而是：<em>Work 模式出现后，品牌怎么分层？</em></p></div>
+        <div class="matrix">
+          <div class="matrix-row header"><div>样本 / 实际 Logo</div><div>当前 Work 型能力</div><div>模式与本体的 Logo 关系</div><div>策略判断</div></div>
+          <div class="matrix-row"><div><div class="brand"><span class="logo-box"><img src="ai-workbench-logo-assets/user-supplied/workbuddy-green-cat-mark.png" alt="WorkBuddy 绿色猫标志"></span><span>WorkBuddy<small>腾讯 / 官网当前入口</small></span></div></div><div>多 Agent 并行，规划并交付多模态复杂任务。</div><div><span class="tag new">绿色猫：新产品标志</span><br><br>从 CodeBuddy 的绿色闪电、蓝紫色猫演进而来；WorkBuddy 以绿色猫作为面向泛工作场景的新入口。</div><div class="finding"><b>“保留角色，切换身份与色彩”</b><br>猫延续 Buddy 的陪伴感；绿从“开发效率”扩展为“工作协同 / 专家团”。这是 Work 模式中最有价值的完整换标案例。</div></div>
+          <div class="matrix-row"><div><div class="brand"><span class="logo-box"><img src="ai-workbench-logo-assets/user-supplied/traecode-green.png" alt="TraeCode 绿色标志"></span><span>TRAE<small>字节 / TraeCode + TraeWork</small></span></div></div><div>官网并列呈现 TraeCode（AI 编程工程师）与 TraeWork（专业 AI 工作助手）。</div><div><span class="tag keep">同源子产品标识</span><br><br>共用“屏幕 + 双菱形”骨架；TraeCode 为绿色深色容器，TraeWork 为黑白浅色容器。</div><div class="finding"><b>“一套图形语法，双重产品身份”</b><br>它保留 TRAE 的系统一致性，但没有让 Work 只做文字后缀。色彩与容器反转让 AI 编程、办公工作台在小尺寸上立即可分。</div></div>
+          <div class="matrix-row"><div><div class="brand"><span class="logo-box"><img src="ai-workbench-logo-assets/qwenwork-octopus.svg" alt="千问办公官网绿色章鱼标志"></span><span>千问办公<small>QwenWork / 阿里当前入口</small></span></div></div><div>以统一办公入口吸收多类 Agent / 执行能力。</div><div><span class="tag absorb">统一入口 + 独立 IP</span><br><br>官网使用绿色章鱼和“千问办公”完整字标；不是千问通用的蓝色图标。</div><div class="finding"><b>“产品群收束，但视觉反而人格化”</b><br>QwenWork 用绿色章鱼承担新工作台的可亲近与可记忆性，统一入口并不意味着只能使用抽象母品牌符号。</div></div>
+          <div class="matrix-row"><div><div class="brand"><span class="logo-box"><img src="ai-workbench-logo-assets/cursor-current.svg" alt="Cursor 官方标志"></span><span>Cursor<small>Cloud Agents / 国际参照</small></span></div></div><div>可并行运行数小时或数天的 Cloud Agents，并由 Inbox / Web / 移动端回收任务。</div><div><span class="tag keep">沿用主品牌</span><br><br>Cloud Agents 是产品导航与能力命名，不另设视觉标志。</div><div class="finding"><b>“产品模式隐入主品牌”</b><br>对已有强认知的专业工具，直接强化 Cursor 即可；Agent 的“身份”通过界面中的任务、PR、收件箱建立。</div></div>
+          <div class="matrix-row"><div><div class="brand"><span class="logo-box"><img src="ai-workbench-logo-assets/manus-current.svg" alt="Manus 官方标志"></span><span>Manus<small>独立 Agent 工作台 / 国际参照</small></span></div></div><div>面向研究、浏览、制作与交付的通用自主 Agent。</div><div><span class="tag new">本体即 Work</span><br><br>不存在“旧产品 + Work 子模式”的问题；标志直接服务于整个 Agent 产品。</div><div class="finding"><b>“以产品人格做总品牌”</b><br>简洁的黑白字标和具象化符号让“员工”感来自产品行为，而非堆叠传统 AI 视觉特征。</div></div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="wrap">
+        <div class="section-head"><h2>02 / 三种策略</h2><p>不同策略不是审美选择，而是对产品未来<strong>扩张边界</strong>的判断。</p></div>
+        <div class="strategy-grid">
+          <article class="strategy"><div class="n">A / EVOLVED SUB-BRAND</div><h3>角色延续<br>+ 颜色与身份切换</h3><p>新入口要跨越原受众时，保留已有角色资产的熟悉感，同时借颜色和新符号重新定义“它替谁工作”。</p><strong>样本：绿色闪电 → 蓝猫 → WorkBuddy 绿色猫</strong><div class="route">适用：码道希望继承已有品牌记忆，但 Work 模式已改变核心用户与产品承诺。</div></article>
+          <article class="strategy"><div class="n">B / MASTERBRAND SYSTEM</div><h3>同源符号<br>建立产品色彩系统</h3><p>主品牌承担图形语法；Code 和 Work 通过深浅容器、色彩与命名快速区分，既统一又可扩展。</p><strong>样本：TraeCode 绿色 / TraeWork 黑白；Cursor / Cloud Agents</strong><div class="route">适用：码道将持续扩展多个 Agent，但希望用户先记住“码道”而非每个工作模式。</div></article>
+          <article class="strategy"><div class="n">C / PLATFORM ABSORPTION</div><h3>统一入口<br>吸收 Agent 能力</h3><p>当价值来自编排能力集合，原本分散的 Agent 产品被收束，统一平台成为用户委派任务的唯一门牌。</p><strong>样本：千问办公整合 Qoder、MuleRun、悟空等能力</strong><div class="route">适用：码道 work 是既有产品群的总入口，而不是单一 Agent 的新产品。</div></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="sources">
+      <div class="wrap"><div class="section-head"><h2>资料说明</h2><p>所有图形均直接引用各产品官网当前可访问的实际标志素材；判断依据截至 2026 年 8 月 12 日。</p></div>
+      <ol>
+        <li><a href="https://www.codebuddy.cn/work/" target="_blank" rel="noreferrer">WorkBuddy 官网</a>：品牌主视觉、CodeBuddy 完整字标、WorkBuddy“腾讯龙虾”角色与产品关系；腾讯三阶段图标由用户提供的实际素材补充并校正。</li>
+        <li><a href="https://www.trae.ai/" target="_blank" rel="noreferrer">TRAE 官网</a>：TraeWork 与 TraeCode 并列呈现；黑白 / 绿色 App 图标由用户提供的安装包实际画面裁取并校正。</li>
+        <li><a href="https://www.cursor.com/" target="_blank" rel="noreferrer">Cursor 官网</a> 与 <a href="https://www.cursor.com/changelog" target="_blank" rel="noreferrer">更新日志</a>：Cloud Agents、并行执行与 Inbox 的当前呈现。</li>
+        <li>Qoder：仅作为千问办公整合前的阿里产品前史，不再作为本报告「当前核心竞品」并列样本。</li>
+        <li><a href="https://manus.im/" target="_blank" rel="noreferrer">Manus 官网</a>：官方符号素材。</li>
+        <li><a href="https://qwenwork.cn/" target="_blank" rel="noreferrer">千问办公（QwenWork）官网</a>：绿色章鱼图形、完整字标与当前 AI 办公平台定位；能力收束背景来自本轮讨论与近期公开报道线索。</li>
+      </ol></div>
+    </section>
+
+    <section class="concept-page">
+      <div class="wrap">
+        <div class="section-head"><h2>03 / 码道 work 图标方案</h2><p>旧 Logo 是彩色无限带。围绕 Work 模式，当前探索从<strong>保留连续性</strong>到<strong>显性建立 AI 伙伴</strong>的四条路径。</p></div>
+        <div class="concepts">
+          <article class="concept baseline"><div class="concept-art"><img src="ai-workbench-logo-assets/user-supplied/madao-work/legacy-rainbow-loop.png" alt="码道旧彩色无限带 Logo"></div><div class="concept-body"><h3>旧 Logo · 基准</h3><div class="label">Legacy / Rainbow Loop</div><p><b>彩色无限带。</b>强调连接、循环和无限可能；是评估新模式方案时需要延续或重新定义的既有品牌资产。</p></div></article>
+          <article class="concept"><div class="concept-art"><img src="ai-workbench-logo-assets/user-supplied/madao-work/blue-violet-loop.png" alt="蓝紫色无限带 Logo 方案"></div><div class="concept-body"><h3>方案 A：收敛色彩</h3><div class="label">Blue Violet Loop</div><p><b>保留无限带，收敛为蓝紫。</b>从通用创作 / 工具感转向更稳重的 AI 工作台，但“Work”与旧产品的区隔较弱。</p></div></article>
+          <article class="concept"><div class="concept-art"><img src="ai-workbench-logo-assets/user-supplied/madao-work/face-loop.png" alt="伙伴化环带 Logo 方案"></div><div class="concept-body"><h3>方案 B：伙伴化环带</h3><div class="label">Agent / Face Loop</div><p><b>把旧环带转成可识别的伙伴形象。</b>既保留 X / 无限结构，又给新模式一个可被委派的主体，与 AI 员工产品本质更贴近。</p></div></article>
+          <article class="concept"><div class="concept-art"><img src="ai-workbench-logo-assets/user-supplied/madao-work/glass-loop.png" alt="玻璃材质无限带 Logo 方案"></div><div class="concept-body"><h3>方案 C：玻璃带</h3><div class="label">Glass Ribbon</div><p><b>以材质感强化未来感与流动性。</b>适合品牌海报、启动页或动效；若作为主图标，还需要继续验证小尺寸、单色与跨端呈现。</p></div></article>
+        </div>
+        <div class="concept-conclusion"><div><b>建议优先深化：方案 B「伙伴化环带」</b><p>它是四个里唯一同时回答两个问题的方案：保留旧 Logo 的连续性，并为 Work 模式建立清晰的 AI 伙伴身份。</p></div><div><b>下一轮设计约束</b><p>将白色环带、双眼、紫色容器拆为独立可调变量，测试 16px / 24px / 40px 单色可读性；避免继续增加“机器人脸”的具象细节。</p></div></div>
+      </div>
+    </section>
+
+  </main>
+  <footer class="wrap foot"><div>码道 work / AI 工作台 Logo 竞品分析</div><div>建议下一步：基于策略 B 产出 3 组 Logo 方向草案</div></footer>
+</body>
+</html>

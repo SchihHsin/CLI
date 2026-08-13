@@ -793,6 +793,11 @@ grid-template-rows: 1.5fr 1fr 1fr 1.3fr 1fr 1fr;
 
 ## 待办（按优先级）
 
+### 2026-08-13 · 码道 work Logo 竞品分析
+- 新增 `ai-workbench-logo-competitive-analysis.html` 与 `ai-workbench-logo-assets/`，用于 GitHub Pages 展示码道 work 的 AI 工作台 Logo 竞品分析。
+- 报告包含 WorkBuddy、TRAE、Qoder / 悟空 / MuleRun → 千问办公的品牌演进，以及码道 work 的三组图标方案。
+- 首页索引已新增「码道 work · AI 工作台 Logo 竞品分析」卡片，页面总数更新为 25。
+
 ### 高优先级
 - [ ] **Cardputer 图换清晰图片** — 现有 Espressif WeChat 截图看不清楚设备，需换一张能清晰看到 M5Stack Cardputer 实机的图
 - [ ] **Warp 卡片强调"开源"** — 用户说 Warp 的重点是"开源"这件事，卡片文字可更突出 open source 决定的意义
