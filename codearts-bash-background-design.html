@@ -715,10 +715,60 @@
   </div>
 
   <div class="section">
-    <div class="section-title"><span class="num">04</span> &nbsp;步骤四 · 后台任务完成、失败与需要关注</div>
+    <div class="section-title"><span class="num">04</span> &nbsp;步骤四 · 前台任务超过 15 秒后转入后台</div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-content">
+        <div class="step-label"><b>用户一开始选择前台执行，但 Bash 已运行超过 15 秒仍未结束</b>。TUI 在不抢焦点的前提下给出“转入后台”提示，用户点击或按 <span class="kbd">B</span> 后立即恢复输入权。</div>
+        <div class="tui-wrap">
+          <div class="tui-bar">
+            <div class="tui-dots"><span class="tui-dot r"></span><span class="tui-dot y"></span><span class="tui-dot g"></span></div>
+            <div class="tui-wt">CodeArts TUI</div>
+          </div>
+          <div class="tui-main">
+            <div class="tui-msgs">
+              <div class="tm tc-dim">用户选择：前台执行，等待命令结束</div>
+              <div class="tm"><span class="tc-orange">$</span> pytest tests/e2e --headed</div>
+              <div class="tm tc-dim">collecting tests/login.spec.ts ...</div>
+              <div class="tm tc-dim">chromium started · running login flow</div>
+              <div class="tm tc-yellow">⟳ 已运行 15s，进程仍在输出</div>
+              <div class="oc-alert warning">
+                <div class="a-title">这个前台 Bash 可能还会继续运行</div>
+                <div class="a-body">可将当前进程转为后台 Job，日志继续缓冲，TUI 立即恢复输入。</div>
+              </div>
+              <div class="modal-wrap">
+                <div class="modal-hdr">
+                  <div class="modal-title">转入后台执行？</div>
+                  <div class="modal-esc">Esc 继续等待</div>
+                </div>
+                <div class="modal-body">
+                  <div class="choice selected"><span>转入后台并继续其他操作</span><span class="right">B / Enter</span></div>
+                  <div class="choice"><span>继续前台等待</span><span class="right">W</span></div>
+                  <div class="choice"><span>停止当前 Bash</span><span class="right">S</span></div>
+                </div>
+              </div>
+            </div>
+            <div class="tui-sidebar">
+              <div class="sb-sec"><div class="sb-title">Foreground</div><div class="sb-body"><span class="tc-yellow">pytest tests/e2e</span><br>15s elapsed<br>stdout active</div></div>
+              <div class="sb-sec"><div class="sb-title">Suggestion</div><div class="sb-body">backgroundable<br>logs buffered</div></div>
+            </div>
+          </div>
+          <div class="tui-input"><div class="tui-iline">❯ Bash running… <span class="tc-dim">press B to background</span><span class="t-cursor"></span></div></div>
+          <div class="tui-status">
+            <div class="tui-sl"><span class="agent-lbl">Bash</span><span>前台运行超过 15s</span></div>
+            <div class="tui-sr"><span><span class="t-kbd">B</span> 转后台</span><span><span class="t-kbd">W</span> 等待</span><span><span class="t-kbd">S</span> 停止</span></div>
+          </div>
+        </div>
+        <div class="step-note">转后台不是重新执行命令，而是把现有前台进程接管为 Job：保留 PID、cwd、已产生的输出和退出状态监听。成功后提示 <code>Job #13 已转入后台</code>。</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title"><span class="num">05</span> &nbsp;步骤五 · 后台任务完成、失败与需要关注</div>
     <div class="step-wrap">
       <div class="step">
-        <div class="step-num">4a</div>
+        <div class="step-num">5a</div>
         <div class="step-content">
           <div class="step-label"><b>完成时不打断当前输入</b>，只在当前对话流中插入轻量通知，并允许一键把摘要附加给 Agent。</div>
           <div class="tui-wrap">
@@ -748,7 +798,7 @@
         </div>
       </div>
       <div class="step">
-        <div class="step-num">4b</div>
+        <div class="step-num">5b</div>
         <div class="step-content">
           <div class="step-label"><b>失败时升级为需要关注</b>，展示失败原因摘要和下一步动作，但不直接把大段日志塞进上下文。</div>
           <div class="tui-wrap">
@@ -787,7 +837,7 @@
   </div>
 
   <div class="section">
-    <div class="section-title"><span class="num">05</span> &nbsp;交互规则与边界</div>
+    <div class="section-title"><span class="num">06</span> &nbsp;交互规则与边界</div>
     <div class="table-wrap">
       <table class="spec-table">
         <thead>
@@ -796,6 +846,7 @@
         <tbody>
           <tr><td>触发方式</td><td>显式后台：命令后加 <code>&amp;</code>、选择“后台执行”、或输入 <code>/bash --bg</code></td><td>创建 Job ID，输入框立即恢复</td></tr>
           <tr><td>自动建议</td><td>命中 server/watch/tail/daemon/长时间无退出等模式时建议后台化</td><td>弹出执行方式选择，不直接静默后台</td></tr>
+          <tr><td>前台转后台</td><td>前台 Bash 执行超过 15 秒仍未结束，且进程仍存活或持续输出</td><td>显示“转入后台”提示条，按 <span class="kbd">B</span> 或点击按钮接管为后台 Job</td></tr>
           <tr><td>日志策略</td><td>stdout/stderr 进入 ring buffer；默认只展示关键行、错误片段与 AI 摘要</td><td>避免刷屏，按 <span class="kbd">L</span> 展开完整日志</td></tr>
           <tr><td>上下文策略</td><td>默认只把 Job 摘要给 Agent；完整日志需用户确认附加</td><td>按 <span class="kbd">A</span> attach summary，避免污染上下文</td></tr>
           <tr><td>中断规则</td><td><span class="kbd">Ctrl+C</span> 只取消当前前台输入，不杀后台 Job</td><td>停止 Job 必须在 <code>/jobs</code> 里按 <span class="kbd">S</span> 二次确认</td></tr>
@@ -807,7 +858,7 @@
   </div>
 
   <div class="section">
-    <div class="section-title"><span class="num">06</span> &nbsp;状态模型与数据结构</div>
+    <div class="section-title"><span class="num">07</span> &nbsp;状态模型与数据结构</div>
     <div class="code-block">
 <span class="ck">type</span> BashJobStatus =
   <span class="cs">'starting'</span> | <span class="cs">'running'</span> | <span class="cs">'attention'</span> | <span class="cs">'done'</span> | <span class="cs">'failed'</span> | <span class="cs">'stopped'</span>
