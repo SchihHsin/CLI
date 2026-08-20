@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CodeArts TUI Bash 后台执行交互设计方案</title>
+<style>
+  :root {
+    --page-bg:#f5f5f3;
+    --page-surface:#fff;
+    --page-border:#e2e2de;
+    --page-text:#1a1a18;
+    --page-muted:#6b6b65;
+    --page-faint:#aaa9a2;
+    --page-tag-bg:#efefec;
+    --accent:#c96a2a;
+    --accent-soft:#fef3ea;
+
+    --t-bg:#0e0e0e;
+    --t-bg2:#161616;
+    --t-bg3:#1c1c1c;
+    --t-bg4:#232323;
+    --t-border:#282828;
+    --t-border2:#353535;
+    --t-orange:#fab283;
+    --t-blue:#5c9cf5;
+    --t-purple:#9d7cd8;
+    --t-green:#9ece6a;
+    --t-red:#f7768e;
+    --t-yellow:#e0af68;
+    --t-cyan:#7dcfff;
+    --t-text:#a9b1d6;
+    --t-dim:#565f89;
+    --t-muted:#3a3f5c;
+    --t-white:#c0caf5;
+
+    --font-mono:'JetBrains Mono','Fira Code','Cascadia Code','Consolas',monospace;
+    --font-sans:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans SC',sans-serif;
+  }
+
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body {
+    font-family:var(--font-sans);
+    background:var(--page-bg);
+    color:var(--page-text);
+    font-size:14px;
+    line-height:1.6;
+  }
+
+  .doc-header {
+    background:var(--page-surface);
+    border-bottom:1px solid var(--page-border);
+    padding:40px 52px 32px;
+  }
+  .doc-header h1 {
+    font-size:22px;
+    font-weight:600;
+    letter-spacing:-.02em;
+    margin-bottom:6px;
+  }
+  .doc-header h1 code {
+    font-family:var(--font-mono);
+    font-size:18px;
+    font-weight:400;
+    color:var(--accent);
+    background:var(--accent-soft);
+    padding:1px 7px;
+    border-radius:4px;
+  }
+  .doc-header p { color:var(--page-muted); font-size:13px; }
+  .meta {
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    margin-top:14px;
+  }
+  .meta-tag {
+    font-size:11px;
+    color:var(--page-muted);
+    padding:3px 10px;
+    background:var(--page-tag-bg);
+    border:1px solid var(--page-border);
+    border-radius:4px;
+  }
+  .meta-tag b { color:var(--page-text); font-weight:500; }
+
+  .doc-body {
+    padding:36px 52px 60px;
+    max-width:960px;
+  }
+  .section { margin-bottom:52px; }
+  .section-title {
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:.1em;
+    color:var(--page-muted);
+    font-weight:500;
+    margin-bottom:18px;
+    padding-bottom:8px;
+    border-bottom:1px solid var(--page-border);
+  }
+  .section-title .num { color:var(--accent); }
+
+  .flow-table { width:100%; }
+  .flow-row {
+    display:flex;
+    gap:12px;
+    align-items:flex-start;
+    padding:9px 0;
+    border-bottom:1px solid var(--page-border);
+  }
+  .flow-row:last-child { border-bottom:none; }
+  .flow-n {
+    width:28px;
+    height:22px;
+    flex-shrink:0;
+    background:var(--page-tag-bg);
+    border:1px solid var(--page-border);
+    border-radius:4px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:10px;
+    color:var(--page-muted);
+    font-family:var(--font-mono);
+    margin-top:1px;
+  }
+  .flow-b {
+    flex:1;
+    font-size:13px;
+    color:var(--page-muted);
+    line-height:1.6;
+  }
+  .flow-b b { color:var(--page-text); font-weight:500; }
+  .flow-b code,
+  .step-note code {
+    font-family:var(--font-mono);
+    font-size:12px;
+    color:var(--accent);
+    background:var(--accent-soft);
+    padding:1px 5px;
+    border-radius:3px;
+  }
+
+  .step-wrap { display:flex; flex-direction:column; gap:28px; }
+  .step { display:flex; gap:18px; }
+  .step-num {
+    flex-shrink:0;
+    width:24px;
+    height:24px;
+    border:1px solid var(--page-border);
+    border-radius:4px;
+    background:var(--page-surface);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:11px;
+    color:var(--page-muted);
+    margin-top:2px;
+    font-family:var(--font-mono);
+  }
+  .step-content { flex:1; min-width:0; }
+  .step-label {
+    font-size:13px;
+    color:var(--page-muted);
+    margin-bottom:10px;
+    line-height:1.5;
+  }
+  .step-label b { color:var(--page-text); font-weight:500; }
+  .step-note {
+    margin-top:10px;
+    font-size:12px;
+    color:var(--page-muted);
+    line-height:1.7;
+    padding:8px 12px;
+    background:var(--page-tag-bg);
+    border-left:3px solid var(--page-border);
+    border-radius:0 4px 4px 0;
+  }
+  .step-note b { color:var(--page-text); font-weight:500; }
+
+  .tui-wrap {
+    background:var(--t-bg);
+    border-radius:8px;
+    overflow:hidden;
+    box-shadow:0 2px 12px rgba(0,0,0,.18),0 0 0 1px rgba(0,0,0,.12);
+    font-family:var(--font-mono);
+  }
+  .tui-bar {
+    background:var(--t-bg2);
+    padding:9px 14px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+    border-bottom:1px solid var(--t-border);
+  }
+  .tui-dots { display:flex; gap:6px; }
+  .tui-dot { width:12px; height:12px; border-radius:50%; }
+  .tui-dot.r { background:#ff5f57; }
+  .tui-dot.y { background:#febc2e; }
+  .tui-dot.g { background:#28c840; }
+  .tui-wt { flex:1; text-align:center; font-size:12px; color:var(--t-dim); }
+  .tui-main { display:flex; min-height:272px; }
+  .tui-msgs {
+    flex:1;
+    min-width:0;
+    padding:14px 18px;
+    border-right:1px solid var(--t-border);
+    display:flex;
+    flex-direction:column;
+    gap:4px;
+  }
+  .tui-sidebar {
+    width:220px;
+    flex-shrink:0;
+    padding:14px 16px;
+  }
+  .tui-input {
+    border-top:1px solid var(--t-border);
+    display:flex;
+  }
+  .tui-iline {
+    flex:1;
+    border-left:2px solid var(--t-blue);
+    padding:9px 14px;
+    background:var(--t-bg2);
+    font-size:12px;
+    color:var(--t-white);
+    min-height:40px;
+    display:flex;
+    align-items:center;
+  }
+  .tui-status {
+    background:var(--t-bg2);
+    border-top:1px solid var(--t-border);
+    padding:5px 14px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    font-size:11px;
+    color:var(--t-dim);
+  }
+  .tui-sl,
+  .tui-sr { display:flex; align-items:center; gap:10px; }
+  .agent-lbl { color:var(--t-orange); }
+  .t-kbd { color:var(--t-white); }
+
+  .tm { font-size:12px; line-height:1.85; }
+  .tc-dim { color:var(--t-dim); }
+  .tc-white { color:var(--t-white); }
+  .tc-orange { color:var(--t-orange); }
+  .tc-green { color:var(--t-green); }
+  .tc-red { color:var(--t-red); }
+  .tc-yellow { color:var(--t-yellow); }
+  .tc-blue { color:var(--t-blue); }
+  .tc-purple { color:var(--t-purple); }
+  .tm-gap { height:5px; }
+  .t-cursor {
+    display:inline-block;
+    width:7px;
+    height:13px;
+    background:var(--t-white);
+    border-radius:1px;
+    margin-left:1px;
+    opacity:.85;
+  }
+
+  .sb-sec { margin-bottom:16px; }
+  .sb-title { font-size:12px; color:var(--t-white); margin-bottom:4px; }
+  .sb-body { font-size:12px; color:var(--t-dim); line-height:1.75; }
+  .job-chip {
+    display:inline-flex;
+    align-items:center;
+    gap:5px;
+    border:1px solid var(--t-border2);
+    border-radius:999px;
+    padding:1px 7px;
+    font-size:10px;
+    color:var(--t-dim);
+  }
+  .job-chip.run { color:var(--t-yellow); border-color:rgba(224,175,104,.35); }
+  .job-chip.ok { color:var(--t-green); border-color:rgba(158,206,106,.35); }
+  .job-chip.bad { color:var(--t-red); border-color:rgba(247,118,142,.35); }
+  .job-dot {
+    width:6px;
+    height:6px;
+    border-radius:50%;
+    background:currentColor;
+    box-shadow:0 0 10px currentColor;
+  }
+  .job-list { display:flex; flex-direction:column; gap:8px; }
+  .job-item {
+    border:1px solid var(--t-border2);
+    background:rgba(255,255,255,.025);
+    padding:8px 9px;
+    border-radius:5px;
+  }
+  .job-item.active { border-color:rgba(250,178,131,.65); background:rgba(250,178,131,.06); }
+  .job-top { display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:4px; }
+  .job-name { color:var(--t-white); font-size:11px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .job-meta { color:var(--t-dim); font-size:10px; line-height:1.55; }
+  .progress {
+    height:5px;
+    border-radius:999px;
+    background:#101010;
+    overflow:hidden;
+    border:1px solid var(--t-border2);
+    margin-top:6px;
+  }
+  .progress span {
+    display:block;
+    height:100%;
+    border-radius:999px;
+    background:linear-gradient(90deg,var(--t-blue),var(--t-cyan),var(--t-yellow));
+  }
+
+  .oc-alert {
+    padding:6px 14px;
+    border-left:3px solid transparent;
+    font-size:12px;
+    line-height:1.8;
+  }
+  .oc-alert.info { border-left-color:var(--t-blue); }
+  .oc-alert.warning { border-left-color:var(--t-yellow); }
+  .oc-alert.success { border-left-color:var(--t-green); }
+  .oc-alert.error { border-left-color:var(--t-red); }
+  .oc-alert .a-title { margin-bottom:1px; }
+  .oc-alert.info .a-title { color:var(--t-blue); }
+  .oc-alert.warning .a-title { color:var(--t-yellow); }
+  .oc-alert.success .a-title { color:var(--t-green); }
+  .oc-alert.error .a-title { color:var(--t-red); }
+  .oc-alert .a-body { color:var(--t-dim); }
+  .oc-alert .a-body b { color:var(--t-white); font-weight:400; }
+
+  .modal-wrap {
+    margin:8px auto;
+    background:var(--t-bg3);
+    border:1px solid #3a3a3a;
+    border-radius:4px;
+    overflow:hidden;
+    max-width:460px;
+  }
+  .modal-hdr {
+    padding:10px 16px 8px;
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+  }
+  .modal-title { font-size:13px; color:var(--t-white); }
+  .modal-esc { font-size:11px; color:var(--t-dim); }
+  .modal-body { padding:0 12px 12px; }
+  .choice {
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    padding:7px 10px;
+    font-size:12px;
+    color:var(--t-text);
+  }
+  .choice.selected {
+    background:var(--t-orange);
+    color:#1a0800;
+    border-radius:3px;
+  }
+  .choice .right { font-size:11px; color:var(--t-dim); }
+  .choice.selected .right { color:#1a0800; opacity:.62; }
+
+  .log-panel {
+    border:1px solid var(--t-border2);
+    background:var(--t-bg3);
+    border-radius:5px;
+    overflow:hidden;
+    margin-top:4px;
+  }
+  .log-head {
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:7px 10px;
+    border-bottom:1px solid var(--t-border);
+    font-size:11px;
+    color:var(--t-dim);
+  }
+  .log-body {
+    padding:9px 10px;
+    font-size:11px;
+    line-height:1.75;
+    color:var(--t-text);
+    max-height:142px;
+    overflow:hidden;
+  }
+  .log-line { display:flex; gap:8px; }
+  .log-ts { color:var(--t-muted); flex-shrink:0; }
+  .log-summary {
+    padding:8px 10px;
+    border-top:1px solid var(--t-border);
+    background:rgba(92,156,245,.06);
+    color:var(--t-dim);
+    font-size:11px;
+    line-height:1.65;
+  }
+  .log-summary b { color:var(--t-cyan); font-weight:400; }
+
+  .job-panel {
+    max-width:560px;
+    border:1px solid var(--t-border2);
+    background:var(--t-bg3);
+    border-radius:5px;
+    overflow:hidden;
+    margin:6px auto;
+  }
+  .job-panel-head {
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:9px 12px;
+    border-bottom:1px solid var(--t-border);
+    font-size:12px;
+    color:var(--t-white);
+  }
+  .job-table { width:100%; border-collapse:collapse; font-size:11px; }
+  .job-table th {
+    text-align:left;
+    color:var(--t-dim);
+    font-weight:400;
+    padding:7px 10px;
+    background:var(--t-bg2);
+    border-bottom:1px solid var(--t-border);
+  }
+  .job-table td {
+    padding:8px 10px;
+    color:var(--t-text);
+    border-bottom:1px solid var(--t-border);
+  }
+  .job-table tr.selected td {
+    background:var(--t-orange);
+    color:#1a0800;
+  }
+  .job-table tr:last-child td { border-bottom:none; }
+  .job-actions {
+    display:flex;
+    gap:8px;
+    padding:9px 12px;
+    color:var(--t-dim);
+    font-size:11px;
+    border-top:1px solid var(--t-border);
+  }
+
+  .table-wrap {
+    border:1px solid var(--page-border);
+    border-radius:6px;
+    overflow:hidden;
+    background:var(--page-surface);
+  }
+  .spec-table {
+    width:100%;
+    border-collapse:collapse;
+    font-size:12px;
+  }
+  .spec-table th {
+    text-align:left;
+    padding:7px 14px;
+    font-size:11px;
+    font-weight:500;
+    text-transform:uppercase;
+    letter-spacing:.07em;
+    color:var(--page-muted);
+    background:var(--page-tag-bg);
+    border-bottom:1px solid var(--page-border);
+  }
+  .spec-table td {
+    padding:8px 14px;
+    border-bottom:1px solid var(--page-border);
+    vertical-align:top;
+    line-height:1.65;
+    color:var(--page-muted);
+  }
+  .spec-table tr:last-child td { border-bottom:none; }
+  .spec-table td:first-child {
+    color:var(--page-text);
+    font-weight:500;
+    white-space:nowrap;
+  }
+  .kbd {
+    display:inline-block;
+    font-family:var(--font-mono);
+    border:1px solid var(--page-border);
+    padding:1px 6px;
+    border-radius:3px;
+    font-size:11px;
+    color:var(--page-text);
+    background:var(--page-surface);
+    vertical-align:middle;
+  }
+  .code-block {
+    background:#1a1a1a;
+    border-radius:6px;
+    padding:16px 18px;
+    font-family:var(--font-mono);
+    font-size:12px;
+    line-height:1.8;
+    overflow-x:auto;
+    color:#a9b1d6;
+  }
+  .ck { color:#9d7cd8; }
+  .cs { color:#9ece6a; }
+  .cc { color:#565f89; }
+  .ct { color:#7dcfff; }
+  .cn { color:#fab283; }
+  .cv { color:#e0af68; }
+
+  @media (max-width:760px) {
+    .doc-header { padding:30px 24px 24px; }
+    .doc-body { padding:28px 24px 48px; }
+    .tui-main { flex-direction:column; }
+    .tui-msgs { border-right:0; border-bottom:1px solid var(--t-border); }
+    .tui-sidebar { width:100%; }
+    .step { gap:12px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="doc-header">
+  <h1>CodeArts TUI <code>Bash 后台执行</code> 交互设计方案</h1>
+  <p>Bash 非阻塞执行 · 后台 Job 管理 · 日志按需查看 · 长任务不打断会话</p>
+  <div class="meta">
+    <span class="meta-tag">版本 <b>v1.0</b></span>
+    <span class="meta-tag">平台 <b>CodeArts TUI</b></span>
+    <span class="meta-tag">状态 <b>设计稿</b></span>
+    <span class="meta-tag">目标 <b>Prompt 可继续输入</b></span>
+  </div>
+</div>
+
+<div class="doc-body">
+  <div class="section">
+    <div class="section-title"><span class="num">00</span> &nbsp;需求定义与整体流程</div>
+    <div class="flow-table">
+      <div class="flow-row">
+        <div class="flow-n">1</div>
+        <div class="flow-b">用户发起长耗时 Bash，例如 <code>npm run dev</code>、<code>pytest -q</code>、<code>tail -f app.log</code>、构建/部署/监控类命令</div>
+      </div>
+      <div class="flow-row">
+        <div class="flow-n">2</div>
+        <div class="flow-b">TUI 在执行前判断命令是否可能阻塞；若命中长任务规则，默认提供 <b>后台执行</b> 与 <b>前台等待</b> 两条路径</div>
+      </div>
+      <div class="flow-row">
+        <div class="flow-n">3</div>
+        <div class="flow-b">用户选择后台执行后，Bash Job 被赋予稳定 ID，输入框立即恢复，用户可继续向 Agent 提需求</div>
+      </div>
+      <div class="flow-row">
+        <div class="flow-n">4</div>
+        <div class="flow-b">后台 Job 的 stdout/stderr 不再刷屏，而是进入可折叠日志缓冲区；TUI 只展示摘要、关键事件和完成/失败通知</div>
+      </div>
+      <div class="flow-row">
+        <div class="flow-n">5</div>
+        <div class="flow-b">用户通过 <code>/jobs</code>、状态栏 Job chip、或通知进入 Job 面板，完成查看日志、停止、重跑、附加到上下文等操作</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title"><span class="num">01</span> &nbsp;步骤一 · 执行前识别长任务</div>
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <div class="step-label"><b>用户输入会启动长驻进程的任务</b>，TUI 在真正执行 Bash 前给出非阻塞路径，不让终端被 dev server / watcher 占住。</div>
+        <div class="tui-wrap">
+          <div class="tui-bar">
+            <div class="tui-dots"><span class="tui-dot r"></span><span class="tui-dot y"></span><span class="tui-dot g"></span></div>
+            <div class="tui-wt">CodeArts TUI</div>
+          </div>
+          <div class="tui-main">
+            <div class="tui-msgs">
+              <div class="tm tc-dim">用户：启动本地 dev server，然后继续帮我改登录页</div>
+              <div class="tm tc-white">● Bash 计划执行</div>
+              <div class="tm"><span class="tc-orange">$</span> npm run dev</div>
+              <div class="tm-gap"></div>
+              <div class="oc-alert warning">
+                <div class="a-title">检测到可能长期运行的命令</div>
+                <div class="a-body"><b>npm run dev</b> 通常不会自动退出。建议放入后台，TUI 会继续接收你的输入。</div>
+              </div>
+              <div class="modal-wrap">
+                <div class="modal-hdr">
+                  <div class="modal-title">选择执行方式</div>
+                  <div class="modal-esc">Esc 取消</div>
+                </div>
+                <div class="modal-body">
+                  <div class="choice selected"><span>后台执行并继续对话</span><span class="right">推荐 · Enter</span></div>
+                  <div class="choice"><span>前台执行，等待命令结束</span><span class="right">F</span></div>
+                  <div class="choice"><span>编辑命令参数</span><span class="right">E</span></div>
+                </div>
+              </div>
+            </div>
+            <div class="tui-sidebar">
+              <div class="sb-sec"><div class="sb-title">Bash</div><div class="sb-body">待确认<br>非阻塞候选</div></div>
+              <div class="sb-sec"><div class="sb-title">Jobs</div><div class="sb-body">0 running<br>0 completed</div></div>
+            </div>
+          </div>
+          <div class="tui-input"><div class="tui-iline">❯ 启动 dev server，然后继续改登录页<span class="t-cursor"></span></div></div>
+          <div class="tui-status">
+            <div class="tui-sl"><span class="agent-lbl">Agent</span><span>等待 Bash 执行方式</span></div>
+            <div class="tui-sr"><span><span class="t-kbd">Enter</span> 后台</span><span><span class="t-kbd">F</span> 前台</span></div>
+          </div>
+        </div>
+        <div class="step-note">触发规则不只看命令文本，也看历史运行画像：监听端口、watch 模式、tail/log、server、daemon、无超时输出但进程存活等，都可建议后台执行。</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title"><span class="num">02</span> &nbsp;步骤二 · 后台启动后立即还回输入权</div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <div class="step-label"><b>后台 Job 创建成功后，TUI 不再被 Bash 阻塞</b>。底部出现 Job chip，侧边栏显示运行状态，主输入框立刻恢复。</div>
+        <div class="tui-wrap">
+          <div class="tui-bar">
+            <div class="tui-dots"><span class="tui-dot r"></span><span class="tui-dot y"></span><span class="tui-dot g"></span></div>
+            <div class="tui-wt">CodeArts TUI</div>
+          </div>
+          <div class="tui-main">
+            <div class="tui-msgs">
+              <div class="oc-alert success">
+                <div class="a-title">Bash 已转入后台</div>
+                <div class="a-body">Job <b>#12</b> · <b>npm run dev</b> · PID 48210 · 日志已开始缓冲</div>
+              </div>
+              <div class="log-panel">
+                <div class="log-head"><span>#12 npm run dev</span><span class="job-chip run"><span class="job-dot"></span>running · 00:18</span></div>
+                <div class="log-body">
+                  <div class="log-line"><span class="log-ts">00:01</span><span>VITE v6.1.0 ready in 428 ms</span></div>
+                  <div class="log-line"><span class="log-ts">00:01</span><span>Local: http://localhost:5173/</span></div>
+                  <div class="log-line"><span class="log-ts">00:07</span><span>hmr update /src/Login.tsx</span></div>
+                </div>
+                <div class="log-summary">输出策略：只显示关键 3 行，其余进入 ring buffer。输入 <b>/jobs #12 logs</b> 可展开完整日志。</div>
+              </div>
+              <div class="tm-gap"></div>
+              <div class="tm tc-dim">Agent：服务已在后台运行。我继续检查登录页结构。</div>
+              <div class="tm"><span class="tc-orange">$</span> sed -n '1,220p' src/Login.tsx</div>
+            </div>
+            <div class="tui-sidebar">
+              <div class="sb-sec">
+                <div class="sb-title">Jobs</div>
+                <div class="job-list">
+                  <div class="job-item active">
+                    <div class="job-top"><span class="job-name">#12 npm run dev</span><span class="job-chip run"><span class="job-dot"></span>run</span></div>
+                    <div class="job-meta">port 5173 · 18s · 1.2MB log</div>
+                    <div class="progress"><span style="width:38%"></span></div>
+                  </div>
+                </div>
+              </div>
+              <div class="sb-sec"><div class="sb-title">Context</div><div class="sb-body">Job summary attached<br>raw logs detached</div></div>
+            </div>
+          </div>
+          <div class="tui-input"><div class="tui-iline">❯ 继续，把登录按钮状态也整理一下<span class="t-cursor"></span></div></div>
+          <div class="tui-status">
+            <div class="tui-sl"><span class="agent-lbl">Agent</span><span class="job-chip run"><span class="job-dot"></span>#12 running</span></div>
+            <div class="tui-sr"><span><span class="t-kbd">/jobs</span> 管理</span><span><span class="t-kbd">Ctrl+C</span> 仅中断当前前台输入</span></div>
+          </div>
+        </div>
+        <div class="step-note">关键点：<b>Ctrl+C 不默认杀后台 Job</b>。用户必须在 Job 面板中明确选择 stop，避免误杀 dev server 或部署任务。</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title"><span class="num">03</span> &nbsp;步骤三 · /jobs 面板统一管理后台任务</div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <div class="step-label"><b>用户输入 <code>/jobs</code> 或点击状态栏 Job chip</b>，打开任务面板。列表聚合所有后台 Bash，支持键盘选择和动作。</div>
+        <div class="tui-wrap">
+          <div class="tui-bar">
+            <div class="tui-dots"><span class="tui-dot r"></span><span class="tui-dot y"></span><span class="tui-dot g"></span></div>
+            <div class="tui-wt">CodeArts TUI</div>
+          </div>
+          <div class="tui-main">
+            <div class="tui-msgs">
+              <div class="tm"><span class="tc-orange">❯</span> /jobs</div>
+              <div class="job-panel">
+                <div class="job-panel-head">
+                  <span>Bash Jobs</span>
+                  <span class="tc-dim">↑↓ 选择 · Enter 查看日志 · S 停止</span>
+                </div>
+                <table class="job-table">
+                  <thead>
+                    <tr><th>ID</th><th>命令</th><th>状态</th><th>时长</th><th>输出</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr class="selected"><td>#12</td><td>npm run dev</td><td>running</td><td>04:28</td><td>port 5173 ready</td></tr>
+                    <tr><td>#11</td><td>pytest -q</td><td>failed</td><td>01:12</td><td>2 failed</td></tr>
+                    <tr><td>#10</td><td>pnpm build</td><td>done</td><td>00:46</td><td>dist ready</td></tr>
+                  </tbody>
+                </table>
+                <div class="job-actions">
+                  <span>[Enter] 日志</span><span>[A] 附加摘要到上下文</span><span>[S] Stop</span><span>[R] Rerun</span><span>[Esc] 返回</span>
+                </div>
+              </div>
+            </div>
+            <div class="tui-sidebar">
+              <div class="sb-sec"><div class="sb-title">Jobs</div><div class="sb-body"><span class="tc-yellow">1 running</span><br><span class="tc-red">1 failed</span><br><span class="tc-green">1 done</span></div></div>
+              <div class="sb-sec"><div class="sb-title">Policy</div><div class="sb-body">max 4 jobs<br>log buffer 2MB/job<br>idle timeout 20m</div></div>
+            </div>
+          </div>
+          <div class="tui-input"><div class="tui-iline">❯ /jobs<span class="t-cursor"></span></div></div>
+          <div class="tui-status">
+            <div class="tui-sl"><span class="agent-lbl">Agent</span><span>Job 管理面板</span></div>
+            <div class="tui-sr"><span>#12 selected</span><span>3 total</span></div>
+          </div>
+        </div>
+        <div class="step-note">Job 面板不是 Shell 原生 jobs 的简单复刻，而是面向 Agent 工作流：它强调状态、摘要、上下文注入、风险动作确认。</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title"><span class="num">04</span> &nbsp;步骤四 · 后台任务完成、失败与需要关注</div>
+    <div class="step-wrap">
+      <div class="step">
+        <div class="step-num">4a</div>
+        <div class="step-content">
+          <div class="step-label"><b>完成时不打断当前输入</b>，只在当前对话流中插入轻量通知，并允许一键把摘要附加给 Agent。</div>
+          <div class="tui-wrap">
+            <div class="tui-bar">
+              <div class="tui-dots"><span class="tui-dot r"></span><span class="tui-dot y"></span><span class="tui-dot g"></span></div>
+              <div class="tui-wt">CodeArts TUI</div>
+            </div>
+            <div class="tui-main">
+              <div class="tui-msgs">
+                <div class="tm tc-dim">Agent：我正在整理登录页错误态。</div>
+                <div class="oc-alert success">
+                  <div class="a-title">后台任务完成</div>
+                  <div class="a-body">Job <b>#10 pnpm build</b> exit 0 · 46s · 生成 dist/ · <b>A</b> 附加摘要</div>
+                </div>
+                <div class="tm tc-dim">用户仍可继续输入，通知不会抢焦点。</div>
+              </div>
+              <div class="tui-sidebar">
+                <div class="sb-sec"><div class="sb-title">Jobs</div><div class="sb-body"><span class="tc-yellow">#12 running</span><br><span class="tc-green">#10 done</span></div></div>
+              </div>
+            </div>
+            <div class="tui-input"><div class="tui-iline">❯ 顺便把 hover 态也补上<span class="t-cursor"></span></div></div>
+            <div class="tui-status">
+              <div class="tui-sl"><span class="agent-lbl">Agent</span><span class="job-chip ok"><span class="job-dot"></span>#10 done</span></div>
+              <div class="tui-sr"><span><span class="t-kbd">A</span> 附加摘要</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4b</div>
+        <div class="step-content">
+          <div class="step-label"><b>失败时升级为需要关注</b>，展示失败原因摘要和下一步动作，但不直接把大段日志塞进上下文。</div>
+          <div class="tui-wrap">
+            <div class="tui-bar">
+              <div class="tui-dots"><span class="tui-dot r"></span><span class="tui-dot y"></span><span class="tui-dot g"></span></div>
+              <div class="tui-wt">CodeArts TUI</div>
+            </div>
+            <div class="tui-main">
+              <div class="tui-msgs">
+                <div class="oc-alert error">
+                  <div class="a-title">后台任务失败 · 需要关注</div>
+                  <div class="a-body">Job <b>#11 pytest -q</b> exit 1 · 2 failed · 最后错误：LoginButton disabled state mismatch</div>
+                </div>
+                <div class="log-panel">
+                  <div class="log-head"><span>#11 pytest -q · failure excerpt</span><span class="job-chip bad"><span class="job-dot"></span>failed</span></div>
+                  <div class="log-body">
+                    <div class="log-line"><span class="log-ts">01:08</span><span>FAILED tests/login.spec.ts::disabled_button</span></div>
+                    <div class="log-line"><span class="log-ts">01:08</span><span>expected aria-disabled=&quot;true&quot;, received undefined</span></div>
+                  </div>
+                  <div class="log-summary"><b>建议动作：</b>按 A 把失败摘要附加给 Agent，按 L 展开完整日志，按 R 修复后重跑。</div>
+                </div>
+              </div>
+              <div class="tui-sidebar">
+                <div class="sb-sec"><div class="sb-title">Attention</div><div class="sb-body"><span class="tc-red">#11 failed</span><br>2 failing tests</div></div>
+              </div>
+            </div>
+            <div class="tui-input"><div class="tui-iline">❯ A<span class="t-cursor"></span></div></div>
+            <div class="tui-status">
+              <div class="tui-sl"><span class="agent-lbl">Agent</span><span>等待是否附加失败摘要</span></div>
+              <div class="tui-sr"><span><span class="t-kbd">A</span> attach</span><span><span class="t-kbd">L</span> logs</span><span><span class="t-kbd">R</span> rerun</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title"><span class="num">05</span> &nbsp;交互规则与边界</div>
+    <div class="table-wrap">
+      <table class="spec-table">
+        <thead>
+          <tr><th>模块</th><th>规则</th><th>交互表现</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>触发方式</td><td>显式后台：命令后加 <code>&amp;</code>、选择“后台执行”、或输入 <code>/bash --bg</code></td><td>创建 Job ID，输入框立即恢复</td></tr>
+          <tr><td>自动建议</td><td>命中 server/watch/tail/daemon/长时间无退出等模式时建议后台化</td><td>弹出执行方式选择，不直接静默后台</td></tr>
+          <tr><td>日志策略</td><td>stdout/stderr 进入 ring buffer；默认只展示关键行、错误片段与 AI 摘要</td><td>避免刷屏，按 <span class="kbd">L</span> 展开完整日志</td></tr>
+          <tr><td>上下文策略</td><td>默认只把 Job 摘要给 Agent；完整日志需用户确认附加</td><td>按 <span class="kbd">A</span> attach summary，避免污染上下文</td></tr>
+          <tr><td>中断规则</td><td><span class="kbd">Ctrl+C</span> 只取消当前前台输入，不杀后台 Job</td><td>停止 Job 必须在 <code>/jobs</code> 里按 <span class="kbd">S</span> 二次确认</td></tr>
+          <tr><td>资源保护</td><td>限制同时运行数、日志大小、空闲时长和最大运行时间</td><td>超限时 Job chip 变黄，提示清理或延长</td></tr>
+          <tr><td>危险命令</td><td>涉及删除、部署、写系统路径、外网传输等仍走原权限确认</td><td>后台执行不降低安全门槛</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title"><span class="num">06</span> &nbsp;状态模型与数据结构</div>
+    <div class="code-block">
+<span class="ck">type</span> BashJobStatus =
+  <span class="cs">'starting'</span> | <span class="cs">'running'</span> | <span class="cs">'attention'</span> | <span class="cs">'done'</span> | <span class="cs">'failed'</span> | <span class="cs">'stopped'</span>
+
+<span class="ck">interface</span> BashJob {
+  <span class="ct">id</span>: <span class="cs">'#12'</span>
+  <span class="ct">command</span>: <span class="cs">'npm run dev'</span>
+  <span class="ct">pid</span>: <span class="cn">48210</span>
+  <span class="ct">cwd</span>: <span class="cs">'~/workspace/app'</span>
+  <span class="ct">status</span>: BashJobStatus
+  <span class="ct">startedAt</span>: <span class="cs">'2026-08-20T16:02:11+08:00'</span>
+  <span class="ct">durationMs</span>: <span class="cn">268000</span>
+  <span class="ct">exitCode</span>: <span class="cn">null</span>
+  <span class="ct">ports</span>: [<span class="cn">5173</span>]
+  <span class="ct">logBuffer</span>: { <span class="ct">bytes</span>: <span class="cn">1204800</span>, <span class="ct">truncated</span>: <span class="cv">false</span> }
+  <span class="ct">summary</span>: <span class="cs">'Vite dev server ready at http://localhost:5173/'</span>
+  <span class="ct">attachedToContext</span>: <span class="cv">false</span>
+}
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

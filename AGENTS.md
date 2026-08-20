@@ -462,6 +462,7 @@ grep -n "id=\"s-m" file.html | head    # 快速列出所有 section
 
 | commit | 内容 |
 |---|---|
+| *(2026-08-20)* | 新增 `codearts-bash-background-design.html`：CodeArts TUI Bash 非阻塞后台执行交互方案，覆盖长耗时命令识别、后台执行确认、Job chip/Sidebar 状态、`/jobs` 面板、日志按需展开、完成/失败通知、上下文附加与 Ctrl+C 不误杀后台任务等规则；首页 CLI 分组新增对应卡片，总页面数更新为 26，并生成 `assets/page-thumbs/codearts-bash-background.jpg` 缩略图。 |
 | *(2026-07-08)* | GitHub Pages 首页新增 **分析与探索** 分组，总卡片数更新为 22；新增 `cli-analysis-report.html`、`tp-context/startup/intent/execute/review/multiagent/wrapup.html`、`ai-dev-tools-design-original.html`、`hai-cli-design.html`、`hai-operator-design.html`、`ux-in-ai-community-report.html`、`style-demos.html`、`terminal_theme_inspector_v2.html`；`sharing-slides.html` / `sharing-slides-print.html` 属于沉淀材料，不放入分析与探索分组。 |
 | *(2026-07-08)* | GitHub Pages 首页新增 **沉淀材料** 分组，总卡片数更新为 24、分类数更新为 4；新增 `sharing-slides.html` 与 `sharing-slides-print.html` 两张卡片和首屏缩略图，用于承载方法论分享、打印版与可复用归档材料。 |
 | *(2026-07-08)* | 修复 GitHub Pages 首页 24 张卡片缩略图：改用固定 1280×720 Chrome headless 截图重新生成，解决部分缩略图窄排、空白、只截到侧边标题或与页面内容不匹配的问题；已用总览拼图复查并确认无断链、无异常小图。 |
