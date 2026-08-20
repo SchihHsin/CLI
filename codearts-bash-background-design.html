@@ -332,40 +332,6 @@
   .oc-alert .a-body { color:var(--t-dim); }
   .oc-alert .a-body b { color:var(--t-white); font-weight:400; }
 
-  .modal-wrap {
-    margin:8px auto;
-    background:var(--t-bg3);
-    border:1px solid #3a3a3a;
-    border-radius:4px;
-    overflow:hidden;
-    max-width:460px;
-  }
-  .modal-hdr {
-    padding:10px 16px 8px;
-    display:flex;
-    align-items:baseline;
-    justify-content:space-between;
-  }
-  .modal-title { font-size:13px; color:var(--t-white); }
-  .modal-esc { font-size:11px; color:var(--t-dim); }
-  .modal-body { padding:0 12px 12px; }
-  .choice {
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:12px;
-    padding:7px 10px;
-    font-size:12px;
-    color:var(--t-text);
-  }
-  .choice.selected {
-    background:var(--t-orange);
-    color:#1a0800;
-    border-radius:3px;
-  }
-  .choice .right { font-size:11px; color:var(--t-dim); }
-  .choice.selected .right { color:#1a0800; opacity:.62; }
-
   .log-panel {
     border:1px solid var(--t-border2);
     background:var(--t-bg3);
@@ -401,6 +367,45 @@
     line-height:1.65;
   }
   .log-summary b { color:var(--t-cyan); font-weight:400; }
+
+  .plan-card {
+    border:1px solid var(--t-border2);
+    background:var(--t-bg3);
+    border-radius:5px;
+    overflow:hidden;
+    margin:7px 0;
+  }
+  .plan-head {
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    padding:8px 10px;
+    border-bottom:1px solid var(--t-border);
+    font-size:11px;
+    color:var(--t-dim);
+  }
+  .plan-title { color:var(--t-white); }
+  .plan-body {
+    padding:9px 10px;
+    display:grid;
+    grid-template-columns:92px 1fr;
+    gap:5px 10px;
+    font-size:11px;
+    line-height:1.65;
+  }
+  .plan-k { color:var(--t-dim); }
+  .plan-v { color:var(--t-text); }
+  .hint-bar {
+    border-left:3px solid var(--t-blue);
+    background:rgba(92,156,245,.06);
+    color:var(--t-dim);
+    padding:7px 10px;
+    font-size:11px;
+    line-height:1.65;
+    margin-top:6px;
+  }
+  .hint-bar b { color:var(--t-cyan); font-weight:400; }
 
   .job-panel {
     max-width:560px;
@@ -543,11 +548,11 @@
       </div>
       <div class="flow-row">
         <div class="flow-n">2</div>
-        <div class="flow-b">TUI 在执行前判断命令是否可能阻塞；若命中长任务规则，默认提供 <b>后台执行</b> 与 <b>前台等待</b> 两条路径</div>
+        <div class="flow-b">模型在执行计划中决定 Bash 以前台还是后台运行；TUI <b>不主动弹窗询问</b>，按计划直接执行</div>
       </div>
       <div class="flow-row">
         <div class="flow-n">3</div>
-        <div class="flow-b">用户选择后台执行后，Bash Job 被赋予稳定 ID，输入框立即恢复，用户可继续向 Agent 提需求</div>
+        <div class="flow-b">若模型规划为后台执行，Bash Job 被赋予稳定 ID，输入框立即恢复，用户可继续向 Agent 提需求</div>
       </div>
       <div class="flow-row">
         <div class="flow-n">4</div>
@@ -565,7 +570,7 @@
     <div class="step">
       <div class="step-num">1</div>
       <div class="step-content">
-        <div class="step-label"><b>用户输入会启动长驻进程的任务</b>，TUI 在真正执行 Bash 前给出非阻塞路径，不让终端被 dev server / watcher 占住。</div>
+        <div class="step-label"><b>用户输入会启动长驻进程的任务</b>，模型在计划阶段决定它应后台执行，TUI 不弹选择框，按计划直接创建后台 Job。</div>
         <div class="tui-wrap">
           <div class="tui-bar">
             <div class="tui-dots"><span class="tui-dot r"></span><span class="tui-dot y"></span><span class="tui-dot g"></span></div>
@@ -574,37 +579,31 @@
           <div class="tui-main">
             <div class="tui-msgs">
               <div class="tm tc-dim">用户：启动本地 dev server，然后继续帮我改登录页</div>
-              <div class="tm tc-white">● Bash 计划执行</div>
+              <div class="tm tc-white">● Bash 执行计划</div>
               <div class="tm"><span class="tc-orange">$</span> npm run dev</div>
               <div class="tm-gap"></div>
-              <div class="oc-alert warning">
-                <div class="a-title">检测到可能长期运行的命令</div>
-                <div class="a-body"><b>npm run dev</b> 通常不会自动退出。建议放入后台，TUI 会继续接收你的输入。</div>
-              </div>
-              <div class="modal-wrap">
-                <div class="modal-hdr">
-                  <div class="modal-title">选择执行方式</div>
-                  <div class="modal-esc">Esc 取消</div>
-                </div>
-                <div class="modal-body">
-                  <div class="choice selected"><span>后台执行并继续对话</span><span class="right">推荐 · Enter</span></div>
-                  <div class="choice"><span>前台执行，等待命令结束</span><span class="right">F</span></div>
-                  <div class="choice"><span>编辑命令参数</span><span class="right">E</span></div>
+              <div class="plan-card">
+                <div class="plan-head"><span class="plan-title">模型规划 · 后台执行</span><span class="job-chip run"><span class="job-dot"></span>will run</span></div>
+                <div class="plan-body">
+                  <div class="plan-k">原因</div><div class="plan-v">dev server 通常长驻，不应阻塞后续编辑任务</div>
+                  <div class="plan-k">执行方式</div><div class="plan-v">直接创建后台 Job，不等待用户确认</div>
+                  <div class="plan-k">输出策略</div><div class="plan-v">关键行摘要展示，完整日志进入 buffer</div>
                 </div>
               </div>
+              <div class="hint-bar">用户仍可主动覆盖：输入 <b>/bash foreground</b>、在 Job chip 中选择“转前台”，或在具体命令里显式指定前台执行。</div>
             </div>
             <div class="tui-sidebar">
-              <div class="sb-sec"><div class="sb-title">Bash</div><div class="sb-body">待确认<br>非阻塞候选</div></div>
+              <div class="sb-sec"><div class="sb-title">Bash</div><div class="sb-body">planned background<br>no prompt</div></div>
               <div class="sb-sec"><div class="sb-title">Jobs</div><div class="sb-body">0 running<br>0 completed</div></div>
             </div>
           </div>
           <div class="tui-input"><div class="tui-iline">❯ 启动 dev server，然后继续改登录页<span class="t-cursor"></span></div></div>
           <div class="tui-status">
-            <div class="tui-sl"><span class="agent-lbl">Agent</span><span>等待 Bash 执行方式</span></div>
-            <div class="tui-sr"><span><span class="t-kbd">Enter</span> 后台</span><span><span class="t-kbd">F</span> 前台</span></div>
+            <div class="tui-sl"><span class="agent-lbl">Agent</span><span>按模型计划执行 Bash</span></div>
+            <div class="tui-sr"><span>无弹窗</span><span>不中断自动执行</span></div>
           </div>
         </div>
-        <div class="step-note">触发规则不只看命令文本，也看历史运行画像：监听端口、watch 模式、tail/log、server、daemon、无超时输出但进程存活等，都可建议后台执行。</div>
+        <div class="step-note">原则：是否后台执行属于模型规划的一部分，不作为默认弹窗打断用户；只有危险命令、权限升级、外部副作用等安全类决策仍需确认。</div>
       </div>
     </div>
   </div>
@@ -719,7 +718,7 @@
     <div class="step">
       <div class="step-num">4</div>
       <div class="step-content">
-        <div class="step-label"><b>用户一开始选择前台执行，但 Bash 已运行超过 15 秒仍未结束</b>。TUI 在不抢焦点的前提下给出“转入后台”提示，用户点击或按 <span class="kbd">B</span> 后立即恢复输入权。</div>
+        <div class="step-label"><b>模型规划为前台执行，但 Bash 已运行超过 15 秒仍未结束</b>。系统自动将其转为后台 Job，不再弹窗询问；用户仍可主动转回前台、停止或查看日志。</div>
         <div class="tui-wrap">
           <div class="tui-bar">
             <div class="tui-dots"><span class="tui-dot r"></span><span class="tui-dot y"></span><span class="tui-dot g"></span></div>
@@ -727,39 +726,29 @@
           </div>
           <div class="tui-main">
             <div class="tui-msgs">
-              <div class="tm tc-dim">用户选择：前台执行，等待命令结束</div>
+              <div class="tm tc-dim">模型规划：前台执行，等待命令结束</div>
               <div class="tm"><span class="tc-orange">$</span> pytest tests/e2e --headed</div>
               <div class="tm tc-dim">collecting tests/login.spec.ts ...</div>
               <div class="tm tc-dim">chromium started · running login flow</div>
               <div class="tm tc-yellow">⟳ 已运行 15s，进程仍在输出</div>
-              <div class="oc-alert warning">
-                <div class="a-title">这个前台 Bash 可能还会继续运行</div>
-                <div class="a-body">可将当前进程转为后台 Job，日志继续缓冲，TUI 立即恢复输入。</div>
+              <div class="oc-alert info">
+                <div class="a-title">已自动转入后台</div>
+                <div class="a-body">Job <b>#13 pytest tests/e2e --headed</b> · 保留 PID 49318 · 日志继续缓冲 · 输入框已恢复</div>
               </div>
-              <div class="modal-wrap">
-                <div class="modal-hdr">
-                  <div class="modal-title">转入后台执行？</div>
-                  <div class="modal-esc">Esc 继续等待</div>
-                </div>
-                <div class="modal-body">
-                  <div class="choice selected"><span>转入后台并继续其他操作</span><span class="right">B / Enter</span></div>
-                  <div class="choice"><span>继续前台等待</span><span class="right">W</span></div>
-                  <div class="choice"><span>停止当前 Bash</span><span class="right">S</span></div>
-                </div>
-              </div>
+              <div class="hint-bar">这是非阻塞状态提示，不抢焦点、不等待选择。用户可通过状态栏 Job chip 或 <b>/jobs #13 foreground</b> 主动转回前台。</div>
             </div>
             <div class="tui-sidebar">
-              <div class="sb-sec"><div class="sb-title">Foreground</div><div class="sb-body"><span class="tc-yellow">pytest tests/e2e</span><br>15s elapsed<br>stdout active</div></div>
-              <div class="sb-sec"><div class="sb-title">Suggestion</div><div class="sb-body">backgroundable<br>logs buffered</div></div>
+              <div class="sb-sec"><div class="sb-title">Jobs</div><div class="sb-body"><span class="tc-yellow">#13 running</span><br>auto backgrounded<br>15s threshold</div></div>
+              <div class="sb-sec"><div class="sb-title">Override</div><div class="sb-body">foreground<br>stop<br>logs</div></div>
             </div>
           </div>
-          <div class="tui-input"><div class="tui-iline">❯ Bash running… <span class="tc-dim">press B to background</span><span class="t-cursor"></span></div></div>
+          <div class="tui-input"><div class="tui-iline">❯ 继续检查登录页截图差异<span class="t-cursor"></span></div></div>
           <div class="tui-status">
-            <div class="tui-sl"><span class="agent-lbl">Bash</span><span>前台运行超过 15s</span></div>
-            <div class="tui-sr"><span><span class="t-kbd">B</span> 转后台</span><span><span class="t-kbd">W</span> 等待</span><span><span class="t-kbd">S</span> 停止</span></div>
+            <div class="tui-sl"><span class="agent-lbl">Agent</span><span class="job-chip run"><span class="job-dot"></span>#13 running</span></div>
+            <div class="tui-sr"><span><span class="t-kbd">/jobs #13 foreground</span> 转前台</span><span><span class="t-kbd">S</span> stop</span></div>
           </div>
         </div>
-        <div class="step-note">转后台不是重新执行命令，而是把现有前台进程接管为 Job：保留 PID、cwd、已产生的输出和退出状态监听。成功后提示 <code>Job #13 已转入后台</code>。</div>
+        <div class="step-note">转后台不是重新执行命令，而是把现有前台进程接管为 Job：保留 PID、cwd、已产生的输出和退出状态监听。提示只说明状态变化，不要求用户决策。</div>
       </div>
     </div>
   </div>
@@ -844,9 +833,9 @@
           <tr><th>模块</th><th>规则</th><th>交互表现</th></tr>
         </thead>
         <tbody>
-          <tr><td>触发方式</td><td>显式后台：命令后加 <code>&amp;</code>、选择“后台执行”、或输入 <code>/bash --bg</code></td><td>创建 Job ID，输入框立即恢复</td></tr>
-          <tr><td>自动建议</td><td>命中 server/watch/tail/daemon/长时间无退出等模式时建议后台化</td><td>弹出执行方式选择，不直接静默后台</td></tr>
-          <tr><td>前台转后台</td><td>前台 Bash 执行超过 15 秒仍未结束，且进程仍存活或持续输出</td><td>显示“转入后台”提示条，按 <span class="kbd">B</span> 或点击按钮接管为后台 Job</td></tr>
+          <tr><td>触发方式</td><td>模型规划为后台执行、命令后加 <code>&amp;</code>、或用户输入 <code>/bash --bg</code></td><td>直接创建 Job ID，输入框立即恢复；不弹执行方式选择</td></tr>
+          <tr><td>模型规划</td><td>模型根据任务目标、命令画像和后续步骤决定前台/后台</td><td>按计划执行，只给内联状态说明，不主动打断</td></tr>
+          <tr><td>前台转后台</td><td>前台 Bash 执行超过 15 秒仍未结束，且进程仍存活或持续输出</td><td>自动接管为后台 Job，并显示轻量状态提示；用户可主动转回前台</td></tr>
           <tr><td>日志策略</td><td>stdout/stderr 进入 ring buffer；默认只展示关键行、错误片段与 AI 摘要</td><td>避免刷屏，按 <span class="kbd">L</span> 展开完整日志</td></tr>
           <tr><td>上下文策略</td><td>默认只把 Job 摘要给 Agent；完整日志需用户确认附加</td><td>按 <span class="kbd">A</span> attach summary，避免污染上下文</td></tr>
           <tr><td>中断规则</td><td><span class="kbd">Ctrl+C</span> 只取消当前前台输入，不杀后台 Job</td><td>停止 Job 必须在 <code>/jobs</code> 里按 <span class="kbd">S</span> 二次确认</td></tr>
