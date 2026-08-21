@@ -462,6 +462,7 @@ grep -n "id=\"s-m" file.html | head    # 快速列出所有 section
 
 | commit | 内容 |
 |---|---|
+| *(2026-08-21)* | `codearts-bash-background-design.html` 按产品反馈和 Claude Code 交互对齐：删除“转前台”路径，后台规划不再允许 foreground；新增独立“日志展开”状态；前台 Bash 超过 15 秒只提示可按 `Ctrl+B` 转入后台，不自动切换；Job sidebar 的 `#12 npm run devrun` 之类元信息仅保留耗时，不再展示 port / log 大小。 |
 | *(2026-08-20)* | `codearts-bash-background-design.html` 根据产品反馈去弹窗化：删除“选择执行方式”和“前台 15s 后是否转后台”两处主动弹窗；改为模型规划决定前台/后台并直接执行，TUI 只给内联状态说明；前台 Bash 超过 15s 后自动接管为后台 Job，用户可通过 `/jobs #id foreground`、Job chip 或 stop/logs 主动管理。 |
 | *(2026-08-20)* | `codearts-bash-background-design.html` 补齐需求场景 4：新增“前台任务超过 15 秒后转入后台”独立章节，展示前台 Bash 运行超过 15s 后出现“转入后台 / 继续等待 / 停止”选择，说明按 B 或点击按钮将现有进程接管为后台 Job，并在规则表中补充前台转后台触发条件。 |
 | *(2026-08-20)* | 新增 `codearts-bash-background-design.html`：CodeArts TUI Bash 非阻塞后台执行交互方案，覆盖长耗时命令识别、后台执行确认、Job chip/Sidebar 状态、`/jobs` 面板、日志按需展开、完成/失败通知、上下文附加与 Ctrl+C 不误杀后台任务等规则；首页 CLI 分组新增对应卡片，总页面数更新为 26，并生成 `assets/page-thumbs/codearts-bash-background.jpg` 缩略图。 |

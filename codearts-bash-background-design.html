@@ -548,7 +548,7 @@
       </div>
       <div class="flow-row">
         <div class="flow-n">2</div>
-        <div class="flow-b">模型在执行计划中决定 Bash 以前台还是后台运行；TUI <b>不主动弹窗询问</b>，按计划直接执行</div>
+        <div class="flow-b">模型在执行计划中决定 Bash 以前台还是后台运行；TUI <b>不主动弹窗询问</b>，按计划直接执行，若规划成后台则不提供转前台入口</div>
       </div>
       <div class="flow-row">
         <div class="flow-n">3</div>
@@ -556,7 +556,7 @@
       </div>
       <div class="flow-row">
         <div class="flow-n">4</div>
-        <div class="flow-b">后台 Job 的 stdout/stderr 不再刷屏，而是进入可折叠日志缓冲区；TUI 只展示摘要、关键事件和完成/失败通知</div>
+        <div class="flow-b">后台 Job 的 stdout/stderr 不再刷屏，而是进入可折叠日志缓冲区；TUI 只展示摘要、关键事件、日志展开状态和完成/失败通知</div>
       </div>
       <div class="flow-row">
         <div class="flow-n">5</div>
@@ -590,7 +590,7 @@
                   <div class="plan-k">输出策略</div><div class="plan-v">关键行摘要展示，完整日志进入 buffer</div>
                 </div>
               </div>
-              <div class="hint-bar">用户仍可主动覆盖：输入 <b>/bash foreground</b>、在 Job chip 中选择“转前台”，或在具体命令里显式指定前台执行。</div>
+              <div class="hint-bar">后台规划后只保留 <b>/jobs</b>、日志、停止和附加摘要入口；若要后台执行，直接按计划创建 Job，不再提供转前台覆盖。</div>
             </div>
             <div class="tui-sidebar">
               <div class="sb-sec"><div class="sb-title">Bash</div><div class="sb-body">planned background<br>no prompt</div></div>
@@ -623,13 +623,13 @@
             <div class="tui-msgs">
               <div class="oc-alert success">
                 <div class="a-title">Bash 已转入后台</div>
-                <div class="a-body">Job <b>#12</b> · <b>npm run dev</b> · PID 48210 · 日志已开始缓冲</div>
+                <div class="a-body">Job <b>#12</b> · <b>npm run dev</b> · PID 48210 · 已开始缓冲输出</div>
               </div>
               <div class="log-panel">
                 <div class="log-head"><span>#12 npm run dev</span><span class="job-chip run"><span class="job-dot"></span>running · 00:18</span></div>
                 <div class="log-body">
                   <div class="log-line"><span class="log-ts">00:01</span><span>VITE v6.1.0 ready in 428 ms</span></div>
-                  <div class="log-line"><span class="log-ts">00:01</span><span>Local: http://localhost:5173/</span></div>
+                  <div class="log-line"><span class="log-ts">00:01</span><span>server ready</span></div>
                   <div class="log-line"><span class="log-ts">00:07</span><span>hmr update /src/Login.tsx</span></div>
                 </div>
                 <div class="log-summary">输出策略：只显示关键 3 行，其余进入 ring buffer。输入 <b>/jobs #12 logs</b> 可展开完整日志。</div>
@@ -644,7 +644,7 @@
                 <div class="job-list">
                   <div class="job-item active">
                     <div class="job-top"><span class="job-name">#12 npm run dev</span><span class="job-chip run"><span class="job-dot"></span>run</span></div>
-                    <div class="job-meta">port 5173 · 18s · 1.2MB log</div>
+                    <div class="job-meta">18s</div>
                     <div class="progress"><span style="width:38%"></span></div>
                   </div>
                 </div>
@@ -680,26 +680,36 @@
               <div class="job-panel">
                 <div class="job-panel-head">
                   <span>Bash Jobs</span>
-                  <span class="tc-dim">↑↓ 选择 · Enter 查看日志 · S 停止</span>
+                  <span class="tc-dim">↑↓ 选择 · Enter 展开日志 · S 停止</span>
                 </div>
                 <table class="job-table">
                   <thead>
                     <tr><th>ID</th><th>命令</th><th>状态</th><th>时长</th><th>输出</th></tr>
                   </thead>
                   <tbody>
-                    <tr class="selected"><td>#12</td><td>npm run dev</td><td>running</td><td>04:28</td><td>port 5173 ready</td></tr>
+                    <tr class="selected"><td>#12</td><td>npm run dev</td><td>running</td><td>04:28</td><td>ready</td></tr>
                     <tr><td>#11</td><td>pytest -q</td><td>failed</td><td>01:12</td><td>2 failed</td></tr>
                     <tr><td>#10</td><td>pnpm build</td><td>done</td><td>00:46</td><td>dist ready</td></tr>
                   </tbody>
                 </table>
                 <div class="job-actions">
-                  <span>[Enter] 日志</span><span>[A] 附加摘要到上下文</span><span>[S] Stop</span><span>[R] Rerun</span><span>[Esc] 返回</span>
+                  <span>[Enter] 日志展开</span><span>[A] 附加摘要到上下文</span><span>[S] Stop</span><span>[R] Rerun</span><span>[Esc] 返回</span>
+                </div>
+                <div class="log-panel" style="margin-top:10px;">
+                  <div class="log-head"><span>#12 log expanded</span><span class="job-chip run"><span class="job-dot"></span>open</span></div>
+                  <div class="log-body">
+                    <div class="log-line"><span class="log-ts">00:01</span><span>VITE v6.1.0 ready in 428 ms</span></div>
+                    <div class="log-line"><span class="log-ts">00:03</span><span>GET /src/main.tsx 200</span></div>
+                    <div class="log-line"><span class="log-ts">00:07</span><span>hmr update /src/Login.tsx</span></div>
+                    <div class="log-line"><span class="log-ts">00:12</span><span>watching files ...</span></div>
+                  </div>
+                  <div class="log-summary">按 <b>Esc</b> 收起日志，按 <b>A</b> 只附加摘要，不把整段输出塞进上下文。</div>
                 </div>
               </div>
             </div>
             <div class="tui-sidebar">
               <div class="sb-sec"><div class="sb-title">Jobs</div><div class="sb-body"><span class="tc-yellow">1 running</span><br><span class="tc-red">1 failed</span><br><span class="tc-green">1 done</span></div></div>
-              <div class="sb-sec"><div class="sb-title">Policy</div><div class="sb-body">max 4 jobs<br>log buffer 2MB/job<br>idle timeout 20m</div></div>
+              <div class="sb-sec"><div class="sb-title">Policy</div><div class="sb-body">max 4 jobs<br>idle timeout 20m</div></div>
             </div>
           </div>
           <div class="tui-input"><div class="tui-iline">❯ /jobs<span class="t-cursor"></span></div></div>
@@ -714,11 +724,11 @@
   </div>
 
   <div class="section">
-    <div class="section-title"><span class="num">04</span> &nbsp;步骤四 · 前台任务超过 15 秒后转入后台</div>
+    <div class="section-title"><span class="num">04</span> &nbsp;步骤四 · 前台任务超过 15 秒，提示可转入后台</div>
     <div class="step">
       <div class="step-num">4</div>
       <div class="step-content">
-        <div class="step-label"><b>模型规划为前台执行，但 Bash 已运行超过 15 秒仍未结束</b>。系统自动将其转为后台 Job，不再弹窗询问；用户仍可主动转回前台、停止或查看日志。</div>
+        <div class="step-label"><b>模型规划为前台执行，但 Bash 已运行超过 15 秒仍未结束</b>。系统只给出非阻塞提示，告诉用户可以按 <code>Ctrl+B</code> 转入后台；不会自动切换，也不会提供转回前台入口。</div>
         <div class="tui-wrap">
           <div class="tui-bar">
             <div class="tui-dots"><span class="tui-dot r"></span><span class="tui-dot y"></span><span class="tui-dot g"></span></div>
@@ -730,25 +740,25 @@
               <div class="tm"><span class="tc-orange">$</span> pytest tests/e2e --headed</div>
               <div class="tm tc-dim">collecting tests/login.spec.ts ...</div>
               <div class="tm tc-dim">chromium started · running login flow</div>
-              <div class="tm tc-yellow">⟳ 已运行 15s，进程仍在输出</div>
+              <div class="tm tc-yellow">⟳ 已运行 15s，仍在前台执行</div>
               <div class="oc-alert info">
-                <div class="a-title">已自动转入后台</div>
-                <div class="a-body">Job <b>#13 pytest tests/e2e --headed</b> · 保留 PID 49318 · 日志继续缓冲 · 输入框已恢复</div>
+                <div class="a-title">可按 Ctrl+B 转入后台</div>
+                <div class="a-body">当前 Bash 继续运行；按 <b>Ctrl+B</b> 后才创建 Job <b>#13</b>，输入框恢复，输出随后进入日志缓冲区。</div>
               </div>
-              <div class="hint-bar">这是非阻塞状态提示，不抢焦点、不等待选择。用户可通过状态栏 Job chip 或 <b>/jobs #13 foreground</b> 主动转回前台。</div>
+              <div class="hint-bar">这是非阻塞提示，不抢焦点、不等待选择；模型规划成前台时不会自动切后台。</div>
             </div>
             <div class="tui-sidebar">
-              <div class="sb-sec"><div class="sb-title">Jobs</div><div class="sb-body"><span class="tc-yellow">#13 running</span><br>auto backgrounded<br>15s threshold</div></div>
-              <div class="sb-sec"><div class="sb-title">Override</div><div class="sb-body">foreground<br>stop<br>logs</div></div>
+              <div class="sb-sec"><div class="sb-title">Jobs</div><div class="sb-body"><span class="tc-yellow">#13 running</span><br>15s hint<br>press Ctrl+B</div></div>
+              <div class="sb-sec"><div class="sb-title">Actions</div><div class="sb-body">stop<br>logs<br>attach</div></div>
             </div>
           </div>
           <div class="tui-input"><div class="tui-iline">❯ 继续检查登录页截图差异<span class="t-cursor"></span></div></div>
           <div class="tui-status">
             <div class="tui-sl"><span class="agent-lbl">Agent</span><span class="job-chip run"><span class="job-dot"></span>#13 running</span></div>
-            <div class="tui-sr"><span><span class="t-kbd">/jobs #13 foreground</span> 转前台</span><span><span class="t-kbd">S</span> stop</span></div>
+            <div class="tui-sr"><span><span class="t-kbd">Ctrl+B</span> 后台</span><span><span class="t-kbd">S</span> stop</span></div>
           </div>
         </div>
-        <div class="step-note">转后台不是重新执行命令，而是把现有前台进程接管为 Job：保留 PID、cwd、已产生的输出和退出状态监听。提示只说明状态变化，不要求用户决策。</div>
+        <div class="step-note">转后台不是重新执行命令，而是把现有前台进程接管为 Job：保留 PID、cwd、已产生的输出和退出状态监听；一旦规划成后台，就不再提供转回前台入口。</div>
       </div>
     </div>
   </div>
@@ -827,6 +837,7 @@
 
   <div class="section">
     <div class="section-title"><span class="num">06</span> &nbsp;交互规则与边界</div>
+    <div class="step-note" style="margin:0 0 14px;">Claude Code 对齐检查：后台 Bash 以 <code>Ctrl+B</code> 或模型后台规划进入，不需要选择弹窗；进入后台后返回 Job ID，后续动作收敛为查看日志、停止、重跑、附加摘要，不提供转回前台；长时间前台执行只提示可按 <code>Ctrl+B</code>，不自动转后台。</div>
     <div class="table-wrap">
       <table class="spec-table">
         <thead>
@@ -835,11 +846,11 @@
         <tbody>
           <tr><td>触发方式</td><td>模型规划为后台执行、命令后加 <code>&amp;</code>、或用户输入 <code>/bash --bg</code></td><td>直接创建 Job ID，输入框立即恢复；不弹执行方式选择</td></tr>
           <tr><td>模型规划</td><td>模型根据任务目标、命令画像和后续步骤决定前台/后台</td><td>按计划执行，只给内联状态说明，不主动打断</td></tr>
-          <tr><td>前台转后台</td><td>前台 Bash 执行超过 15 秒仍未结束，且进程仍存活或持续输出</td><td>自动接管为后台 Job，并显示轻量状态提示；用户可主动转回前台</td></tr>
+          <tr><td>前台转后台</td><td>前台 Bash 执行超过 15 秒仍未结束，且进程仍存活或持续输出</td><td>只提示可按 <span class="kbd">Ctrl+B</span> 转入后台，不自动切换；后台规划不提供转回前台入口</td></tr>
           <tr><td>日志策略</td><td>stdout/stderr 进入 ring buffer；默认只展示关键行、错误片段与 AI 摘要</td><td>避免刷屏，按 <span class="kbd">L</span> 展开完整日志</td></tr>
           <tr><td>上下文策略</td><td>默认只把 Job 摘要给 Agent；完整日志需用户确认附加</td><td>按 <span class="kbd">A</span> attach summary，避免污染上下文</td></tr>
           <tr><td>中断规则</td><td><span class="kbd">Ctrl+C</span> 只取消当前前台输入，不杀后台 Job</td><td>停止 Job 必须在 <code>/jobs</code> 里按 <span class="kbd">S</span> 二次确认</td></tr>
-          <tr><td>资源保护</td><td>限制同时运行数、日志大小、空闲时长和最大运行时间</td><td>超限时 Job chip 变黄，提示清理或延长</td></tr>
+          <tr><td>资源保护</td><td>限制同时运行数、空闲时长和最大运行时间</td><td>超限时 Job chip 变黄，提示清理或延长</td></tr>
           <tr><td>危险命令</td><td>涉及删除、部署、写系统路径、外网传输等仍走原权限确认</td><td>后台执行不降低安全门槛</td></tr>
         </tbody>
       </table>
@@ -861,9 +872,8 @@
   <span class="ct">startedAt</span>: <span class="cs">'2026-08-20T16:02:11+08:00'</span>
   <span class="ct">durationMs</span>: <span class="cn">268000</span>
   <span class="ct">exitCode</span>: <span class="cn">null</span>
-  <span class="ct">ports</span>: [<span class="cn">5173</span>]
-  <span class="ct">logBuffer</span>: { <span class="ct">bytes</span>: <span class="cn">1204800</span>, <span class="ct">truncated</span>: <span class="cv">false</span> }
-  <span class="ct">summary</span>: <span class="cs">'Vite dev server ready at http://localhost:5173/'</span>
+  <span class="ct">logBuffer</span>: { <span class="ct">truncated</span>: <span class="cv">false</span> }
+  <span class="ct">summary</span>: <span class="cs">'Vite dev server ready'</span>
   <span class="ct">attachedToContext</span>: <span class="cv">false</span>
 }
     </div>
