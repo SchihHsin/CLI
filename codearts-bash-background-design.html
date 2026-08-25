@@ -529,7 +529,7 @@
 
 <div class="doc-header">
   <h1>CodeArts TUI <code>Bash 后台执行</code> 交互设计方案</h1>
-  <p>Bash 非阻塞执行 · 后台 Job 管理 · 日志按需查看 · 长任务不打断会话</p>
+  <p>Bash 非阻塞执行 · 后台命令管理 · 日志按需查看 · 长命令不打断会话</p>
   <div class="meta">
     <span class="meta-tag">版本 <b>v1.0</b></span>
     <span class="meta-tag">平台 <b>CodeArts TUI</b></span>
@@ -548,29 +548,29 @@
       </div>
       <div class="flow-row">
         <div class="flow-n">2</div>
-        <div class="flow-b">模型在执行计划中决定 Bash 以前台还是后台运行；TUI <b>不主动弹窗询问</b>，按计划直接执行，若规划成后台则不提供转前台入口</div>
+        <div class="flow-b">命令直接开始运行；需要非阻塞执行时，后台命令立即返回命令 ID，不弹窗询问，也不提供转前台入口</div>
       </div>
       <div class="flow-row">
         <div class="flow-n">3</div>
-        <div class="flow-b">若模型规划为后台执行，Bash Job 被赋予稳定 ID，输入框立即恢复，用户可继续向 Agent 提需求</div>
+        <div class="flow-b">后台命令被赋予稳定 ID，输入框立即恢复，用户可继续向 Agent 提需求</div>
       </div>
       <div class="flow-row">
         <div class="flow-n">4</div>
-        <div class="flow-b">后台 Job 的 stdout/stderr 不再刷屏，而是进入可折叠日志缓冲区；TUI 只展示摘要、关键事件、日志展开状态和完成/失败通知</div>
+        <div class="flow-b">后台命令的 stdout/stderr 不再刷屏，而是进入日志缓冲区；TUI 只展示状态和完成/失败通知，日志在独立视图查看</div>
       </div>
       <div class="flow-row">
         <div class="flow-n">5</div>
-        <div class="flow-b">用户通过 <code>/jobs</code>、状态栏 Job chip、或通知进入 Job 面板，完成查看日志、停止、重跑、附加到上下文等操作</div>
+        <div class="flow-b">用户通过 <code>/tasks</code>、状态栏命令 chip、或通知进入后台命令面板，查看输出、停止、重跑、附加摘要</div>
       </div>
     </div>
   </div>
 
   <div class="section">
-    <div class="section-title"><span class="num">01</span> &nbsp;步骤一 · 执行前识别长任务</div>
+    <div class="section-title"><span class="num">01</span> &nbsp;步骤一 · 后台命令直接启动</div>
     <div class="step">
       <div class="step-num">1</div>
       <div class="step-content">
-        <div class="step-label"><b>用户输入会启动长驻进程的任务</b>，模型在计划阶段决定它应后台执行，TUI 不弹选择框，按计划直接创建后台 Job。</div>
+        <div class="step-label"><b>用户输入会启动长驻进程的 Bash 命令</b>。命令直接在后台运行，不弹选择框，立即返回命令 ID。</div>
         <div class="tui-wrap">
           <div class="tui-bar">
             <div class="tui-dots"><span class="tui-dot r"></span><span class="tui-dot y"></span><span class="tui-dot g"></span></div>
@@ -579,41 +579,36 @@
           <div class="tui-main">
             <div class="tui-msgs">
               <div class="tm tc-dim">用户：启动本地 dev server，然后继续帮我改登录页</div>
-              <div class="tm tc-white">● Bash 执行计划</div>
+              <div class="tm tc-white">● Bash 正在后台运行</div>
               <div class="tm"><span class="tc-orange">$</span> npm run dev</div>
-              <div class="tm-gap"></div>
-              <div class="plan-card">
-                <div class="plan-head"><span class="plan-title">模型规划 · 后台执行</span><span class="job-chip run"><span class="job-dot"></span>will run</span></div>
-                <div class="plan-body">
-                  <div class="plan-k">原因</div><div class="plan-v">dev server 通常长驻，不应阻塞后续编辑任务</div>
-                  <div class="plan-k">执行方式</div><div class="plan-v">直接创建后台 Job，不等待用户确认</div>
-                  <div class="plan-k">输出策略</div><div class="plan-v">关键行摘要展示，完整日志进入 buffer</div>
-                </div>
+              <div class="oc-alert success">
+                <div class="a-title">Bash 已在后台运行</div>
+                <div class="a-body">命令 <b>#12</b> · <b>npm run dev</b> · 输入框已恢复</div>
               </div>
-              <div class="hint-bar">后台规划后只保留 <b>/jobs</b>、日志、停止和附加摘要入口；若要后台执行，直接按计划创建 Job，不再提供转前台覆盖。</div>
+              <div class="hint-bar">后台命令只保留查看输出、停止、重跑和附加摘要入口，不提供转前台。</div>
             </div>
             <div class="tui-sidebar">
-              <div class="sb-sec"><div class="sb-title">Bash</div><div class="sb-body">planned background<br>no prompt</div></div>
-              <div class="sb-sec"><div class="sb-title">Jobs</div><div class="sb-body">0 running<br>0 completed</div></div>
+              <div class="sb-sec"><div class="sb-title">Bash</div><div class="sb-body">background<br>running</div></div>
+              <div class="sb-sec"><div class="sb-title">Commands</div><div class="sb-body">#12 running</div></div>
             </div>
           </div>
           <div class="tui-input"><div class="tui-iline">❯ 启动 dev server，然后继续改登录页<span class="t-cursor"></span></div></div>
           <div class="tui-status">
-            <div class="tui-sl"><span class="agent-lbl">Agent</span><span>按模型计划执行 Bash</span></div>
+            <div class="tui-sl"><span class="agent-lbl">Agent</span><span>Bash 命令已启动</span></div>
             <div class="tui-sr"><span>无弹窗</span><span>不中断自动执行</span></div>
           </div>
         </div>
-        <div class="step-note">原则：是否后台执行属于模型规划的一部分，不作为默认弹窗打断用户；只有危险命令、权限升级、外部副作用等安全类决策仍需确认。</div>
+        <div class="step-note">原则：命令启动和后台化不增加额外确认层；只有危险命令、权限升级、外部副作用等安全类决策仍需确认。</div>
       </div>
     </div>
   </div>
 
   <div class="section">
-    <div class="section-title"><span class="num">02</span> &nbsp;步骤二 · 后台启动后立即还回输入权</div>
+    <div class="section-title"><span class="num">02</span> &nbsp;步骤二 · 后台命令启动后立即还回输入权</div>
     <div class="step">
       <div class="step-num">2</div>
       <div class="step-content">
-        <div class="step-label"><b>后台 Job 创建成功后，TUI 不再被 Bash 阻塞</b>。底部出现 Job chip，侧边栏显示运行状态，主输入框立刻恢复。</div>
+        <div class="step-label"><b>后台命令启动后，TUI 不再被 Bash 阻塞</b>。命令 ID 出现在状态栏，侧边栏显示运行状态，主输入框立刻恢复。</div>
         <div class="tui-wrap">
           <div class="tui-bar">
             <div class="tui-dots"><span class="tui-dot r"></span><span class="tui-dot y"></span><span class="tui-dot g"></span></div>
@@ -622,25 +617,17 @@
           <div class="tui-main">
             <div class="tui-msgs">
               <div class="oc-alert success">
-                <div class="a-title">Bash 已转入后台</div>
-                <div class="a-body">Job <b>#12</b> · <b>npm run dev</b> · PID 48210 · 已开始缓冲输出</div>
+                <div class="a-title">Bash 已在后台运行</div>
+                <div class="a-body">命令 <b>#12</b> · <b>npm run dev</b> · PID 48210 · 已开始记录输出</div>
               </div>
-              <div class="log-panel">
-                <div class="log-head"><span>#12 npm run dev</span><span class="job-chip run"><span class="job-dot"></span>running · 00:18</span></div>
-                <div class="log-body">
-                  <div class="log-line"><span class="log-ts">00:01</span><span>VITE v6.1.0 ready in 428 ms</span></div>
-                  <div class="log-line"><span class="log-ts">00:01</span><span>server ready</span></div>
-                  <div class="log-line"><span class="log-ts">00:07</span><span>hmr update /src/Login.tsx</span></div>
-                </div>
-                <div class="log-summary">输出策略：只显示关键 3 行，其余进入 ring buffer。输入 <b>/jobs #12 logs</b> 可展开完整日志。</div>
-              </div>
+              <div class="tm tc-dim">状态摘要：running · 00:18 · 输出已记录</div>
               <div class="tm-gap"></div>
               <div class="tm tc-dim">Agent：服务已在后台运行。我继续检查登录页结构。</div>
               <div class="tm"><span class="tc-orange">$</span> sed -n '1,220p' src/Login.tsx</div>
             </div>
             <div class="tui-sidebar">
               <div class="sb-sec">
-                <div class="sb-title">Jobs</div>
+                <div class="sb-title">Commands</div>
                 <div class="job-list">
                   <div class="job-item active">
                     <div class="job-top"><span class="job-name">#12 npm run dev</span><span class="job-chip run"><span class="job-dot"></span>run</span></div>
@@ -649,26 +636,26 @@
                   </div>
                 </div>
               </div>
-              <div class="sb-sec"><div class="sb-title">Context</div><div class="sb-body">Job summary attached<br>raw logs detached</div></div>
+              <div class="sb-sec"><div class="sb-title">Context</div><div class="sb-body">summary attached<br>raw logs detached</div></div>
             </div>
           </div>
           <div class="tui-input"><div class="tui-iline">❯ 继续，把登录按钮状态也整理一下<span class="t-cursor"></span></div></div>
           <div class="tui-status">
-            <div class="tui-sl"><span class="agent-lbl">Agent</span><span class="job-chip run"><span class="job-dot"></span>#12 running</span></div>
-            <div class="tui-sr"><span><span class="t-kbd">/jobs</span> 管理</span><span><span class="t-kbd">Ctrl+C</span> 仅中断当前前台输入</span></div>
+            <div class="tui-sl"><span class="agent-lbl">Bash</span><span class="job-chip run"><span class="job-dot"></span>#12 running</span></div>
+            <div class="tui-sr"><span><span class="t-kbd">/tasks</span> 查看</span><span><span class="t-kbd">Ctrl+C</span> 仅中断当前前台输入</span></div>
           </div>
         </div>
-        <div class="step-note">关键点：<b>Ctrl+C 不默认杀后台 Job</b>。用户必须在 Job 面板中明确选择 stop，避免误杀 dev server 或部署任务。</div>
+        <div class="step-note">关键点：<b>Ctrl+C 不默认杀后台命令</b>。停止后台命令必须从命令列表或独立详情视图明确执行，避免误杀 dev server 或部署命令。</div>
       </div>
     </div>
   </div>
 
   <div class="section">
-    <div class="section-title"><span class="num">03</span> &nbsp;步骤三 · /jobs 面板统一管理后台任务</div>
+    <div class="section-title"><span class="num">03</span> &nbsp;步骤三 · 后台命令列表与独立日志视图</div>
     <div class="step">
       <div class="step-num">3</div>
       <div class="step-content">
-        <div class="step-label"><b>用户输入 <code>/jobs</code> 或点击状态栏 Job chip</b>，打开任务面板。列表聚合所有后台 Bash，支持键盘选择和动作。</div>
+        <div class="step-label"><b>用户输入 <code>/tasks</code> 或点击状态栏命令 chip</b>，打开后台命令列表。列表只负责浏览命令状态；选择命令后进入独立日志视图。</div>
         <div class="tui-wrap">
           <div class="tui-bar">
             <div class="tui-dots"><span class="tui-dot r"></span><span class="tui-dot y"></span><span class="tui-dot g"></span></div>
@@ -676,59 +663,80 @@
           </div>
           <div class="tui-main">
             <div class="tui-msgs">
-              <div class="tm"><span class="tc-orange">❯</span> /jobs</div>
+              <div class="tm"><span class="tc-orange">❯</span> /tasks</div>
               <div class="job-panel">
                 <div class="job-panel-head">
-                  <span>Bash Jobs</span>
-                  <span class="tc-dim">↑↓ 选择 · Enter 展开日志 · S 停止</span>
+                  <span>Bash Commands</span>
+                  <span class="tc-dim">↑↓ 选择 · Enter 查看 · S 停止</span>
                 </div>
                 <table class="job-table">
                   <thead>
-                    <tr><th>ID</th><th>命令</th><th>状态</th><th>时长</th><th>输出</th></tr>
+                    <tr><th>ID</th><th>命令</th><th>状态</th><th>时长</th></tr>
                   </thead>
                   <tbody>
-                    <tr class="selected"><td>#12</td><td>npm run dev</td><td>running</td><td>04:28</td><td>ready</td></tr>
-                    <tr><td>#11</td><td>pytest -q</td><td>failed</td><td>01:12</td><td>2 failed</td></tr>
-                    <tr><td>#10</td><td>pnpm build</td><td>done</td><td>00:46</td><td>dist ready</td></tr>
+                    <tr class="selected"><td>#12</td><td>npm run dev</td><td>running</td><td>04:28</td></tr>
+                    <tr><td>#11</td><td>pytest -q</td><td>failed</td><td>01:12</td></tr>
+                    <tr><td>#10</td><td>pnpm build</td><td>done</td><td>00:46</td></tr>
                   </tbody>
                 </table>
                 <div class="job-actions">
-                  <span>[Enter] 日志展开</span><span>[A] 附加摘要到上下文</span><span>[S] Stop</span><span>[R] Rerun</span><span>[Esc] 返回</span>
-                </div>
-                <div class="log-panel" style="margin-top:10px;">
-                  <div class="log-head"><span>#12 log expanded</span><span class="job-chip run"><span class="job-dot"></span>open</span></div>
-                  <div class="log-body">
-                    <div class="log-line"><span class="log-ts">00:01</span><span>VITE v6.1.0 ready in 428 ms</span></div>
-                    <div class="log-line"><span class="log-ts">00:03</span><span>GET /src/main.tsx 200</span></div>
-                    <div class="log-line"><span class="log-ts">00:07</span><span>hmr update /src/Login.tsx</span></div>
-                    <div class="log-line"><span class="log-ts">00:12</span><span>watching files ...</span></div>
-                  </div>
-                  <div class="log-summary">按 <b>Esc</b> 收起日志，按 <b>A</b> 只附加摘要，不把整段输出塞进上下文。</div>
+                  <span>[Enter] 查看</span><span>[A] 附加摘要</span><span>[S] Stop</span><span>[R] Rerun</span><span>[Esc] 返回</span>
                 </div>
               </div>
             </div>
             <div class="tui-sidebar">
-              <div class="sb-sec"><div class="sb-title">Jobs</div><div class="sb-body"><span class="tc-yellow">1 running</span><br><span class="tc-red">1 failed</span><br><span class="tc-green">1 done</span></div></div>
-              <div class="sb-sec"><div class="sb-title">Policy</div><div class="sb-body">max 4 jobs<br>idle timeout 20m</div></div>
+              <div class="sb-sec"><div class="sb-title">Commands</div><div class="sb-body"><span class="tc-yellow">1 running</span><br><span class="tc-red">1 failed</span><br><span class="tc-green">1 done</span></div></div>
+              <div class="sb-sec"><div class="sb-title">Actions</div><div class="sb-body">view<br>stop<br>rerun</div></div>
             </div>
           </div>
-          <div class="tui-input"><div class="tui-iline">❯ /jobs<span class="t-cursor"></span></div></div>
+          <div class="tui-input"><div class="tui-iline">❯ /tasks<span class="t-cursor"></span></div></div>
           <div class="tui-status">
-            <div class="tui-sl"><span class="agent-lbl">Agent</span><span>Job 管理面板</span></div>
+            <div class="tui-sl"><span class="agent-lbl">Bash</span><span>命令列表</span></div>
             <div class="tui-sr"><span>#12 selected</span><span>3 total</span></div>
           </div>
         </div>
-        <div class="step-note">Job 面板不是 Shell 原生 jobs 的简单复刻，而是面向 Agent 工作流：它强调状态、摘要、上下文注入、风险动作确认。</div>
+        <div class="tui-wrap" style="margin-top:16px;">
+          <div class="tui-bar">
+            <div class="tui-dots"><span class="tui-dot r"></span><span class="tui-dot y"></span><span class="tui-dot g"></span></div>
+            <div class="tui-wt">CodeArts TUI · Bash / #12 / logs</div>
+          </div>
+          <div class="tui-main">
+            <div class="tui-msgs">
+              <div class="tm"><span class="tc-orange">❯</span> /tasks #12 logs</div>
+              <div class="log-panel">
+                <div class="log-head"><span>#12 npm run dev</span><span class="job-chip run"><span class="job-dot"></span>running · 04:28</span></div>
+                <div class="log-body" style="max-height:190px;">
+                  <div class="log-line"><span class="log-ts">00:01</span><span>VITE v6.1.0 ready in 428 ms</span></div>
+                  <div class="log-line"><span class="log-ts">00:03</span><span>GET /src/main.tsx 200</span></div>
+                  <div class="log-line"><span class="log-ts">00:07</span><span>hmr update /src/Login.tsx</span></div>
+                  <div class="log-line"><span class="log-ts">00:12</span><span>watching files ...</span></div>
+                  <div class="log-line"><span class="log-ts">04:28</span><span>process still running</span></div>
+                </div>
+                <div class="log-summary">独立日志视图：<b>Esc</b> 返回命令列表，<b>A</b> 附加摘要，<b>S</b> 停止命令。</div>
+              </div>
+            </div>
+            <div class="tui-sidebar">
+              <div class="sb-sec"><div class="sb-title">Command</div><div class="sb-body">#12<br>npm run dev<br>running</div></div>
+              <div class="sb-sec"><div class="sb-title">Actions</div><div class="sb-body">attach summary<br>stop command<br>rerun</div></div>
+            </div>
+          </div>
+          <div class="tui-input"><div class="tui-iline">❯ <span class="t-cursor"></span></div></div>
+          <div class="tui-status">
+            <div class="tui-sl"><span class="agent-lbl">Bash</span><span>#12 logs</span></div>
+            <div class="tui-sr"><span><span class="t-kbd">Esc</span> 返回</span><span><span class="t-kbd">S</span> stop</span></div>
+          </div>
+        </div>
+        <div class="step-note">命令列表和日志详情分开：列表用于快速扫描，日志视图用于阅读完整输出，不把日志嵌在表格或对话流中。</div>
       </div>
     </div>
   </div>
 
   <div class="section">
-    <div class="section-title"><span class="num">04</span> &nbsp;步骤四 · 前台任务超过 15 秒，提示可转入后台</div>
+    <div class="section-title"><span class="num">04</span> &nbsp;步骤四 · 前台 Bash 超过 15 秒，提示可转入后台</div>
     <div class="step">
       <div class="step-num">4</div>
       <div class="step-content">
-        <div class="step-label"><b>模型规划为前台执行，但 Bash 已运行超过 15 秒仍未结束</b>。系统只给出非阻塞提示，告诉用户可以按 <code>Ctrl+B</code> 转入后台；不会自动切换，也不会提供转回前台入口。</div>
+        <div class="step-label"><b>Bash 已运行超过 15 秒仍未结束</b>。系统只给出非阻塞提示，告诉用户可以按 <code>Ctrl+B</code> 转入后台；不会自动切换，也不会提供转回前台入口。</div>
         <div class="tui-wrap">
           <div class="tui-bar">
             <div class="tui-dots"><span class="tui-dot r"></span><span class="tui-dot y"></span><span class="tui-dot g"></span></div>
@@ -736,35 +744,35 @@
           </div>
           <div class="tui-main">
             <div class="tui-msgs">
-              <div class="tm tc-dim">模型规划：前台执行，等待命令结束</div>
+              <div class="tm tc-dim">前台执行，等待命令结束</div>
               <div class="tm"><span class="tc-orange">$</span> pytest tests/e2e --headed</div>
               <div class="tm tc-dim">collecting tests/login.spec.ts ...</div>
               <div class="tm tc-dim">chromium started · running login flow</div>
               <div class="tm tc-yellow">⟳ 已运行 15s，仍在前台执行</div>
               <div class="oc-alert info">
                 <div class="a-title">可按 Ctrl+B 转入后台</div>
-                <div class="a-body">当前 Bash 继续运行；按 <b>Ctrl+B</b> 后才创建 Job <b>#13</b>，输入框恢复，输出随后进入日志缓冲区。</div>
+                <div class="a-body">当前 Bash 继续运行；按 <b>Ctrl+B</b> 后进入后台，输入框恢复，输出随后进入日志缓冲区。</div>
               </div>
-              <div class="hint-bar">这是非阻塞提示，不抢焦点、不等待选择；模型规划成前台时不会自动切后台。</div>
+              <div class="hint-bar">这是非阻塞提示，不抢焦点、不等待选择；前台 Bash 不会自动切后台。</div>
             </div>
             <div class="tui-sidebar">
-              <div class="sb-sec"><div class="sb-title">Jobs</div><div class="sb-body"><span class="tc-yellow">#13 running</span><br>15s hint<br>press Ctrl+B</div></div>
+              <div class="sb-sec"><div class="sb-title">Commands</div><div class="sb-body"><span class="tc-yellow">#13 running</span><br>15s hint<br>press Ctrl+B</div></div>
               <div class="sb-sec"><div class="sb-title">Actions</div><div class="sb-body">stop<br>logs<br>attach</div></div>
             </div>
           </div>
           <div class="tui-input"><div class="tui-iline">❯ 继续检查登录页截图差异<span class="t-cursor"></span></div></div>
           <div class="tui-status">
-            <div class="tui-sl"><span class="agent-lbl">Agent</span><span class="job-chip run"><span class="job-dot"></span>#13 running</span></div>
+            <div class="tui-sl"><span class="agent-lbl">Bash</span><span class="job-chip run"><span class="job-dot"></span>#13 running</span></div>
             <div class="tui-sr"><span><span class="t-kbd">Ctrl+B</span> 后台</span><span><span class="t-kbd">S</span> stop</span></div>
           </div>
         </div>
-        <div class="step-note">转后台不是重新执行命令，而是把现有前台进程接管为 Job：保留 PID、cwd、已产生的输出和退出状态监听；一旦规划成后台，就不再提供转回前台入口。</div>
+        <div class="step-note">转后台不是重新执行命令，而是把现有前台进程接管为后台命令：保留 PID、cwd、已产生的输出和退出状态监听；不会提供转回前台入口。</div>
       </div>
     </div>
   </div>
 
   <div class="section">
-    <div class="section-title"><span class="num">05</span> &nbsp;步骤五 · 后台任务完成、失败与需要关注</div>
+    <div class="section-title"><span class="num">05</span> &nbsp;步骤五 · 后台命令完成、失败与需要关注</div>
     <div class="step-wrap">
       <div class="step">
         <div class="step-num">5a</div>
@@ -779,13 +787,13 @@
               <div class="tui-msgs">
                 <div class="tm tc-dim">Agent：我正在整理登录页错误态。</div>
                 <div class="oc-alert success">
-                  <div class="a-title">后台任务完成</div>
-                  <div class="a-body">Job <b>#10 pnpm build</b> exit 0 · 46s · 生成 dist/ · <b>A</b> 附加摘要</div>
+                  <div class="a-title">后台命令完成</div>
+                  <div class="a-body">命令 <b>#10 pnpm build</b> exit 0 · 46s · 生成 dist/ · <b>A</b> 附加摘要</div>
                 </div>
                 <div class="tm tc-dim">用户仍可继续输入，通知不会抢焦点。</div>
               </div>
               <div class="tui-sidebar">
-                <div class="sb-sec"><div class="sb-title">Jobs</div><div class="sb-body"><span class="tc-yellow">#12 running</span><br><span class="tc-green">#10 done</span></div></div>
+                <div class="sb-sec"><div class="sb-title">Commands</div><div class="sb-body"><span class="tc-yellow">#12 running</span><br><span class="tc-green">#10 done</span></div></div>
               </div>
             </div>
             <div class="tui-input"><div class="tui-iline">❯ 顺便把 hover 态也补上<span class="t-cursor"></span></div></div>
@@ -808,17 +816,10 @@
             <div class="tui-main">
               <div class="tui-msgs">
                 <div class="oc-alert error">
-                  <div class="a-title">后台任务失败 · 需要关注</div>
-                  <div class="a-body">Job <b>#11 pytest -q</b> exit 1 · 2 failed · 最后错误：LoginButton disabled state mismatch</div>
+                  <div class="a-title">后台命令失败 · 需要关注</div>
+                  <div class="a-body">命令 <b>#11 pytest -q</b> exit 1 · 2 failed · 最后错误：LoginButton disabled state mismatch</div>
                 </div>
-                <div class="log-panel">
-                  <div class="log-head"><span>#11 pytest -q · failure excerpt</span><span class="job-chip bad"><span class="job-dot"></span>failed</span></div>
-                  <div class="log-body">
-                    <div class="log-line"><span class="log-ts">01:08</span><span>FAILED tests/login.spec.ts::disabled_button</span></div>
-                    <div class="log-line"><span class="log-ts">01:08</span><span>expected aria-disabled=&quot;true&quot;, received undefined</span></div>
-                  </div>
-                  <div class="log-summary"><b>建议动作：</b>按 A 把失败摘要附加给 Agent，按 L 展开完整日志，按 R 修复后重跑。</div>
-                </div>
+                <div class="hint-bar">最后输出可通过 <b>Enter</b> 进入独立日志视图；按 <b>A</b> 附加摘要，按 <b>R</b> 修复后重跑。</div>
               </div>
               <div class="tui-sidebar">
                 <div class="sb-sec"><div class="sb-title">Attention</div><div class="sb-body"><span class="tc-red">#11 failed</span><br>2 failing tests</div></div>
@@ -837,19 +838,18 @@
 
   <div class="section">
     <div class="section-title"><span class="num">06</span> &nbsp;交互规则与边界</div>
-    <div class="step-note" style="margin:0 0 14px;">Claude Code 对齐检查：后台 Bash 以 <code>Ctrl+B</code> 或模型后台规划进入，不需要选择弹窗；进入后台后返回 Job ID，后续动作收敛为查看日志、停止、重跑、附加摘要，不提供转回前台；长时间前台执行只提示可按 <code>Ctrl+B</code>，不自动转后台。</div>
+    <div class="step-note" style="margin:0 0 14px;">Claude Code 对齐检查：后台 Bash 直接运行或按 <code>Ctrl+B</code> 放到后台，返回命令 ID；后续动作收敛为查看日志、停止、重跑、附加摘要，不提供转回前台；长时间前台执行只提示可按 <code>Ctrl+B</code>，不自动转后台。</div>
     <div class="table-wrap">
       <table class="spec-table">
         <thead>
           <tr><th>模块</th><th>规则</th><th>交互表现</th></tr>
         </thead>
         <tbody>
-          <tr><td>触发方式</td><td>模型规划为后台执行、命令后加 <code>&amp;</code>、或用户输入 <code>/bash --bg</code></td><td>直接创建 Job ID，输入框立即恢复；不弹执行方式选择</td></tr>
-          <tr><td>模型规划</td><td>模型根据任务目标、命令画像和后续步骤决定前台/后台</td><td>按计划执行，只给内联状态说明，不主动打断</td></tr>
-          <tr><td>前台转后台</td><td>前台 Bash 执行超过 15 秒仍未结束，且进程仍存活或持续输出</td><td>只提示可按 <span class="kbd">Ctrl+B</span> 转入后台，不自动切换；后台规划不提供转回前台入口</td></tr>
-          <tr><td>日志策略</td><td>stdout/stderr 进入 ring buffer；默认只展示关键行、错误片段与 AI 摘要</td><td>避免刷屏，按 <span class="kbd">L</span> 展开完整日志</td></tr>
-          <tr><td>上下文策略</td><td>默认只把 Job 摘要给 Agent；完整日志需用户确认附加</td><td>按 <span class="kbd">A</span> attach summary，避免污染上下文</td></tr>
-          <tr><td>中断规则</td><td><span class="kbd">Ctrl+C</span> 只取消当前前台输入，不杀后台 Job</td><td>停止 Job 必须在 <code>/jobs</code> 里按 <span class="kbd">S</span> 二次确认</td></tr>
+          <tr><td>触发方式</td><td>命令直接运行，或用户输入 <code>/bash --bg</code>、按 <code>Ctrl+B</code></td><td>直接返回命令 ID，输入框立即恢复，不弹执行方式选择</td></tr>
+          <tr><td>前台转后台</td><td>前台 Bash 执行超过 15 秒仍未结束，且进程仍存活或持续输出</td><td>只提示可按 <span class="kbd">Ctrl+B</span> 转入后台，不自动切换</td></tr>
+          <tr><td>日志策略</td><td>stdout/stderr 进入输出缓冲；列表不展示输出，详情视图按需读取</td><td>按 <span class="kbd">Enter</span> 进入独立输出视图</td></tr>
+          <tr><td>上下文策略</td><td>默认只把摘要给 Agent；完整输出需用户确认附加</td><td>按 <span class="kbd">A</span> attach summary，避免污染上下文</td></tr>
+          <tr><td>中断规则</td><td><span class="kbd">Ctrl+C</span> 只取消当前前台输入，不杀后台命令</td><td>停止命令必须在 <code>/tasks</code> 里按 <span class="kbd">S</span> 二次确认</td></tr>
           <tr><td>资源保护</td><td>限制同时运行数、空闲时长和最大运行时间</td><td>超限时 Job chip 变黄，提示清理或延长</td></tr>
           <tr><td>危险命令</td><td>涉及删除、部署、写系统路径、外网传输等仍走原权限确认</td><td>后台执行不降低安全门槛</td></tr>
         </tbody>
@@ -860,15 +860,15 @@
   <div class="section">
     <div class="section-title"><span class="num">07</span> &nbsp;状态模型与数据结构</div>
     <div class="code-block">
-<span class="ck">type</span> BashJobStatus =
+<span class="ck">type</span> BashCommandStatus =
   <span class="cs">'starting'</span> | <span class="cs">'running'</span> | <span class="cs">'attention'</span> | <span class="cs">'done'</span> | <span class="cs">'failed'</span> | <span class="cs">'stopped'</span>
 
-<span class="ck">interface</span> BashJob {
+<span class="ck">interface</span> BashCommand {
   <span class="ct">id</span>: <span class="cs">'#12'</span>
   <span class="ct">command</span>: <span class="cs">'npm run dev'</span>
   <span class="ct">pid</span>: <span class="cn">48210</span>
   <span class="ct">cwd</span>: <span class="cs">'~/workspace/app'</span>
-  <span class="ct">status</span>: BashJobStatus
+  <span class="ct">status</span>: BashCommandStatus
   <span class="ct">startedAt</span>: <span class="cs">'2026-08-20T16:02:11+08:00'</span>
   <span class="ct">durationMs</span>: <span class="cn">268000</span>
   <span class="ct">exitCode</span>: <span class="cn">null</span>
