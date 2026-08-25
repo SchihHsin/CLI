@@ -268,189 +268,6 @@
   .sb-sec { margin-bottom:16px; }
   .sb-title { font-size:12px; color:var(--t-white); margin-bottom:4px; }
   .sb-body { font-size:12px; color:var(--t-dim); line-height:1.75; }
-  .job-chip {
-    display:inline-flex;
-    align-items:center;
-    gap:5px;
-    border:1px solid var(--t-border2);
-    border-radius:999px;
-    padding:1px 7px;
-    font-size:10px;
-    color:var(--t-dim);
-  }
-  .job-chip.run { color:var(--t-yellow); border-color:rgba(224,175,104,.35); }
-  .job-chip.ok { color:var(--t-green); border-color:rgba(158,206,106,.35); }
-  .job-chip.bad { color:var(--t-red); border-color:rgba(247,118,142,.35); }
-  .job-dot {
-    width:6px;
-    height:6px;
-    border-radius:50%;
-    background:currentColor;
-    box-shadow:0 0 10px currentColor;
-  }
-  .job-list { display:flex; flex-direction:column; gap:8px; }
-  .job-item {
-    border:1px solid var(--t-border2);
-    background:rgba(255,255,255,.025);
-    padding:8px 9px;
-    border-radius:5px;
-  }
-  .job-item.active { border-color:rgba(250,178,131,.65); background:rgba(250,178,131,.06); }
-  .job-top { display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:4px; }
-  .job-name { color:var(--t-white); font-size:11px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-  .job-meta { color:var(--t-dim); font-size:10px; line-height:1.55; }
-  .progress {
-    height:5px;
-    border-radius:999px;
-    background:#101010;
-    overflow:hidden;
-    border:1px solid var(--t-border2);
-    margin-top:6px;
-  }
-  .progress span {
-    display:block;
-    height:100%;
-    border-radius:999px;
-    background:linear-gradient(90deg,var(--t-blue),var(--t-cyan),var(--t-yellow));
-  }
-
-  .oc-alert {
-    padding:6px 14px;
-    border-left:3px solid transparent;
-    font-size:12px;
-    line-height:1.8;
-  }
-  .oc-alert.info { border-left-color:var(--t-blue); }
-  .oc-alert.warning { border-left-color:var(--t-yellow); }
-  .oc-alert.success { border-left-color:var(--t-green); }
-  .oc-alert.error { border-left-color:var(--t-red); }
-  .oc-alert .a-title { margin-bottom:1px; }
-  .oc-alert.info .a-title { color:var(--t-blue); }
-  .oc-alert.warning .a-title { color:var(--t-yellow); }
-  .oc-alert.success .a-title { color:var(--t-green); }
-  .oc-alert.error .a-title { color:var(--t-red); }
-  .oc-alert .a-body { color:var(--t-dim); }
-  .oc-alert .a-body b { color:var(--t-white); font-weight:400; }
-
-  .log-panel {
-    border:1px solid var(--t-border2);
-    background:var(--t-bg3);
-    border-radius:5px;
-    overflow:hidden;
-    margin-top:4px;
-  }
-  .log-head {
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    padding:7px 10px;
-    border-bottom:1px solid var(--t-border);
-    font-size:11px;
-    color:var(--t-dim);
-  }
-  .log-body {
-    padding:9px 10px;
-    font-size:11px;
-    line-height:1.75;
-    color:var(--t-text);
-    max-height:142px;
-    overflow:hidden;
-  }
-  .log-line { display:flex; gap:8px; }
-  .log-ts { color:var(--t-muted); flex-shrink:0; }
-  .log-summary {
-    padding:8px 10px;
-    border-top:1px solid var(--t-border);
-    background:rgba(92,156,245,.06);
-    color:var(--t-dim);
-    font-size:11px;
-    line-height:1.65;
-  }
-  .log-summary b { color:var(--t-cyan); font-weight:400; }
-
-  .plan-card {
-    border:1px solid var(--t-border2);
-    background:var(--t-bg3);
-    border-radius:5px;
-    overflow:hidden;
-    margin:7px 0;
-  }
-  .plan-head {
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:12px;
-    padding:8px 10px;
-    border-bottom:1px solid var(--t-border);
-    font-size:11px;
-    color:var(--t-dim);
-  }
-  .plan-title { color:var(--t-white); }
-  .plan-body {
-    padding:9px 10px;
-    display:grid;
-    grid-template-columns:92px 1fr;
-    gap:5px 10px;
-    font-size:11px;
-    line-height:1.65;
-  }
-  .plan-k { color:var(--t-dim); }
-  .plan-v { color:var(--t-text); }
-  .hint-bar {
-    border-left:3px solid var(--t-blue);
-    background:rgba(92,156,245,.06);
-    color:var(--t-dim);
-    padding:7px 10px;
-    font-size:11px;
-    line-height:1.65;
-    margin-top:6px;
-  }
-  .hint-bar b { color:var(--t-cyan); font-weight:400; }
-
-  .job-panel {
-    max-width:560px;
-    border:1px solid var(--t-border2);
-    background:var(--t-bg3);
-    border-radius:5px;
-    overflow:hidden;
-    margin:6px auto;
-  }
-  .job-panel-head {
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    padding:9px 12px;
-    border-bottom:1px solid var(--t-border);
-    font-size:12px;
-    color:var(--t-white);
-  }
-  .job-table { width:100%; border-collapse:collapse; font-size:11px; }
-  .job-table th {
-    text-align:left;
-    color:var(--t-dim);
-    font-weight:400;
-    padding:7px 10px;
-    background:var(--t-bg2);
-    border-bottom:1px solid var(--t-border);
-  }
-  .job-table td {
-    padding:8px 10px;
-    color:var(--t-text);
-    border-bottom:1px solid var(--t-border);
-  }
-  .job-table tr.selected td {
-    background:var(--t-orange);
-    color:#1a0800;
-  }
-  .job-table tr:last-child td { border-bottom:none; }
-  .job-actions {
-    display:flex;
-    gap:8px;
-    padding:9px 12px;
-    color:var(--t-dim);
-    font-size:11px;
-    border-top:1px solid var(--t-border);
-  }
 
   .table-wrap {
     border:1px solid var(--page-border);
@@ -576,20 +393,13 @@
             <div class="tui-dots"><span class="tui-dot r"></span><span class="tui-dot y"></span><span class="tui-dot g"></span></div>
             <div class="tui-wt">CodeArts TUI</div>
           </div>
-          <div class="tui-main">
+          <div class="tui-main single">
             <div class="tui-msgs">
               <div class="tm tc-dim">用户：启动本地 dev server，然后继续帮我改登录页</div>
-              <div class="tm tc-white">● Bash 正在后台运行</div>
               <div class="tm"><span class="tc-orange">$</span> npm run dev</div>
-              <div class="oc-alert success">
-                <div class="a-title">Bash 已在后台运行</div>
-                <div class="a-body">命令 <b>#12</b> · <b>npm run dev</b> · 输入框已恢复</div>
-              </div>
-              <div class="hint-bar">后台命令只保留查看输出、停止、重跑和附加摘要入口，不提供转前台。</div>
-            </div>
-            <div class="tui-sidebar">
-              <div class="sb-sec"><div class="sb-title">Bash</div><div class="sb-body">background<br>running</div></div>
-              <div class="sb-sec"><div class="sb-title">Commands</div><div class="sb-body">#12 running</div></div>
+              <div class="tm tc-green">✓ Bash running in background</div>
+              <div class="tm tc-dim">  #12  npm run dev  running  0s</div>
+              <div class="tm tc-dim">  Output is being recorded. Use /tasks to view or stop it.</div>
             </div>
           </div>
           <div class="tui-input"><div class="tui-iline">❯ 启动 dev server，然后继续改登录页<span class="t-cursor"></span></div></div>
@@ -614,34 +424,19 @@
             <div class="tui-dots"><span class="tui-dot r"></span><span class="tui-dot y"></span><span class="tui-dot g"></span></div>
             <div class="tui-wt">CodeArts TUI</div>
           </div>
-          <div class="tui-main">
+          <div class="tui-main single">
             <div class="tui-msgs">
-              <div class="oc-alert success">
-                <div class="a-title">Bash 已在后台运行</div>
-                <div class="a-body">命令 <b>#12</b> · <b>npm run dev</b> · PID 48210 · 已开始记录输出</div>
-              </div>
-              <div class="tm tc-dim">状态摘要：running · 00:18 · 输出已记录</div>
+              <div class="tm tc-green">✓ Bash running in background</div>
+              <div class="tm tc-dim">  #12  npm run dev  running  18s</div>
+              <div class="tm tc-dim">  Output is being recorded.</div>
               <div class="tm-gap"></div>
               <div class="tm tc-dim">Agent：服务已在后台运行。我继续检查登录页结构。</div>
               <div class="tm"><span class="tc-orange">$</span> sed -n '1,220p' src/Login.tsx</div>
             </div>
-            <div class="tui-sidebar">
-              <div class="sb-sec">
-                <div class="sb-title">Commands</div>
-                <div class="job-list">
-                  <div class="job-item active">
-                    <div class="job-top"><span class="job-name">#12 npm run dev</span><span class="job-chip run"><span class="job-dot"></span>run</span></div>
-                    <div class="job-meta">18s</div>
-                    <div class="progress"><span style="width:38%"></span></div>
-                  </div>
-                </div>
-              </div>
-              <div class="sb-sec"><div class="sb-title">Context</div><div class="sb-body">summary attached<br>raw logs detached</div></div>
-            </div>
           </div>
           <div class="tui-input"><div class="tui-iline">❯ 继续，把登录按钮状态也整理一下<span class="t-cursor"></span></div></div>
           <div class="tui-status">
-            <div class="tui-sl"><span class="agent-lbl">Bash</span><span class="job-chip run"><span class="job-dot"></span>#12 running</span></div>
+            <div class="tui-sl"><span class="agent-lbl">Bash</span><span>#12 running</span></div>
             <div class="tui-sr"><span><span class="t-kbd">/tasks</span> 查看</span><span><span class="t-kbd">Ctrl+C</span> 仅中断当前前台输入</span></div>
           </div>
         </div>
@@ -661,32 +456,16 @@
             <div class="tui-dots"><span class="tui-dot r"></span><span class="tui-dot y"></span><span class="tui-dot g"></span></div>
             <div class="tui-wt">CodeArts TUI</div>
           </div>
-          <div class="tui-main">
+          <div class="tui-main single">
             <div class="tui-msgs">
               <div class="tm"><span class="tc-orange">❯</span> /tasks</div>
-              <div class="job-panel">
-                <div class="job-panel-head">
-                  <span>Bash Commands</span>
-                  <span class="tc-dim">↑↓ 选择 · Enter 查看 · S 停止</span>
-                </div>
-                <table class="job-table">
-                  <thead>
-                    <tr><th>ID</th><th>命令</th><th>状态</th><th>时长</th></tr>
-                  </thead>
-                  <tbody>
-                    <tr class="selected"><td>#12</td><td>npm run dev</td><td>running</td><td>04:28</td></tr>
-                    <tr><td>#11</td><td>pytest -q</td><td>failed</td><td>01:12</td></tr>
-                    <tr><td>#10</td><td>pnpm build</td><td>done</td><td>00:46</td></tr>
-                  </tbody>
-                </table>
-                <div class="job-actions">
-                  <span>[Enter] 查看</span><span>[A] 附加摘要</span><span>[S] Stop</span><span>[R] Rerun</span><span>[Esc] 返回</span>
-                </div>
-              </div>
-            </div>
-            <div class="tui-sidebar">
-              <div class="sb-sec"><div class="sb-title">Commands</div><div class="sb-body"><span class="tc-yellow">1 running</span><br><span class="tc-red">1 failed</span><br><span class="tc-green">1 done</span></div></div>
-              <div class="sb-sec"><div class="sb-title">Actions</div><div class="sb-body">view<br>stop<br>rerun</div></div>
+              <div class="tm tc-white">Background commands</div>
+              <div class="tm tc-dim">────────────────────────────────────────────────────────</div>
+              <div class="tm tc-orange">› #12  npm run dev        running  04:28</div>
+              <div class="tm tc-dim">  #11  pytest -q          failed   01:12</div>
+              <div class="tm tc-dim">  #10  pnpm build         done     00:46</div>
+              <div class="tm tc-dim">────────────────────────────────────────────────────────</div>
+              <div class="tm tc-dim">Enter view output · A attach summary · S stop · R rerun · Esc back</div>
             </div>
           </div>
           <div class="tui-input"><div class="tui-iline">❯ /tasks<span class="t-cursor"></span></div></div>
@@ -700,24 +479,18 @@
             <div class="tui-dots"><span class="tui-dot r"></span><span class="tui-dot y"></span><span class="tui-dot g"></span></div>
             <div class="tui-wt">CodeArts TUI · Bash / #12 / logs</div>
           </div>
-          <div class="tui-main">
+          <div class="tui-main single">
             <div class="tui-msgs">
               <div class="tm"><span class="tc-orange">❯</span> /tasks #12 logs</div>
-              <div class="log-panel">
-                <div class="log-head"><span>#12 npm run dev</span><span class="job-chip run"><span class="job-dot"></span>running · 04:28</span></div>
-                <div class="log-body" style="max-height:190px;">
-                  <div class="log-line"><span class="log-ts">00:01</span><span>VITE v6.1.0 ready in 428 ms</span></div>
-                  <div class="log-line"><span class="log-ts">00:03</span><span>GET /src/main.tsx 200</span></div>
-                  <div class="log-line"><span class="log-ts">00:07</span><span>hmr update /src/Login.tsx</span></div>
-                  <div class="log-line"><span class="log-ts">00:12</span><span>watching files ...</span></div>
-                  <div class="log-line"><span class="log-ts">04:28</span><span>process still running</span></div>
-                </div>
-                <div class="log-summary">独立日志视图：<b>Esc</b> 返回命令列表，<b>A</b> 附加摘要，<b>S</b> 停止命令。</div>
-              </div>
-            </div>
-            <div class="tui-sidebar">
-              <div class="sb-sec"><div class="sb-title">Command</div><div class="sb-body">#12<br>npm run dev<br>running</div></div>
-              <div class="sb-sec"><div class="sb-title">Actions</div><div class="sb-body">attach summary<br>stop command<br>rerun</div></div>
+              <div class="tm tc-white">#12  npm run dev  running  04:28</div>
+              <div class="tm tc-dim">────────────────────────────────────────────────────────</div>
+              <div class="tm"><span class="tc-dim">00:01</span>  VITE v6.1.0 ready in 428 ms</div>
+              <div class="tm"><span class="tc-dim">00:03</span>  GET /src/main.tsx 200</div>
+              <div class="tm"><span class="tc-dim">00:07</span>  hmr update /src/Login.tsx</div>
+              <div class="tm"><span class="tc-dim">00:12</span>  watching files ...</div>
+              <div class="tm"><span class="tc-dim">04:28</span>  process still running</div>
+              <div class="tm tc-dim">────────────────────────────────────────────────────────</div>
+              <div class="tm tc-dim">Esc back · A attach summary · S stop command</div>
             </div>
           </div>
           <div class="tui-input"><div class="tui-iline">❯ <span class="t-cursor"></span></div></div>
@@ -742,27 +515,19 @@
             <div class="tui-dots"><span class="tui-dot r"></span><span class="tui-dot y"></span><span class="tui-dot g"></span></div>
             <div class="tui-wt">CodeArts TUI</div>
           </div>
-          <div class="tui-main">
+          <div class="tui-main single">
             <div class="tui-msgs">
-              <div class="tm tc-dim">前台执行，等待命令结束</div>
               <div class="tm"><span class="tc-orange">$</span> pytest tests/e2e --headed</div>
               <div class="tm tc-dim">collecting tests/login.spec.ts ...</div>
               <div class="tm tc-dim">chromium started · running login flow</div>
-              <div class="tm tc-yellow">⟳ 已运行 15s，仍在前台执行</div>
-              <div class="oc-alert info">
-                <div class="a-title">可按 Ctrl+B 转入后台</div>
-                <div class="a-body">当前 Bash 继续运行；按 <b>Ctrl+B</b> 后进入后台，输入框恢复，输出随后进入日志缓冲区。</div>
-              </div>
-              <div class="hint-bar">这是非阻塞提示，不抢焦点、不等待选择；前台 Bash 不会自动切后台。</div>
-            </div>
-            <div class="tui-sidebar">
-              <div class="sb-sec"><div class="sb-title">Commands</div><div class="sb-body"><span class="tc-yellow">#13 running</span><br>15s hint<br>press Ctrl+B</div></div>
-              <div class="sb-sec"><div class="sb-title">Actions</div><div class="sb-body">stop<br>logs<br>attach</div></div>
+              <div class="tm tc-yellow">● Bash has been running for 15s</div>
+              <div class="tm tc-dim">  Press Ctrl+B to run it in the background.</div>
+              <div class="tm tc-dim">  It will keep running in front until you do.</div>
             </div>
           </div>
           <div class="tui-input"><div class="tui-iline">❯ 继续检查登录页截图差异<span class="t-cursor"></span></div></div>
           <div class="tui-status">
-            <div class="tui-sl"><span class="agent-lbl">Bash</span><span class="job-chip run"><span class="job-dot"></span>#13 running</span></div>
+            <div class="tui-sl"><span class="agent-lbl">Bash</span><span>前台 · 15s</span></div>
             <div class="tui-sr"><span><span class="t-kbd">Ctrl+B</span> 后台</span><span><span class="t-kbd">S</span> stop</span></div>
           </div>
         </div>
@@ -779,26 +544,22 @@
         <div class="step-content">
           <div class="step-label"><b>完成时不打断当前输入</b>，只在当前对话流中插入轻量通知，并允许一键把摘要附加给 Agent。</div>
           <div class="tui-wrap">
-            <div class="tui-bar">
-              <div class="tui-dots"><span class="tui-dot r"></span><span class="tui-dot y"></span><span class="tui-dot g"></span></div>
-              <div class="tui-wt">CodeArts TUI</div>
-            </div>
-            <div class="tui-main">
+          <div class="tui-bar">
+            <div class="tui-dots"><span class="tui-dot r"></span><span class="tui-dot y"></span><span class="tui-dot g"></span></div>
+            <div class="tui-wt">CodeArts TUI</div>
+          </div>
+            <div class="tui-main single">
               <div class="tui-msgs">
                 <div class="tm tc-dim">Agent：我正在整理登录页错误态。</div>
-                <div class="oc-alert success">
-                  <div class="a-title">后台命令完成</div>
-                  <div class="a-body">命令 <b>#10 pnpm build</b> exit 0 · 46s · 生成 dist/ · <b>A</b> 附加摘要</div>
-                </div>
+                <div class="tm tc-green">✓ Background command completed</div>
+                <div class="tm tc-dim">  #10  pnpm build  done  46s</div>
+                <div class="tm tc-dim">  dist/ generated. Press A to attach summary.</div>
                 <div class="tm tc-dim">用户仍可继续输入，通知不会抢焦点。</div>
-              </div>
-              <div class="tui-sidebar">
-                <div class="sb-sec"><div class="sb-title">Commands</div><div class="sb-body"><span class="tc-yellow">#12 running</span><br><span class="tc-green">#10 done</span></div></div>
               </div>
             </div>
             <div class="tui-input"><div class="tui-iline">❯ 顺便把 hover 态也补上<span class="t-cursor"></span></div></div>
             <div class="tui-status">
-              <div class="tui-sl"><span class="agent-lbl">Agent</span><span class="job-chip ok"><span class="job-dot"></span>#10 done</span></div>
+              <div class="tui-sl"><span class="agent-lbl">Bash</span><span>#10 done</span></div>
               <div class="tui-sr"><span><span class="t-kbd">A</span> 附加摘要</span></div>
             </div>
           </div>
@@ -809,26 +570,22 @@
         <div class="step-content">
           <div class="step-label"><b>失败时升级为需要关注</b>，展示失败原因摘要和下一步动作，但不直接把大段日志塞进上下文。</div>
           <div class="tui-wrap">
-            <div class="tui-bar">
-              <div class="tui-dots"><span class="tui-dot r"></span><span class="tui-dot y"></span><span class="tui-dot g"></span></div>
-              <div class="tui-wt">CodeArts TUI</div>
-            </div>
-            <div class="tui-main">
+          <div class="tui-bar">
+            <div class="tui-dots"><span class="tui-dot r"></span><span class="tui-dot y"></span><span class="tui-dot g"></span></div>
+            <div class="tui-wt">CodeArts TUI</div>
+          </div>
+            <div class="tui-main single">
               <div class="tui-msgs">
-                <div class="oc-alert error">
-                  <div class="a-title">后台命令失败 · 需要关注</div>
-                  <div class="a-body">命令 <b>#11 pytest -q</b> exit 1 · 2 failed · 最后错误：LoginButton disabled state mismatch</div>
-                </div>
-                <div class="hint-bar">最后输出可通过 <b>Enter</b> 进入独立日志视图；按 <b>A</b> 附加摘要，按 <b>R</b> 修复后重跑。</div>
-              </div>
-              <div class="tui-sidebar">
-                <div class="sb-sec"><div class="sb-title">Attention</div><div class="sb-body"><span class="tc-red">#11 failed</span><br>2 failing tests</div></div>
+                <div class="tm tc-red">✗ Background command failed</div>
+                <div class="tm tc-dim">  #11  pytest -q  failed  01:12</div>
+                <div class="tm tc-dim">  2 failed · LoginButton disabled state mismatch</div>
+                <div class="tm tc-dim">  Enter view output · A attach summary · R rerun</div>
               </div>
             </div>
             <div class="tui-input"><div class="tui-iline">❯ A<span class="t-cursor"></span></div></div>
             <div class="tui-status">
-              <div class="tui-sl"><span class="agent-lbl">Agent</span><span>等待是否附加失败摘要</span></div>
-              <div class="tui-sr"><span><span class="t-kbd">A</span> attach</span><span><span class="t-kbd">L</span> logs</span><span><span class="t-kbd">R</span> rerun</span></div>
+              <div class="tui-sl"><span class="agent-lbl">Bash</span><span>#11 failed</span></div>
+              <div class="tui-sr"><span><span class="t-kbd">A</span> attach</span><span><span class="t-kbd">Enter</span> output</span><span><span class="t-kbd">R</span> rerun</span></div>
             </div>
           </div>
         </div>
@@ -850,7 +607,7 @@
           <tr><td>日志策略</td><td>stdout/stderr 进入输出缓冲；列表不展示输出，详情视图按需读取</td><td>按 <span class="kbd">Enter</span> 进入独立输出视图</td></tr>
           <tr><td>上下文策略</td><td>默认只把摘要给 Agent；完整输出需用户确认附加</td><td>按 <span class="kbd">A</span> attach summary，避免污染上下文</td></tr>
           <tr><td>中断规则</td><td><span class="kbd">Ctrl+C</span> 只取消当前前台输入，不杀后台命令</td><td>停止命令必须在 <code>/tasks</code> 里按 <span class="kbd">S</span> 二次确认</td></tr>
-          <tr><td>资源保护</td><td>限制同时运行数、空闲时长和最大运行时间</td><td>超限时 Job chip 变黄，提示清理或延长</td></tr>
+          <tr><td>资源保护</td><td>限制同时运行数、空闲时长和最大运行时间</td><td>超限时命令状态变黄，提示清理或延长</td></tr>
           <tr><td>危险命令</td><td>涉及删除、部署、写系统路径、外网传输等仍走原权限确认</td><td>后台执行不降低安全门槛</td></tr>
         </tbody>
       </table>
