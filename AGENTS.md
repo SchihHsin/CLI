@@ -468,6 +468,7 @@ grep -n "id=\"s-m" file.html | head    # 快速列出所有 section
 
 | commit | 内容 |
 |---|---|
+| *(2026-08-25)* | `codearts-bash-background-design.html` 修复纯文本终端 mockup 对比度：`.tm` 默认使用终端正文色，`--t-dim` 从过暗的 `#565f89` 提亮为 `#7f88b7`，解决日志时间戳后方正文在黑底上看不清的问题，并刷新缩略图。 |
 | *(2026-08-25)* | `codearts-bash-background-design.html` 按真实终端能力去卡片化：TUI mockup 内不再使用 alert/card/panel/table 视觉组件，改为纯文本行、缩进、分隔线和 ANSI 色感；保留 `/tasks` 入口，后台命令列表与日志详情均用终端文本呈现。 |
 | *(2026-08-25)* | `codearts-bash-background-design.html` 进一步按 Claude Code 交互改为“后台命令”心智：删除可见规划卡与 `Will run` 状态；`/jobs` 改为 `/tasks`；后台命令列表仅保留 ID / 命令 / 状态 / 时长，不再有输出列；日志改为独立详情视图而非表格内嵌；页面文案从 Job/任务收敛为 command/命令。 |
 | *(2026-08-21)* | `codearts-bash-background-design.html` 按产品反馈和 Claude Code 交互对齐：删除“转前台”路径，后台规划不再允许 foreground；新增独立“日志展开”状态；前台 Bash 超过 15 秒只提示可按 `Ctrl+B` 转入后台，不自动切换；Job sidebar 的 `#12 npm run devrun` 之类元信息仅保留耗时，不再展示 port / log 大小。 |
