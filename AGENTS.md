@@ -468,6 +468,7 @@ grep -n "id=\"s-m" file.html | head    # 快速列出所有 section
 
 | commit | 内容 |
 |---|---|
+| *(2026-08-25)* | 新增个人 Codex Skill `~/.codex/skills/tui-interaction-prototype`：将“产品需求 → TUI 交互设计方案 HTML”的方法沉淀为可复用流程，内含需求场景抽取、真实 TUI 能力约束、弹窗克制、状态/数据模型、视觉校验和 GitHub Pages 缩略图更新指引；参考现有 `/model`、`/lsp-toggle`、`/RunMode`、`/codebase` 与 Bash 后台命令方案。 |
 | *(2026-08-25)* | `codearts-bash-background-design.html` 修复纯文本终端 mockup 对比度：`.tm` 默认使用终端正文色，`--t-dim` 从过暗的 `#565f89` 提亮为 `#7f88b7`，解决日志时间戳后方正文在黑底上看不清的问题，并刷新缩略图。 |
 | *(2026-08-25)* | `codearts-bash-background-design.html` 按真实终端能力去卡片化：TUI mockup 内不再使用 alert/card/panel/table 视觉组件，改为纯文本行、缩进、分隔线和 ANSI 色感；保留 `/tasks` 入口，后台命令列表与日志详情均用终端文本呈现。 |
 | *(2026-08-25)* | `codearts-bash-background-design.html` 进一步按 Claude Code 交互改为“后台命令”心智：删除可见规划卡与 `Will run` 状态；`/jobs` 改为 `/tasks`；后台命令列表仅保留 ID / 命令 / 状态 / 时长，不再有输出列；日志改为独立详情视图而非表格内嵌；页面文案从 Job/任务收敛为 command/命令。 |
