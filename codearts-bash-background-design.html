@@ -532,7 +532,7 @@
       </div>
       <div class="flow-row">
         <div class="flow-n">5</div>
-        <div class="flow-b">用户通过 <code>/task</code>、状态栏命令 chip、或通知唤起后台命令弹窗，查看输出、停止、重跑、附加摘要</div>
+        <div class="flow-b">用户通过 <code>/task</code>、状态栏命令 chip、或通知唤起后台命令弹窗，查看输出、停止、重跑</div>
       </div>
     </div>
   </div>
@@ -633,12 +633,12 @@
                 </div>
                 <div class="task-body">
                   <div class="task-row head"><span>ID</span><span>Command</span><span>Status</span><span>Time</span></div>
-                  <div class="task-row active"><span class="tc-orange">#12</span><span>npm run dev</span><span class="tc-green">running</span><span>04:28</span></div>
+                  <div class="task-row active"><span class="tc-orange">#12</span><span>npm run dev</span><span class="tc-purple">running</span><span>04:28</span></div>
                   <div class="task-row"><span>#11</span><span>pytest -q</span><span class="tc-red">failed</span><span>01:12</span></div>
                   <div class="task-row"><span>#10</span><span>pnpm build</span><span class="tc-green">done</span><span>00:46</span></div>
                 </div>
                 <div class="task-actions">
-                  <span>Enter logs</span><span>A attach summary</span><span>S stop</span><span>R rerun</span><span>Esc close</span>
+                  <span>Enter logs</span><span>S stop</span><span>R rerun</span><span>Esc close</span>
                 </div>
               </div>
             </div>
@@ -662,7 +662,7 @@
               <div class="task-modal small">
                 <div class="task-head">
                   <span>#12 npm run dev</span>
-                  <span class="task-sub">running · 04:28</span>
+                  <span class="task-sub"><span class="tc-purple">running</span> · 04:28</span>
                 </div>
                 <div class="task-log">
                   <div class="tm"><span class="tc-dim">00:01</span>  VITE v6.1.0 ready in 428 ms</div>
@@ -672,7 +672,7 @@
                   <div class="tm"><span class="tc-dim">04:28</span>  process still running</div>
                 </div>
                 <div class="task-actions">
-                  <span>Esc back to list</span><span>A attach summary</span><span>S stop command</span>
+                  <span>Esc back to list</span><span>S stop command</span>
                 </div>
               </div>
             </div>
@@ -707,7 +707,7 @@
               <div class="t-panel hint">
                 <div class="t-panel-title">Foreground command</div>
                 <div class="t-command-line"><span class="tc-yellow">●</span> Bash is running in front</div>
-                <div class="t-panel-meta">Press <span class="tc-white">Ctrl+B</span> anytime to send it to background.</div>
+                <div class="t-panel-meta">Press <span class="tc-white">Ctrl+B</span> to run in the background.</div>
               </div>
             </div>
           </div>
@@ -728,7 +728,7 @@
       <div class="step">
         <div class="step-num">5a</div>
         <div class="step-content">
-          <div class="step-label"><b>完成时不打断当前输入</b>，在当前对话流中插入轻量信息分区，并允许一键把摘要附加给 Agent。</div>
+          <div class="step-label"><b>完成时不打断当前输入</b>，在当前对话流中插入轻量信息分区，提示用户可通过 <code>/task</code> 查看完整输出或重跑。</div>
           <div class="tui-wrap">
           <div class="tui-bar">
             <div class="tui-dots"><span class="tui-dot r"></span><span class="tui-dot y"></span><span class="tui-dot g"></span></div>
@@ -740,7 +740,7 @@
                 <div class="t-panel command">
                   <div class="t-panel-title">Background command completed</div>
                   <div class="t-command-line"><span class="tc-green">✓</span> #10 pnpm build</div>
-                  <div class="t-panel-meta">done · 46s · dist/ generated · Press A to attach summary</div>
+                  <div class="t-panel-meta">done · 46s · dist/ generated · Open /task for logs or rerun</div>
                 </div>
                 <div class="tm tc-dim">用户仍可继续输入，通知不会抢焦点。</div>
               </div>
@@ -748,7 +748,7 @@
             <div class="tui-input"><div class="tui-iline">❯ 顺便把 hover 态也补上<span class="t-cursor"></span></div></div>
             <div class="tui-status">
               <div class="tui-sl"><span class="agent-lbl">Bash</span><span>#10 done</span></div>
-              <div class="tui-sr"><span><span class="t-kbd">A</span> 附加摘要</span></div>
+              <div class="tui-sr"><span><span class="t-kbd">/task</span> 日志</span><span><span class="t-kbd">R</span> rerun</span></div>
             </div>
           </div>
         </div>
@@ -767,18 +767,18 @@
                 <div class="t-panel danger">
                   <div class="t-panel-title">Background command failed</div>
                   <div class="t-command-line"><span class="tc-red">✗</span> #11 pytest -q</div>
-                  <div class="t-panel-meta">failed · 01:12 · 2 failed · LoginButton disabled state mismatch</div>
+                  <div class="t-panel-meta">failed · 01:12</div>
                 </div>
                 <div class="t-panel hint">
                   <div class="t-panel-title">Next actions</div>
-                  <div class="t-command-line">Enter view logs · A attach summary · R rerun · /task manage</div>
+                  <div class="t-command-line">Enter view logs · R rerun · /task manage</div>
                 </div>
               </div>
             </div>
-            <div class="tui-input"><div class="tui-iline">❯ A<span class="t-cursor"></span></div></div>
+            <div class="tui-input"><div class="tui-iline">❯ /task<span class="t-cursor"></span></div></div>
             <div class="tui-status">
               <div class="tui-sl"><span class="agent-lbl">Bash</span><span>#11 failed</span></div>
-              <div class="tui-sr"><span><span class="t-kbd">A</span> attach</span><span><span class="t-kbd">Enter</span> output</span><span><span class="t-kbd">R</span> rerun</span></div>
+              <div class="tui-sr"><span><span class="t-kbd">Enter</span> logs</span><span><span class="t-kbd">R</span> rerun</span><span><span class="t-kbd">/task</span> manage</span></div>
             </div>
           </div>
         </div>
@@ -788,7 +788,7 @@
 
   <div class="section">
     <div class="section-title"><span class="num">06</span> &nbsp;交互规则与边界</div>
-    <div class="step-note" style="margin:0 0 14px;">Claude Code 对齐检查：后台 Bash 直接运行或由用户在前台运行期间按 <code>Ctrl+B</code> 放到后台，返回命令 ID；后续动作收敛为查看日志、停止、重跑、附加摘要，不提供转回前台，也不自动转后台。</div>
+    <div class="step-note" style="margin:0 0 14px;">Claude Code 对齐检查：后台 Bash 直接运行或由用户在前台运行期间按 <code>Ctrl+B</code> 放到后台，返回命令 ID；后续动作收敛为查看日志、停止、重跑，不提供转回前台，也不自动转后台。</div>
     <div class="table-wrap">
       <table class="spec-table">
         <thead>
@@ -799,7 +799,7 @@
           <tr><td>运行态动画</td><td>运行中的 Bash 行前使用 Braille spinner，按 <code>⠋ ⠙ ⠹ ⠸ ⠼ ⠴ ⠦ ⠧</code> 循环</td><td>命令行显示为 <code>Bash(npm run dev)</code>，浅灰底；下方深灰底显示 <code>Running in the background (/task to manage)</code></td></tr>
           <tr><td>前台转后台</td><td>前台 Bash 运行期间，进程仍存活或持续输出时，用户可任意时刻按 <span class="kbd">Ctrl+B</span></td><td>立即接管为后台命令并返回命令 ID；不需要等待，不自动切换</td></tr>
           <tr><td>日志策略</td><td>stdout/stderr 进入输出缓冲；列表不展示输出，详情视图按需读取</td><td>按 <span class="kbd">Enter</span> 进入独立输出视图</td></tr>
-          <tr><td>上下文策略</td><td>默认只把摘要给 Agent；完整输出需用户确认附加</td><td>按 <span class="kbd">A</span> attach summary，避免污染上下文</td></tr>
+          <tr><td>上下文策略</td><td>后台命令输出默认留在日志缓冲区，不自动写入对话上下文</td><td>用户通过 <code>/task</code> 查看日志；Agent 需要时只读取必要片段</td></tr>
           <tr><td>中断规则</td><td><span class="kbd">Ctrl+C</span> 只取消当前前台输入，不杀后台命令</td><td>停止命令必须在 <code>/task</code> 弹窗里按 <span class="kbd">S</span> 二次确认</td></tr>
           <tr><td>资源保护</td><td>限制同时运行数、空闲时长和最大运行时间</td><td>超限时命令状态变黄，提示清理或延长</td></tr>
           <tr><td>危险命令</td><td>涉及删除、部署、写系统路径、外网传输等仍走原权限确认</td><td>后台执行不降低安全门槛</td></tr>
@@ -824,8 +824,8 @@
   <span class="ct">durationMs</span>: <span class="cn">268000</span>
   <span class="ct">exitCode</span>: <span class="cn">null</span>
   <span class="ct">logBuffer</span>: { <span class="ct">truncated</span>: <span class="cv">false</span> }
-  <span class="ct">summary</span>: <span class="cs">'Vite dev server ready'</span>
-  <span class="ct">attachedToContext</span>: <span class="cv">false</span>
+  <span class="ct">logPreview</span>: <span class="cs">'Vite dev server ready'</span>
+  <span class="ct">readByAgent</span>: <span class="cv">false</span>
 }
     </div>
   </div>
