@@ -215,7 +215,11 @@
     width:220px;
     flex-shrink:0;
     padding:14px 16px;
+    border-left:1px solid var(--t-border);
+    background:var(--t-bg2);
+    overflow:hidden;
   }
+  .tui-main:has(.tui-sidebar) .tui-msgs { border-right:0; }
   .tui-input {
     border-top:1px solid var(--t-border);
     display:flex;
@@ -420,9 +424,19 @@
     opacity:.85;
   }
 
-  .sb-sec { margin-bottom:16px; }
-  .sb-title { font-size:12px; color:var(--t-white); margin-bottom:4px; }
-  .sb-body { font-size:12px; color:var(--t-dim); line-height:1.75; }
+  .sb-session { padding-bottom:12px; margin-bottom:14px; border-bottom:1px solid var(--t-border); }
+  .sb-session-title { color:var(--t-white); font-size:12px; line-height:1.4; }
+  .sb-session-meta { color:var(--t-dim); font-size:10px; line-height:1.7; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .sb-sec { margin-bottom:14px; }
+  .sb-title { font-size:11px; color:var(--t-white); margin-bottom:4px; }
+  .sb-title::before { content:"▾ "; color:var(--t-muted); }
+  .sb-body { font-size:10px; color:var(--t-dim); line-height:1.7; }
+  .sb-dot { color:var(--t-green); }
+  .sb-dot.warn { color:var(--t-yellow); }
+  .sb-file { display:flex; justify-content:space-between; gap:8px; white-space:nowrap; }
+  .sb-file-name { overflow:hidden; text-overflow:ellipsis; }
+  .sb-add { color:var(--t-green); flex-shrink:0; }
+  .sb-del { color:var(--t-red); flex-shrink:0; }
 
   .table-wrap {
     border:1px solid var(--page-border);
@@ -492,7 +506,7 @@
     .doc-body { padding:28px 24px 48px; }
     .tui-main { flex-direction:column; }
     .tui-msgs { border-right:0; border-bottom:1px solid var(--t-border); }
-    .tui-sidebar { width:100%; }
+    .tui-sidebar { width:100%; border-left:0; }
     .step { gap:12px; }
   }
 </style>
@@ -787,7 +801,44 @@
   </div>
 
   <div class="section">
-    <div class="section-title"><span class="num">06</span> &nbsp;交互规则与边界</div>
+    <div class="section-title"><span class="num">06</span> &nbsp;OpenCode Session Sidebar · 出现条件与内容</div>
+    <div class="step-label">右侧栏是 TUI 的基础 Session UI，不是 Bash 功能专属区域。它在终端宽度足够时默认显示，窄窗口或用户主动隐藏时消失；后台命令不会改变它的结构。</div>
+    <div class="tui-wrap">
+      <div class="tui-bar">
+        <div class="tui-dots"><span class="tui-dot r"></span><span class="tui-dot y"></span><span class="tui-dot g"></span></div>
+        <div class="tui-wt">CodeArts TUI · Session</div>
+      </div>
+      <div class="tui-main">
+        <div class="tui-msgs">
+          <div class="tm tc-dim">Agent：服务已在后台运行。我继续检查登录页结构。</div>
+          <div class="run-stack">
+            <div class="run-command-block"><div class="run-command-line"><span class="run-mark"></span><span>Bash(<span class="tc-white">npm run dev</span>)</span></div></div>
+            <div class="run-state-block">Running in the background (<span class="tc-blue">/task</span> to manage)</div>
+          </div>
+          <div class="tm"><span class="tc-orange">$</span> sed -n '1,220p' src/Login.tsx</div>
+        </div>
+        <div class="tui-sidebar">
+          <div class="sb-session"><div class="sb-session-title">Login page refresh</div><div class="sb-session-meta">~/workspace/app</div></div>
+          <div class="sb-sec"><div class="sb-title">Context</div><div class="sb-body">12,830 tokens<br>10% used<br>$0.03 spent</div></div>
+          <div class="sb-sec"><div class="sb-title">MCP</div><div class="sb-body"><span class="sb-dot">●</span> filesystem Connected<br><span class="sb-dot">●</span> github Connected</div></div>
+          <div class="sb-sec"><div class="sb-title">LSP</div><div class="sb-body"><span class="sb-dot">●</span> typescript ~/workspace/app</div></div>
+          <div class="sb-sec"><div class="sb-title">Todo</div><div class="sb-body">○ Check login states<br>○ Compare screenshots</div></div>
+          <div class="sb-sec"><div class="sb-title">Modified Files</div><div class="sb-body"><div class="sb-file"><span class="sb-file-name">src/Login.tsx</span><span class="sb-add">+18</span></div></div></div>
+        </div>
+      </div>
+      <div class="tui-input"><div class="tui-iline">❯ 继续整理登录页<span class="t-cursor"></span></div></div>
+      <div class="tui-status"><div class="tui-sl"><span class="agent-lbl">Session</span><span>Sidebar visible</span></div><div class="tui-sr"><span>wide terminal</span><span><span class="t-kbd">ctrl+p</span> toggle</span></div></div>
+    </div>
+    <div class="flow-table" style="margin-top:14px;">
+      <div class="flow-row"><div class="flow-n">01</div><div class="flow-b"><b>什么时候出现：</b>Session 页面且终端宽度足够时默认出现；窄窗口、子 Agent 或用户主动隐藏时不出现。</div></div>
+      <div class="flow-row"><div class="flow-n">02</div><div class="flow-b"><b>始终保留：</b>Session 名称、Workspace、Context 用量；MCP 和 LSP 根据当前状态展示。</div></div>
+      <div class="flow-row"><div class="flow-n">03</div><div class="flow-b"><b>按需出现：</b>有未完成 Todo 才显示 Todo；有代码变更才显示 Modified Files；区块可折叠。</div></div>
+      <div class="flow-row"><div class="flow-n">04</div><div class="flow-b"><b>职责边界：</b>右栏只做 Session 上下文概览；后台命令状态在主区展示，完整日志、停止和重跑统一进入 <code>/task</code> 弹窗。</div></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title"><span class="num">07</span> &nbsp;交互规则与边界</div>
     <div class="step-note" style="margin:0 0 14px;">Claude Code 对齐检查：后台 Bash 直接运行或由用户在前台运行期间按 <code>Ctrl+B</code> 放到后台，返回命令 ID；后续动作收敛为查看日志、停止、重跑，不提供转回前台，也不自动转后台。</div>
     <div class="table-wrap">
       <table class="spec-table">
@@ -809,7 +860,7 @@
   </div>
 
   <div class="section">
-    <div class="section-title"><span class="num">07</span> &nbsp;状态模型与数据结构</div>
+    <div class="section-title"><span class="num">08</span> &nbsp;状态模型与数据结构</div>
     <div class="code-block">
 <span class="ck">type</span> BashCommandStatus =
   <span class="cs">'starting'</span> | <span class="cs">'running'</span> | <span class="cs">'attention'</span> | <span class="cs">'done'</span> | <span class="cs">'failed'</span> | <span class="cs">'stopped'</span>
