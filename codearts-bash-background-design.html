@@ -201,6 +201,7 @@
   .tui-dot.g { background:#28c840; }
   .tui-wt { flex:1; text-align:center; font-size:12px; color:var(--t-dim); }
   .tui-main { display:flex; min-height:272px; }
+  .tui-main { position:relative; }
   .tui-msgs {
     flex:1;
     min-width:0;
@@ -255,6 +256,119 @@
   .tc-blue { color:var(--t-blue); }
   .tc-purple { color:var(--t-purple); }
   .tm-gap { height:5px; }
+  .t-panel {
+    border:1px solid var(--t-border2);
+    background:var(--t-bg3);
+    border-radius:6px;
+    padding:9px 12px;
+    margin:4px 0 8px;
+  }
+  .t-panel.command {
+    background:#1f241b;
+    border-color:rgba(158,206,106,.34);
+  }
+  .t-panel.hint {
+    background:#171d2b;
+    border-color:rgba(92,156,245,.32);
+  }
+  .t-panel.warn {
+    background:#262116;
+    border-color:rgba(224,175,104,.34);
+  }
+  .t-panel.danger {
+    background:#26191f;
+    border-color:rgba(247,118,142,.34);
+  }
+  .t-panel-title {
+    font-size:10px;
+    line-height:1;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:var(--t-dim);
+    margin-bottom:6px;
+  }
+  .t-command-line {
+    font-size:12px;
+    line-height:1.55;
+    color:var(--t-white);
+  }
+  .t-panel-meta {
+    margin-top:4px;
+    font-size:11px;
+    color:var(--t-dim);
+    line-height:1.6;
+  }
+  .task-scrim {
+    position:absolute;
+    inset:0;
+    background:rgba(14,14,14,.66);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:22px;
+  }
+  .task-modal {
+    width:min(600px,100%);
+    border:1px solid var(--t-border2);
+    background:var(--t-bg2);
+    border-radius:7px;
+    box-shadow:0 18px 48px rgba(0,0,0,.42);
+    overflow:hidden;
+  }
+  .task-modal.small { width:min(620px,100%); }
+  .task-head {
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    padding:10px 12px;
+    border-bottom:1px solid var(--t-border);
+    color:var(--t-white);
+    font-size:12px;
+  }
+  .task-sub { color:var(--t-dim); font-size:11px; }
+  .task-body { padding:8px 10px 10px; }
+  .task-row {
+    display:grid;
+    grid-template-columns:42px 1fr 74px 54px;
+    gap:10px;
+    align-items:center;
+    min-height:30px;
+    padding:5px 8px;
+    border-radius:4px;
+    color:var(--t-dim);
+    font-size:12px;
+  }
+  .task-row.head {
+    min-height:24px;
+    color:var(--t-muted);
+    font-size:10px;
+    text-transform:uppercase;
+    letter-spacing:.07em;
+  }
+  .task-row.active {
+    background:rgba(250,178,131,.16);
+    color:var(--t-white);
+  }
+  .task-log {
+    height:150px;
+    overflow:hidden;
+    padding:8px 10px;
+    background:var(--t-bg);
+    border:1px solid var(--t-border);
+    border-radius:5px;
+    margin:8px 10px 10px;
+  }
+  .task-actions {
+    border-top:1px solid var(--t-border);
+    padding:8px 12px;
+    color:var(--t-dim);
+    font-size:11px;
+    display:flex;
+    justify-content:space-between;
+    gap:12px;
+    flex-wrap:wrap;
+  }
   .t-cursor {
     display:inline-block;
     width:7px;
@@ -373,11 +487,11 @@
       </div>
       <div class="flow-row">
         <div class="flow-n">4</div>
-        <div class="flow-b">后台命令的 stdout/stderr 不再刷屏，而是进入日志缓冲区；TUI 只展示状态和完成/失败通知，日志在独立视图查看</div>
+        <div class="flow-b">后台命令的 stdout/stderr 不再刷屏，而是进入日志缓冲区；TUI 在对话流内展示当前命令分区和管理提示，完整日志在独立弹窗查看</div>
       </div>
       <div class="flow-row">
         <div class="flow-n">5</div>
-        <div class="flow-b">用户通过 <code>/tasks</code>、状态栏命令 chip、或通知进入后台命令面板，查看输出、停止、重跑、附加摘要</div>
+        <div class="flow-b">用户通过 <code>/task</code>、状态栏命令 chip、或通知唤起后台命令弹窗，查看输出、停止、重跑、附加摘要</div>
       </div>
     </div>
   </div>
@@ -396,16 +510,21 @@
           <div class="tui-main single">
             <div class="tui-msgs">
               <div class="tm tc-dim">用户：启动本地 dev server，然后继续帮我改登录页</div>
-              <div class="tm"><span class="tc-orange">$</span> npm run dev</div>
-              <div class="tm tc-green">✓ Bash running in background</div>
-              <div class="tm tc-dim">  #12  npm run dev  running  0s</div>
-              <div class="tm tc-dim">  Output is being recorded. Use /tasks to view or stop it.</div>
+              <div class="t-panel command">
+                <div class="t-panel-title">Current background command</div>
+                <div class="t-command-line"><span class="tc-orange">$</span> npm run dev</div>
+                <div class="t-panel-meta"><span class="tc-green">✓ running</span> · #12 · 0s · output is being recorded</div>
+              </div>
+              <div class="t-panel hint">
+                <div class="t-panel-title">Manage</div>
+                <div class="t-command-line">Use <span class="tc-blue">/task</span> to view logs, stop, rerun, or attach summary.</div>
+              </div>
             </div>
           </div>
           <div class="tui-input"><div class="tui-iline">❯ 启动 dev server，然后继续改登录页<span class="t-cursor"></span></div></div>
           <div class="tui-status">
             <div class="tui-sl"><span class="agent-lbl">Agent</span><span>Bash 命令已启动</span></div>
-            <div class="tui-sr"><span>无弹窗</span><span>不中断自动执行</span></div>
+            <div class="tui-sr"><span>启动不弹窗</span><span>管理用 /task</span></div>
           </div>
         </div>
         <div class="step-note">原则：命令启动和后台化不增加额外确认层；只有危险命令、权限升级、外部副作用等安全类决策仍需确认。</div>
@@ -426,9 +545,15 @@
           </div>
           <div class="tui-main single">
             <div class="tui-msgs">
-              <div class="tm tc-green">✓ Bash running in background</div>
-              <div class="tm tc-dim">  #12  npm run dev  running  18s</div>
-              <div class="tm tc-dim">  Output is being recorded.</div>
+              <div class="t-panel command">
+                <div class="t-panel-title">Current background command</div>
+                <div class="t-command-line"><span class="tc-orange">$</span> npm run dev</div>
+                <div class="t-panel-meta"><span class="tc-green">✓ running</span> · #12 · 18s · output recorded in buffer</div>
+              </div>
+              <div class="t-panel hint">
+                <div class="t-panel-title">Management hint</div>
+                <div class="t-command-line">Open <span class="tc-blue">/task</span> for output, stop, rerun, and attach summary.</div>
+              </div>
               <div class="tm-gap"></div>
               <div class="tm tc-dim">Agent：服务已在后台运行。我继续检查登录页结构。</div>
               <div class="tm"><span class="tc-orange">$</span> sed -n '1,220p' src/Login.tsx</div>
@@ -437,7 +562,7 @@
           <div class="tui-input"><div class="tui-iline">❯ 继续，把登录按钮状态也整理一下<span class="t-cursor"></span></div></div>
           <div class="tui-status">
             <div class="tui-sl"><span class="agent-lbl">Bash</span><span>#12 running</span></div>
-            <div class="tui-sr"><span><span class="t-kbd">/tasks</span> 查看</span><span><span class="t-kbd">Ctrl+C</span> 仅中断当前前台输入</span></div>
+            <div class="tui-sr"><span><span class="t-kbd">/task</span> 管理</span><span><span class="t-kbd">Ctrl+C</span> 仅中断当前前台输入</span></div>
           </div>
         </div>
         <div class="step-note">关键点：<b>Ctrl+C 不默认杀后台命令</b>。停止后台命令必须从命令列表或独立详情视图明确执行，避免误杀 dev server 或部署命令。</div>
@@ -446,11 +571,11 @@
   </div>
 
   <div class="section">
-    <div class="section-title"><span class="num">03</span> &nbsp;步骤三 · 后台命令列表与独立日志视图</div>
+    <div class="section-title"><span class="num">03</span> &nbsp;步骤三 · /task 弹窗与独立日志视图</div>
     <div class="step">
       <div class="step-num">3</div>
       <div class="step-content">
-        <div class="step-label"><b>用户输入 <code>/tasks</code> 或点击状态栏命令 chip</b>，打开后台命令列表。列表只负责浏览命令状态；选择命令后进入独立日志视图。</div>
+        <div class="step-label"><b>用户输入 <code>/task</code> 或点击状态栏命令 chip</b>，覆盖式打开后台命令弹窗。弹窗不写入对话流，列表负责浏览状态，选择命令后在弹窗内切到日志视图。</div>
         <div class="tui-wrap">
           <div class="tui-bar">
             <div class="tui-dots"><span class="tui-dot r"></span><span class="tui-dot y"></span><span class="tui-dot g"></span></div>
@@ -458,17 +583,28 @@
           </div>
           <div class="tui-main single">
             <div class="tui-msgs">
-              <div class="tm"><span class="tc-orange">❯</span> /tasks</div>
-              <div class="tm tc-white">Background commands</div>
-              <div class="tm tc-dim">────────────────────────────────────────────────────────</div>
-              <div class="tm tc-orange">› #12  npm run dev        running  04:28</div>
-              <div class="tm tc-dim">  #11  pytest -q          failed   01:12</div>
-              <div class="tm tc-dim">  #10  pnpm build         done     00:46</div>
-              <div class="tm tc-dim">────────────────────────────────────────────────────────</div>
-              <div class="tm tc-dim">Enter view output · A attach summary · S stop · R rerun · Esc back</div>
+              <div class="tm tc-dim">Agent：我继续整理登录页错误态。</div>
+              <div class="tm tc-dim">用户输入 /task 后，当前对话流保持在后方，不插入命令列表。</div>
+            </div>
+            <div class="task-scrim">
+              <div class="task-modal">
+                <div class="task-head">
+                  <span>Background commands</span>
+                  <span class="task-sub">/task · 3 commands</span>
+                </div>
+                <div class="task-body">
+                  <div class="task-row head"><span>ID</span><span>Command</span><span>Status</span><span>Time</span></div>
+                  <div class="task-row active"><span class="tc-orange">#12</span><span>npm run dev</span><span class="tc-green">running</span><span>04:28</span></div>
+                  <div class="task-row"><span>#11</span><span>pytest -q</span><span class="tc-red">failed</span><span>01:12</span></div>
+                  <div class="task-row"><span>#10</span><span>pnpm build</span><span class="tc-green">done</span><span>00:46</span></div>
+                </div>
+                <div class="task-actions">
+                  <span>Enter logs</span><span>A attach summary</span><span>S stop</span><span>R rerun</span><span>Esc close</span>
+                </div>
+              </div>
             </div>
           </div>
-          <div class="tui-input"><div class="tui-iline">❯ /tasks<span class="t-cursor"></span></div></div>
+          <div class="tui-input"><div class="tui-iline">❯ /task<span class="t-cursor"></span></div></div>
           <div class="tui-status">
             <div class="tui-sl"><span class="agent-lbl">Bash</span><span>命令列表</span></div>
             <div class="tui-sr"><span>#12 selected</span><span>3 total</span></div>
@@ -477,20 +613,29 @@
         <div class="tui-wrap" style="margin-top:16px;">
           <div class="tui-bar">
             <div class="tui-dots"><span class="tui-dot r"></span><span class="tui-dot y"></span><span class="tui-dot g"></span></div>
-            <div class="tui-wt">CodeArts TUI · Bash / #12 / logs</div>
+            <div class="tui-wt">CodeArts TUI · /task / #12 / logs</div>
           </div>
           <div class="tui-main single">
             <div class="tui-msgs">
-              <div class="tm"><span class="tc-orange">❯</span> /tasks #12 logs</div>
-              <div class="tm tc-white">#12  npm run dev  running  04:28</div>
-              <div class="tm tc-dim">────────────────────────────────────────────────────────</div>
-              <div class="tm"><span class="tc-dim">00:01</span>  VITE v6.1.0 ready in 428 ms</div>
-              <div class="tm"><span class="tc-dim">00:03</span>  GET /src/main.tsx 200</div>
-              <div class="tm"><span class="tc-dim">00:07</span>  hmr update /src/Login.tsx</div>
-              <div class="tm"><span class="tc-dim">00:12</span>  watching files ...</div>
-              <div class="tm"><span class="tc-dim">04:28</span>  process still running</div>
-              <div class="tm tc-dim">────────────────────────────────────────────────────────</div>
-              <div class="tm tc-dim">Esc back · A attach summary · S stop command</div>
+              <div class="tm tc-dim">后方仍是原对话流；日志详情在 /task 弹窗内切换。</div>
+            </div>
+            <div class="task-scrim">
+              <div class="task-modal small">
+                <div class="task-head">
+                  <span>#12 npm run dev</span>
+                  <span class="task-sub">running · 04:28</span>
+                </div>
+                <div class="task-log">
+                  <div class="tm"><span class="tc-dim">00:01</span>  VITE v6.1.0 ready in 428 ms</div>
+                  <div class="tm"><span class="tc-dim">00:03</span>  GET /src/main.tsx 200</div>
+                  <div class="tm"><span class="tc-dim">00:07</span>  hmr update /src/Login.tsx</div>
+                  <div class="tm"><span class="tc-dim">00:12</span>  watching files ...</div>
+                  <div class="tm"><span class="tc-dim">04:28</span>  process still running</div>
+                </div>
+                <div class="task-actions">
+                  <span>Esc back to list</span><span>A attach summary</span><span>S stop command</span>
+                </div>
+              </div>
             </div>
           </div>
           <div class="tui-input"><div class="tui-iline">❯ <span class="t-cursor"></span></div></div>
@@ -499,7 +644,7 @@
             <div class="tui-sr"><span><span class="t-kbd">Esc</span> 返回</span><span><span class="t-kbd">S</span> stop</span></div>
           </div>
         </div>
-        <div class="step-note">命令列表和日志详情分开：列表用于快速扫描，日志视图用于阅读完整输出，不把日志嵌在表格或对话流中。</div>
+        <div class="step-note">命令列表和日志详情分开，但都在 <code>/task</code> 弹窗里完成：列表用于快速扫描，日志视图用于阅读完整输出，不把列表或日志塞进对话流。</div>
       </div>
     </div>
   </div>
@@ -520,9 +665,11 @@
               <div class="tm"><span class="tc-orange">$</span> pytest tests/e2e --headed</div>
               <div class="tm tc-dim">collecting tests/login.spec.ts ...</div>
               <div class="tm tc-dim">chromium started · running login flow</div>
-              <div class="tm tc-yellow">● Bash has been running for 15s</div>
-              <div class="tm tc-dim">  Press Ctrl+B to run it in the background.</div>
-              <div class="tm tc-dim">  It will keep running in front until you do.</div>
+              <div class="t-panel warn">
+                <div class="t-panel-title">Long-running foreground command</div>
+                <div class="t-command-line"><span class="tc-yellow">●</span> Bash has been running for 15s</div>
+                <div class="t-panel-meta">Press <span class="tc-white">Ctrl+B</span> to send it to background. It keeps running in front until you do.</div>
+              </div>
             </div>
           </div>
           <div class="tui-input"><div class="tui-iline">❯ 继续检查登录页截图差异<span class="t-cursor"></span></div></div>
@@ -542,7 +689,7 @@
       <div class="step">
         <div class="step-num">5a</div>
         <div class="step-content">
-          <div class="step-label"><b>完成时不打断当前输入</b>，只在当前对话流中插入轻量通知，并允许一键把摘要附加给 Agent。</div>
+          <div class="step-label"><b>完成时不打断当前输入</b>，在当前对话流中插入轻量信息分区，并允许一键把摘要附加给 Agent。</div>
           <div class="tui-wrap">
           <div class="tui-bar">
             <div class="tui-dots"><span class="tui-dot r"></span><span class="tui-dot y"></span><span class="tui-dot g"></span></div>
@@ -551,9 +698,11 @@
             <div class="tui-main single">
               <div class="tui-msgs">
                 <div class="tm tc-dim">Agent：我正在整理登录页错误态。</div>
-                <div class="tm tc-green">✓ Background command completed</div>
-                <div class="tm tc-dim">  #10  pnpm build  done  46s</div>
-                <div class="tm tc-dim">  dist/ generated. Press A to attach summary.</div>
+                <div class="t-panel command">
+                  <div class="t-panel-title">Background command completed</div>
+                  <div class="t-command-line"><span class="tc-green">✓</span> #10 pnpm build</div>
+                  <div class="t-panel-meta">done · 46s · dist/ generated · Press A to attach summary</div>
+                </div>
                 <div class="tm tc-dim">用户仍可继续输入，通知不会抢焦点。</div>
               </div>
             </div>
@@ -576,10 +725,15 @@
           </div>
             <div class="tui-main single">
               <div class="tui-msgs">
-                <div class="tm tc-red">✗ Background command failed</div>
-                <div class="tm tc-dim">  #11  pytest -q  failed  01:12</div>
-                <div class="tm tc-dim">  2 failed · LoginButton disabled state mismatch</div>
-                <div class="tm tc-dim">  Enter view output · A attach summary · R rerun</div>
+                <div class="t-panel danger">
+                  <div class="t-panel-title">Background command failed</div>
+                  <div class="t-command-line"><span class="tc-red">✗</span> #11 pytest -q</div>
+                  <div class="t-panel-meta">failed · 01:12 · 2 failed · LoginButton disabled state mismatch</div>
+                </div>
+                <div class="t-panel hint">
+                  <div class="t-panel-title">Next actions</div>
+                  <div class="t-command-line">Enter view logs · A attach summary · R rerun · /task manage</div>
+                </div>
               </div>
             </div>
             <div class="tui-input"><div class="tui-iline">❯ A<span class="t-cursor"></span></div></div>
@@ -606,7 +760,7 @@
           <tr><td>前台转后台</td><td>前台 Bash 执行超过 15 秒仍未结束，且进程仍存活或持续输出</td><td>只提示可按 <span class="kbd">Ctrl+B</span> 转入后台，不自动切换</td></tr>
           <tr><td>日志策略</td><td>stdout/stderr 进入输出缓冲；列表不展示输出，详情视图按需读取</td><td>按 <span class="kbd">Enter</span> 进入独立输出视图</td></tr>
           <tr><td>上下文策略</td><td>默认只把摘要给 Agent；完整输出需用户确认附加</td><td>按 <span class="kbd">A</span> attach summary，避免污染上下文</td></tr>
-          <tr><td>中断规则</td><td><span class="kbd">Ctrl+C</span> 只取消当前前台输入，不杀后台命令</td><td>停止命令必须在 <code>/tasks</code> 里按 <span class="kbd">S</span> 二次确认</td></tr>
+          <tr><td>中断规则</td><td><span class="kbd">Ctrl+C</span> 只取消当前前台输入，不杀后台命令</td><td>停止命令必须在 <code>/task</code> 弹窗里按 <span class="kbd">S</span> 二次确认</td></tr>
           <tr><td>资源保护</td><td>限制同时运行数、空闲时长和最大运行时间</td><td>超限时命令状态变黄，提示清理或延长</td></tr>
           <tr><td>危险命令</td><td>涉及删除、部署、写系统路径、外网传输等仍走原权限确认</td><td>后台执行不降低安全门槛</td></tr>
         </tbody>
