@@ -257,27 +257,23 @@
   .tc-purple { color:var(--t-purple); }
   .tm-gap { height:5px; }
   .t-panel {
-    border:1px solid var(--t-border2);
+    border:0;
     background:var(--t-bg3);
     border-radius:6px;
     padding:9px 12px;
     margin:4px 0 8px;
   }
   .t-panel.command {
-    background:#1f241b;
-    border-color:rgba(158,206,106,.34);
+    background:#303136;
   }
   .t-panel.hint {
-    background:#171d2b;
-    border-color:rgba(92,156,245,.32);
+    background:#25262b;
   }
   .t-panel.warn {
     background:#262116;
-    border-color:rgba(224,175,104,.34);
   }
   .t-panel.danger {
     background:#26191f;
-    border-color:rgba(247,118,142,.34);
   }
   .t-panel-title {
     font-size:10px;
@@ -297,6 +293,51 @@
     font-size:11px;
     color:var(--t-dim);
     line-height:1.6;
+  }
+  .run-stack {
+    margin:4px 0 10px;
+    overflow:hidden;
+    border-radius:5px;
+  }
+  .run-command-block {
+    background:#303136;
+    padding:8px 10px;
+  }
+  .run-state-block {
+    background:#25262b;
+    padding:7px 10px 8px 30px;
+    color:var(--t-dim);
+    font-size:11px;
+    line-height:1.4;
+  }
+  .run-command-line {
+    display:flex;
+    align-items:center;
+    gap:8px;
+    color:var(--t-white);
+    font-size:12px;
+    line-height:1.5;
+  }
+  .run-mark {
+    width:12px;
+    color:var(--t-orange);
+    display:inline-flex;
+    justify-content:center;
+    flex-shrink:0;
+  }
+  .run-mark::before {
+    content:"⠋";
+    animation:runFrames 1s steps(1,end) infinite;
+  }
+  @keyframes runFrames {
+    0% { content:"⠋"; }
+    12.5% { content:"⠙"; }
+    25% { content:"⠹"; }
+    37.5% { content:"⠸"; }
+    50% { content:"⠼"; }
+    62.5% { content:"⠴"; }
+    75% { content:"⠦"; }
+    87.5% { content:"⠧"; }
   }
   .task-scrim {
     position:absolute;
@@ -510,14 +551,13 @@
           <div class="tui-main single">
             <div class="tui-msgs">
               <div class="tm tc-dim">用户：启动本地 dev server，然后继续帮我改登录页</div>
-              <div class="t-panel command">
-                <div class="t-panel-title">Current background command</div>
-                <div class="t-command-line"><span class="tc-orange">$</span> npm run dev</div>
-                <div class="t-panel-meta"><span class="tc-green">✓ running</span> · #12 · 0s · output is being recorded</div>
-              </div>
-              <div class="t-panel hint">
-                <div class="t-panel-title">Manage</div>
-                <div class="t-command-line">Use <span class="tc-blue">/task</span> to view logs, stop, rerun, or attach summary.</div>
+              <div class="run-stack">
+                <div class="run-command-block">
+                  <div class="run-command-line"><span class="run-mark"></span><span>Bash(<span class="tc-white">npm run dev</span>)</span></div>
+                </div>
+                <div class="run-state-block">
+                  Running in the background (<span class="tc-blue">/task</span> to manage)
+                </div>
               </div>
             </div>
           </div>
@@ -545,14 +585,13 @@
           </div>
           <div class="tui-main single">
             <div class="tui-msgs">
-              <div class="t-panel command">
-                <div class="t-panel-title">Current background command</div>
-                <div class="t-command-line"><span class="tc-orange">$</span> npm run dev</div>
-                <div class="t-panel-meta"><span class="tc-green">✓ running</span> · #12 · 18s · output recorded in buffer</div>
-              </div>
-              <div class="t-panel hint">
-                <div class="t-panel-title">Management hint</div>
-                <div class="t-command-line">Open <span class="tc-blue">/task</span> for output, stop, rerun, and attach summary.</div>
+              <div class="run-stack">
+                <div class="run-command-block">
+                  <div class="run-command-line"><span class="run-mark"></span><span>Bash(<span class="tc-white">npm run dev</span>)</span></div>
+                </div>
+                <div class="run-state-block">
+                  Running in the background (<span class="tc-blue">/task</span> to manage)
+                </div>
               </div>
               <div class="tm-gap"></div>
               <div class="tm tc-dim">Agent：服务已在后台运行。我继续检查登录页结构。</div>
@@ -757,6 +796,7 @@
         </thead>
         <tbody>
           <tr><td>触发方式</td><td>命令直接运行，或用户输入 <code>/bash --bg</code>、按 <code>Ctrl+B</code></td><td>直接返回命令 ID，输入框立即恢复，不弹执行方式选择</td></tr>
+          <tr><td>运行态动画</td><td>运行中的 Bash 行前使用 Braille spinner，按 <code>⠋ ⠙ ⠹ ⠸ ⠼ ⠴ ⠦ ⠧</code> 循环</td><td>命令行显示为 <code>Bash(npm run dev)</code>，浅灰底；下方深灰底显示 <code>Running in the background (/task to manage)</code></td></tr>
           <tr><td>前台转后台</td><td>前台 Bash 执行超过 15 秒仍未结束，且进程仍存活或持续输出</td><td>只提示可按 <span class="kbd">Ctrl+B</span> 转入后台，不自动切换</td></tr>
           <tr><td>日志策略</td><td>stdout/stderr 进入输出缓冲；列表不展示输出，详情视图按需读取</td><td>按 <span class="kbd">Enter</span> 进入独立输出视图</td></tr>
           <tr><td>上下文策略</td><td>默认只把摘要给 Agent；完整输出需用户确认附加</td><td>按 <span class="kbd">A</span> attach summary，避免污染上下文</td></tr>

@@ -468,6 +468,7 @@ grep -n "id=\"s-m" file.html | head    # 快速列出所有 section
 
 | commit | 内容 |
 |---|---|
+| *(2026-08-27)* | `codearts-bash-background-design.html` 细化后台 Bash 运行态：当前运行命令改为无描边双灰底信息块，上层浅灰显示带 Braille spinner 动画的 `Bash(npm run dev)`，下层深灰显示 `Running in the background (/task to manage)`；交互规则表补充运行态动画帧序列，并刷新 GitHub Pages 缩略图。 |
 | *(2026-08-27)* | `codearts-bash-background-design.html` 按产品反馈从“纯文字输出”调整为真实 TUI 信息分区：运行中的后台命令使用带底色的 Current background command 分区，旁边提供 `/task` 管理提示；`/task` 唤起后台命令覆盖式弹窗，列表与日志详情不再写入对话流；完成/失败/15s 提示也改为轻量信息分区，并刷新 GitHub Pages 缩略图。 |
 | *(2026-08-25)* | 新增个人 Codex Skill `~/.codex/skills/tui-interaction-prototype`：将“产品需求 → TUI 交互设计方案 HTML”的方法沉淀为可复用流程，内含需求场景抽取、真实 TUI 能力约束、弹窗克制、状态/数据模型、视觉校验和 GitHub Pages 缩略图更新指引；参考现有 `/model`、`/lsp-toggle`、`/RunMode`、`/codebase` 与 Bash 后台命令方案。 |
 | *(2026-08-25)* | `codearts-bash-background-design.html` 修复纯文本终端 mockup 对比度：`.tm` 默认使用终端正文色，`--t-dim` 从过暗的 `#565f89` 提亮为 `#7f88b7`，解决日志时间戳后方正文在黑底上看不清的问题，并刷新缩略图。 |
