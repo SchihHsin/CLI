@@ -689,11 +689,11 @@
   </div>
 
   <div class="section">
-    <div class="section-title"><span class="num">04</span> &nbsp;步骤四 · 前台 Bash 超过 15 秒，提示可转入后台</div>
+    <div class="section-title"><span class="num">04</span> &nbsp;步骤四 · 前台 Bash 可随时转入后台</div>
     <div class="step">
       <div class="step-num">4</div>
       <div class="step-content">
-        <div class="step-label"><b>Bash 已运行超过 15 秒仍未结束</b>。系统只给出非阻塞提示，告诉用户可以按 <code>Ctrl+B</code> 转入后台；不会自动切换，也不会提供转回前台入口。</div>
+        <div class="step-label"><b>前台 Bash 运行期间，用户任意时刻都可以按 <code>Ctrl+B</code> 转入后台</b>。不需要等待任何时长，也不会自动切换；系统只在状态区保留快捷键提示，不打断命令输出。</div>
         <div class="tui-wrap">
           <div class="tui-bar">
             <div class="tui-dots"><span class="tui-dot r"></span><span class="tui-dot y"></span><span class="tui-dot g"></span></div>
@@ -704,16 +704,16 @@
               <div class="tm"><span class="tc-orange">$</span> pytest tests/e2e --headed</div>
               <div class="tm tc-dim">collecting tests/login.spec.ts ...</div>
               <div class="tm tc-dim">chromium started · running login flow</div>
-              <div class="t-panel warn">
-                <div class="t-panel-title">Long-running foreground command</div>
-                <div class="t-command-line"><span class="tc-yellow">●</span> Bash has been running for 15s</div>
-                <div class="t-panel-meta">Press <span class="tc-white">Ctrl+B</span> to send it to background. It keeps running in front until you do.</div>
+              <div class="t-panel hint">
+                <div class="t-panel-title">Foreground command</div>
+                <div class="t-command-line"><span class="tc-yellow">●</span> Bash is running in front</div>
+                <div class="t-panel-meta">Press <span class="tc-white">Ctrl+B</span> anytime to send it to background.</div>
               </div>
             </div>
           </div>
           <div class="tui-input"><div class="tui-iline">❯ 继续检查登录页截图差异<span class="t-cursor"></span></div></div>
           <div class="tui-status">
-            <div class="tui-sl"><span class="agent-lbl">Bash</span><span>前台 · 15s</span></div>
+            <div class="tui-sl"><span class="agent-lbl">Bash</span><span>前台 · running</span></div>
             <div class="tui-sr"><span><span class="t-kbd">Ctrl+B</span> 后台</span><span><span class="t-kbd">S</span> stop</span></div>
           </div>
         </div>
@@ -788,7 +788,7 @@
 
   <div class="section">
     <div class="section-title"><span class="num">06</span> &nbsp;交互规则与边界</div>
-    <div class="step-note" style="margin:0 0 14px;">Claude Code 对齐检查：后台 Bash 直接运行或按 <code>Ctrl+B</code> 放到后台，返回命令 ID；后续动作收敛为查看日志、停止、重跑、附加摘要，不提供转回前台；长时间前台执行只提示可按 <code>Ctrl+B</code>，不自动转后台。</div>
+    <div class="step-note" style="margin:0 0 14px;">Claude Code 对齐检查：后台 Bash 直接运行或由用户在前台运行期间按 <code>Ctrl+B</code> 放到后台，返回命令 ID；后续动作收敛为查看日志、停止、重跑、附加摘要，不提供转回前台，也不自动转后台。</div>
     <div class="table-wrap">
       <table class="spec-table">
         <thead>
@@ -797,7 +797,7 @@
         <tbody>
           <tr><td>触发方式</td><td>命令直接运行，或用户输入 <code>/bash --bg</code>、按 <code>Ctrl+B</code></td><td>直接返回命令 ID，输入框立即恢复，不弹执行方式选择</td></tr>
           <tr><td>运行态动画</td><td>运行中的 Bash 行前使用 Braille spinner，按 <code>⠋ ⠙ ⠹ ⠸ ⠼ ⠴ ⠦ ⠧</code> 循环</td><td>命令行显示为 <code>Bash(npm run dev)</code>，浅灰底；下方深灰底显示 <code>Running in the background (/task to manage)</code></td></tr>
-          <tr><td>前台转后台</td><td>前台 Bash 执行超过 15 秒仍未结束，且进程仍存活或持续输出</td><td>只提示可按 <span class="kbd">Ctrl+B</span> 转入后台，不自动切换</td></tr>
+          <tr><td>前台转后台</td><td>前台 Bash 运行期间，进程仍存活或持续输出时，用户可任意时刻按 <span class="kbd">Ctrl+B</span></td><td>立即接管为后台命令并返回命令 ID；不需要等待，不自动切换</td></tr>
           <tr><td>日志策略</td><td>stdout/stderr 进入输出缓冲；列表不展示输出，详情视图按需读取</td><td>按 <span class="kbd">Enter</span> 进入独立输出视图</td></tr>
           <tr><td>上下文策略</td><td>默认只把摘要给 Agent；完整输出需用户确认附加</td><td>按 <span class="kbd">A</span> attach summary，避免污染上下文</td></tr>
           <tr><td>中断规则</td><td><span class="kbd">Ctrl+C</span> 只取消当前前台输入，不杀后台命令</td><td>停止命令必须在 <code>/task</code> 弹窗里按 <span class="kbd">S</span> 二次确认</td></tr>
