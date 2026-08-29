@@ -469,6 +469,7 @@ grep -n "id=\"s-m" file.html | head    # 快速列出所有 section
 | commit | 内容 |
 |---|---|
 | *(2026-08-27)* | `codearts-bash-background-design.html` 按反馈修正 `/task` 与前台提示细节：`/task` 弹窗中 running 改用主题紫色、done 保持绿色；全页移除 attach summary / 附加摘要入口和数据字段；前台提示文案改为更自然的 `Press Ctrl+B to run in the background.`；失败状态去掉 `2 failed · LoginButton disabled state mismatch` 明细，并刷新缩略图。 |
+| *(2026-08-29)* | `codearts-bash-background-design.html` 根据反馈简化前台 Bash 运行态：删除 `Foreground command` / `Bash is running in front` 解释面板，改为与后台命令一致的双灰底 `Bash(command)` + `Press Ctrl+B to run in the background.` 信息分区；完成态移除 `dist/ generated` 文案，并刷新缩略图。 |
 | *(2026-08-27)* | `codearts-bash-background-design.html` 按 OpenCode TUI 结构补充独立的 Session Sidebar 说明章节：不在每个 Bash 状态 mockup 重复右栏；单独展示右栏出现条件、Session/Workspace、Context、MCP、LSP、Todo、Modified Files 内容及其与 `/task` 弹窗的职责边界，并刷新缩略图。 |
 | *(2026-08-27)* | `codearts-bash-background-design.html` 去掉前台 Bash 转后台的 15 秒门槛：前台命令运行期间用户任意时刻都可按 `Ctrl+B` 转为后台命令；第 04 节标题、说明、mockup、Claude 对齐说明和规则表均改为“anytime / 不需要等待”，并刷新缩略图。 |
 | *(2026-08-27)* | `codearts-bash-background-design.html` 细化后台 Bash 运行态：当前运行命令改为无描边双灰底信息块，上层浅灰显示带 Braille spinner 动画的 `Bash(npm run dev)`，下层深灰显示 `Running in the background (/task to manage)`；交互规则表补充运行态动画帧序列，并刷新 GitHub Pages 缩略图。 |

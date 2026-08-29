@@ -718,10 +718,13 @@
               <div class="tm"><span class="tc-orange">$</span> pytest tests/e2e --headed</div>
               <div class="tm tc-dim">collecting tests/login.spec.ts ...</div>
               <div class="tm tc-dim">chromium started · running login flow</div>
-              <div class="t-panel hint">
-                <div class="t-panel-title">Foreground command</div>
-                <div class="t-command-line"><span class="tc-yellow">●</span> Bash is running in front</div>
-                <div class="t-panel-meta">Press <span class="tc-white">Ctrl+B</span> to run in the background.</div>
+              <div class="run-stack">
+                <div class="run-command-block">
+                  <div class="run-command-line"><span class="run-mark"></span><span>Bash(<span class="tc-white">pytest tests/e2e --headed</span>)</span></div>
+                </div>
+                <div class="run-state-block">
+                  Press <span class="tc-white">Ctrl+B</span> to run in the background.
+                </div>
               </div>
             </div>
           </div>
@@ -754,7 +757,7 @@
                 <div class="t-panel command">
                   <div class="t-panel-title">Background command completed</div>
                   <div class="t-command-line"><span class="tc-green">✓</span> #10 pnpm build</div>
-                  <div class="t-panel-meta">done · 46s · dist/ generated · Open /task for logs or rerun</div>
+                  <div class="t-panel-meta">done · 46s · Open /task for logs or rerun</div>
                 </div>
                 <div class="tm tc-dim">用户仍可继续输入，通知不会抢焦点。</div>
               </div>
